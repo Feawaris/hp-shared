@@ -1,0 +1,1 @@
+const e=function(){return typeof window<"u"&&globalThis===window?"browser":typeof global<"u"&&globalThis===global?"node":""}();function t(){}function o(){return!1}function r(){return!0}function u(n){return n}const i=Object.freeze(Object.defineProperty({__proto__:null,JS_ENV:e,NOOP:t,FALSE:o,TRUE:r,RAW:u},Symbol.toStringTag,{value:"Module"}));export{o as F,u as R,i as c};
