@@ -1,6 +1,6 @@
 {
   "name": "@__tests__/vue3",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@__tests__/shared": "workspace:^0.0.0",
-    "hp-shared": "workspace:^0.0.0",
+    "@__tests__/shared": "workspace:^0.0.1",
+    "hp-shared": "workspace:^0.0.1",
     "@jsmini/extend": "^0.3.3",
     "axios": "^1.2.1",
     "element-plus": "^2.2.26",
