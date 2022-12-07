@@ -205,10 +205,10 @@ export const VueData = {
    */
   getEmitsFromAttrs(attrs, emitDefinitions) {
     // emits 定义统一成数组格式
-    if (emitDefinitions instanceof Array) {
-      emitDefinitions = [];
-    } else if (Data.getExactType(emitDefinitions) === Object) {
+    if (Data.getExactType(emitDefinitions) === Object) {
       emitDefinitions = Object.keys(emitDefinitions);
+    } else if (!(emitDefinitions instanceof Array)) {
+      emitDefinitions = [];
     }
     // 统一处理成 onEmitName、onUpdate:emitName(v-model系列) 格式
     const emitNames = emitDefinitions.map(name => _String.toCamelCase(`on-${name}`));
@@ -260,7 +260,7 @@ export const VueData = {
       return arr.map(name => [_String.toCamelCase(name), _String.toLineCase(name)]).flat();
     })();
     emits = (() => {
-      const arr= (() => {
+      const arr = (() => {
         if (emits instanceof Array) {
           return emits;
         }
@@ -268,7 +268,7 @@ export const VueData = {
           return Object.keys(emits);
         }
         return [];
-      })()
+      })();
       return arr.map((name) => {
         // update:emitName 或 update:emit-name 格式
         if (name.startsWith('update:')) {

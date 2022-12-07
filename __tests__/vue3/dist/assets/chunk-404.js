@@ -1,1 +1,0 @@
-import{_ as e,o as _,c as o}from"./entry-chunk-index.js";const t={name:"Error404"},c={class:"Error404-root"};function s(r,n,a,d,p,f){return _(),o("div",c,"404")}const l=e(t,[["render",s],["__scopeId","data-v-cfe53fdb"]]);export{l as default};

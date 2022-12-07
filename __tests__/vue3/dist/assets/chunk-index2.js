@@ -1,1 +1,0 @@
-import"./entry-chunk-index.js";function s(n){return new Proxy(n,{get(r,e,o){if(Object.keys(r).includes(e)){const t=Reflect.get(...arguments);return function(){console.group(e),t(...arguments),console.groupEnd()}}}})}export{s as c};
