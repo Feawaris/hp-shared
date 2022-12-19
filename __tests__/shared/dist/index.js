@@ -233,7 +233,7 @@
         value,
         'typeof': typeof value,
         'Object.prototype.toString': Object.prototype.toString.call(value),
-        'jsminiType.type':type(value),
+        'jsminiType.type': type(value),
         'Data.getExactType': base.Data.getExactType(value),
         'Data.getExactTypes': base.Data.getExactTypes(value),
       };

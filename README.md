@@ -11,9 +11,13 @@ import { xx } from 'hp-shared/模块名';
 const { xx } = require('hp-shared/模块名');
 ```
 
+
+
 ## 各模块示例
 
 ### base 基础通用
+
+
 
 ### dev 开发
 
@@ -40,7 +44,11 @@ module.exports = merge(
 
 #### vite
 
+
+
 ### network 网络
+
+
 
 ### storage 存储
 
@@ -51,6 +59,8 @@ module.exports = merge(
 #### storage
 
 #### indexedDB
+
+
 
 ## 开发
 

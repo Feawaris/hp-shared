@@ -10,12 +10,12 @@
       <el-form :label-width="100">
         <el-form-item label="method">
           <el-select v-model="statusInfo.method" filterable clearable @change="statusInfo.request">
-            <el-option v-for="item in METHODS" :key="item" :value="item"></el-option>
+            <el-option v-for="item in METHODS" :value="item"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="status">
           <el-select v-model="statusInfo.status" filterable clearable @change="statusInfo.request">
-            <el-option v-for="item in STATUSES" :key="item.status" :value="item.status"></el-option>
+            <el-option v-for="item in STATUSES" :value="item.status"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>

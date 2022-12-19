@@ -30,14 +30,18 @@
   "unpkg": "./dist/browser/index.umd.js",
   "jsdelivr": "./dist/browser/index.umd.js",
   "scripts": {
-    "build": "npm-run-all -s clean:dist -p build-*",
-    "build-root": "rollup -c --bundleConfigAsCjs",
-    "build-__tests__/shared": "pnpm run -C __tests__/shared build",
-    "build-__tests__/vue3": "pnpm run -C __tests__/vue3 build",
-    "build:watch": "npm-run-all -s clean:dist -p build:watch-*",
-    "build:watch-root": "pnpm run build-root -w",
-    "build:watch-__tests__/shared": "pnpm run -C __tests__/shared build:watch",
-    "build:watch-__tests__/vue3": "pnpm run -C __tests__/vue3 build:watch",
+    "dev": "npm-run-all -p dev/*",
+    "dev/__tests__/koa": "pnpm run -C __tests__/koa dev",
+    "dev/__tests__/node": "pnpm run -C __tests__/node dev",
+    "dev/__tests__/vue3": "pnpm run -C __tests__/vue3 dev",
+    "build": "npm-run-all -s clean:dist -p build/*",
+    "build/root": "rollup -c --bundleConfigAsCjs",
+    "build/__tests__/shared": "pnpm run -C __tests__/shared build",
+    "build/__tests__/vue3": "pnpm run -C __tests__/vue3 build",
+    "build:watch": "npm-run-all -s clean:dist -p build:watch/*",
+    "build:watch/root": "pnpm run build/root -w",
+    "build:watch/__tests__/shared": "pnpm run -C __tests__/shared build:watch",
+    "build:watch/__tests__/vue3": "pnpm run -C __tests__/vue3 build:watch",
     "clean:dist": "npx rimraf dist/* __tests__/*/dist/*",
     "clean:node_modules": "npx rimraf **/node_modules",
     "ncu": "npx ncu --pre 0 --deep",
@@ -50,14 +54,14 @@
     "node-clipboardy": "^1.0.3"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^23.0.3",
+    "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "eslint-plugin-vue": "^9.8.0",
     "fast-glob": "^3.2.12",
     "husky": "^8.0.2",
     "npm-run-all": "^4.1.5",
-    "rollup": "^3.6.0"
+    "rollup": "^3.7.5"
   },
   "license": "MIT"
 }

@@ -21,7 +21,7 @@
       <AppValuesTable :value="cookieInfo.data"></AppValuesTable>
       <el-form :label-width="100">
         <el-form-item label="操作">
-          <el-button v-for="[name, fn] in Object.entries(cookieInfo.console)" :key="name" @click="fn">{{ name }}</el-button>
+          <el-button v-for="[name, fn] in Object.entries(cookieInfo.console)" @click="fn">{{ name }}</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -36,7 +36,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="操作">
-          <el-button v-for="[name, fn] in Object.entries(storageInfo.console)" :key="name" @click="fn">{{ name }}</el-button>
+          <el-button v-for="[name, fn] in Object.entries(storageInfo.console)" @click="fn">{{ name }}</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -44,7 +44,7 @@
       <AppValuesTable :value="indexedDBInfo.data"></AppValuesTable>
       <el-form :label-width="100">
         <el-form-item label="操作">
-          <el-button v-for="[name, fn] in Object.entries(indexedDBInfo.idbKeyvalInfo)" :key="name" @click="fn">{{ name }}</el-button>
+          <el-button v-for="[name, fn] in Object.entries(indexedDBInfo.idbKeyvalInfo)" @click="fn">{{ name }}</el-button>
         </el-form-item>
       </el-form>
     </el-card>

@@ -9,16 +9,32 @@
     <el-card header="constants 常量">
       <AppValuesTable :value="constants"></AppValuesTable>
     </el-card>
-    <el-card header="data 数据处理：Data">
-      <header>
-        <el-button v-for="[name, fn] in Object.entries(dataInfo)" :key="name" @click="fn">{{ name }}</el-button>
-      </header>
-      <el-card header="getExactType & getExactTypes">
-        <AppValuesTable :max-height="40 * 11" :value="multiData" :columns="['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', 'Data.getExactType', 'Data.getExactTypes']"></AppValuesTable>
+    <el-card header="objects 扩展对象">
+      <el-card v-for="[name, obj] in Object.entries(objectsInfo)" :header="name">
+        <header>
+          <el-button v-for="[fnName, fn] in Object.entries(obj)" @click="fn">{{ fnName }}</el-button>
+        </header>
+        <template v-if="name === '_String'">
+          <el-table :data="namesTable">
+            <el-table-column v-bind="{ type: 'index', label: '序号', width: 60, align: 'center' }"></el-table-column>
+            <el-table-column #="{row}" v-bind="{ label: 'name', prop: 'name' }">
+              <el-input v-show="row.editable" v-model="row.name" clearable></el-input>
+              <AppValue v-show="!row.editable" :value="row.name"></AppValue>
+            </el-table-column>
+            <el-table-column #="{row}" v-bind="{ label: 'toLineCase', prop: 'toLineCase' }">
+              <AppValue :value="row.toLineCase"></AppValue>
+            </el-table-column>
+            <el-table-column #="{row}" v-bind="{ label: 'toCamelCase', prop: 'toCamelCase' }">
+              <AppValue :value="row.toCamelCase"></AppValue>
+            </el-table-column>
+          </el-table>
+        </template>
+        <template v-if="name === 'Data'">
+          <el-card header="getExactType & getExactTypes">
+            <AppValuesTable :max-height="40 * 11" :value="multiData" :columns="['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', 'Data.getExactType', 'Data.getExactTypes']"></AppValuesTable>
+          </el-card>
+        </template>
       </el-card>
-    </el-card>
-    <el-card header="native-extend 扩展内置对象">
-      <el-button v-for="[name, fn] in Object.entries(nativeExtendInfo)" :key="name" @click="fn">{{ name }}</el-button>
     </el-card>
   </div>
 </template>
@@ -35,17 +51,228 @@
   import * as constants from 'hp-shared/src/base/constants.js';
   import { _Date, _Math, _Reflect, _String, _Object, Data } from 'hp-shared/base';
   import * as jsminiExtend from '@jsmini/extend';
+  import _ from 'loadsh';
 
   function preview() {
     console.group('base');
     console.table(Object.getOwnPropertyDescriptors(base));
     console.groupEnd();
   }
-  const dataInfo = reactive(createTestsProxy({
-    Data() {
-      (function deepClone() {
-        console.group('deepClone');
+  const objectsInfo = reactive({
+    _Date: createTestsProxy({
+      create() {
+        console.warn('打开safari浏览器查看对比效果');
+        const str = '2022-12-1';
+        const nativeDate = new Date(str);
+        const customDate = _Date.create(str);
+        console.log({
+          nativeDate,
+          customDate,
+        });
+      },
+    }),
+    _Math: createTestsProxy({
+      methods() {
+        const { log, lg, ln, E } = _Math;
+        console.log('log(2,8)', log(2, 8));
+        console.log('lg(100)', lg(100));
+        console.log('ln(e^2)', ln(E ** 2));
+      },
+    }),
+    _Object: createTestsProxy({
+      assign() {
+        // 生成测试对象
+        function obj1() {
+          return {
+            type: 'text',
+            get showPassword() {
+              return this.type === 'password';
+            },
+          };
+        }
+        function obj2() {
+          return {
+            type: 'password',
+            showPassword: false,
+          };
+        }
+        // 对比 Object.assign 和 _Object.assign
+        try {
+          // 直接赋值会报 TypeError: Cannot set property showPassword of #<Object> which has only a getter
+          console.log(Object.assign(obj1(), obj2()));
+        } catch (e) {
+          console.error(e);
+        }
+        // 使用重定义方式修改
+        console.log(_Object.assign(obj1(), obj2()));
+        console.log(_Object.assign(obj2(), obj1()));
+      },
+      deepAssign() {
+        function obj1() {
+          return {
+            method: 'post',
+            params: {
+              x: 1,
+              get y() { return this.x + 1; },
+            },
+            extra: {
+              options: {
+                x: 1,
+                get y() { return this.x + 1; },
+              },
+            },
+          };
+        }
+        function obj2() {
+          return {
+            params: {
+              x: 2,
+              y: 6,
+            },
+            extra: {
+              options: {
+                x: 2,
+                y: 6,
+              },
+            },
+          };
+        }
+        try {
+          // 直接赋值会报 TypeError: Cannot set property y of #<Object> which has only a getter
+          console.log(jsminiExtend.extendDeep(obj1(), obj2()));
+        } catch (e) {
+          console.error(e);
+        }
+        console.log(_Object.deepAssign(obj1(), obj2()));
+      },
+      owner() {
+        const obj = { x: 1 };
+        const obj_obj = Object.assign(Object.create(obj), {
+          y: 2,
+        });
+        console.log(_Object.owner(Object.create(null), 'xx'));
+        console.log(_Object.owner(obj, 'x') === obj);
+        console.log(_Object.owner(obj_obj, 'x') === obj);
+      },
+      keys() {
+        const symbol1 = Symbol('1');
+        const obj = { a: 1, [symbol1]: symbol1 };
+        Object.defineProperty(obj, 'notEnumerable', { value: '1' });
+        console.log(_Object.keys(obj));
+        console.log(_Object.keys(obj, { symbol: true, notEnumerable: true, extend: true }));
 
+        const symbol2 = Symbol('2');
+        const obj_obj = Object.assign(Object.create(obj), {
+          b: 2,
+          [symbol2]: symbol2,
+        });
+        console.log(_Object.keys(obj_obj));
+        console.log(_Object.keys(obj_obj, { symbol: true, notEnumerable: true, extend: true }));
+      },
+      descriptors() {
+        const symbol1 = Symbol('1');
+        const obj = { a: 1, [symbol1]: symbol1 };
+        Object.defineProperty(obj, 'notEnumerable', { value: '1' });
+        console.log(_Object.descriptors(obj));
+        console.log(_Object.descriptors(obj, { symbol: true, notEnumerable: true, extend: true }));
+
+        const symbol2 = Symbol('2');
+        const obj_obj = Object.assign(Object.create(obj), {
+          b: 2,
+          [symbol2]: symbol2,
+        });
+        console.log(_Object.descriptors(obj_obj));
+        console.log(_Object.descriptors(obj_obj, { symbol: true, notEnumerable: true, extend: true }));
+      },
+      descriptorEntries() {
+        const symbol1 = Symbol('1');
+        const obj = { a: 1, [symbol1]: symbol1 };
+        Object.defineProperty(obj, 'notEnumerable', { value: '1' });
+        console.log(_Object.descriptorEntries(obj));
+        console.log(_Object.descriptorEntries(obj, { symbol: true, notEnumerable: true, extend: true }));
+
+        const symbol2 = Symbol('2');
+        const obj_obj = Object.assign(Object.create(obj), {
+          b: 2,
+          [symbol2]: symbol2,
+        });
+        console.log(_Object.descriptorEntries(obj_obj));
+        console.log(_Object.descriptorEntries(obj_obj, { symbol: true, notEnumerable: true, extend: true }));
+      },
+      filter() {
+        const obj = {
+          pageSize: 10,
+          pageIndex: 1,
+          total: 0,
+        };
+        console.log(_Object.filter(obj, { omit: 'total' }));
+      },
+      pick() {
+        const obj = {
+          pageSize: 10,
+          pageIndex: 1,
+          total: 0,
+
+          get statusName() {
+            return `statusName_${this.status}`;
+          },
+        };
+        const symbol = Symbol('obj_obj');
+        const obj_obj = Object.assign(Object.create(obj), {
+          keyword: '',
+
+          status: 1,
+          [symbol]: symbol,
+        });
+        console.log(_.pick(obj_obj, []));
+        console.log(_Object.pick(obj_obj, []));
+        console.log(_.pick(obj_obj, ['keyword', 'status', 'total', 'statusName', symbol]));
+        console.log(_Object.pick(obj_obj, ['keyword', 'status', 'total', 'statusName', symbol]));
+      },
+      omit() {
+        const obj = {
+          pageSize: 10,
+          pageIndex: 1,
+          total: 0,
+
+          get statusName() {
+            return `statusName_${this.status}`;
+          },
+        };
+        Object.defineProperty(obj, 'notEnumerable', { value: '1' });
+        const symbol = Symbol('obj_obj');
+        const obj_obj = Object.assign(Object.create(obj), {
+          keyword: '',
+
+          status: 1,
+          [symbol]: symbol,
+        });
+        Object.defineProperty(obj_obj, 'notEnumerable', { value: '2' });
+
+        console.log(_.omit(obj_obj, []));
+        console.log(_Object.omit(obj_obj, []));
+        console.log(_.omit(obj_obj, ['total']));
+        console.log(_Object.omit(obj_obj, ['total']));
+      },
+    }),
+    _Reflect: createTestsProxy({
+      ownKeys() {
+        console.log(_Reflect.ownKeys(simpleData));
+      },
+      ownValues() {
+        console.log(_Reflect.ownValues(simpleData));
+      },
+      ownEntries() {
+        console.log(_Reflect.ownEntries(simpleData));
+      },
+    }),
+    _String: createTestsProxy({
+      methods() {
+        console.table(JSON.parse(JSON.stringify(namesTable)));
+      },
+    }),
+    Data: createTestsProxy({
+      deepClone() {
         const data1 = {
           array: [],
           object: {
@@ -77,124 +304,22 @@
 
           console.groupEnd();
         })();
-
-        console.groupEnd();
-      })();
-    },
-  }));
-  const nativeExtendInfo = reactive(createTestsProxy({
-    _Date() {
-      console.warn('打开safari浏览器查看对比效果');
-      const str = '2022-12-1';
-      const nativeDate = new Date(str);
-      const customDate = _Date.create(str);
-      console.log({ nativeDate, customDate });
-    },
-    _Math() {
-      const { log, lg, ln, E } = _Math;
-      console.log('log(2,8)', log(2, 8));
-      console.log('lg(100)', lg(100));
-      console.log('ln(e^2)', ln(E ** 2));
-    },
-    _Object() {
-      (function assign() {
-        console.group('assign');
-        // 生成测试对象
-        function obj1() {
-          return {
-            get y() { return this.x + 1; },
-            get showPassword() {
-              return this.type === 'password';
-            },
-          };
-        }
-        function obj2() {
-          return { x: 1, y: 1 };
-        }
-        // 对比 Object.assign 和 _Object.assign
-        try {
-          console.log(Object.assign(obj1(), obj2()));
-        } catch (e) {
-          console.error(e);
-        }
-        console.log(_Object.assign(obj1(), obj2()));
-        console.log(_Object.assign(obj2(), obj1()));
-
-        console.groupEnd();
-      })();
-      (function deepAssign() {
-        console.group('deepAssign');
-
-        function obj1() {
-          return {
-            method: 'post',
-            params: {
-              x: 1,
-              get y() { return this.x + 1; },
-            },
-            extra: {
-              options: {
-                x: 1,
-                get y() { return this.x + 1; },
-              },
-            },
-          };
-        }
-        function obj2() {
-          return {
-            params: {
-              x: 1,
-              x2: 2,
-            },
-            extra: {
-              options: {
-                x: 1,
-                x2: 2,
-              },
-            },
-          };
-        }
-        // 测试重定义属性
-        function obj3() {
-          return {
-            params: {
-              y: 4,
-            },
-            extra: {
-              options: {
-                y: 4,
-              },
-            },
-          };
-        }
-
-        console.log(jsminiExtend.extendDeep(obj1(), obj2()));
-        console.log(_Object.deepAssign(obj1(), obj2()));
-        try {
-          console.log(jsminiExtend.extendDeep(obj1(), obj2(), obj3()));
-        } catch (e) {
-          console.error(e);
-        }
-        console.log(_Object.deepAssign(obj1(), obj2(), obj3()));
-
-        console.groupEnd();
-      })();
-    },
-    _Reflect() {
-      console.log('ownKeys: ', _Reflect.ownKeys(simpleData));
-      console.log('ownValues: ', _Reflect.ownValues(simpleData));
-      console.log('ownEntries: ', _Reflect.ownEntries(simpleData));
-    },
-    _String() {
-      console.table(names.map((name) => {
-        return {
-          name,
-          'toLineCase': _String.toLineCase(name),
-          'toCamelCase': _String.toCamelCase(name),
-        };
-      }));
-    },
-  }));
+      },
+    }),
+  });
+  function createNameItem(name, { editable } = {}) {
+    return {
+      name,
+      get toLineCase() {
+        return _String.toLineCase(this.name);
+      },
+      get toCamelCase() {
+        return _String.toCamelCase(this.name);
+      },
+      editable,
+    };
+  }
+  const namesTable = reactive(names.map(name => createNameItem(name, { editable: false })).concat(createNameItem('on-change', { editable: true })));
 </script>
 <style scoped lang="scss">
   .Base-root{}

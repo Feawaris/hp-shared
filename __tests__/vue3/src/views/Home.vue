@@ -4,7 +4,7 @@
       <header>
         <el-button @click="preview">shared</el-button>
       </header>
-      <AppValuesTable :value="shared"></AppValuesTable>
+      <AppValuesTable :value="shared" defaultExpandAll></AppValuesTable>
     </el-card>
   </div>
 </template>

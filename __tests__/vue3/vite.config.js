@@ -25,6 +25,7 @@ export default defineConfig(({ command, mode }) => {
     plugins: [vue()],
     build: {
       target: 'esnext',
+      sourcemap: 'inline',
       // 自定义底层的 Rollup 打包配置。
       rollupOptions: {
         output: {

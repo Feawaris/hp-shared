@@ -1,7 +1,7 @@
 <template>
   <div class="AppValueInput-root">
     <el-select v-model="defaultInfo.type" clearable filterable placeholder="选择类型" :class="{ hasColor }" @change="defaultInfo.onChange($event)">
-      <el-option v-for="item in defaultInfo.typeList" :key="item.value" :value="item.value" :label="getExactType(item.value) === Function ? item.value.name : String(item.value)" :style="item.style"></el-option>
+      <el-option v-for="item in defaultInfo.typeList" :value="item.value" :label="getExactType(item.value) === Function ? item.value.name : String(item.value)" :style="item.style"></el-option>
     </el-select>
     <div class="values-right">
       <span v-show="[null, undefined].includes(defaultInfo.type)" style="color:#999;">{{ String(defaultInfo.value) }}</span>

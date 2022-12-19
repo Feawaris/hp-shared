@@ -5,8 +5,8 @@ export const Data = {
   SIMPLE_TYPES: [null, undefined, Number, String, Boolean, BigInt, Symbol],
   /**
    * 获取值的具体类型
-   * @param value 值
-   * @returns {ObjectConstructor|Function|*} 返回对应构造函数。null、undefined 原样返回
+   * @param value {*} 值
+   * @returns {ObjectConstructor|*|Function} 返回对应构造函数。null、undefined 原样返回
    */
   getExactType(value) {
     // null、undefined 原样返回
@@ -31,7 +31,7 @@ export const Data = {
   },
   /**
    * 获取值的具体类型列表
-   * @param value 值
+   * @param value {*} 值
    * @returns {*[]} 统一返回数组。null、undefined 对应为 [null],[undefined]
    */
   getExactTypes(value) {
@@ -68,13 +68,17 @@ export const Data = {
     }
     return result;
   },
-  // 深拷贝数据
-  deepClone(source, options = {}) {
+  /**
+   * 深拷贝数据
+   * @param source {*}
+   * @returns {Map<any, any>|Set<any>|{}|*|*[]}
+   */
+  deepClone(source) {
     // 数组
     if (source instanceof Array) {
       let result = [];
       for (const value of source.values()) {
-        result.push(Data.deepClone(value, options));
+        result.push(this.deepClone(value));
       }
       return result;
     }
@@ -82,7 +86,7 @@ export const Data = {
     if (source instanceof Set) {
       let result = new Set();
       for (let value of source.values()) {
-        result.add(Data.deepClone(value, options));
+        result.add(this.deepClone(value));
       }
       return result;
     }
@@ -90,7 +94,7 @@ export const Data = {
     if (source instanceof Map) {
       let result = new Map();
       for (let [key, value] of source.entries()) {
-        result.set(key, Data.deepClone(value, options));
+        result.set(key, this.deepClone(value));
       }
       return result;
     }
@@ -102,7 +106,7 @@ export const Data = {
           // value方式：递归处理
           Object.defineProperty(result, key, {
             ...desc,
-            value: Data.deepClone(desc.value),
+            value: this.deepClone(desc.value),
           });
         } else {
           // get/set 方式：直接定义
@@ -116,17 +120,14 @@ export const Data = {
   },
   /**
    * 深解包数据
-   * @param data 值
-   * @param options 选项
-   *          isWrap 包装数据判断函数，如vue3的isRef函数
-   *          unwrap 解包方式函数，如vue3的unref函数
-   * @returns {{[p: string]: *}|*}
+   * @param data {*} 值
+   * @param isWrap {function} 包装数据判断函数，如vue3的isRef函数
+   * @param unwrap {function} 解包方式函数，如vue3的unref函数
+   * @returns {(*|{[p: string]: any})[]|*|{[p: string]: any}|{[p: string]: *|{[p: string]: any}}}
    */
-  deepUnwrap(data, options = {}) {
-    const {
-      isWrap = FALSE,
-      unwrap = RAW,
-    } = options;
+  deepUnwrap(data, { isWrap = FALSE, unwrap = RAW } = {}) {
+    // 选项收集
+    const options = { isWrap, unwrap };
     // 包装类型（如vue3响应式对象）数据解包
     if (isWrap(data)) {
       return Data.deepUnwrap(unwrap(data), options);
@@ -147,8 +148,8 @@ export const Data = {
 export const VueData = {
   /**
    * 深解包vue3响应式对象数据
-   * @param data
-   * @returns {{[p: string]: *}|*}
+   * @param data {*}
+   * @returns {(*|{[p: string]: *})[]|*|{[p: string]: *}|{[p: string]: *|{[p: string]: *}}}
    */
   deepUnwrapVue3(data) {
     return Data.deepUnwrap(data, {

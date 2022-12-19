@@ -125,7 +125,7 @@ export function getValues(obj, fn = RAW) {
       value,
       'typeof': typeof value,
       'Object.prototype.toString': Object.prototype.toString.call(value),
-      'jsminiType.type':jsminiType.type(value),
+      'jsminiType.type': jsminiType.type(value),
       'Data.getExactType': Data.getExactType(value),
       'Data.getExactTypes': Data.getExactTypes(value),
     };

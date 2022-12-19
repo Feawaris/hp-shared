@@ -1,9 +1,8 @@
 export const Style = {
   /**
    * 带单位字符串。对数字或数字格式的字符串自动拼单位，其他字符串原样返回
-   * @param value 值
-   * @param {} 选项
-   *          unit：单位，value没带单位时自动拼接，可传 px/em/% 等
+   * @param value {number|string} 值
+   * @param unit 单位。value没带单位时自动拼接，可传 px/em/% 等
    * @returns {string|string}
    */
   getUnitString(value = '', { unit = 'px' } = {}) {

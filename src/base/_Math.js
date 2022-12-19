@@ -1,6 +1,6 @@
 export const _Math = Object.create(Math);
-// 增加部分命名以接近数学表达方式
 Object.assign(_Math, {
+// 增加部分命名以接近数学表达方式
   arcsin: Math.asin,
   arccos: Math.acos,
   arctan: Math.atan,
