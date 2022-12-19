@@ -1,12 +1,12 @@
 {
   "name": "@__tests__/node",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "dev": "nodemon index.js"
   },
   "dependencies": {
-    "@__tests__/shared": "workspace:^0.0.1",
-    "hp-shared": "workspace:^0.0.1"
+    "@__tests__/shared": "workspace:^0.1.0",
+    "hp-shared": "workspace:^0.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

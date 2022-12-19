@@ -1,5 +1,5 @@
 /*!
- * hp-shared v0.0.1
+ * hp-shared v0.1.0
  * (c) 2022 hp
  * Released under the MIT License.
  */ 
