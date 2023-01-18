@@ -188,7 +188,10 @@ Object.assign(_Object, {
     keys = keys.filter(key => !omit.includes(key));
     for (const key of keys) {
       const desc = this.descriptor(object, key);
-      Object.defineProperty(result, key, desc);
+      // 属性不存在导致desc得到undefined时不设置值
+      if (desc) {
+        Object.defineProperty(result, key, desc);
+      }
     }
     return result;
   },
