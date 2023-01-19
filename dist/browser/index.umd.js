@@ -19,21 +19,20 @@
   })());
 })(this, (function (exports) { 'use strict';
 
-  const _String = Object.create(String);
-  Object.assign(_String, {
+  const _String = {
     /**
-       * 首字母大写
-       * @param name {string}
-       * @returns {string}
-       */
+     * 首字母大写
+     * @param name {string}
+     * @returns {string}
+     */
     toFirstUpperCase(name = '') {
       return `${(name[0] ?? '').toUpperCase()}${name.slice(1)}`;
     },
     /**
-       * 首字母小写
-       * @param name {string} 名称
-       * @returns {string}
-       */
+     * 首字母小写
+     * @param name {string} 名称
+     * @returns {string}
+     */
     toFirstLowerCase(name = '') {
       return `${(name[0] ?? '').toLowerCase()}${name.slice(1)}`;
     },
@@ -53,7 +52,7 @@
       const camelName = name.replaceAll(regexp, (substr, $1) => {
         return $1.toUpperCase();
       });
-        // 首字母大小写根据传参判断
+      // 首字母大小写根据传参判断
       if ([true, 'uppercase'].includes(first)) {
         return _String.toFirstUpperCase(camelName);
       }
@@ -75,7 +74,7 @@
         // 转小写
         .toLowerCase();
     },
-  });
+  };
 
   // 常量。常用于默认传参等场景
   // js运行环境
@@ -102,7 +101,12 @@
   function RAW(value) {
     return value;
   }
+  // catch 内的错误原样抛出去
+  function THROW(e) {
+    throw e;
+  }
 
+  // 处理多格式数据用
   const Data = {
     // 简单类型
     SIMPLE_TYPES: [null, undefined, Number, String, Boolean, BigInt, Symbol],
@@ -248,6 +252,7 @@
       return data;
     },
   };
+  // 处理vue数据用
   const VueData = {
     /**
      * 深解包vue3响应式对象数据
@@ -403,8 +408,7 @@
     },
   };
 
-  const _Date = Object.create(Date);
-  Object.assign(_Date, {
+  const _Date = {
     /**
      * 创建Date对象
      * @param args {*[]} 多个值
@@ -421,10 +425,9 @@
         return arguments.length === 0 ? new Date() : new Date(...arguments);
       }
     },
-  });
+  };
 
-  const _Math = Object.create(Math);
-  Object.assign(_Math, {
+  const _Math = {
   // 增加部分命名以接近数学表达方式
     arcsin: Math.asin,
     arccos: Math.acos,
@@ -438,21 +441,19 @@
     log(a, x) {
       return Math.log(x) / Math.log(a);
     },
-  });
+  };
 
-  const _Reflect = Object.create(Reflect);
-  Object.assign(_Reflect, {
-  // 对 ownKeys 配套 ownValues 和 ownEntries
+  const _Reflect = {
+    // 对 ownKeys 配套 ownValues 和 ownEntries
     ownValues(target) {
       return Reflect.ownKeys(target).map(key => target[key]);
     },
     ownEntries(target) {
       return Reflect.ownKeys(target).map(key => [key, target[key]]);
     },
-  });
+  };
 
-  const _Set = Object.create(Set);
-  Object.assign(_Set, {
+  const _Set = {
     /**
      * 加强add方法。跟数组push方法一样可添加多个值
      * @param set {Set} 目标set
@@ -463,7 +464,7 @@
         set.add(arg);
       }
     },
-  });
+  };
 
   /**
    * 属性名统一成数组格式
@@ -488,8 +489,7 @@
   // console.log(namesToArray(['a', 'b', 'c', Symbol()]));
   // console.log(namesToArray('a,b,c'));
   // console.log(namesToArray(['a,b,c', Symbol()]));
-  const _Object = Object.create(Object);
-  Object.assign(_Object, {
+  const _Object = {
     /**
      * 浅合并对象。写法同 Object.assign
      * 通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
@@ -651,7 +651,10 @@
       keys = keys.filter(key => !omit.includes(key));
       for (const key of keys) {
         const desc = this.descriptor(object, key);
-        Object.defineProperty(result, key, desc);
+        // 属性不存在导致desc得到undefined时不设置值
+        if (desc) {
+          Object.defineProperty(result, key, desc);
+        }
       }
       return result;
     },
@@ -675,10 +678,9 @@
     omit(object, keys = [], options = {}) {
       return this.filter(object, { omit: keys, ...options });
     },
-  });
+  };
 
-  const _Proxy = Object.create(Proxy);
-  Object.assign(_Proxy, {
+  const _Proxy = {
     /**
      * 绑定this。常用于解构函数时绑定this避免报错
      * @param target {object} 目标对象
@@ -698,8 +700,9 @@
         },
       });
     },
-  });
+  };
 
+  // 处理样式用
   const Style = {
     /**
      * 带单位字符串。对数字或数字格式的字符串自动拼单位，其他字符串原样返回
@@ -716,21 +719,22 @@
 
   var index$4 = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    Data: Data,
+    FALSE: FALSE,
+    JS_ENV: JS_ENV,
+    NOOP: NOOP,
+    RAW: RAW,
+    Style: Style,
+    THROW: THROW,
+    TRUE: TRUE,
+    VueData: VueData,
     _Date: _Date,
     _Math: _Math,
     _Object: _Object,
     _Proxy: _Proxy,
     _Reflect: _Reflect,
     _Set: _Set,
-    _String: _String,
-    JS_ENV: JS_ENV,
-    NOOP: NOOP,
-    FALSE: FALSE,
-    TRUE: TRUE,
-    RAW: RAW,
-    Data: Data,
-    VueData: VueData,
-    Style: Style
+    _String: _String
   });
 
   /**
@@ -1024,15 +1028,15 @@
 
   var eslint = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    ERROR: ERROR,
     OFF: OFF,
     WARN: WARN,
-    ERROR: ERROR,
     baseConfig: baseConfig$1,
-    vueCommonConfig: vueCommonConfig,
+    merge: merge,
+    use: use,
     vue2Config: vue2Config,
     vue3Config: vue3Config,
-    merge: merge,
-    use: use
+    vueCommonConfig: vueCommonConfig
   });
 
   // 基础定制
@@ -1727,14 +1731,14 @@
 
   var index = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    clipboard: clipboard,
-    jsCookie: api,
     Cookie: Cookie,
-    cookie: cookie,
-    idbKeyval: index$1,
     _Storage: _Storage,
     _localStorage: _localStorage,
-    _sessionStorage: _sessionStorage
+    _sessionStorage: _sessionStorage,
+    clipboard: clipboard,
+    cookie: cookie,
+    idbKeyval: index$1,
+    jsCookie: api
   });
 
   exports.base = index$4;
