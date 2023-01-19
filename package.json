@@ -4,6 +4,7 @@
   "scripts": {
     "refresh": "pnpm i && husky install && pnpm run build",
     "dev": "npm-run-all -p dev/*",
+    "dev/__tests__/deno": "pnpm run -C __tests__/deno dev",
     "dev/__tests__/koa": "pnpm run -C __tests__/koa dev",
     "dev/__tests__/node": "pnpm run -C __tests__/node dev",
     "dev/__tests__/vue3": "pnpm run -C __tests__/vue3 dev",

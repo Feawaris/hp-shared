@@ -1,0 +1,10 @@
+{
+  "name": "@__tests__/deno",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "deno run --allow-run index.js"
+  },
+  "dependencies": {
+    "hp-shared": "workspace:^0.1.0"
+  }
+}

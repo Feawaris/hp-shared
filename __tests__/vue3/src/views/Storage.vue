@@ -68,7 +68,7 @@
     console.groupEnd();
   }
   const clipboardInfo = reactive({
-    text: `clipboard_${Date.now()}`,
+    text: `vue3_clipboard_${Date.now()}`,
     async writeText() {
       await clipboard.writeText(this.text);
       ElMessage.success('复制成功');

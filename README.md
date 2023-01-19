@@ -90,7 +90,20 @@ module.exports = merge(
 
 ### storage 存储
 
-#### clipboard
+#### clipboard 剪贴板
+
+同浏览器 [剪贴板api](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API) 使用即可
+
+```js
+// vue
+import { clipboard } from 'hp-shared/storage'; 
+
+// node
+const { clipboard } = require('hp-shared/storage');
+
+// deno：可直接使用已有的库，目前无需额外定制
+import * as clipboard from 'https://deno.land/x/copy_paste/mod.ts';
+```
 
 #### cookie
 
