@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "refresh": "pnpm i && husky install && pnpm run build",
     "dev": "npm-run-all -p dev/*",

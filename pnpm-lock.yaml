@@ -33,16 +33,16 @@ importers:
 
   __tests__/deno:
     specifiers:
-      hp-shared: workspace:^0.1.0
+      hp-shared: workspace:^0.2.0
     dependencies:
       hp-shared: link:../..
 
   __tests__/koa:
     specifiers:
-      '@__tests__/shared': workspace:^0.1.0
+      '@__tests__/shared': workspace:^0.2.0
       '@koa/cors': ^4.0.0
       '@koa/router': ^12.0.0
-      hp-shared: workspace:^0.1.0
+      hp-shared: workspace:^0.2.0
       koa: ^2.14.1
       koa-body: ^6.0.1
       koa-static: ^5.0.0
@@ -59,8 +59,8 @@ importers:
 
   __tests__/node:
     specifiers:
-      '@__tests__/shared': workspace:^0.1.0
-      hp-shared: workspace:^0.1.0
+      '@__tests__/shared': workspace:^0.2.0
+      hp-shared: workspace:^0.2.0
     dependencies:
       '@__tests__/shared': link:../shared
       hp-shared: link:../..
@@ -70,7 +70,7 @@ importers:
       '@jsmini/type': ^0.9.2
       '@rollup/plugin-commonjs': ^24.0.0
       '@rollup/plugin-node-resolve': ^15.0.1
-      hp-shared: workspace:^0.1.0
+      hp-shared: workspace:^0.2.0
       rollup: ^3.10.0
     dependencies:
       '@jsmini/type': 0.9.2
@@ -82,12 +82,12 @@ importers:
 
   __tests__/vue3:
     specifiers:
-      '@__tests__/shared': workspace:^0.1.0
+      '@__tests__/shared': workspace:^0.2.0
       '@jsmini/extend': ^0.3.3
       '@vitejs/plugin-vue': ^4.0.0
       axios: ^1.2.3
       element-plus: ^2.2.28
-      hp-shared: workspace:^0.1.0
+      hp-shared: workspace:^0.2.0
       loadsh: ^0.0.4
       normalize.css: ^8.0.1
       pinia: ^2.0.29

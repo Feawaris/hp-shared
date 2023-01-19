@@ -1,11 +1,11 @@
 {
   "name": "@__tests__/node",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "dev": "npx nodemon index.js"
   },
   "dependencies": {
-    "@__tests__/shared": "workspace:^0.1.0",
-    "hp-shared": "workspace:^0.1.0"
+    "@__tests__/shared": "workspace:^0.2.0",
+    "hp-shared": "workspace:^0.2.0"
   }
 }
