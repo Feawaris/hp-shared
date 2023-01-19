@@ -29,10 +29,10 @@ const nodeCommonPlugins = [
 
 export default [
   /**
-   * 浏览器端
+   * 打包浏览器端用
    */
   {
-    input: 'src/index-browser.js',
+    input: 'src/index.js',
     output: [
       getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'shared', noConflict: true }),
       getOutputItem({ file: 'dist/browser/index.js', format: 'esm', sourcemap: 'inline' }),
@@ -54,54 +54,54 @@ export default [
     plugins: browserCommonPlugins,
   },
   {
-    input: 'src/network/browser/index.js',
+    input: 'src/network/index.js',
     output: [
       getOutputItem({ file: 'dist/browser/network.js', format: 'esm', sourcemap: 'inline' }),
     ],
     plugins: browserCommonPlugins,
   },
   {
-    input: 'src/storage/browser/index.js',
+    input: 'src/storage/index.js',
     output: [
       getOutputItem({ file: 'dist/browser/storage.js', format: 'esm', sourcemap: 'inline' }),
     ],
     plugins: browserCommonPlugins,
   },
   /**
-   * node端
+   * 打包node端用
    */
   {
     input: 'src/index-node.js',
     output: [
-      getOutputItem({ file: 'dist/node/index.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/index.js', format: 'cjs', sourcemap: 'inline' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/base/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/base.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/base.js', format: 'cjs', sourcemap: 'inline' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/dev/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/dev.js', format: 'cjs', sourcemap: 'inline' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/network/node/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/network.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/network.js', format: 'cjs', sourcemap: 'inline' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/storage/node/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/storage.js', format: 'cjs', sourcemap: 'inline' }),
     ],
     plugins: nodeCommonPlugins,
   },

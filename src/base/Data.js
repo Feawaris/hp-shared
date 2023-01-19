@@ -1,5 +1,6 @@
 import { _String } from './_String';
 import { FALSE, RAW } from './constants';
+// 处理多格式数据用
 export const Data = {
   // 简单类型
   SIMPLE_TYPES: [null, undefined, Number, String, Boolean, BigInt, Symbol],
@@ -145,6 +146,7 @@ export const Data = {
     return data;
   },
 };
+// 处理vue数据用
 export const VueData = {
   /**
    * 深解包vue3响应式对象数据

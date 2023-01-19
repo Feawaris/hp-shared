@@ -1,5 +1,4 @@
-export const _Set = Object.create(Set);
-Object.assign(_Set, {
+export const _Set = {
   /**
    * 加强add方法。跟数组push方法一样可添加多个值
    * @param set {Set} 目标set
@@ -10,4 +9,4 @@ Object.assign(_Set, {
       set.add(arg);
     }
   },
-});
+};

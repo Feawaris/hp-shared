@@ -1,18 +1,17 @@
-export const _String = Object.create(String);
-Object.assign(_String, {
+export const _String = {
   /**
-     * 首字母大写
-     * @param name {string}
-     * @returns {string}
-     */
+   * 首字母大写
+   * @param name {string}
+   * @returns {string}
+   */
   toFirstUpperCase(name = '') {
     return `${(name[0] ?? '').toUpperCase()}${name.slice(1)}`;
   },
   /**
-     * 首字母小写
-     * @param name {string} 名称
-     * @returns {string}
-     */
+   * 首字母小写
+   * @param name {string} 名称
+   * @returns {string}
+   */
   toFirstLowerCase(name = '') {
     return `${(name[0] ?? '').toLowerCase()}${name.slice(1)}`;
   },
@@ -32,7 +31,7 @@ Object.assign(_String, {
     const camelName = name.replaceAll(regexp, (substr, $1) => {
       return $1.toUpperCase();
     });
-      // 首字母大小写根据传参判断
+    // 首字母大小写根据传参判断
     if ([true, 'uppercase'].includes(first)) {
       return _String.toFirstUpperCase(camelName);
     }
@@ -54,4 +53,4 @@ Object.assign(_String, {
       // 转小写
       .toLowerCase();
   },
-});
+};

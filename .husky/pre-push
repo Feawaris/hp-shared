@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "pre-push"
+pnpm run build
+git add dist __tests__/*/dist
+git commit -m "ci(pre-push): build dist" || true

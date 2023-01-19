@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-pnpm run build
-git add dist __tests__/*/dist
+echo "pre-commit"

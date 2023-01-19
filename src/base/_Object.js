@@ -25,8 +25,7 @@ function namesToArray(names = [], { separator = ',' } = {}) {
 // console.log(namesToArray(['a', 'b', 'c', Symbol()]));
 // console.log(namesToArray('a,b,c'));
 // console.log(namesToArray(['a,b,c', Symbol()]));
-export const _Object = Object.create(Object);
-Object.assign(_Object, {
+export const _Object = {
   /**
    * 浅合并对象。写法同 Object.assign
    * 通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
@@ -215,4 +214,4 @@ Object.assign(_Object, {
   omit(object, keys = [], options = {}) {
     return this.filter(object, { omit: keys, ...options });
   },
-});
+};

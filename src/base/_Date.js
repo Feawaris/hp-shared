@@ -1,7 +1,6 @@
 import { Data } from './Data';
 
-export const _Date = Object.create(Date);
-Object.assign(_Date, {
+export const _Date = {
   /**
    * 创建Date对象
    * @param args {*[]} 多个值
@@ -18,4 +17,4 @@ Object.assign(_Date, {
       return arguments.length === 0 ? new Date() : new Date(...arguments);
     }
   },
-});
+};

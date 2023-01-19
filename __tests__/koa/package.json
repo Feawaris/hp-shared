@@ -2,19 +2,16 @@
   "name": "@__tests__/koa",
   "version": "0.1.0",
   "scripts": {
-    "dev": "nodemon main.js"
+    "dev": "npx nodemon main.js"
   },
   "dependencies": {
     "@__tests__/shared": "workspace:^0.1.0",
-    "hp-shared": "workspace:^0.1.0",
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
+    "hp-shared": "workspace:^0.1.0",
     "koa": "^2.14.1",
     "koa-body": "^6.0.1",
     "koa-static": "^5.0.0",
-    "ws": "^8.11.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
+    "ws": "^8.12.0"
   }
 }

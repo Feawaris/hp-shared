@@ -1,0 +1,15 @@
+// 常用样式组合
+// 文本溢出显示省略号
+@mixin useEllipsis($lines:1){
+  @if ($lines == 1){ // 单行
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+  } @else{ // 多行
+    display: -webkit-box;
+    overflow: hidden;
+    wordBreak: break-all;
+    webkitBoxOrient: vertical;
+    webkitLineClamp: $lines,
+  }
+}

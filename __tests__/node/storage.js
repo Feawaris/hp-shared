@@ -1,5 +1,6 @@
 // clipboard
 const { clipboard, nodeClipboardy } = require('hp-shared/storage');
+
 console.log({ clipboard, nodeClipboardy });
 (function useClipboardy() {
   return;

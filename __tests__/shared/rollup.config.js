@@ -16,7 +16,7 @@ export default [
   {
     input: 'src/index.js',
     output: [
-      getOutputItem({ file: 'dist/index.js', format: 'umd', name: 'testsShared', noConflict: true }),
+      getOutputItem({ file: 'dist/index.js', format: 'umd', name: 'testsShared', noConflict: true, sourcemap: 'inline' }),
     ],
     plugins: nodeCommonPlugins,
   },

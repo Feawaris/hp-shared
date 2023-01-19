@@ -257,7 +257,7 @@
     }),
     _Reflect: createTestsProxy({
       ownKeys() {
-        console.log(_Reflect.ownKeys(simpleData));
+        console.log(Reflect.ownKeys(simpleData));
       },
       ownValues() {
         console.log(_Reflect.ownValues(simpleData));

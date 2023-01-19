@@ -1,5 +1,4 @@
-export const _Math = Object.create(Math);
-Object.assign(_Math, {
+export const _Math = {
 // 增加部分命名以接近数学表达方式
   arcsin: Math.asin,
   arccos: Math.acos,
@@ -13,4 +12,4 @@ Object.assign(_Math, {
   log(a, x) {
     return Math.log(x) / Math.log(a);
   },
-});
+};

@@ -1,35 +1,8 @@
 {
   "name": "hp-shared",
   "version": "0.1.0",
-  "exports": {
-    ".": {
-      "browser": {
-        "import": "./dist/browser/index.js",
-        "default": "./dist/browser/index.umd.js"
-      },
-      "node": "./dist/node/index.js"
-    },
-    "./base": {
-      "browser": "./dist/browser/base.js",
-      "node": "./dist/node/base.js"
-    },
-    "./network": {
-      "browser": "./dist/browser/network.js",
-      "node": "./dist/node/network.js"
-    },
-    "./storage": {
-      "browser": "./dist/browser/storage.js",
-      "node": "./dist/node/storage.js"
-    },
-    "./dev": {
-      "browser": "./dist/browser/dev.js",
-      "node": "./dist/node/dev.js"
-    },
-    "./*": "./*"
-  },
-  "unpkg": "./dist/browser/index.umd.js",
-  "jsdelivr": "./dist/browser/index.umd.js",
   "scripts": {
+    "refresh": "pnpm i && husky install && pnpm run build",
     "dev": "npm-run-all -p dev/*",
     "dev/__tests__/koa": "pnpm run -C __tests__/koa dev",
     "dev/__tests__/node": "pnpm run -C __tests__/node dev",
@@ -48,7 +21,8 @@
     "ncu:update": "pnpm run ncu -u && pnpm i"
   },
   "dependencies": {
-    "axios": "^1.2.1",
+    "axios": "^1.2.3",
+    "husky": "^8.0.3",
     "idb-keyval": "^6.2.0",
     "js-cookie": "^3.0.1",
     "node-clipboardy": "^1.0.3"
@@ -56,12 +30,36 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "eslint": "^8.30.0",
-    "eslint-plugin-vue": "^9.8.0",
+    "eslint": "^8.32.0",
+    "eslint-plugin-vue": "^9.9.0",
     "fast-glob": "^3.2.12",
-    "husky": "^8.0.2",
     "npm-run-all": "^4.1.5",
-    "rollup": "^3.7.5"
+    "rollup": "^3.10.0"
   },
+  "exports": {
+    ".": {
+      "browser": "./src/index.js",
+      "node": "./dist/node/index.js"
+    },
+    "./base": {
+      "browser": "./src/base/index.js",
+      "node": "./dist/node/base.js"
+    },
+    "./dev": {
+      "browser": "./src/dev/index.js",
+      "node": "./dist/node/dev.js"
+    },
+    "./network": {
+      "browser": "./src/network/index.js",
+      "node": "./dist/node/network.js"
+    },
+    "./storage": {
+      "browser": "./src/storage/index.js",
+      "node": "./dist/node/storage.js"
+    },
+    "./*": "./*"
+  },
+  "unpkg": "./dist/browser/index.umd.js",
+  "jsdelivr": "./dist/browser/index.umd.js",
   "license": "MIT"
 }

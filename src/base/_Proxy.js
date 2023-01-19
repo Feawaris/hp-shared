@@ -1,5 +1,4 @@
-export const _Proxy = Object.create(Proxy);
-Object.assign(_Proxy, {
+export const _Proxy = {
   /**
    * 绑定this。常用于解构函数时绑定this避免报错
    * @param target {object} 目标对象
@@ -19,4 +18,4 @@ Object.assign(_Proxy, {
       },
     });
   },
-});
+};

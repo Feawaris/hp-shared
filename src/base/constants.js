@@ -23,3 +23,7 @@ export function TRUE() {
 export function RAW(value) {
   return value;
 }
+// catch 内的错误原样抛出去
+export function THROW(e) {
+  throw e;
+}
