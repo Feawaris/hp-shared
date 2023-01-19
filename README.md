@@ -116,7 +116,7 @@ import * as clipboard from 'https://deno.land/x/copy_paste/mod.ts';
 1. 开始
 
   ```shell
-# 刷新：安装+打包，同时可用于初始化
+# 刷新：安装/更新依赖+打包。可在拉取成员代码时用，防止更新了依赖忘记安装，同时可用于项目初始化
 pnpm run refresh
   ```
 
@@ -137,7 +137,14 @@ pnpm run refresh
   # 推送，已部署 pre-push，push前会打包dist并提交
   git push
   
-  # 打包dist + 发布
-  pnpm run build
+  # 发布前操作:
+  # 1.修改版本号。先批量替换各 package.json 的版本号，后面再换成命令行方式
+  # 2.检查。确保切换到正确的npm源（可使用 nrm）和账号，或在发布时加参数
+  nrm ls
+  npm whoami
+  # 3.刷新。具体描述见上文
+  pnpm run refresh
+  
+  # 发布
   npm publish
   ```
