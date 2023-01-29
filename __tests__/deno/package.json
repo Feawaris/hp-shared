@@ -1,8 +1,9 @@
 {
-  "name": "@__tests__/deno",
+  "name": "@hp-shared-tests/deno",
   "version": "0.2.0",
   "scripts": {
-    "dev": "deno run --allow-run index.js"
+    "index": "deno run modules/index.js",
+    "storage/clipboard": "deno run --allow-run modules/storage/clipboard.js"
   },
   "dependencies": {
     "hp-shared": "workspace:^0.2.0"

@@ -11,7 +11,7 @@
 
 ### 引用路径
 
-- 简洁路径：通过 `hp-shared/模块名` 引用路径。已在 package.json 的 exports 字段配置
+- 简洁路径：通过 `hp-shared/模块名` 引用路径。已在 package.json 的 `exports` 字段配置，常用于vue或node环境
 
 - 完整路径：可自行选用 src 或 dist 目录。无法使用简洁路径的环境可使用完整路径
 
@@ -27,7 +27,7 @@ import { xx } from 'hp-shared/模块名';
 import { xx } from 'hp-shared/src/模块名';
 ```
 
-#### node、electron
+#### node
 
 ```js
 // 简洁路径
@@ -37,7 +37,17 @@ const { xx } = require('hp-shared/模块名');
 const { xx } = require('hp-shared/dist/node/模块名');
 ```
 
-#### deno、\<script type="module"\>
+#### deno
+
+```js
+// 使用 npm 包
+import { xx } from './node_modules/hp-shared/dist/deno/模块名.js';
+
+// 使用 cdn
+import { xx } from 'https://unpkg.com/hp-shared/dist/deno/模块名.js';
+```
+
+#### \<script type="module"\>
 
 ```js
 // 使用 npm 包
@@ -96,13 +106,13 @@ module.exports = merge(
 
 ```js
 // vue
-import { clipboard } from 'hp-shared/storage'; 
+import { clipboard } from 'hp-shared/storage';
 
 // node
 const { clipboard } = require('hp-shared/storage');
 
-// deno：可直接使用已有的库，目前无需额外定制
-import * as clipboard from 'https://deno.land/x/copy_paste/mod.ts';
+// deno
+import { clipboard } from 'https://unpkg.com/hp-shared/dist/deno/storage.js';
 ```
 
 #### cookie

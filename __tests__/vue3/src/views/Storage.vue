@@ -56,11 +56,12 @@
   };
 </script>
 <script setup>
+  import { simpleData } from '@root/modules/base/Data';
+  import { createTestsProxy } from '@root/modules';
   import { reactive } from 'vue';
   import { ElMessage } from 'element-plus';
   import * as storage from 'hp-shared/storage';
   import { clipboard, cookie, _localStorage, _sessionStorage, idbKeyval } from 'hp-shared/storage';
-  import { createTestsProxy, simpleData } from '@__tests__/shared';
 
   function preview() {
     console.group('storage');

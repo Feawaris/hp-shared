@@ -36,7 +36,7 @@ const nodeCommonPlugins = [
 
 export default [
   /**
-   * 打包浏览器端用
+   * 浏览器
    */
   {
     input: 'src/index.js',
@@ -74,8 +74,9 @@ export default [
     ],
     plugins: browserCommonPlugins,
   },
+
   /**
-   * 打包node端用
+   * node
    */
   {
     input: 'src/index-node.js',
@@ -111,5 +112,44 @@ export default [
       getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
     ],
     plugins: nodeCommonPlugins,
+  },
+
+  /**
+   * deno
+   */
+  {
+    input: 'src/index-deno.js',
+    output: [
+      getOutputItem({ file: 'dist/deno/index.js', format: 'esm' }),
+    ],
+    plugins: browserCommonPlugins,
+  },
+  {
+    input: 'src/base/index.js',
+    output: [
+      getOutputItem({ file: 'dist/deno/base.js', format: 'esm' }),
+    ],
+    plugins: browserCommonPlugins,
+  },
+  {
+    input: 'src/dev/index.js',
+    output: [
+      getOutputItem({ file: 'dist/deno/dev.js', format: 'esm' }),
+    ],
+    plugins: browserCommonPlugins,
+  },
+  {
+    input: 'src/network/deno/index.js',
+    output: [
+      getOutputItem({ file: 'dist/deno/network.js', format: 'esm' }),
+    ],
+    plugins: browserCommonPlugins,
+  },
+  {
+    input: 'src/storage/deno/index.js',
+    output: [
+      getOutputItem({ file: 'dist/deno/storage.js', format: 'esm' }),
+    ],
+    plugins: browserCommonPlugins,
   },
 ];

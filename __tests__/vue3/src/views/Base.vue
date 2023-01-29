@@ -45,8 +45,10 @@
   };
 </script>
 <script setup>
+  import { names } from '@root/modules/base/_String';
+  import { multiData, simpleData } from '@root/modules/base/Data';
+  import { createTestsProxy } from '@root/modules';
   import { reactive } from 'vue';
-  import { createTestsProxy, simpleData, multiData, names } from '@__tests__/shared';
   import * as base from 'hp-shared/base';
   import * as constants from 'hp-shared/src/base/constants.js';
   import { _Date, _Math, _Reflect, _String, _Object, Data } from 'hp-shared/base';

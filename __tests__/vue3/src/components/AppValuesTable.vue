@@ -21,10 +21,11 @@
   };
 </script>
 <script setup>
+  import { getValuesTypes } from '@root/modules/base/Data';
   import { ElTable } from 'element-plus';
   import { Data } from 'hp-shared/base';
   import { computed, useAttrs } from 'vue';
-  import { getValues } from '@__tests__/shared';
+
   const props = defineProps({
     // 原始数据，传import进来的对象即可
     value: { type: Object, default() { return {}; } },
@@ -42,7 +43,7 @@
       border: true,
       defaultExpandAll: false,
       ...attrs,
-      data: getValues(props.value),
+      data: getValuesTypes(props.value),
       // 展开按钮显示状态
       cellClassName({ row, column }) {
         if (column.type === 'expand') {

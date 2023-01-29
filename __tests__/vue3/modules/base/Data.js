@@ -12,8 +12,11 @@ export const boolean = false;
 export const bigint = 0n;
 export const symbol = Symbol();
 // 包装对象。https://wangdoc.com/javascript/stdlib/wrapper
+// eslint-disable-next-line no-new-wrappers
 export const numberByNew = new Number();
+// eslint-disable-next-line no-new-wrappers
 export const stringByNew = new String();
+// eslint-disable-next-line no-new-wrappers
 export const booleanByNew = new Boolean();
 // 简单类型集合
 export const simpleData = {
@@ -34,6 +37,7 @@ export const simpleData = {
     return { ...this.toJSON(), _undefined };
   },
 };
+
 /**
  * 纯对象类型
  */
@@ -69,6 +73,7 @@ export const pureObjectData = {
   object_objectEs6,
   objectByCustom,
 };
+
 /**
  * iterable:array、set、map
  */
@@ -84,6 +89,7 @@ export const iterableData = {
   map,
   weakMap,
 };
+
 /**
  * others
  */
@@ -107,6 +113,7 @@ export const otherData = {
   syntaxError,
   _arguments,
 };
+
 /**
  * 各类型集合
  */
@@ -116,8 +123,9 @@ export const multiData = {
   ...iterableData,
   ...otherData,
 };
+
 // 获取值和类型信息，用于列表显示
-export function getValues(obj, fn = RAW) {
+export function getValuesTypes(obj, fn = RAW) {
   return Object.entries(obj).map(([name, value]) => {
     const item = {
       name,
@@ -132,14 +140,3 @@ export function getValues(obj, fn = RAW) {
     return fn(item);
   });
 }
-// 字符串方法用
-export const names = [
-  '',
-  'xxName',
-  'xx-name',
-  'el-button-group',
-  'elButtonGroup',
-  'ElButtonGroup',
-  'onUpdate:modelValue',
-  'on-update:model-value',
-];

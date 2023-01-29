@@ -1,5 +1,3 @@
-// 测试共用模块
-export * from './base';
 // 创建代理tests增加辅助显示
 export function createTestsProxy(tests) {
   return new Proxy(tests, {
