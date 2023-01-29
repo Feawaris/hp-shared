@@ -11,12 +11,19 @@ const license = `
 `.trimStart();
 // 生成输出选项
 function getOutputItem(options = {}) {
+  const defaults = {
+    sourcemap: 'inline',
+  };
   const banner = `${license}
 /*
- * rollup 打包配置：${JSON.stringify(options, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}
+ * rollup 打包配置：${JSON.stringify({ ...defaults, ...options }, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}
  */
   `.trimStart();
-  return { ...options, banner };
+  return {
+    banner,
+    ...defaults,
+    ...options,
+  };
 }
 // 共用插件
 const browserCommonPlugins = [
@@ -35,35 +42,35 @@ export default [
     input: 'src/index.js',
     output: [
       getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'shared', noConflict: true }),
-      getOutputItem({ file: 'dist/browser/index.js', format: 'esm', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/browser/index.js', format: 'esm' }),
     ],
     plugins: browserCommonPlugins,
   },
   {
     input: 'src/base/index.js',
     output: [
-      getOutputItem({ file: 'dist/browser/base.js', format: 'esm', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/browser/base.js', format: 'esm' }),
     ],
     plugins: browserCommonPlugins,
   },
   {
     input: 'src/dev/index.js',
     output: [
-      getOutputItem({ file: 'dist/browser/dev.js', format: 'esm', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/browser/dev.js', format: 'esm' }),
     ],
     plugins: browserCommonPlugins,
   },
   {
     input: 'src/network/index.js',
     output: [
-      getOutputItem({ file: 'dist/browser/network.js', format: 'esm', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/browser/network.js', format: 'esm' }),
     ],
     plugins: browserCommonPlugins,
   },
   {
     input: 'src/storage/index.js',
     output: [
-      getOutputItem({ file: 'dist/browser/storage.js', format: 'esm', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/browser/storage.js', format: 'esm' }),
     ],
     plugins: browserCommonPlugins,
   },
@@ -73,35 +80,35 @@ export default [
   {
     input: 'src/index-node.js',
     output: [
-      getOutputItem({ file: 'dist/node/index.js', format: 'cjs', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/node/index.js', format: 'cjs' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/base/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/base.js', format: 'cjs', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/node/base.js', format: 'cjs' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/dev/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/dev.js', format: 'cjs', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/network/node/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/network.js', format: 'cjs', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/node/network.js', format: 'cjs' }),
     ],
     plugins: nodeCommonPlugins,
   },
   {
     input: 'src/storage/node/index.js',
     output: [
-      getOutputItem({ file: 'dist/node/storage.js', format: 'cjs', sourcemap: 'inline' }),
+      getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
     ],
     plugins: nodeCommonPlugins,
   },

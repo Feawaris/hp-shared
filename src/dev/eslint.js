@@ -15,12 +15,10 @@ export const ERROR = 'error';
  */
 // 基础定制
 export const baseConfig = {
-  // 环境
+  // 环境。一个环境定义了一组预定义的全局变量
   env: {
     browser: true,
     node: true,
-    commonjs: true,
-    es2022: true,
   },
   // 解析器
   parserOptions: {
