@@ -1,15 +1,13 @@
-export const _Math = {
-// 增加部分命名以接近数学表达方式
-  arcsin: Math.asin,
-  arccos: Math.acos,
-  arctan: Math.atan,
-  arsinh: Math.asinh,
-  arcosh: Math.acosh,
-  artanh: Math.atanh,
-  loge: Math.log,
-  ln: Math.log,
-  lg: Math.log10,
-  log(a, x) {
-    return Math.log(x) / Math.log(a);
-  },
-};
+// 增加部分命名以接近数学写法
+export const arcsin = Math.asin.bind(Math);
+export const arccos = Math.acos.bind(Math);
+export const arctan = Math.atan.bind(Math);
+export const arsinh = Math.asinh.bind(Math);
+export const arcosh = Math.acosh.bind(Math);
+export const artanh = Math.atanh.bind(Math);
+export const loge = Math.log.bind(Math);
+export const ln = loge;
+export const lg = Math.log10.bind(Math);
+export function log(a, x) {
+  return Math.log(x) / Math.log(a);
+}

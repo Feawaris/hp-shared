@@ -65,17 +65,18 @@
       create() {
         console.warn('打开safari浏览器查看对比效果');
         const str = '2022-12-1';
-        const nativeDate = new Date(str);
-        const customDate = _Date.create(str);
+        const data1 = new Date(str);
+        const data2 = _Date.create(str);
         console.log({
-          nativeDate,
-          customDate,
+          data1,
+          data2,
         });
       },
     }),
     _Math: createTestsProxy({
       methods() {
-        const { log, lg, ln, E } = _Math;
+        const { log, lg, ln } = _Math;
+        const { E } = Math;
         console.log('log(2,8)', log(2, 8));
         console.log('lg(100)', lg(100));
         console.log('ln(e^2)', ln(E ** 2));
