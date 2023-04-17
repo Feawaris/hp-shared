@@ -91,6 +91,4 @@ export class Cookie {
     return new Cookie(optionsResult);
   }
 }
-export const cookie = new Cookie({
-  json: true,
-});
+export const cookie = new Cookie();

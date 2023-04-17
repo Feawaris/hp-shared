@@ -38,7 +38,6 @@ export const baseConfig = {
     // 使用 eslint 推荐的规则
     'eslint:recommended',
   ],
-  //
   /**
    * 规则
    * 来自 eslint 的规则：规则ID : value
@@ -55,6 +54,7 @@ export const baseConfig = {
     'no-extra-semi': WARN, // 禁止不必要的分号
     'no-func-assign': OFF, // 禁止对 function 声明重新赋值
     'no-prototype-builtins': OFF, // 禁止直接调用 Object.prototypes 的内置属性
+
     /**
      * Best Practices
      * 这些规则是关于最佳实践的，帮助你避免一些问题：
@@ -70,6 +70,7 @@ export const baseConfig = {
     'no-proto': ERROR, // 禁用 __proto__ 属性
     'no-return-assign': WARN, // 禁止在 return 语句中使用赋值语句
     'no-useless-escape': WARN, // 禁用不必要的转义字符
+
     /**
      * Variables
      * 这些规则与变量声明有关：
@@ -77,6 +78,7 @@ export const baseConfig = {
     'no-undef-init': WARN, // 禁止将变量初始化为 undefined
     'no-unused-vars': OFF, // 禁止出现未使用过的变量
     'no-use-before-define': [ERROR, { 'functions': false, 'classes': false, 'variables': false }], // 禁止在变量定义之前使用它们
+
     /**
      * Stylistic Issues
      * 这些规则是关于风格指南的，而且是非常主观的：
@@ -96,6 +98,7 @@ export const baseConfig = {
     'key-spacing': WARN, // 强制在对象字面量的属性中键和值之间使用一致的间距
     'keyword-spacing': WARN, // 强制在关键字前后使用一致的空格
     'new-parens': WARN, // 强制或禁止调用无参构造函数时有圆括号
+    'no-mixed-spaces-and-tabs': WARN,
     'no-multiple-empty-lines': [WARN, { 'max': 1, 'maxEOF': 0, 'maxBOF': 0 }], // 禁止出现多行空行
     'no-trailing-spaces': WARN, // 禁用行尾空格
     'no-whitespace-before-property': WARN, // 禁止属性前有空白
@@ -115,6 +118,7 @@ export const baseConfig = {
     'spaced-comment': WARN, // 强制在注释中 // 或 /* 使用一致的空格
     'switch-colon-spacing': WARN, // 强制在 switch 的冒号左右有空格
     'template-tag-spacing': WARN, // 要求或禁止在模板标记和它们的字面量之间的空格
+
     /**
      * ECMAScript 6
      * 这些规则只与 ES6 有关, 即通常所说的 ES2015：
