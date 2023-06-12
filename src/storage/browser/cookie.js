@@ -51,7 +51,7 @@ export class Cookie {
       try {
         value = JSON.stringify(value);
       } catch (e) {
-        console.warn(e);
+        // console.warn(e);
       }
     }
     return jsCookie.set(name, value, attributes);
@@ -71,7 +71,7 @@ export class Cookie {
       try {
         result = JSON.parse(result);
       } catch (e) {
-        console.warn(e);
+        // console.warn(e);
       }
     }
     return result;
