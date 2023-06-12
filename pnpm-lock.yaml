@@ -49,7 +49,7 @@ importers:
   __tests__/deno:
     dependencies:
       hp-shared:
-        specifier: workspace:^0.2.0
+        specifier: workspace:^0.2.1
         version: link:../..
 
   __tests__/koa:
@@ -61,7 +61,7 @@ importers:
         specifier: ^12.0.0
         version: 12.0.0
       hp-shared:
-        specifier: workspace:^0.2.0
+        specifier: workspace:^0.2.1
         version: link:../..
       koa:
         specifier: ^2.14.2
@@ -79,7 +79,7 @@ importers:
   __tests__/node:
     dependencies:
       hp-shared:
-        specifier: workspace:^0.2.0
+        specifier: workspace:^0.2.1
         version: link:../..
 
   __tests__/vue3:
@@ -97,7 +97,7 @@ importers:
         specifier: ^2.3.6
         version: 2.3.6(vue@3.3.4)
       hp-shared:
-        specifier: workspace:^0.2.0
+        specifier: workspace:^0.2.1
         version: link:../..
       loadsh:
         specifier: ^0.0.4

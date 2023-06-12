@@ -1,11 +1,11 @@
 {
   "name": "@hp-shared-tests/node",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scripts": {
     "index": "node modules/index.js",
     "storage/clipboard": "node modules/storage/clipboard.js"
   },
   "dependencies": {
-    "hp-shared": "workspace:^0.2.0"
+    "hp-shared": "workspace:^0.2.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@hp-shared-tests/vue3",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,7 @@
     "@jsmini/type": "^0.9.2",
     "axios": "^1.4.0",
     "element-plus": "^2.3.6",
-    "hp-shared": "workspace:^0.2.0",
+    "hp-shared": "workspace:^0.2.1",
     "loadsh": "^0.0.4",
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.3",
