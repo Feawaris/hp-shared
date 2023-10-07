@@ -2,7 +2,7 @@
  * eslint 配置：http://eslint.cn/docs/rules/
  * eslint-plugin-vue 配置：https://eslint.vuejs.org/rules/
  */
-import { _Object, Data } from '../base';
+import { _Object, _Data } from '../base';
 
 /**
  * 导出常量便捷使用
@@ -19,6 +19,11 @@ export const baseConfig = {
   env: {
     browser: true,
     node: true,
+  },
+  // 全局变量
+  globals: {
+    globalThis: 'readonly',
+    BigInt: 'readonly',
   },
   // 解析器
   parserOptions: {
@@ -220,7 +225,7 @@ export const vue3Config = merge(vueCommonConfig, {
 });
 export function merge(...objects) {
   const [target, ...sources] = objects;
-  const result = Data.deepClone(target);
+  const result = _Data.deepClone(target);
   for (const source of sources) {
     for (const [key, value] of Object.entries(source)) {
       // 特殊字段处理
@@ -242,7 +247,7 @@ export function merge(...objects) {
           // 统一格式后进行数组循环操作
           for (const [valIndex, val] of Object.entries(ruleValue)) {
             // 对象深合并，其他直接赋值
-            if (Data.getExactType(val) === Object) {
+            if (_Data.getExactType(val) === Object) {
               sourceRuleValue[valIndex] = _Object.deepAssign(sourceRuleValue[valIndex] ?? {}, val);
             } else {
               sourceRuleValue[valIndex] = val;
@@ -260,7 +265,7 @@ export function merge(...objects) {
         continue;
       }
       // 其他对象：深合并
-      if (Data.getExactType(value) === Object) {
+      if (_Data.getExactType(value) === Object) {
         _Object.deepAssign(result[key] = result[key] ?? {}, value);
         continue;
       }

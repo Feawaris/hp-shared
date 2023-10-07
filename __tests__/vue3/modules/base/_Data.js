@@ -1,4 +1,4 @@
-import { RAW, Data } from 'hp-shared/base';
+import { _Data } from 'hp-shared/base';
 import * as jsminiType from '@jsmini/type';
 
 /**
@@ -125,7 +125,7 @@ export const multiData = {
 };
 
 // 获取值和类型信息，用于列表显示
-export function getValuesTypes(obj, fn = RAW) {
+export function getValuesTypes(obj, fn = val => val) {
   return Object.entries(obj).map(([name, value]) => {
     const item = {
       name,
@@ -134,8 +134,8 @@ export function getValuesTypes(obj, fn = RAW) {
       'typeof': typeof value,
       'Object.prototype.toString': Object.prototype.toString.call(value),
       'jsminiType.type': jsminiType.type(value),
-      'Data.getExactType': Data.getExactType(value),
-      'Data.getExactTypes': Data.getExactTypes(value),
+      '_Data.getExactType': _Data.getExactType(value),
+      '_Data.getExactTypes': _Data.getExactTypes(value),
     };
     return fn(item);
   });

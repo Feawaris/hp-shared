@@ -6,9 +6,6 @@
       </header>
       <AppValuesTable :value="base" :max-height="40 * 11"></AppValuesTable>
     </el-card>
-    <el-card header="constants 常量">
-      <AppValuesTable :value="constants"></AppValuesTable>
-    </el-card>
     <el-card header="objects 扩展对象">
       <el-card v-for="[name, obj] in Object.entries(objectsInfo)" :header="name">
         <header>
@@ -31,7 +28,7 @@
         </template>
         <template v-if="name === 'Data'">
           <el-card header="getExactType & getExactTypes">
-            <AppValuesTable :max-height="40 * 11" :value="multiData" :columns="['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', 'Data.getExactType', 'Data.getExactTypes']"></AppValuesTable>
+            <AppValuesTable :max-height="40 * 11" :value="multiData" :columns="['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', '_Data.getExactType', '_Data.getExactTypes']"></AppValuesTable>
           </el-card>
         </template>
       </el-card>
@@ -46,12 +43,11 @@
 </script>
 <script setup>
   import { names } from '@root/modules/base/_String';
-  import { multiData, simpleData } from '@root/modules/base/Data';
+  import { multiData, simpleData } from '@root/modules/base/_Data.js';
   import { createTestsProxy } from '@root/modules';
   import { reactive } from 'vue';
   import * as base from 'hp-shared/base';
-  import * as constants from 'hp-shared/src/base/constants.js';
-  import { _Date, _Math, _Reflect, _String, _Object, Data } from 'hp-shared/base';
+  import { _Date, _Math, _Reflect, _String, _Object, _Data } from 'hp-shared/base';
   import * as jsminiExtend from '@jsmini/extend';
   import _ from 'loadsh';
 
@@ -66,7 +62,7 @@
         console.warn('打开safari浏览器查看对比效果');
         const str = '2022-12-1';
         const data1 = new Date(str);
-        const data2 = _Date.create(str);
+        const data2 = new _Date(str);
         console.log({
           data1,
           data2,
@@ -292,7 +288,7 @@
           map: new Map(),
           _function() {},
         };
-        const data2 = Data.deepClone(data1);
+        const data2 = _Data.deepClone(data1);
         console.log(data1, data2);
 
         (function() {

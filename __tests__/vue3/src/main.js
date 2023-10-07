@@ -22,7 +22,7 @@ import * as shared from 'hp-shared';
 import * as base from 'hp-shared/base';
 import * as webStorage from 'hp-shared/src/storage/browser/storage.js';
 const commonGlobal = {
-  AsyncFunction: base.Data.getExactType(async function() {}),
+  AsyncFunction: base._Data.getExactType(async function() {}),
   ...base,
   ...webStorage,
 };
