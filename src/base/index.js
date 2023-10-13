@@ -1,4 +1,5 @@
 // 基础模块
+
 // 辅助
 export class _Support {
   // js运行环境
@@ -29,6 +30,12 @@ export class _Support {
   static THROW(e) {
     throw e;
   }
+  /**
+   * 属性名统一成数组格式
+   * @param names 属性名。格式 'a,b,c' 或 ['a','b','c']
+   * @param separator names 为字符串时的拆分规则。同 split 方法的 separator，字符串无需拆分的可以传 null 或 undefined
+   * @returns {*[][]|(MagicString | Bundle | string)[]|FlatArray<(FlatArray<(*|[*[]]|[])[], 1>[]|*|[*[]]|[])[], 1>[]|*[]}
+   */
   static namesToArray(names = [], { separator = ',' } = {}) {
     if (names instanceof Array) {
       return names.map(val => this.namesToArray(val)).flat();
@@ -42,6 +49,7 @@ export class _Support {
     return [];
   }
 }
+
 /**
  * 定制对象。加 _ 跟同名原生对象区分
  */
@@ -119,37 +127,28 @@ export class _Date {
       },
     });
   }
-  // [Symbol.toPrimitive] 和 toString、valueOf 统一配置处理隐式和显示调用场景
+  /**
+   * 转换系列方法：转换成原始值和其他类型
+   */
+  // 原始值
   [Symbol.toPrimitive](hint) {
     // console.log('[Symbol.toPrimitive]', { hint });
-    if (hint === 'string' || hint === 'default') {
-      return this.toString();
-    }
     if (hint === 'number') {
       return this.toNumber();
     }
+    if (hint === 'string' || hint === 'default') {
+      return this.toString();
+    }
   }
-  // 转换成字符串
-  toString(options = {}) {
-    // console.log('toString', options);
-    return this.constructor.stringify(this.value, options);
-  }
-  // valueOf 这里处理成同 Date 对象的逻辑，转换成数字
-  valueOf(options = {}) {
-    // console.log('valueOf', options);
-    return this.toNumber(options);
-  }
-  // 转换成数字
   toNumber(options = {}) {
-    // console.log('toNumber', options);
     return this.value.getTime();
   }
-  // 转换成布尔值。用于 if 等场景
+  toString(options = {}) {
+    return this.constructor.stringify(this.value, options);
+  }
+  // 转换成布尔值。if 等判断常用
   toBoolean(options = {}) {
-    // console.log('toBoolean', options);
-    if (this.constructor.isValidValue(this)) {
-
-    }
+    return this.constructor.isValidValue(this, options);
   }
   // 转换成 JSON。用于 JSON 对象转换，传参到后端接口常用
   toJSON(options = {}) {
@@ -157,6 +156,208 @@ export class _Date {
     return this.toString();
   }
 }
+export class _Array {
+  constructor(value = []) {
+    this.value = value;
+    // length 属性在下面 prototype 中定义 getter
+  }
+  // 方法定制：原型同名方法+新增方法。大部分返回 this 便于链式操作
+  /**
+   * 修改
+   */
+  push() {
+    this.value.push(...arguments);
+    return this;
+  }
+  pop(length = 1) {
+    for (let i = 0; i < length; i++) {
+      this.value.pop();
+    }
+    return this;
+  }
+  unshift() {
+    this.value.unshift(...arguments);
+    return this;
+  }
+  shift(length = 1) {
+    for (let i = 0; i < length; i++) {
+      this.value.shift();
+    }
+    return this;
+  }
+  splice() {
+    this.value.splice(...arguments);
+    return this;
+  }
+  // 清空
+  clear() {
+    return this.splice(0);
+  }
+  sort() {
+    this.value.sort(...arguments);
+    return this;
+  }
+  reverse() {
+    this.value.reverse(...arguments);
+    return this;
+  }
+  fill() {
+    this.value.fill(...arguments);
+    return this;
+  }
+  copyWithin() {
+    this.value.copyWithin(...arguments);
+    return this;
+  }
+  // 去重
+  unique(options = {}) {
+    const value = Array.from(new Set(this.value));
+    return this.clear().push(...value);
+  }
+  /**
+   * 遍历
+   */
+  [Symbol.iterator]() {
+    // return Array.prototype[Symbol.iterator].apply(this.value, arguments);
+    return this.value[Symbol.iterator](...arguments);
+  }
+  keys() {
+    return this.value.keys(...arguments);
+  }
+  values() {
+    return this.value.values(...arguments);
+  }
+  entries() {
+    return this.value.entries(...arguments);
+  }
+  forEach() {
+    this.value.forEach(...arguments);
+    return this;
+  }
+  /**
+   * 查找
+   */
+  at() {
+    return this.value.at(...arguments);
+  }
+  find() {
+    return this.value.find(...arguments);
+  }
+  findIndex() {
+    return this.value.findIndex(...arguments);
+  }
+  findLast() {
+    return this.value.findLast(...arguments);
+  }
+  findLastIndex() {
+    return this.value.findLastIndex(...arguments);
+  }
+  includes() {
+    return this.value.includes(...arguments);
+  }
+  indexOf() {
+    return this.value.indexOf(...arguments);
+  }
+  lastIndexOf() {
+    return this.value.lastIndexOf(...arguments);
+  }
+  some() {
+    return this.value.some(...arguments);
+  }
+  every() {
+    return this.value.every(...arguments);
+  }
+  /**
+   * 生成
+   */
+  map() {
+    this.value.map(...arguments);
+    return this;
+  }
+  filter() {
+    this.value.filter(...arguments);
+    return this;
+  }
+  reduce() {
+    return this.value.reduce(...arguments);
+  }
+  reduceRight() {
+    return this.value.reduce(...arguments);
+  }
+  concat() {
+    const value = this.value.concat(...arguments);
+    return new this.constructor(value);
+  }
+  slice() {
+    const value = this.value.slice(...arguments);
+    return new this.constructor(value);
+  }
+  join() {
+    return this.value.join(...arguments);
+  }
+  flat() {
+    const value = this.value.flat(...arguments);
+    return new this.constructor(value);
+  }
+  flatMap() {
+    const value = this.value.flat(...arguments);
+    return new this.constructor(value);
+  }
+  with() {
+    const value = this.value.with(...arguments);
+    return new this.constructor(value);
+  }
+  toSpliced() {
+    const value = this.value.toSpliced(...arguments);
+    return new this.constructor(value);
+  }
+  toSorted() {
+    const value = this.value.toSorted(...arguments);
+    return new this.constructor(value);
+  }
+  toReversed() {
+    const value = this.value.toReversed(...arguments);
+    return new this.constructor(value);
+  }
+  /**
+   * 转换系列方法：转换成原始值和其他类型
+   */
+  toNumber(options = {}) {
+    return NaN;
+  }
+  toString(options = {}) {
+    try {
+      return this.toJSON();
+    } catch (e) {
+      return this.value.toString();
+    }
+  }
+  toBoolean() {
+    return this.length > 0;
+  }
+  toLocaleString() {
+    return this.value.toLocaleString(...arguments);
+  }
+  toJSON(options = {}) {
+    return JSON.stringify(this.value);
+  }
+  [Symbol.toPrimitive](hint) {
+    console.log('[Symbol.toPrimitive]', { hint });
+    if (hint === 'number') {
+      return this.toNumber();
+    }
+    if (hint === 'string' || hint === 'default') {
+      return this.toString();
+    }
+  }
+}
+_Array.prototype[Symbol.unscopables] = Array.prototype[Symbol.unscopables];
+Object.defineProperty(_Array.prototype, 'length', {
+  get() {
+    return this.value?.length || 0;
+  },
+});
+
 // 数学运算
 export class _Math {
   // 增加部分命名以接近数学写法
@@ -580,12 +781,7 @@ export class _VueData {
     return result;
   }
 }
-/**
- * 属性名统一成数组格式
- * @param names 属性名。格式 'a,b,c' 或 ['a','b','c']
- * @param separator names 为字符串时的拆分规则。同 split 方法的 separator，字符串无需拆分的可以传 null 或 undefined
- * @returns {*[][]|(MagicString | Bundle | string)[]|FlatArray<(FlatArray<(*|[*[]]|[])[], 1>[]|*|[*[]]|[])[], 1>[]|*[]}
- */
+// 对象操作方法
 export class _Object {
   /**
    * 浅合并对象。写法同 Object.assign，通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
