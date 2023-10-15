@@ -1,4 +1,4 @@
-import { _Data } from 'hp-shared/base';
+import { Data } from 'hp-shared/base';
 import * as jsminiType from '@jsmini/type';
 
 /**
@@ -134,8 +134,8 @@ export function getValuesTypes(obj, fn = val => val) {
       'typeof': typeof value,
       'Object.prototype.toString': Object.prototype.toString.call(value),
       'jsminiType.type': jsminiType.type(value),
-      '_Data.getExactType': _Data.getExactType(value),
-      '_Data.getExactTypes': _Data.getExactTypes(value),
+      'Data.getExactType': Data.getExactType(value),
+      'Data.getExactTypes': Data.getExactTypes(value),
     };
     return fn(item);
   });

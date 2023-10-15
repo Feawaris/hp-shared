@@ -1,3 +1,2 @@
-export class _Number {
+export class _Number extends Number {
 }
-_Number.prototype[Symbol.toStringTag] = _Number.name;

@@ -2,6 +2,16 @@
 import { _Set } from './_Set';
 
 export class _Array extends Array {
+  /**
+   * static
+   */
+  // static isArray 无需定制
+  // static from 无需定制
+  // static of 无需定制
+
+  /**
+   * constructor
+   */
   constructor(value = []) {
     try {
       value = Array.from(value);
@@ -18,6 +28,7 @@ export class _Array extends Array {
     } else {
       super(...value);
     }
+
     // length 无需定制
   }
 
@@ -25,39 +36,50 @@ export class _Array extends Array {
   /**
    * 修改
    */
+  // sort 无需定制
+  // reverse 无需定制
+  // fill 无需定制
+  // copyWithin 无需定制
+
+  // (定制方法)
   push() {
     Array.prototype.push.apply(this, arguments);
     return this;
   }
+  // (定制方法)
   pop(length = 1) {
     for (let i = 0; i < length; i++) {
       Array.prototype.pop.apply(this, arguments);
     }
     return this;
   }
+  // (定制方法)
   unshift() {
     Array.prototype.unshift.apply(this, arguments);
     return this;
   }
+  // (定制方法)
   shift(length = 1) {
     for (let i = 0; i < length; i++) {
       Array.prototype.shift.apply(this, arguments);
     }
     return this;
   }
-  splice() {
+  // (定制方法)
+  splice(start, deleteCount, ...items) {
     Array.prototype.splice.apply(this, arguments);
     return this;
   }
-  // 清空
+  // (新增方法) 删除
+  delete(value) {
+    const index = this.findIndex(val => val === value);
+    return this.splice(index, 1);
+  }
+  // (新增方法) 清空
   clear() {
     return this.splice(0);
   }
-  // sort 无需定制
-  // reverse 无需定制
-  // fill 无需定制
-  // copyWithin 无需定制
-  // 去重
+  // (新增方法) 去重
   unique(options = {}) {
     const value = this.to_Set().to_Array();
     return this.clear().push(...value);
@@ -70,6 +92,8 @@ export class _Array extends Array {
   // keys 无需定制
   // values 无需定制
   // entries 无需定制
+
+  // (定制方法)
   forEach() {
     Array.prototype.forEach.apply(this, arguments);
     return this;
@@ -101,28 +125,32 @@ export class _Array extends Array {
   // join 无需定制
   // flat 无需定制
   // flatMap 无需定制
+
+  // (定制方法)
   with() {
     const value = Array.prototype.with.apply(this, arguments);
     return new this.constructor(value);
   }
+  // (定制方法)
   toSpliced() {
     const value = Array.prototype.toSpliced.apply(this, arguments);
     return new this.constructor(value);
   }
+  // (定制方法)
   toSorted() {
     const value = Array.prototype.toSorted.apply(this, arguments);
     return new this.constructor(value);
   }
+  // (定制方法)
   toReversed() {
     const value = Array.prototype.toReversed.apply(this, arguments);
     return new this.constructor(value);
   }
-
   /**
    * 转换系列方法：转换成原始值和其他类型
    */
+  // (定制方法)
   [Symbol.toPrimitive](hint) {
-    // console.log('_Array [Symbol.toPrimitive]', { hint, this: this });
     if (hint === 'number') {
       return this.toNumber();
     }
@@ -130,33 +158,34 @@ export class _Array extends Array {
       return this.toString();
     }
   }
+  // (新增方法)
   toNumber() {
     return NaN;
   }
+  // (定制方法)
   toString() {
     try {
       return JSON.stringify(this);
     } catch (e) {
+      console.warn(`toString 转换报错，将生成 '[]'`, e);
       return JSON.stringify([]);
     }
   }
+  // toLocaleString 无需定制
+  // (新增方法)
   toBoolean() {
     return this.length > 0;
   }
+  // (定制方法)
   toJSON() {
-    return this.toNativeValue();
-  }
-  // toLocaleString 无需定制
-  // 转换成原生类型
-  toNativeValue() {
     return Array.from(this);
   }
+  // (新增方法)
   toSet() {
     return new Set(this);
   }
+  // (新增方法)
   to_Set() {
     return new _Set(this);
   }
 }
-// _Array.prototype[Symbol.toStringTag] 无需定制
-// _Array.prototype[Symbol.unscopables] 无需定制

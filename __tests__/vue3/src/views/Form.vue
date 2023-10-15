@@ -24,9 +24,9 @@
   };
 </script>
 <script setup>
-  import { _Proxy } from 'hp-shared/src/base/index.js';
+  import { Support } from 'hp-shared/src/base/index.js';
   import { reactive } from 'vue';
-  const formInfo = reactive(_Proxy.bindThis({
+  const formInfo = reactive(Support.bindThis({
     model: {
       username: '',
       password: '',

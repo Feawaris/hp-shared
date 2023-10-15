@@ -28,7 +28,7 @@
         </template>
         <template v-if="name === 'Data'">
           <el-card header="getExactType & getExactTypes">
-            <AppValuesTable :max-height="40 * 11" :value="multiData" :columns="['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', '_Data.getExactType', '_Data.getExactTypes']"></AppValuesTable>
+            <AppValuesTable :max-height="40 * 11" :value="multiData" :columns="['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', 'Data.getExactType', 'Data.getExactTypes']"></AppValuesTable>
           </el-card>
         </template>
       </el-card>
@@ -43,11 +43,11 @@
 </script>
 <script setup>
   import { names } from '@root/modules/base/_String';
-  import { multiData, simpleData } from '@root/modules/base/_Data.js';
+  import { multiData, simpleData } from '@root/modules/base/Data.js';
   import { createTestsProxy } from '@root/modules';
   import { reactive } from 'vue';
   import * as base from 'hp-shared/base';
-  import { _Date, _Math, _Reflect, _String, _Object, _Data } from 'hp-shared/base';
+  import { _Date, _Math, _Reflect, _String, _Object, Data } from 'hp-shared/base';
   import * as jsminiExtend from '@jsmini/extend';
   import _ from 'loadsh';
 
@@ -288,7 +288,7 @@
           map: new Map(),
           _function() {},
         };
-        const data2 = _Data.deepClone(data1);
+        const data2 = Data.deepClone(data1);
         console.log(data1, data2);
 
         (function() {

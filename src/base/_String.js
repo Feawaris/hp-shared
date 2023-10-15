@@ -1,22 +1,31 @@
-export class _String {
+export class _String extends String {
   /**
-   * 首字母大写
+   * Static
+   */
+  // static fromCharCode 无需定制
+  // static fromCodePoint 无需定制
+  // static raw 无需定制
+
+  /**
+   * (新增方法) 首字母大写
    * @param name
    * @returns {string}
    */
   static toFirstUpperCase(name = '') {
     return `${(name[0] ?? '').toUpperCase()}${name.slice(1)}`;
   }
+
   /**
-   * 首字母小写
+   * (新增方法) 首字母小写
    * @param name 名称
    * @returns {string}
    */
   static toFirstLowerCase(name = '') {
     return `${(name[0] ?? '').toLowerCase()}${name.slice(1)}`;
   }
+
   /**
-   * 转驼峰命名。常用于连接符命名转驼峰命名，如 xx-name -> xxName
+   * (新增方法) 转驼峰命名。常用于连接符命名转驼峰命名，如 xx-name -> xxName
    * @param name 名称
    * @param separator 连接符。用于生成正则 默认为中划线 - 对应regexp得到 /-(\w)/g
    * @param first 首字母处理方式。true 或 'uppercase'：转换成大写;
@@ -40,8 +49,9 @@ export class _String {
     }
     return camelName;
   }
+
   /**
-   * 转连接符命名。常用于驼峰命名转连接符命名，如 xxName -> xx-name
+   * (新增方法) 转连接符命名。常用于驼峰命名转连接符命名，如 xxName -> xx-name
    * @param name 名称
    * @param separator 连接符
    * @returns {string}
@@ -54,4 +64,3 @@ export class _String {
       .toLowerCase();
   }
 }
-_String.prototype[Symbol.toStringTag] = _String.name;

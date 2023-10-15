@@ -34,7 +34,7 @@
   };
 </script>
 <script setup>
-  import { _Proxy } from 'hp-shared/base';
+  import { Support } from 'hp-shared/base';
   import { reactive } from 'vue';
   import * as network from 'hp-shared/network';
   import { METHODS, STATUSES } from 'hp-shared/network';
@@ -45,7 +45,7 @@
     console.table(Object.getOwnPropertyDescriptors(network));
     console.groupEnd();
   }
-  const statusInfo = reactive(_Proxy.bindThis({
+  const statusInfo = reactive(Support.bindThis({
     method: 'GET',
     status: 200,
     async request() {

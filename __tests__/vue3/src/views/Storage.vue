@@ -56,7 +56,7 @@
   };
 </script>
 <script setup>
-  import { simpleData } from '@root/modules/base/_Data.js';
+  import { simpleData } from '@root/modules/base/Data.js';
   import { createTestsProxy } from '@root/modules';
   import { reactive } from 'vue';
   import { ElMessage } from 'element-plus';

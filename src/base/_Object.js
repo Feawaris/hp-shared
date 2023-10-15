@@ -1,26 +1,50 @@
 // 对象
-import { _Data } from './_Data';
 import { _Reflect } from './_Reflect';
-import { _Support } from './_Support';
+import { Data } from './Data';
+import { Support } from './Support';
 
+// extends Object 方式调用 super 将生成空对象，不会像普通构造函数那样创建一个新的对象，改实现
 export class _Object {
   /**
-   * 浅合并对象。写法同 Object.assign，通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
+   * static
+   */
+  // static create 无需定制
+  // static fromEntries 无需定制
+  // static is 无需定制
+  // static getPrototypeOf 无需定制
+  // static setPrototypeOf 无需定制
+  // static hasOwn 无需定制
+  // static defineProperty 无需定制
+  // static defineProperties 无需定制
+  // static getOwnPropertyDescriptor 无需定制
+  // static getOwnPropertyDescriptors 无需定制
+  // static getOwnPropertyNames 无需定制
+  // static getOwnPropertySymbols 无需定制
+  // static preventExtensions 无需定制
+  // static seal 无需定制
+  // static freeze 无需定制
+  // static isExtensible 无需定制
+  // static isSealed 无需定制
+  // static isFrozen 无需定制
+
+  /**
+   * (定制方法) 浅合并对象。写法同 Object.assign，通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
    * @param target 目标对象
    * @param sources 数据源。一个或多个对象
    * @returns {{}}
    */
   static assign(target = {}, ...sources) {
     for (const source of sources) {
-      // 不使用 target[key]=value 写法，直接使用desc重定义
+      // 不使用 target[key] = value 写法，直接使用 Object.defineProperty 重定义
       for (const [key, desc] of Object.entries(Object.getOwnPropertyDescriptors(source))) {
         Object.defineProperty(target, key, desc);
       }
     }
     return target;
   }
+
   /**
-   * 深合并对象。同 assign 一样也会对属性进行重定义
+   * (新增方法) 深合并对象。同 assign 一样也会对属性进行重定义
    * @param target 目标对象。默认值 {} 防止递归时报 TypeError: Object.defineProperty called on non-object
    * @param sources 数据源。一个或多个对象
    * @returns {{}}
@@ -29,8 +53,8 @@ export class _Object {
     for (const source of sources) {
       for (const [key, desc] of Object.entries(Object.getOwnPropertyDescriptors(source))) {
         if ('value' in desc) {
-          // value写法：对象递归处理，其他直接定义
-          if (_Data.getExactType(desc.value) === Object) {
+          // value 写法：对象递归处理，其他直接定义
+          if (Data.isPlainObject(desc.value)) {
             Object.defineProperty(target, key, {
               ...desc,
               value: this.deepAssign(target[key], desc.value),
@@ -39,44 +63,16 @@ export class _Object {
             Object.defineProperty(target, key, desc);
           }
         } else {
-          // get/set写法：直接定义
+          // get/set 写法：直接定义
           Object.defineProperty(target, key, desc);
         }
       }
     }
     return target;
   }
+
   /**
-   * key自身所属的对象
-   * @param object 对象
-   * @param key 属性名
-   * @returns {*|null}
-   */
-  static owner(object, key) {
-    if (Object.prototype.hasOwnProperty.call(object, key)) {
-      return object;
-    }
-    let __proto__ = Object.getPrototypeOf(object);
-    if (__proto__ === null) {
-      return null;
-    }
-    return this.owner(__proto__, key);
-  }
-  /**
-   * 获取属性描述对象，相比 Object.getOwnPropertyDescriptor，能拿到继承属性的描述对象
-   * @param object
-   * @param key
-   * @returns {undefined|PropertyDescriptor}
-   */
-  static descriptor(object, key) {
-    const findObject = this.owner(object, key);
-    if (!findObject) {
-      return undefined;
-    }
-    return Object.getOwnPropertyDescriptor(findObject, key);
-  }
-  /**
-   * 获取属性名。默认参数配置成同 Object.keys 行为
+   * (新增方法) 获取属性名。默认参数配置成同 Object.keys 行为
    * @param object 对象
    * @param symbol 是否包含 symbol 属性
    * @param notEnumerable 是否包含不可列举属性
@@ -115,8 +111,52 @@ export class _Object {
     // 返回数组
     return Array.from(set);
   }
+
   /**
-   * 对应 keys 获取 descriptors，传参同 keys 方法。可用于重定义属性
+   * (定制方法)
+   */
+  static values() {
+  }
+
+  /**
+   * (定制方法)
+   */
+  static entries() {
+  }
+
+  /**
+   * (新增方法) key自身所属的对象
+   * @param object 对象
+   * @param key 属性名
+   * @returns {*|null}
+   */
+  static owner(object, key) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      return object;
+    }
+    let __proto__ = Object.getPrototypeOf(object);
+    if (__proto__ === null) {
+      return null;
+    }
+    return this.owner(__proto__, key);
+  }
+
+  /**
+   * (新增方法) 获取属性描述对象，相比 Object.getOwnPropertyDescriptor，能拿到继承属性的描述对象
+   * @param object
+   * @param key
+   * @returns {undefined|PropertyDescriptor}
+   */
+  static descriptor(object, key) {
+    const findObject = this.owner(object, key);
+    if (!findObject) {
+      return undefined;
+    }
+    return Object.getOwnPropertyDescriptor(findObject, key);
+  }
+
+  /**
+   * (新增方法) 对应 keys 获取 descriptors，传参同 keys 方法。可用于重定义属性
    * @param object 对象
    * @param symbol 是否包含 symbol 属性
    * @param notEnumerable 是否包含不可列举属性
@@ -129,8 +169,9 @@ export class _Object {
     const _keys = this.keys(object, options);
     return _keys.map(key => this.descriptor(object, key));
   }
+
   /**
-   * 对应 keys 获取 descriptorEntries，传参同 keys 方法。可用于重定义属性
+   * (新增方法) 对应 keys 获取 descriptorEntries，传参同 keys 方法。可用于重定义属性
    * @param object 对象
    * @param symbol 是否包含 symbol 属性
    * @param notEnumerable 是否包含不可列举属性
@@ -143,8 +184,9 @@ export class _Object {
     const _keys = this.keys(object, options);
     return _keys.map(key => [key, this.descriptor(object, key)]);
   }
+
   /**
-   * 过滤对象
+   * (新增方法) 过滤对象
    * @param object 对象
    * @param pick 挑选属性
    * @param omit 忽略属性
@@ -158,8 +200,8 @@ export class _Object {
   static filter(object, { pick = [], omit = [], emptyPick = 'all', separator = ',', symbol = true, notEnumerable = false, extend = true } = {}) {
     let result = {};
     // pick、omit 统一成数组格式
-    pick = _Support.namesToArray(pick, { separator });
-    omit = _Support.namesToArray(omit, { separator });
+    pick = Support.namesToArray(pick, { separator });
+    omit = Support.namesToArray(omit, { separator });
     let _keys = [];
     // pick有值直接拿，为空时根据 emptyPick 默认拿空或全部key
     _keys = pick.length > 0 || emptyPick === 'empty' ? pick : this.keys(object, { symbol, notEnumerable, extend });
@@ -174,8 +216,9 @@ export class _Object {
     }
     return result;
   }
+
   /**
-   * 通过挑选方式选取对象。filter 的简写方式
+   * (新增方法) 通过挑选方式选取对象。filter 的简写方式
    * @param object 对象
    * @param keys 属性名集合
    * @param options 选项，同 filter 的各选项值
@@ -185,7 +228,7 @@ export class _Object {
     return this.filter(object, { pick: keys, emptyPick: 'empty', ...options });
   }
   /**
-   * 通过排除方式选取对象。filter 的简写方式
+   * (新增方法) 通过排除方式选取对象。filter 的简写方式
    * @param object 对象
    * @param keys 属性名集合
    * @param options 选项，同 filter 的各选项值
@@ -194,14 +237,19 @@ export class _Object {
   static omit(object, keys = [], options = {}) {
     return this.filter(object, { omit: keys, ...options });
   }
-  constructor(value) {
-    this.value = value;
+
+  /**
+   * constructor
+   */
+  constructor(value = {}) {
+    this.constructor.assign(this, value);
   }
+
   /**
    * 转换系列方法：转换成原始值和其他类型
    */
+  // (定制方法)
   [Symbol.toPrimitive](hint) {
-    // console.log('_Object [Symbol.toPrimitive]', { hint });
     if (hint === 'number') {
       return this.toNumber();
     }
@@ -209,21 +257,29 @@ export class _Object {
       return this.toString();
     }
   }
-  toNumber(options = {}) {
+
+  // (新增方法)
+  toNumber() {
     return NaN;
   }
-  toString(options = {}) {
+
+  // (定制方法)
+  toString() {
     try {
-      return JSON.stringify(this.value);
+      return JSON.stringify(this);
     } catch (e) {
       return JSON.stringify({});
     }
   }
-  toBoolean(options = {}) {
-    return Object.keys(this.value).length > 0;
+
+  // (新增方法)
+  toBoolean() {
+    return Object.keys(this).length > 0;
   }
-  toJSON(options = {}) {
-    return this.toString();
+
+  // (定制方法)
+  toJSON() {
+    return this;
   }
 }
-_Object.prototype[Symbol.toStringTag] = _Object.name;
+Object.setPrototypeOf(_Object, Object);

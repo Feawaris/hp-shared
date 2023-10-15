@@ -1,4 +1,3 @@
-export class _Boolean {
-  static FALSY = [0, '', null, undefined, NaN];
-}
-_Boolean.prototype[Symbol.toStringTag] = _Boolean.name;
+export const _Boolean = Object.create(null);
+
+_Boolean.FALSY = [0, '', null, undefined, NaN];

@@ -1,16 +1,15 @@
-// 数学运算
-export class _Math {
-  // 增加部分命名以接近数学写法
-  static arcsin = Math.asin.bind(Math);
-  static arccos = Math.acos.bind(Math);
-  static arctan = Math.atan.bind(Math);
-  static arsinh = Math.asinh.bind(Math);
-  static arcosh = Math.acosh.bind(Math);
-  static artanh = Math.atanh.bind(Math);
-  static loge = Math.log.bind(Math);
-  static ln = Math.log.bind(Math);
-  static lg = Math.log10.bind(Math);
-  static log(a, x) {
-    return Math.log(x) / Math.log(a);
-  }
-}
+// 数学运算。对 Math 对象扩展，提供更直观和符合数学约定的名称
+export const _Math = Object.create(Math);
+
+_Math.arcsin = Math.asin.bind(Math);
+_Math.arccos = Math.acos.bind(Math);
+_Math.arctan = Math.atan.bind(Math);
+_Math.arsinh = Math.asinh.bind(Math);
+_Math.arcosh = Math.acosh.bind(Math);
+_Math.artanh = Math.atanh.bind(Math);
+_Math.loge = Math.log.bind(Math);
+_Math.ln = Math.log.bind(Math);
+_Math.lg = Math.log10.bind(Math);
+_Math.log = function(a, x) {
+  return Math.log(x) / Math.log(a);
+};

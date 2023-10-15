@@ -21,9 +21,9 @@
   };
 </script>
 <script setup>
-  import { getValuesTypes } from '@root/modules/base/_Data.js';
+  import { getValuesTypes } from '@root/modules/base/Data.js';
   import { ElTable } from 'element-plus';
-  import { _Data } from 'hp-shared/base';
+  import { Data } from 'hp-shared/base';
   import { computed, useAttrs } from 'vue';
 
   const props = defineProps({
@@ -33,7 +33,7 @@
     columns: {
       type: [Array, String],
       default() {
-        return ['name', 'value', '_Data.getExactTypes'];
+        return ['name', 'value', 'Data.getExactTypes'];
       },
     },
   });
@@ -47,14 +47,14 @@
       // 展开按钮显示状态
       cellClassName({ row, column }) {
         if (column.type === 'expand') {
-          return !_Data.SIMPLE_TYPES.includes(_Data.getExactType(row.value)) && Object.keys(row.value).length > 0 ? '' : 'hide-cell';
+          return !Data.SIMPLE_TYPES.includes(Data.getExactType(row.value)) && Object.keys(row.value).length > 0 ? '' : 'hide-cell';
         }
         return '';
       },
     };
   });
   const columnsResult = computed(() => {
-    return props.columns.filter(val => ['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', '_Data.getExactType', '_Data.getExactTypes'].includes(val));
+    return props.columns.filter(val => ['name', 'value', 'typeof', 'Object.prototype.toString', 'jsminiType.type', 'Data.getExactType', 'Data.getExactTypes'].includes(val));
   });
 </script>
 <style scoped lang="scss">
