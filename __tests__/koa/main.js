@@ -39,7 +39,7 @@ const { STATUSES } = require('hp-shared/network');
 // shared：路径用于基础库测试
 router.all('/api/shared/network/statuses', (ctx) => {
   console.log(ctx.request.query);
-  const status = parseInt(ctx.request.query.status);
+  const status = Number.parseInt(ctx.request.query.status);
   ctx.status = status;
   ctx.body = STATUSES.find(obj => obj.status === status);
 });

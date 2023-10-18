@@ -381,6 +381,9 @@ export class _Date extends Date {
   }
   // (定制方法)
   toString(format = 'YYYY-MM-DD hh:mm:ss') {
+    if (!this.toBoolean()) {
+      return '';
+    }
     return format.replaceAll(this.constructor.REGEX_FORMAT, (match, $1) => {
       // [] 里面的内容原样输出
       if ($1) {
@@ -408,7 +411,7 @@ export class _Date extends Date {
   // toGMTString 无需定制
   // (新增方法)
   toBoolean() {
-    return !isNaN(this.getTime());
+    return !Number.isNaN(this.getTime());
   }
   // (定制方法)
   toJSON(options = {}) {

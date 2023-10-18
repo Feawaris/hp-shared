@@ -21,7 +21,6 @@ export class _Set extends Set {
       return others.every(set => set.includes(value));
     }).to_Set();
   }
-
   /**
    * (新增方法) 并集
    * @param sets
@@ -38,7 +37,6 @@ export class _Set extends Set {
 
     return sets.flat().to_Set();
   }
-
   /**
    * (新增方法) 补集
    * @param mainSet
@@ -60,7 +58,6 @@ export class _Set extends Set {
 
   /**
    * constructor
-   * @param value
    */
   constructor(value = []) {
     // console.log('_Set constructor', value);
@@ -86,7 +83,6 @@ export class _Set extends Set {
     }
     return this;
   }
-
   // (定制方法)
   delete(...values) {
     for (const value of values) {
@@ -94,7 +90,6 @@ export class _Set extends Set {
     }
     return this;
   }
-
   // (定制方法)
   clear() {
     Set.prototype.clear.apply(this, arguments);
@@ -108,7 +103,6 @@ export class _Set extends Set {
   // keys 无需定制
   // values 无需定制
   // entries 无需定制
-
   // (定制方法)
   forEach() {
     Set.prototype.forEach.apply(this, arguments);
@@ -123,7 +117,7 @@ export class _Set extends Set {
   /**
    * 生成
    */
-  // 直接 to_Array 调数组方法再 to_Set 转换回来即可，无需重复定制
+  // 直接通过 to_Array 和 to_Set 转换操作即可，无需重复定制
 
   /**
    * 转换系列方法：转换成原始值和其他类型
@@ -137,12 +131,10 @@ export class _Set extends Set {
       return this.toString();
     }
   }
-
   // (新增方法)
   toNumber() {
     return NaN;
   }
-
   // (定制方法)
   toString() {
     try {
@@ -151,24 +143,24 @@ export class _Set extends Set {
       return '{}';
     }
   }
-
   // (新增方法)
   toBoolean(options = {}) {
     return this.size > 0;
   }
-
   // (定制方法)
   toJSON() {
     return this.toArray();
   }
-
   // (新增方法)
   toArray() {
     return Array.from(this);
   }
-
   // (新增方法)
   to_Array() {
     return new _Array(this);
+  }
+  // (新增方法)
+  toSet() {
+    return new Set(this);
   }
 }

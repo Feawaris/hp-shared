@@ -45,11 +45,14 @@ export class _Object {
 
   /**
    * (新增方法) 深合并对象。同 assign 一样也会对属性进行重定义
-   * @param target 目标对象。默认值 {} 防止递归时报 TypeError: Object.defineProperty called on non-object
-   * @param sources 数据源。一个或多个对象
+   * @param target 目标对象
+   * @param sources 数据源
    * @returns {{}}
    */
-  static deepAssign(target = {}, ...sources) {
+  static deepAssign(target, ...sources) {
+    if (!target) {
+      return this.assign({}, ...sources);
+    }
     for (const source of sources) {
       for (const [key, desc] of Object.entries(Object.getOwnPropertyDescriptors(source))) {
         if ('value' in desc) {

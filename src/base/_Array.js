@@ -37,10 +37,18 @@ export class _Array extends Array {
    * 修改
    */
   // sort 无需定制
+  // (新增方法) 随机排序数组
+  randomSort() {
+    for (let i = this.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this[i], this[j]] = [this[j], this[i]];
+    }
+
+    return this;
+  }
   // reverse 无需定制
   // fill 无需定制
   // copyWithin 无需定制
-
   // (定制方法)
   push() {
     Array.prototype.push.apply(this, arguments);
@@ -92,7 +100,6 @@ export class _Array extends Array {
   // keys 无需定制
   // values 无需定制
   // entries 无需定制
-
   // (定制方法)
   forEach() {
     Array.prototype.forEach.apply(this, arguments);
@@ -178,6 +185,10 @@ export class _Array extends Array {
   }
   // (定制方法)
   toJSON() {
+    return Array.from(this);
+  }
+  // (新增方法)
+  toArray() {
     return Array.from(this);
   }
   // (新增方法)
