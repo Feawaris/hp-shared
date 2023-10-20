@@ -59,7 +59,6 @@ VueData.getPropsFromAttrs = function(attrs, propDefinitions) {
   }
   return result;
 };
-
 /**
    * 从 attrs 中提取 emits 定义的属性
    * @param attrs vue attrs
@@ -101,7 +100,6 @@ VueData.getEmitsFromAttrs = function(attrs, emitDefinitions) {
   // console.log('result', result);
   return result;
 };
-
 /**
    * 从 attrs 中提取剩余属性。常用于组件 inheritAttrs 设置 false 时使用作为新的 attrs
    * @param attrs vue attrs

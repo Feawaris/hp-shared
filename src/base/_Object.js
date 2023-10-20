@@ -8,27 +8,27 @@ export class _Object {
   /**
    * static
    */
-  // static create 无需定制
-  // static fromEntries 无需定制
-  // static is 无需定制
-  // static getPrototypeOf 无需定制
-  // static setPrototypeOf 无需定制
-  // static hasOwn 无需定制
-  // static defineProperty 无需定制
-  // static defineProperties 无需定制
-  // static getOwnPropertyDescriptor 无需定制
-  // static getOwnPropertyDescriptors 无需定制
-  // static getOwnPropertyNames 无需定制
-  // static getOwnPropertySymbols 无需定制
-  // static preventExtensions 无需定制
-  // static seal 无需定制
-  // static freeze 无需定制
-  // static isExtensible 无需定制
-  // static isSealed 无需定制
-  // static isFrozen 无需定制
+  // static create [继承]
+  // static fromEntries [继承]
+  // static getPrototypeOf [继承]
+  // static setPrototypeOf [继承]
+  // static defineProperty [继承]
+  // static defineProperties [继承]
+  // static hasOwn [继承]
+  // static getOwnPropertyDescriptor [继承]
+  // static getOwnPropertyDescriptors [继承]
+  // static getOwnPropertyNames [继承]
+  // static getOwnPropertySymbols [继承]
+  // static is [继承]
+  // static preventExtensions [继承]
+  // static isExtensible [继承]
+  // static seal [继承]
+  // static isSealed [继承]
+  // static freeze [继承]
+  // static isFrozen [继承]
 
   /**
-   * (定制方法) 浅合并对象。写法同 Object.assign，通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
+   * [定制] 浅合并对象。写法同 Object.assign，通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
    * @param target 目标对象
    * @param sources 数据源。一个或多个对象
    * @returns {{}}
@@ -42,9 +42,8 @@ export class _Object {
     }
     return target;
   }
-
   /**
-   * (新增方法) 深合并对象。同 assign 一样也会对属性进行重定义
+   * [新增] 深合并对象。同 assign 一样也会对属性进行重定义
    * @param target 目标对象
    * @param sources 数据源
    * @returns {{}}
@@ -75,7 +74,7 @@ export class _Object {
   }
 
   /**
-   * (新增方法) 获取属性名。默认参数配置成同 Object.keys 行为
+   * [定制] 获取属性名。默认参数配置成同 Object.keys 行为
    * @param object 对象
    * @param symbol 是否包含 symbol 属性
    * @param notEnumerable 是否包含不可列举属性
@@ -114,21 +113,19 @@ export class _Object {
     // 返回数组
     return Array.from(set);
   }
-
   /**
-   * (定制方法)
+   * [定制]
    */
   static values() {
   }
-
   /**
-   * (定制方法)
+   * [定制]
    */
   static entries() {
   }
 
   /**
-   * (新增方法) key自身所属的对象
+   * [新增] key自身所属的对象
    * @param object 对象
    * @param key 属性名
    * @returns {*|null}
@@ -143,9 +140,8 @@ export class _Object {
     }
     return this.owner(__proto__, key);
   }
-
   /**
-   * (新增方法) 获取属性描述对象，相比 Object.getOwnPropertyDescriptor，能拿到继承属性的描述对象
+   * [新增] 获取属性描述对象，相比 Object.getOwnPropertyDescriptor，能拿到继承属性的描述对象
    * @param object
    * @param key
    * @returns {undefined|PropertyDescriptor}
@@ -157,9 +153,8 @@ export class _Object {
     }
     return Object.getOwnPropertyDescriptor(findObject, key);
   }
-
   /**
-   * (新增方法) 对应 keys 获取 descriptors，传参同 keys 方法。可用于重定义属性
+   * [新增] 对应 keys 获取 descriptors，传参同 keys 方法。可用于重定义属性
    * @param object 对象
    * @param symbol 是否包含 symbol 属性
    * @param notEnumerable 是否包含不可列举属性
@@ -172,9 +167,8 @@ export class _Object {
     const _keys = this.keys(object, options);
     return _keys.map(key => this.descriptor(object, key));
   }
-
   /**
-   * (新增方法) 对应 keys 获取 descriptorEntries，传参同 keys 方法。可用于重定义属性
+   * [新增] 对应 keys 获取 descriptorEntries，传参同 keys 方法。可用于重定义属性
    * @param object 对象
    * @param symbol 是否包含 symbol 属性
    * @param notEnumerable 是否包含不可列举属性
@@ -189,7 +183,7 @@ export class _Object {
   }
 
   /**
-   * (新增方法) 过滤对象
+   * [新增] 过滤对象
    * @param object 对象
    * @param pick 挑选属性
    * @param omit 忽略属性
@@ -219,9 +213,8 @@ export class _Object {
     }
     return result;
   }
-
   /**
-   * (新增方法) 通过挑选方式选取对象。filter 的简写方式
+   * [新增] 通过挑选方式选取对象。filter 的简写方式
    * @param object 对象
    * @param keys 属性名集合
    * @param options 选项，同 filter 的各选项值
@@ -231,7 +224,7 @@ export class _Object {
     return this.filter(object, { pick: keys, emptyPick: 'empty', ...options });
   }
   /**
-   * (新增方法) 通过排除方式选取对象。filter 的简写方式
+   * [新增] 通过排除方式选取对象。filter 的简写方式
    * @param object 对象
    * @param keys 属性名集合
    * @param options 选项，同 filter 的各选项值
@@ -248,10 +241,19 @@ export class _Object {
     this.constructor.assign(this, value);
   }
 
+  // __proto__ [继承]
+  // __defineGetter__ [继承]
+  // __defineSetter__ [继承]
+  // __lookupGetter__ [继承]
+  // __lookupSetter__ [继承]
+  // isPrototypeOf [继承]
+  // hasOwnProperty [继承]
+  // propertyIsEnumerable [继承]
+
   /**
    * 转换系列方法：转换成原始值和其他类型
    */
-  // (定制方法)
+  // [新增]
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
@@ -260,13 +262,11 @@ export class _Object {
       return this.toString();
     }
   }
-
-  // (新增方法)
+  // [新增]
   toNumber() {
     return NaN;
   }
-
-  // (定制方法)
+  // [定制]
   toString() {
     try {
       return JSON.stringify(this);
@@ -274,15 +274,15 @@ export class _Object {
       return JSON.stringify({});
     }
   }
-
-  // (新增方法)
+  // toLocaleString [继承]
+  // [新增]
   toBoolean() {
     return Object.keys(this).length > 0;
   }
-
-  // (定制方法)
+  // [新增]
   toJSON() {
     return this;
   }
+  // valueOf [继承]
 }
 Object.setPrototypeOf(_Object, Object);

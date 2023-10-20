@@ -3,7 +3,7 @@ import { _Array } from './_Array';
 
 export class _Set extends Set {
   /**
-   * (新增方法) 交集
+   * [新增] 交集
    * @param sets
    * @returns {*}
    */
@@ -22,7 +22,7 @@ export class _Set extends Set {
     }).to_Set();
   }
   /**
-   * (新增方法) 并集
+   * [新增] 并集
    * @param sets
    * @returns {*}
    */
@@ -38,7 +38,7 @@ export class _Set extends Set {
     return sets.flat().to_Set();
   }
   /**
-   * (新增方法) 补集
+   * [新增] 补集
    * @param mainSet
    * @param otherSets
    * @returns {*}
@@ -69,28 +69,28 @@ export class _Set extends Set {
     }
     super(value);
 
-    // size 无需定制
+    // size [继承]
   }
 
-  // 方法定制：原型同名方法+新增方法。大部分返回 this 便于链式操作
+  // 方法定制：原型同名方法+新增方法。部分定制成返回 this 便于链式操作
   /**
    * 修改
    */
-  // (定制方法)
+  // [定制]
   add(...values) {
     for (const value of values) {
       Set.prototype.add.apply(this, arguments);
     }
     return this;
   }
-  // (定制方法)
+  // [定制]
   delete(...values) {
     for (const value of values) {
       Set.prototype.delete.apply(this, arguments);
     }
     return this;
   }
-  // (定制方法)
+  // [定制]
   clear() {
     Set.prototype.clear.apply(this, arguments);
     return this;
@@ -99,11 +99,11 @@ export class _Set extends Set {
   /**
    * 遍历
    */
-  // Symbol.iterator 无需定制
-  // keys 无需定制
-  // values 无需定制
-  // entries 无需定制
-  // (定制方法)
+  // Symbol.iterator [继承]
+  // keys [继承]
+  // values [继承]
+  // entries [继承]
+  // [定制]
   forEach() {
     Set.prototype.forEach.apply(this, arguments);
     return this;
@@ -112,7 +112,7 @@ export class _Set extends Set {
   /**
    * 查找
    */
-  // has 无需定制
+  // has [继承]
 
   /**
    * 生成
@@ -122,7 +122,7 @@ export class _Set extends Set {
   /**
    * 转换系列方法：转换成原始值和其他类型
    */
-  // (定制方法)
+  // [新增]
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
@@ -131,11 +131,11 @@ export class _Set extends Set {
       return this.toString();
     }
   }
-  // (新增方法)
+  // [新增]
   toNumber() {
     return NaN;
   }
-  // (定制方法)
+  // [新增]
   toString() {
     try {
       return `{${this.toArray().join(',')}}`;
@@ -143,23 +143,23 @@ export class _Set extends Set {
       return '{}';
     }
   }
-  // (新增方法)
+  // [新增]
   toBoolean(options = {}) {
     return this.size > 0;
   }
-  // (定制方法)
+  // [新增]
   toJSON() {
     return this.toArray();
   }
-  // (新增方法)
+  // [新增]
   toArray() {
     return Array.from(this);
   }
-  // (新增方法)
+  // [新增]
   to_Array() {
     return new _Array(this);
   }
-  // (新增方法)
+  // [新增]
   toSet() {
     return new Set(this);
   }

@@ -2,30 +2,28 @@ export class _String extends String {
   /**
    * Static
    */
-  // static fromCharCode 无需定制
-  // static fromCodePoint 无需定制
-  // static raw 无需定制
+  // static fromCharCode [继承]
+  // static fromCodePoint [继承]
+  // static raw [继承]
 
   /**
-   * (新增方法) 首字母大写
+   * [新增] 首字母大写
    * @param name
    * @returns {string}
    */
   static toFirstUpperCase(name = '') {
     return `${(name[0] ?? '').toUpperCase()}${name.slice(1)}`;
   }
-
   /**
-   * (新增方法) 首字母小写
+   * [新增] 首字母小写
    * @param name 名称
    * @returns {string}
    */
   static toFirstLowerCase(name = '') {
     return `${(name[0] ?? '').toLowerCase()}${name.slice(1)}`;
   }
-
   /**
-   * (新增方法) 转驼峰命名。常用于连接符命名转驼峰命名，如 xx-name -> xxName
+   * [新增] 转驼峰命名。常用于连接符命名转驼峰命名，如 xx-name -> xxName
    * @param name 名称
    * @param separator 连接符。用于生成正则 默认为中划线 - 对应regexp得到 /-(\w)/g
    * @param first 首字母处理方式。true 或 'uppercase'：转换成大写;
@@ -49,9 +47,8 @@ export class _String extends String {
     }
     return camelName;
   }
-
   /**
-   * (新增方法) 转连接符命名。常用于驼峰命名转连接符命名，如 xxName -> xx-name
+   * [新增] 转连接符命名。常用于驼峰命名转连接符命名，如 xxName -> xx-name
    * @param name 名称
    * @param separator 连接符
    * @returns {string}
@@ -63,4 +60,68 @@ export class _String extends String {
     // 转小写
       .toLowerCase();
   }
+
+  /**
+   * constructor
+   */
+  constructor(value) {
+    super(value);
+  }
+
+  // anchor 继承
+  // big 继承
+  // blink 继承
+  // bold 继承
+  // fixed 继承
+  // fontcolor 继承
+  // fontsize 继承
+  // italics 继承
+  // link 继承
+  // small 继承
+  // strike 继承
+  // sub 继承
+  // sup 继承
+
+  // [Symbol.iterator] 继承
+  // length 继承
+  // split 继承
+  // match 继承
+  // matchAll 继承
+
+  // at 继承
+  // charAt 继承
+  // charCodeAt 继承
+  // codePointAt 继承
+  // indexOf 继承
+  // lastIndexOf 继承
+  // search 继承
+  // includes 继承
+  // startsWith 继承
+  // endsWith 继承
+
+  // slice 继承
+  // substring 继承
+  // substr 继承
+  // concat 继承
+  // trim 继承
+  // trimStart 继承
+  // trimEnd 继承
+  // trimLeft 继承
+  // trimRight 继承
+  // padStart 继承
+  // padEnd 继承
+  // repeat 继承
+  // replace 继承
+  // replaceAll 继承
+  // toLowerCase 继承
+  // toUpperCase 继承
+  // toLocaleLowerCase 继承
+  // toLocaleUpperCase 继承
+  // localeCompare 继承
+  // normalize 继承
+  // isWellFormed 继承
+  // toWellFormed 继承
+
+  // toString 继承
+  // valueOf 继承
 }

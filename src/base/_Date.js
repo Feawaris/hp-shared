@@ -3,32 +3,12 @@ export class _Date extends Date {
   /**
    * static
    */
-  // (新增属性)
+  // [新增]
   static REGEX_PARSE = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/;
   static REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g;
-
-  // static now 无需定制
-  // static parse 无需定制
-  // static UTC 无需定制
-
-  /**
-   * (新增方法) 转换成字符串
-   * @param value
-   * @param options
-   * @returns {string}
-   */
-  static stringify(value, options = {}) {
-    return new this(value).toString();
-  }
-  /**
-   * (新增方法) 是否有效参数。常用于处理操作得到 Invalid Date 的情况
-   * @param value
-   * @param options
-   * @returns {boolean}
-   */
-  static isValidValue(value, options = {}) {
-    return new this(value).toBoolean();
-  }
+  // static now [继承]
+  // static parse [继承]
+  // static UTC [继承]
 
   /**
    * constructor
@@ -47,7 +27,7 @@ export class _Date extends Date {
     }
     super(...args);
 
-    // 新增属性
+    // [新增]
     Object.defineProperty(this, 'year', {
       get() {
         return this.getFullYear();
@@ -269,32 +249,32 @@ export class _Date extends Date {
   }
 
   /**
-   * get 系列方法。使用 year、month 等新增属性获取即可，简化写法，无需额外定制
+   * [继承] get 系列方法。使用 year、month 等通过新增属性获取即可，简化写法，无需额外定制
    */
-  // getTime 无需定制
-  // getTimezoneOffset 无需定制
+  // getTime [继承]
+  // getTimezoneOffset [继承]
 
-  // getYear 无需定制
-  // getFullYear 无需定制
-  // getMonth 无需定制
-  // getDate 无需定制
-  // getDay 无需定制
-  // getHours 无需定制
-  // getMinutes 无需定制
-  // getSeconds 无需定制
-  // getMilliseconds 无需定制
+  // getYear [继承]
+  // getFullYear [继承]
+  // getMonth [继承]
+  // getDate [继承]
+  // getDay [继承]
+  // getHours [继承]
+  // getMinutes [继承]
+  // getSeconds [继承]
+  // getMilliseconds [继承]
 
-  // getUTCFullYear 无需定制
-  // getUTCMonth 无需定制
-  // getUTCDate 无需定制
-  // getUTCDay 无需定制
-  // getUTCHours 无需定制
-  // getUTCMinutes 无需定制
-  // getUTCSeconds 无需定制
-  // getUTCMilliseconds 无需定制
+  // getUTCFullYear [继承]
+  // getUTCMonth [继承]
+  // getUTCDate [继承]
+  // getUTCDay [继承]
+  // getUTCHours [继承]
+  // getUTCMinutes [继承]
+  // getUTCSeconds [继承]
+  // getUTCMilliseconds [继承]
 
   /**
-   * set 系列方法。定制成返回 this 便于链式操作
+   * [定制] set 系列方法。定制成返回 this 便于链式操作
    */
   setTime() {
     Date.prototype.setTime.apply(this, arguments);
@@ -366,7 +346,7 @@ export class _Date extends Date {
   /**
    * 转换系列方法：转换成原始值和其他类型
    */
-  // (定制方法)
+  // [新增]
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
@@ -375,11 +355,11 @@ export class _Date extends Date {
       return this.toString();
     }
   }
-  // (新增方法)
+  // [新增]
   toNumber() {
     return this.getTime();
   }
-  // (定制方法)
+  // [定制]
   toString(format = 'YYYY-MM-DD hh:mm:ss') {
     if (!this.toBoolean()) {
       return '';
@@ -395,27 +375,27 @@ export class _Date extends Date {
       }
     });
   }
-  // (定制方法)
+  // [定制]
   toDateString(format = 'YYYY-MM-DD') {
     return this.toString(format);
   }
-  // (定制方法)
+  // [定制]
   toTimeString(format = 'HH:mm:ss') {
     return this.toString(format);
   }
-  // toLocaleString 无需定制
-  // toLocaleDateString 无需定制
-  // toLocaleTimeString 无需定制
-  // toISOString 无需定制
-  // toUTCString 无需定制
-  // toGMTString 无需定制
-  // (新增方法)
+  // toLocaleString [继承]
+  // toLocaleDateString [继承]
+  // toLocaleTimeString [继承]
+  // toISOString [继承]
+  // toUTCString [继承]
+  // toGMTString [继承]
+  // [新增]
   toBoolean() {
     return !Number.isNaN(this.getTime());
   }
-  // (定制方法)
+  // [新增]
   toJSON(options = {}) {
     return this.toString();
   }
-  // valueOf 无需定制
+  // valueOf [继承]
 }

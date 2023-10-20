@@ -5,9 +5,9 @@ export class _Array extends Array {
   /**
    * static
    */
-  // static isArray 无需定制
-  // static from 无需定制
-  // static of 无需定制
+  // static isArray [继承]
+  // static from [继承]
+  // static of [继承]
 
   /**
    * constructor
@@ -29,15 +29,61 @@ export class _Array extends Array {
       super(...value);
     }
 
-    // length 无需定制
+    // length [继承]
   }
 
-  // 方法定制：原型同名方法+新增方法。大部分返回 this 便于链式操作
+  // 方法定制：原型同名方法+新增。部分定制成返回 this 便于链式操作
   /**
    * 修改
    */
-  // sort 无需定制
-  // (新增方法) 随机排序数组
+  // [定制]
+  push() {
+    Array.prototype.push.apply(this, arguments);
+    return this;
+  }
+  // [定制]
+  pop(length = 1) {
+    for (let i = 0; i < length; i++) {
+      Array.prototype.pop.apply(this, arguments);
+    }
+    return this;
+  }
+  // [定制]
+  unshift() {
+    Array.prototype.unshift.apply(this, arguments);
+    return this;
+  }
+  // [定制]
+  shift(length = 1) {
+    for (let i = 0; i < length; i++) {
+      Array.prototype.shift.apply(this, arguments);
+    }
+    return this;
+  }
+  // [定制]
+  splice() {
+    Array.prototype.splice.apply(this, arguments);
+    return this;
+  }
+  // [新增] 删除
+  delete(value) {
+    const index = this.findIndex(val => val === value);
+    this.splice(index, 1);
+    return this;
+  }
+  // [新增] 清空
+  clear() {
+    this.splice(0);
+    return this;
+  }
+  // [新增] 去重
+  unique(options = {}) {
+    const value = this.to_Set().to_Array();
+    this.clear().push(...value);
+    return this;
+  }
+  // sort [继承]
+  // [新增] 随机排序数组
   randomSort() {
     for (let i = this.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -46,61 +92,18 @@ export class _Array extends Array {
 
     return this;
   }
-  // reverse 无需定制
-  // fill 无需定制
-  // copyWithin 无需定制
-  // (定制方法)
-  push() {
-    Array.prototype.push.apply(this, arguments);
-    return this;
-  }
-  // (定制方法)
-  pop(length = 1) {
-    for (let i = 0; i < length; i++) {
-      Array.prototype.pop.apply(this, arguments);
-    }
-    return this;
-  }
-  // (定制方法)
-  unshift() {
-    Array.prototype.unshift.apply(this, arguments);
-    return this;
-  }
-  // (定制方法)
-  shift(length = 1) {
-    for (let i = 0; i < length; i++) {
-      Array.prototype.shift.apply(this, arguments);
-    }
-    return this;
-  }
-  // (定制方法)
-  splice(start, deleteCount, ...items) {
-    Array.prototype.splice.apply(this, arguments);
-    return this;
-  }
-  // (新增方法) 删除
-  delete(value) {
-    const index = this.findIndex(val => val === value);
-    return this.splice(index, 1);
-  }
-  // (新增方法) 清空
-  clear() {
-    return this.splice(0);
-  }
-  // (新增方法) 去重
-  unique(options = {}) {
-    const value = this.to_Set().to_Array();
-    return this.clear().push(...value);
-  }
+  // reverse [继承]
+  // fill [继承]
+  // copyWithin [继承]
 
   /**
    * 遍历
    */
-  // Symbol.iterator 无需定制
-  // keys 无需定制
-  // values 无需定制
-  // entries 无需定制
-  // (定制方法)
+  // Symbol.iterator [继承]
+  // keys [继承]
+  // values [继承]
+  // entries [继承]
+  // [定制]
   forEach() {
     Array.prototype.forEach.apply(this, arguments);
     return this;
@@ -109,54 +112,54 @@ export class _Array extends Array {
   /**
    * 查找
    */
-  // at 无需定制
-  // find 无需定制
-  // findIndex 无需定制
-  // findLast 无需定制
-  // findLastIndex 无需定制
-  // includes 无需定制
-  // indexOf 无需定制
-  // lastIndexOf 无需定制
-  // some 无需定制
-  // every 无需定制
+  // at [继承]
+  // find [继承]
+  // findIndex [继承]
+  // findLast [继承]
+  // findLastIndex [继承]
+  // includes [继承]
+  // indexOf [继承]
+  // lastIndexOf [继承]
+  // some [继承]
+  // every [继承]
 
   /**
    * 生成
    */
-  // map 无需定制
-  // filter 无需定制
-  // reduce 无需定制
-  // reduceRight 无需定制
-  // concat 无需定制
-  // slice 无需定制
-  // join 无需定制
-  // flat 无需定制
-  // flatMap 无需定制
-
-  // (定制方法)
+  // map [继承]
+  // filter [继承]
+  // reduce [继承]
+  // reduceRight [继承]
+  // concat [继承]
+  // slice [继承]
+  // join [继承]
+  // flat [继承]
+  // flatMap [继承]
+  // [定制]
   with() {
     const value = Array.prototype.with.apply(this, arguments);
     return new this.constructor(value);
   }
-  // (定制方法)
+  // [定制]
   toSpliced() {
     const value = Array.prototype.toSpliced.apply(this, arguments);
     return new this.constructor(value);
   }
-  // (定制方法)
+  // [定制]
   toSorted() {
     const value = Array.prototype.toSorted.apply(this, arguments);
     return new this.constructor(value);
   }
-  // (定制方法)
+  // [定制]
   toReversed() {
     const value = Array.prototype.toReversed.apply(this, arguments);
     return new this.constructor(value);
   }
+
   /**
    * 转换系列方法：转换成原始值和其他类型
    */
-  // (定制方法)
+  // [新增]
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
@@ -165,11 +168,11 @@ export class _Array extends Array {
       return this.toString();
     }
   }
-  // (新增方法)
+  // [新增]
   toNumber() {
     return NaN;
   }
-  // (定制方法)
+  // [定制]
   toString() {
     try {
       return JSON.stringify(this);
@@ -178,24 +181,24 @@ export class _Array extends Array {
       return JSON.stringify([]);
     }
   }
-  // toLocaleString 无需定制
-  // (新增方法)
+  // toLocaleString [继承]
+  // [新增]
   toBoolean() {
     return this.length > 0;
   }
-  // (定制方法)
+  // [新增]
   toJSON() {
     return Array.from(this);
   }
-  // (新增方法)
+  // [新增]
   toArray() {
     return Array.from(this);
   }
-  // (新增方法)
+  // [新增]
   toSet() {
     return new Set(this);
   }
-  // (新增方法)
+  // [新增]
   to_Set() {
     return new _Set(this);
   }
