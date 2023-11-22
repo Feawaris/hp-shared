@@ -133,28 +133,21 @@ pnpm run refresh
 2. 开发中
 
   ```shell
-  # 跑 __tests__ 下多个项目测试用
-  pnpm run dev
   # 打包生成各个 dist
   pnpm run build
   # 监听打包生成各个 dist，测试引 dist 目录的项目时用
   pnpm run build:watch
   ```
 
-3. 推送或发布
+3. 发布
 
   ```shell
-  # 推送，已部署 pre-push，push前会打包dist并提交
-  git push
-  
-  # 发布前操作:
-  # 1.修改版本号。先批量替换各 package.json 的版本号，后面再换成命令行方式
-  # 2.检查。确保切换到正确的npm源（可使用 nrm）和账号，或在发布时加参数
-  nrm ls
-  npm whoami
-  # 3.刷新。具体描述见上文
+  # 1.修改版本号
+  # 2.运行 refresh 命令以确保 dist 也打包
   pnpm run refresh
-  
-  # 发布
+  # 3.git 提交
+  git commit -m "build: vX.X.X"
+  # 4.发布
   npm publish
+  # 5.加 tag，推送到仓库
   ```
