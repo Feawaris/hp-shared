@@ -360,7 +360,7 @@ export class _Date extends Date {
     return this.getTime();
   }
   // [定制]
-  toString(format = 'YYYY-MM-DD hh:mm:ss') {
+  toString(format = 'YYYY-MM-DD HH:mm:ss') {
     if (!this.toBoolean()) {
       return '';
     }
