@@ -37,16 +37,6 @@ const { xx } = require('hp-shared/模块名');
 const { xx } = require('hp-shared/dist/node/模块名');
 ```
 
-#### deno
-
-```js
-// 使用 npm 包
-import { xx } from './node_modules/hp-shared/dist/deno/模块名.js';
-
-// 使用 cdn
-import { xx } from 'https://unpkg.com/hp-shared/dist/deno/模块名.js';
-```
-
 #### \<script type="module"\>
 
 ```js
@@ -94,9 +84,19 @@ module.exports = merge(
 );
 ```
 
-#### vite
+#### _console
 
-### network 网络
+写法对应 [browser console](https://developer.mozilla.org/zh-CN/docs/Web/API/console)、[node console](https://nodejs.cn/api/console.html)，增加了颜色和行数显示，和扩展方法
+
+```js
+// vue
+import { _console } from 'hp-shared/dev';
+
+// node
+const { _console } = require('hp-shared/dev');
+```
+
+
 
 ### storage 存储
 
@@ -110,16 +110,7 @@ import { clipboard } from 'hp-shared/storage';
 
 // node
 const { clipboard } = require('hp-shared/storage');
-
-// deno
-import { clipboard } from 'https://unpkg.com/hp-shared/dist/deno/storage.js';
 ```
-
-#### cookie
-
-#### storage
-
-#### indexedDB
 
 ## 开发
 
@@ -127,26 +118,25 @@ import { clipboard } from 'https://unpkg.com/hp-shared/dist/deno/storage.js';
 
   ```shell
 # 刷新：安装/更新依赖+打包。可在拉取成员代码时用，防止更新了依赖忘记安装，同时可用于项目初始化
-pnpm run refresh
+pnpm run refresh:build
   ```
 
 2. 开发中
 
   ```shell
+  # 监听打包生成各个 dist，测试引 dist 目录的项目时用
+  pnpm run dev
   # 打包生成各个 dist
   pnpm run build
-  # 监听打包生成各个 dist，测试引 dist 目录的项目时用
-  pnpm run build:watch
   ```
 
 3. 发布
 
   ```shell
-  # 1.修改版本号
-  # 2.运行 refresh 命令以确保 dist 也打包
-  pnpm run refresh
-  # 3.git 提交
-  git commit -m "build: vX.X.X"
+  # 1.检查版本号的修改情况
+  # 2.运行 refresh:build 命令以确保 dist 也打包
+  pnpm run refresh:build
+  # 3.可能产生的 git 提交
   # 4.发布
   npm publish
   # 5.加 tag，推送到仓库

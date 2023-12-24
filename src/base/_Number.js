@@ -48,7 +48,7 @@ export class _Number extends Number {
    */
   // [新增]
   [Symbol.toPrimitive](hint) {
-    console.log('_Number Symbol.toPrimitive', { hint });
+    // console.log('_Number Symbol.toPrimitive', { hint });
     if (hint === 'number') {
       return this.toNumber();
     }

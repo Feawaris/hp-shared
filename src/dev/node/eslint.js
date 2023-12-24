@@ -2,7 +2,7 @@
  * eslint 配置：http://eslint.cn/docs/rules/
  * eslint-plugin-vue 配置：https://eslint.vuejs.org/rules/
  */
-import { _Object, Data } from '../base';
+import { _Object, Data } from '../../base';
 
 /**
  * 导出常量便捷使用

@@ -1,2 +1,2 @@
+export * from './_console';
 export * as eslint from './eslint';
-export * as vite from './vite';
