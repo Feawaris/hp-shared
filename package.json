@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scripts": {
     "refresh": "pnpm i",
     "refresh:build": "pnpm i && pnpm run build",

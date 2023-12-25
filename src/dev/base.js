@@ -21,7 +21,7 @@ BaseConsole.getStackInfo = function() {
     // chrome 的 stack 以 Error:xx\n 开头，safari 和 firefox 不同
     const stackIndex = e.stack.startsWith('Error') ? 3 : 2;
     const currentStr = (stackArr[stackIndex] || '').trim();
-    const { method, filePath } = (() => {
+    let { method, filePath } = (() => {
       // chrome: at method (filePath) 格式
       const atMethodPathMatch = /at\s*([^(\s]*)\s\(([^)]+)\)/[Symbol.match](currentStr);
       if (atMethodPathMatch) {
@@ -42,10 +42,15 @@ BaseConsole.getStackInfo = function() {
       }
       return { method: '', filePath: '' };
     })();
+    // windows node console 显示调整
+    if (this.$options.jsEnv === 'node' && process.platform.toLowerCase() === 'win32') {
+      filePath = filePath.replaceAll('\\', '/');
+    }
     // console.log({ stackArr, method, filePath });
     const filePrefix = (() => {
       if (this.$options.jsEnv === 'node') {
-        return process.platform.toLowerCase() === 'win32' ? String.raw`file:\\` : String.raw`file://`;
+        // windows 兼容 webstorm console 用 file:/// ，vscode 或普通命令行 file:// 可以指向
+        return process.platform.toLowerCase() === 'win32' ? String.raw`file:///` : String.raw`file://`;
       }
       return '';
     })();
