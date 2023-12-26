@@ -5,9 +5,10 @@ export const BaseConsole = Object.create(console);
 BaseConsole.$options = {
   // js 运行环境，browser/node
   jsEnv: '',
-  // dir 方法用选项
+  // 对应方法用的选项
   dirOptions: {},
 };
+
 BaseConsole.create = function(options = {}) {
   const _console = Object.create(this);
   _console.$options = _Object.deepAssign({}, this.$options, options);
@@ -61,6 +62,7 @@ BaseConsole.getStackInfo = function() {
     };
   }
 };
+
 BaseConsole.log = function() {
   const { method, filePath } = this.getStackInfo();
   const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
@@ -129,4 +131,55 @@ BaseConsole.dir = function() {
       console.dir(value);
     }
   }
+};
+BaseConsole.table = function() {
+  const { method, filePath } = this.getStackInfo();
+  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
+  const type = '[table]';
+  if (this.$options.jsEnv === 'node') {
+    console.log(chalk.blue(date, type, filePath, method, ':'));
+  } else {
+    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:blue;');
+  }
+
+  console.table(...arguments);
+};
+BaseConsole.group = function(label = `console.group [${new _Date()}]`) {
+  const { method, filePath } = this.getStackInfo();
+  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
+  const type = '[group]';
+  if (this.$options.jsEnv === 'node') {
+    console.log(chalk.bold(date, type, filePath, method, ':'));
+  } else {
+    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'font-weight:bold;');
+  }
+
+  console.group(label);
+};
+BaseConsole.groupCollapsed = function(label = `console.group [${new _Date()}]`) {
+  const { method, filePath } = this.getStackInfo();
+  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
+  const type = '[group]';
+  if (this.$options.jsEnv === 'node') {
+    console.log(chalk.bold(date, type, filePath, method, ':'));
+  } else {
+    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'font-weight:bold;');
+  }
+
+  console.groupCollapsed(label);
+};
+
+BaseConsole.groupAction = function(action = () => {}, { label = `console.group [${new _Date()}]`, collapse = false } = {}) {
+  const { method, filePath } = this.getStackInfo();
+  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
+  const type = '[groupAction]';
+  if (this.$options.jsEnv === 'node') {
+    console.log(chalk.bold(date, type, filePath, method, ':'));
+  } else {
+    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'font-weight:bold;');
+  }
+
+  console[collapse ? 'groupCollapsed' : 'group'](label);
+  action();
+  console.groupEnd();
 };
