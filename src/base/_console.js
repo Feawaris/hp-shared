@@ -1,20 +1,44 @@
-import { _Object, _Date } from '../base';
-import chalk from 'chalk';
+import { BaseEnv } from './base';
+import { _Object } from './_Object';
+import { _Date } from './_Date';
 
-export const BaseConsole = Object.create(console);
-BaseConsole.$options = {
-  // js 运行环境，browser/node
-  jsEnv: '',
-  // 对应方法用的选项
-  dirOptions: {},
+// 简易 chalk
+const _chalk = {
+  blue(message) {
+    return `\x1b[34m${message}\x1b[0m`;
+  },
+  yellow(message) {
+    return `\x1b[33m${message}\x1b[0m`;
+  },
+  red(message) {
+    return `\x1b[31m${message}\x1b[0m`;
+  },
+  green(message) {
+    return `\x1b[32m${message}\x1b[0m`;
+  },
+  grey(message) {
+    return `\x1b[90m${message}\x1b[0m`;
+  },
+  bold(message) {
+    return `\x1b[1m${message}\x1b[0m`;
+  },
 };
-
-BaseConsole.create = function(options = {}) {
+export const _console = Object.create(console);
+// 选项，初始保存和 create 方法用
+_console.$options = {
+  // 对应方法用的选项
+  dirOptions: {
+    depth: 0,
+    showHidden: true,
+    colors: true,
+  },
+};
+_console.create = function(options = {}) {
   const _console = Object.create(this);
   _console.$options = _Object.deepAssign({}, this.$options, options);
   return _console;
 };
-BaseConsole.getStackInfo = function() {
+_console.getStackInfo = function() {
   try {
     throw new Error();
   } catch (e) {
@@ -44,14 +68,14 @@ BaseConsole.getStackInfo = function() {
       return { method: '', filePath: '' };
     })();
     // windows node console 显示调整
-    if (this.$options.jsEnv === 'node' && process.platform.toLowerCase() === 'win32') {
+    if (BaseEnv.isNode && BaseEnv.isWindows) {
       filePath = filePath.replaceAll('\\', '/');
     }
     // console.log({ stackArr, method, filePath });
     const filePrefix = (() => {
-      if (this.$options.jsEnv === 'node') {
+      if (BaseEnv.isNode) {
         // windows 兼容 webstorm console 用 file:/// ，vscode 或普通命令行 file:// 可以正常跳转
-        return process.platform.toLowerCase() === 'win32' ? String.raw`file:///` : String.raw`file://`;
+        return BaseEnv.isWindows ? String.raw`file:///` : String.raw`file://`;
       }
       return '';
     })();
@@ -62,7 +86,7 @@ BaseConsole.getStackInfo = function() {
     };
   }
 };
-BaseConsole.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
+_console.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
   const { method, filePath } = stackInfo;
@@ -78,61 +102,61 @@ BaseConsole.show = function({ type = '', typeText = type, stackInfo = {}, values
     bold: { node: 'bold', browser: 'font-weight:bold;' },
   };
   // node 和 browser 显示
-  if (this.$options.jsEnv === 'node') {
+  if (BaseEnv.isNode) {
     // 使用 chalk
-    console.log(chalk[styleMap[type].node](prefix), ...values);
+    console.log(_chalk[styleMap[type].node](prefix), ...values);
   } else {
     // 使用浏览器控制台 API 提供的样式化输出
     console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
   }
 };
 
-BaseConsole.log = function() {
+_console.log = function() {
   const stackInfo = this.getStackInfo();
   return this.show({ type: 'log', stackInfo, values: Array.from(arguments) });
 };
-BaseConsole.warn = function() {
+_console.warn = function() {
   const stackInfo = this.getStackInfo();
   return this.show({ type: 'warn', stackInfo, values: Array.from(arguments) });
 };
-BaseConsole.error = function() {
+_console.error = function() {
   const stackInfo = this.getStackInfo();
   return this.show({ type: 'error', stackInfo, values: Array.from(arguments) });
 };
-BaseConsole.success = function() {
+_console.success = function() {
   const stackInfo = this.getStackInfo();
   return this.show({ type: 'success', stackInfo, values: Array.from(arguments) });
 };
-BaseConsole.end = function() {
+_console.end = function() {
   const stackInfo = this.getStackInfo();
   return this.show({ type: 'end', stackInfo, values: Array.from(arguments) });
 };
-BaseConsole.dir = function() {
+_console.dir = function() {
   const stackInfo = this.getStackInfo();
   this.show({ type: 'log', typeText: 'dir', stackInfo });
 
   for (const value of arguments) {
-    if (this.$options.jsEnv === 'node') {
+    if (BaseEnv.isNode) {
       console.dir(value, this.$options.dirOptions);
     } else {
       console.dir(value);
     }
   }
 };
-BaseConsole.table = function() {
+_console.table = function() {
   const stackInfo = this.getStackInfo();
   this.show({ type: 'log', typeText: 'table', stackInfo });
 
   console.table(...arguments);
 };
-BaseConsole.group = function(label) {
+_console.group = function(label) {
   const stackInfo = this.getStackInfo();
   this.show({ type: 'bold', typeText: 'group', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.group(label);
 };
-BaseConsole.groupCollapsed = function(label) {
+_console.groupCollapsed = function(label) {
   const stackInfo = this.getStackInfo();
   this.show({ type: 'bold', typeText: 'group', stackInfo });
 
@@ -140,7 +164,7 @@ BaseConsole.groupCollapsed = function(label) {
   console.groupCollapsed(label);
 };
 
-BaseConsole.groupAction = function(action = () => {
+_console.groupAction = function(action = () => {
 }, { label, collapse = false } = {}) {
   const stackInfo = this.getStackInfo();
   this.show({ type: 'bold', typeText: 'groupAction', stackInfo });

@@ -1,5 +1,6 @@
 // 基础模块。有同名原生对象的加 _ 区分
 export * from './base';
+export * from './_console';
 
 export * from './_Array';
 export * from './_Date';
