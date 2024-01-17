@@ -50,7 +50,7 @@ BaseConsole.getStackInfo = function() {
     // console.log({ stackArr, method, filePath });
     const filePrefix = (() => {
       if (this.$options.jsEnv === 'node') {
-        // windows 兼容 webstorm console 用 file:/// ，vscode 或普通命令行 file:// 可以指向
+        // windows 兼容 webstorm console 用 file:/// ，vscode 或普通命令行 file:// 可以正常跳转
         return process.platform.toLowerCase() === 'win32' ? String.raw`file:///` : String.raw`file://`;
       }
       return '';
@@ -62,67 +62,54 @@ BaseConsole.getStackInfo = function() {
     };
   }
 };
+BaseConsole.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
+  const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
+  // stackInfo 需要从具体方法传进来
+  const { method, filePath } = stackInfo;
+  // 前缀内容
+  let prefix = `[${date}] [${typeText}] ${filePath} ${method} :`;
+  // 样式映射
+  const styleMap = {
+    log: { node: 'blue', browser: 'color:blue;' },
+    warn: { node: 'yellow', browser: 'color:orange;' },
+    error: { node: 'red', browser: 'color:red;' },
+    success: { node: 'green', browser: 'color:green;' },
+    end: { node: 'grey', browser: 'color:grey;' },
+    bold: { node: 'bold', browser: 'font-weight:bold;' },
+  };
+  // node 和 browser 显示
+  if (this.$options.jsEnv === 'node') {
+    // 使用 chalk
+    console.log(chalk[styleMap[type].node](prefix), ...values);
+  } else {
+    // 使用浏览器控制台 API 提供的样式化输出
+    console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
+  }
+};
 
 BaseConsole.log = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[log]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.blue(date, type, filePath, method, ':'), ...arguments);
-  } else {
-    // chalk 只在 chrome 系列有效，在 safari 和 firefox 中无效，使用浏览器控制台 API 提供的样式化输出
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:blue;', ...arguments);
-  }
+  const stackInfo = this.getStackInfo();
+  return this.show({ type: 'log', stackInfo, values: Array.from(arguments) });
 };
 BaseConsole.warn = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[warn]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.yellow(date, type, filePath, method, ':'), ...arguments);
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:orange;', ...arguments);
-  }
+  const stackInfo = this.getStackInfo();
+  return this.show({ type: 'warn', stackInfo, values: Array.from(arguments) });
 };
 BaseConsole.error = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[error]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.red(date, type, filePath, method, ':'), ...arguments);
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:red;', ...arguments);
-  }
+  const stackInfo = this.getStackInfo();
+  return this.show({ type: 'error', stackInfo, values: Array.from(arguments) });
 };
 BaseConsole.success = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[success]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.green(date, type, filePath, method, ':'), ...arguments);
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:green;', ...arguments);
-  }
+  const stackInfo = this.getStackInfo();
+  return this.show({ type: 'success', stackInfo, values: Array.from(arguments) });
 };
 BaseConsole.end = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[end]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.grey(date, type, filePath, method, ':'), ...arguments);
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:grey;', ...arguments);
-  }
+  const stackInfo = this.getStackInfo();
+  return this.show({ type: 'end', stackInfo, values: Array.from(arguments) });
 };
 BaseConsole.dir = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[dir]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.blue(date, type, filePath, method, ':'));
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:blue;');
-  }
+  const stackInfo = this.getStackInfo();
+  this.show({ type: 'log', typeText: 'dir', stackInfo });
 
   for (const value of arguments) {
     if (this.$options.jsEnv === 'node') {
@@ -133,52 +120,32 @@ BaseConsole.dir = function() {
   }
 };
 BaseConsole.table = function() {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[table]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.blue(date, type, filePath, method, ':'));
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'color:blue;');
-  }
+  const stackInfo = this.getStackInfo();
+  this.show({ type: 'log', typeText: 'table', stackInfo });
 
   console.table(...arguments);
 };
-BaseConsole.group = function(label = `console.group [${new _Date()}]`) {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[group]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.bold(date, type, filePath, method, ':'));
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'font-weight:bold;');
-  }
+BaseConsole.group = function(label) {
+  const stackInfo = this.getStackInfo();
+  this.show({ type: 'bold', typeText: 'group', stackInfo });
 
+  label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.group(label);
 };
-BaseConsole.groupCollapsed = function(label = `console.group [${new _Date()}]`) {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[group]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.bold(date, type, filePath, method, ':'));
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'font-weight:bold;');
-  }
+BaseConsole.groupCollapsed = function(label) {
+  const stackInfo = this.getStackInfo();
+  this.show({ type: 'bold', typeText: 'group', stackInfo });
 
+  label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.groupCollapsed(label);
 };
 
-BaseConsole.groupAction = function(action = () => {}, { label = `console.group [${new _Date()}]`, collapse = false } = {}) {
-  const { method, filePath } = this.getStackInfo();
-  const date = `[${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  const type = '[groupAction]';
-  if (this.$options.jsEnv === 'node') {
-    console.log(chalk.bold(date, type, filePath, method, ':'));
-  } else {
-    console.log(`%c ${date} ${type} ${filePath} ${method} :`, 'font-weight:bold;');
-  }
+BaseConsole.groupAction = function(action = () => {
+}, { label, collapse = false } = {}) {
+  const stackInfo = this.getStackInfo();
+  this.show({ type: 'bold', typeText: 'groupAction', stackInfo });
 
+  label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console[collapse ? 'groupCollapsed' : 'group'](label);
   action();
   console.groupEnd();
