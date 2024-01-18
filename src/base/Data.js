@@ -1,17 +1,6 @@
 // 数据处理，处理多格式数据用
 export const Data = Object.create(null);
 /**
- * 优化 typeof
- * @param value
- * @returns {'undefined'|'object'|'boolean'|'number'|'string'|'function'|'symbol'|'bigint'|string}
- */
-Data.typeof = function(value) {
-  if (value === null) {
-    return 'null';
-  }
-  return typeof value;
-};
-/**
  * 判断简单类型
  * @param value
  * @returns {boolean}

@@ -3,26 +3,64 @@ import { _Object } from './_Object';
 import { _Date } from './_Date';
 
 // 简易 chalk
-const _chalk = {
-  blue(message) {
-    return `\x1b[34m${message}\x1b[0m`;
-  },
-  yellow(message) {
-    return `\x1b[33m${message}\x1b[0m`;
-  },
-  red(message) {
-    return `\x1b[31m${message}\x1b[0m`;
-  },
-  green(message) {
-    return `\x1b[32m${message}\x1b[0m`;
-  },
-  grey(message) {
-    return `\x1b[90m${message}\x1b[0m`;
-  },
-  bold(message) {
-    return `\x1b[1m${message}\x1b[0m`;
-  },
+const styleMap = {
+  black: [30, 39],
+  red: [31, 39],
+  green: [32, 39],
+  yellow: [33, 39],
+  blue: [34, 39],
+  magenta: [35, 39],
+  cyan: [36, 39],
+  white: [37, 39],
+
+  blackBright: [90, 39],
+  gray: [90, 39],
+  grey: [90, 39],
+  redBright: [91, 39],
+  greenBright: [92, 39],
+  yellowBright: [93, 39],
+  blueBright: [94, 39],
+  magentaBright: [95, 39],
+  cyanBright: [96, 39],
+  whiteBright: [97, 39],
+
+  bgBlack: [40, 49],
+  bgRed: [41, 49],
+  bgGreen: [42, 49],
+  bgYellow: [43, 49],
+  bgBlue: [44, 49],
+  bgMagenta: [45, 49],
+  bgCyan: [46, 49],
+  bgWhite: [47, 49],
+
+  bgBlackBright: [100, 49],
+  bgGray: [100, 49],
+  bgGrey: [100, 49],
+  bgRedBright: [101, 49],
+  bgGreenBright: [102, 49],
+  bgYellowBright: [103, 49],
+  bgBlueBright: [104, 49],
+  bgMagentaBright: [105, 49],
+  bgCyanBright: [106, 49],
+  bgWhiteBright: [107, 49],
+
+  reset: [0, 0],
+  bold: [1, 22],
+  dim: [2, 22],
+  italic: [3, 23],
+  underline: [4, 24],
+  overline: [53, 55],
+  inverse: [7, 27],
+  hidden: [8, 28],
+  strikethrough: [9, 29],
 };
+const _chalk = Object.create(null);
+for (const [method, [start, end]] of Object.entries(styleMap)) {
+  _chalk[method] = function(message) {
+    return `\x1b[${start}m${message}\x1b[${end}m`;
+  };
+}
+
 export const _console = Object.create(console);
 // 选项，初始保存和 create 方法用
 _console.$options = {
@@ -80,13 +118,14 @@ _console.getStackInfo = function() {
       return '';
     })();
     return {
-      method,
-      // node import 方式带前缀，require 方式拼 filePrefix；browser 端 filePrefix 设置 '' 即可
+      // node: import 方式带前缀，require 方式拼 filePrefix; browser: filePrefix 设置 '' 即可
       filePath: filePath.startsWith(filePrefix) ? filePath : `${filePrefix}${filePath}`,
+      method,
     };
   }
 };
 _console.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
+  // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
   const { method, filePath } = stackInfo;

@@ -40,3 +40,15 @@ BaseEnv.osPlatform = (() => {
 })();
 BaseEnv.isWindows = BaseEnv.osPlatform === 'windows';
 BaseEnv.isMac = BaseEnv.osPlatform === 'mac';
+
+/**
+ * 优化 typeof
+ * @param value
+ * @returns {"undefined"|"object"|"boolean"|"number"|"string"|"function"|"symbol"|"bigint"|string}
+ */
+export function _typeof(value) {
+  if (value === null) {
+    return 'null';
+  }
+  return typeof value;
+}
