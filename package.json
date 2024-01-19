@@ -10,8 +10,7 @@
   "dependencies": {
     "axios": "^1.6.5",
     "idb-keyval": "^6.2.1",
-    "js-cookie": "^3.0.5",
-    "node-clipboardy": "^1.0.3"
+    "js-cookie": "^3.0.5"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
@@ -33,11 +32,11 @@
       "node": "./dist/node/base.js"
     },
     "./dev": {
-      "browser": "./src/dev/browser/index.js",
+      "browser": "./src/dev/index-browser.js",
       "node": "./dist/node/dev.js"
     },
     "./storage": {
-      "browser": "./src/storage/browser/index.js",
+      "browser": "./src/storage/index-browser.js",
       "node": "./dist/node/storage.js"
     },
     "./*": "./*"

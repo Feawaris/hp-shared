@@ -64,14 +64,14 @@ export default [
     plugins: browserPlugins,
   },
   {
-    input: 'src/dev/browser/index.js',
+    input: 'src/dev/index-browser.js',
     output: [
       getOutputItem({ file: 'dist/browser/dev.js', format: 'esm' }),
     ],
     plugins: browserPlugins,
   },
   {
-    input: 'src/storage/browser/index.js',
+    input: 'src/storage/index-browser.js',
     output: [
       getOutputItem({ file: 'dist/browser/storage.js', format: 'esm' }),
     ],
@@ -96,14 +96,14 @@ export default [
     plugins: nodePlugins,
   },
   {
-    input: 'src/dev/node/index.js',
+    input: 'src/dev/index-node.js',
     output: [
       getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
     ],
     plugins: nodePlugins,
   },
   {
-    input: 'src/storage/node/index.js',
+    input: 'src/storage/index-node.js',
     output: [
       getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
     ],

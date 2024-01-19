@@ -1,7 +1,5 @@
 // cookie操作
 import jsCookie from 'js-cookie';
-// 用到的库也导出便于自行选用
-export { jsCookie };
 
 // 同 js-cookie 的选项合并方式
 function assign(target, ...sources) {

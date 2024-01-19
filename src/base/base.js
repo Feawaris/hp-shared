@@ -24,7 +24,9 @@ BaseEnv.osPlatform = (() => {
     if (text.startsWith('mac')) {
       return 'mac';
     }
-    return '';
+    if (text.startsWith('linux')) {
+      return 'linux';
+    }
   }
   if (BaseEnv.isNode) {
     const text = process.platform.toLowerCase();
@@ -34,12 +36,15 @@ BaseEnv.osPlatform = (() => {
     if (text.startsWith('darwin')) {
       return 'mac';
     }
-    return '';
+    if (text.startsWith('linux')) {
+      return 'linux';
+    }
   }
   return '';
 })();
 BaseEnv.isWindows = BaseEnv.osPlatform === 'windows';
 BaseEnv.isMac = BaseEnv.osPlatform === 'mac';
+BaseEnv.isLinux = BaseEnv.osPlatform === 'linux';
 
 /**
  * 优化 typeof
