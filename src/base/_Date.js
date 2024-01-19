@@ -28,9 +28,15 @@ export class _Date extends Date {
     super(...args);
 
     // [新增]
+    // 这里惰性求值，不使用如 this.year=xx 的静态方式
     Object.defineProperty(this, 'year', {
       get() {
         return this.getFullYear();
+      },
+    });
+    Object.defineProperty(this, 'isLeapYear', {
+      get() {
+        return this.year % 4 === 0 && this.year % 100 !== 0 || this.year % 400 === 0;
       },
     });
     Object.defineProperty(this, 'month', {

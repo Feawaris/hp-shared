@@ -55,6 +55,18 @@ export class _Set extends Set {
       return otherSets.every(set => !set.includes(value));
     }).to_Set();
   }
+  /**
+   * 简写方式，对应 python 运算符 &,|,-
+   */
+  static '&'() {
+    return this.intersection(...arguments);
+  }
+  static '|'() {
+    return this.union(...arguments);
+  }
+  static '-'() {
+    return this.complement(...arguments);
+  }
 
   /**
    * constructor
