@@ -77,7 +77,7 @@ export class _Storage {
   }
   // 移除
   remove(key) {
-    return localStorage.removeItem(key);
+    return this.storage.removeItem(key);
   }
   // 创建。通过配置默认参数创建新对象，简化传参
   create(options = {}) {
