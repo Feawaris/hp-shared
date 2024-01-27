@@ -76,61 +76,60 @@ _console.create = function(options = {}) {
   _console.$options = _Object.deepAssign({}, this.$options, options);
   return _console;
 };
+// 根据堆栈跟踪格式提取详细信息
 _console.getStackInfo = function() {
   try {
     throw new Error();
   } catch (e) {
     const stackArr = e.stack.split('\n');
-    // chrome 的 stack 以 Error:xx\n 开头，safari 和 firefox 不同
-    const stackIndex = e.stack.startsWith('Error') ? 3 : 2;
-    const currentStr = (stackArr[stackIndex] || '').trim();
-    let { method, filePath } = (() => {
-      // chrome: at method (filePath) 格式
-      const atMethodPathMatch = /at\s*([^(\s]*)\s\(([^)]+)\)/[Symbol.match](currentStr);
-      if (atMethodPathMatch) {
-        const [input, method, filePath] = atMethodPathMatch;
-        return { method, filePath };
-      }
-      // chrome: at filePath 格式
-      const atPathMatch = /at\s*(\S*)/[Symbol.match](currentStr);
-      if (atPathMatch) {
-        const [input, filePath] = atPathMatch;
-        return { method: '', filePath };
-      }
-      // 非 chrome: method@filePath 格式
-      const notChromeMatch = /(.*)@(.*)/[Symbol.match](currentStr);
-      if (notChromeMatch) {
-        const [input, method, filePath] = notChromeMatch;
-        return { method, filePath };
-      }
-      return { method: '', filePath: '' };
-    })();
-    // windows node console 显示调整
-    if (BaseEnv.isNode && BaseEnv.isWindows) {
-      filePath = filePath.replaceAll('\\', '/');
+
+    // 定义正则表达式以匹配不同的堆栈格式
+    const chromeNodeRegex = /\s*at\s+(?:(.*?)\s+\()?(.*?):(\d+):(\d+)(?:\))?/;
+    const firefoxSafariRegex = /(.*?)@(.*?):(\d+):(\d+)/;
+
+    // 匹配，选择正确的对应正则和堆栈行：Chrome 和 Node 使用第 4 行，Firefox 和 Safari 使用第 3 行
+    const match = e.stack.startsWith('Error') ? chromeNodeRegex[Symbol.match](stackArr[3])
+      : firefoxSafariRegex[Symbol.match](stackArr[2]);
+
+    // 提取信息
+    if (match) {
+      const method = match[1] || '';
+      const filePath = match[2];
+      const line = Number.parseInt(match[3]);
+      const column = Number.parseInt(match[4]);
+
+      // 完整路径和显示用处理
+      const fullPath = `${filePath}:${line}:${column}`;
+      const fullPathShow = (() => {
+        if (BaseEnv.isNode) {
+          // windows 兼容 webstorm console 显示用 file:/// ，vscode 或普通命令行 file:// 可以正常跳转
+          const prefix = BaseEnv.isWindows ? String.raw`file:///` : String.raw`file://`;
+          // node: import 方式带了前缀，require 方式拼前缀上去
+          return fullPath.startsWith(prefix) ? fullPath : `${prefix}${fullPath}`;
+        }
+        return fullPath;
+      })();
+
+      return {
+        method,
+        fullPathShow,
+
+        fullPath,
+        filePath,
+        line,
+        column,
+      };
     }
-    // console.log({ stackArr, method, filePath });
-    const filePrefix = (() => {
-      if (BaseEnv.isNode) {
-        // windows 兼容 webstorm console 用 file:/// ，vscode 或普通命令行 file:// 可以正常跳转
-        return BaseEnv.isWindows ? String.raw`file:///` : String.raw`file://`;
-      }
-      return '';
-    })();
-    return {
-      // node: import 方式带前缀，require 方式拼 filePrefix; browser: filePrefix 设置 '' 即可
-      filePath: filePath.startsWith(filePrefix) ? filePath : `${filePrefix}${filePath}`,
-      method,
-    };
   }
 };
+
 _console.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
-  const { method, filePath } = stackInfo;
+  const { method, fullPathShow } = stackInfo;
   // 前缀内容
-  let prefix = `[${date}] [${typeText}] ${filePath} ${method} :`;
+  let prefix = `[${date}] [${typeText}] ${fullPathShow} ${method} :`;
   // 样式映射
   const styleMap = {
     log: { node: 'blue', browser: 'color:blue;' },

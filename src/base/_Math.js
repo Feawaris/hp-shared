@@ -3,51 +3,11 @@ import { _Array } from './_Array';
 import { _Set } from './_Set';
 export const _Math = Object.create(Math);
 
-// 常量
-// E [继承]
-// LN2 [继承]
-// LN10 [继承]
-// LOG2E [继承]
-// LOG10E [继承]
-// PI [继承]
-// SQRT1_2 [继承]
-// SQRT2 [继承]
 // 黄金分割比 PHI
 _Math.PHI = (Math.sqrt(5) - 1) / 2;
 _Math.PHI_BIG = (Math.sqrt(5) + 1) / 2;
 
-// 常规
-// abs [继承]
-// min [继承]
-// max [继承]
-// random [继承]
-// sign [继承]
-// hypot [继承]
-// clz32 [继承]
-// imul [继承]
-// fround [继承]
-
-// 取整
-// ceil [继承]
-// floor [继承]
-// round [继承]
-// trunc [继承]
-
 // 三角函数
-// sin [继承]
-// cos [继承]
-// tan [继承]
-// asin [继承]
-// acos [继承]
-// atan [继承]
-// sinh [继承]
-// cosh [继承]
-// tanh [继承]
-// asinh [继承]
-// acosh [继承]
-// atanh [继承]
-// atan2 [继承]
-// [新增]
 _Math.arcsin = Math.asin.bind(Math);
 _Math.arccos = Math.acos.bind(Math);
 _Math.arctan = Math.atan.bind(Math);
@@ -56,23 +16,12 @@ _Math.arcosh = Math.acosh.bind(Math);
 _Math.artanh = Math.atanh.bind(Math);
 
 // 对数
-// log2 [继承]
-// log10 [继承]
-// log1p [继承]
-// [定制]
 _Math.log = function(a, x) {
   return Math.log(x) / Math.log(a);
 };
 _Math.loge = Math.log.bind(Math);
 _Math.ln = Math.log.bind(Math);
 _Math.lg = Math.log10.bind(Math);
-
-// 指数
-// pow [继承]
-// sqrt [继承]
-// cbrt [继承]
-// exp [继承]
-// expm1 [继承]
 
 // 阶乘
 _Math.factorial = function(n) {
@@ -86,12 +35,10 @@ _Math.factorial = function(n) {
 _Math.A = function(n, m) {
   return _Math.factorial(n) / _Math.factorial(n - m);
 };
-_Math.Arrangement = _Math.A;
 // 组合 Combination
 _Math.C = function(n, m) {
   return _Math.A(n, m) / _Math.factorial(m);
 };
-_Math.Combination = _Math.C;
 
 // 数列
 _Math.Sequence = class {

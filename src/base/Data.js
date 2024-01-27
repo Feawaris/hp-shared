@@ -1,12 +1,14 @@
 // 数据处理，处理多格式数据用
+import { _typeof } from './base';
 export const Data = Object.create(null);
+
 /**
  * 判断简单类型
  * @param value
  * @returns {boolean}
  */
 Data.isSimpleType = function(value) {
-  return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(this.typeof(value));
+  return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(_typeof(value));
 };
 /**
  * 是否普通对象
