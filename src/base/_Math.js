@@ -1,27 +1,29 @@
 // 数学运算。对 Math 对象扩展，提供更直观和符合数学约定的名称
 import { _Array } from './_Array';
 import { _Set } from './_Set';
-export const _Math = Object.create(Math);
+import { _Number } from './_Number';
+
+export const _Math = Object.create(null);
 
 // 黄金分割比 PHI
 _Math.PHI = (Math.sqrt(5) - 1) / 2;
 _Math.PHI_BIG = (Math.sqrt(5) + 1) / 2;
 
 // 三角函数
-_Math.arcsin = Math.asin.bind(Math);
-_Math.arccos = Math.acos.bind(Math);
-_Math.arctan = Math.atan.bind(Math);
-_Math.arsinh = Math.asinh.bind(Math);
-_Math.arcosh = Math.acosh.bind(Math);
-_Math.artanh = Math.atanh.bind(Math);
+_Math.arcsin = Math.asin;
+_Math.arccos = Math.acos;
+_Math.arctan = Math.atan;
+_Math.arsinh = Math.asinh;
+_Math.arcosh = Math.acosh;
+_Math.artanh = Math.atanh;
 
 // 对数
 _Math.log = function(a, x) {
   return Math.log(x) / Math.log(a);
 };
-_Math.loge = Math.log.bind(Math);
-_Math.ln = Math.log.bind(Math);
-_Math.lg = Math.log10.bind(Math);
+_Math.loge = Math.log;
+_Math.ln = Math.log;
+_Math.lg = Math.log10;
 
 // 阶乘
 _Math.factorial = function(n) {
@@ -42,32 +44,36 @@ _Math.C = function(n, m) {
 
 // 数列
 _Math.Sequence = class {
-  // 生成数据方法
+  constructor(n = 0) {
+    this.n = n; // 默认项数，可用于方法的传参简化
+  }
+
+  // 生成数据方法，适合 an 有公式的，特殊类型需要单独定制 toArray
   toArray(length = this.n) {
-    let arr = [];
+    let result = [];
     for (let i = 0; i < length; i++) {
       const n = i + 1;
-      arr[i] = this.an(n);
+      result.push(this.an(n));
     }
-    return arr;
+    return result;
   }
-  to_Array() {
+  toCustomArray() {
     return new _Array(this.toArray(...arguments));
   }
   toSet() {
     return new Set(this.toArray(...arguments));
   }
-  to_Set() {
+  toCustomSet() {
     return new _Set(this.toArray(...arguments));
   }
 };
+
 // 等差数列
 _Math.ArithmeticSequence = class extends _Math.Sequence {
   constructor(a1, d, n = 0) {
-    super();
+    super(n);
     this.a1 = a1; // 首项
     this.d = d; // 公差
-    this.n = n; // 默认项数，可用于方法的传参简化
   }
   // 第n项
   an(n = this.n) {
@@ -81,10 +87,9 @@ _Math.ArithmeticSequence = class extends _Math.Sequence {
 // 等比数列
 _Math.GeometricSequence = class extends _Math.Sequence {
   constructor(a1, q, n = 0) {
-    super();
+    super(n);
     this.a1 = a1; // 首项
     this.q = q; // 公比
-    this.n = n; // 默认项数，可用于方法的传参简化
   }
   // 第n项
   an(n = this.n) {
@@ -101,13 +106,7 @@ _Math.GeometricSequence = class extends _Math.Sequence {
 // 斐波那契数列
 _Math.FibonacciSequence = class extends _Math.Sequence {
   constructor(n = 0) {
-    super();
-    Object.defineProperty(this, 'a1', {
-      get() {
-        return this.an(1);
-      },
-    });
-    this.n = n; // 默认项数，可用于方法的传参简化
+    super(n);
   }
   // 第n项
   an(n = this.n) {
@@ -120,45 +119,32 @@ _Math.FibonacciSequence = class extends _Math.Sequence {
 };
 // 素数数列
 _Math.PrimeSequence = class extends _Math.Sequence {
-  // 是否素数
-  static isPrime(x) {
-    if (x <= 1) {
-      return false;
-    }
-    for (let i = 2; i <= Math.sqrt(x); i++) {
-      if (x % i === 0) {
-        return false;
-      }
-    }
-    return true;
+  // 选择传 n 或 max 进行处理
+  constructor({ max = Infinity, n = 0 } = {}) {
+    super(n);
+    this.max = max;
   }
-  // 创建素数列表
-  static createList(a1, n) {
+  toArray({ max = this.max, n = this.n } = {}) {
+    if (max > 0 && max < Infinity) {
+      n = Infinity;
+    } else if (n > 0) {
+      max = Infinity;
+    }
+
     let result = [];
-    let value = a1;
-    while (result.length < n) {
-      if (this.isPrime(value)) {
+    let value = 2;
+    while (value < max && result.length < n) {
+      if (_Number.isPrime(value)) {
         result.push(value);
       }
-      value++;
+      value += 1;
     }
     return result;
   }
-
-  constructor(a1 = 2, n = 0) {
-    super();
-    this.value = this.constructor.createList(a1, n);
-    this.a1 = a1;
-    this.n = n; // 默认项数，可用于方法的传参简化
-  }
-
   an(n = this.n) {
-    if (n <= this.n) {
-      return this.value[n - 1];
-    }
-    return this.constructor.createList(this.a1, n)[n - 1];
+    return this.toArray({ n })[n - 1];
   }
   Sn(n = this.n) {
-    return this.toArray(n).reduce((total, val) => total + val, 0);
+    return this.toArray({ n }).reduce((total, val) => total + val, 0);
   }
 };

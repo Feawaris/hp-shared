@@ -150,53 +150,53 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
 };
 
 _console.log = function() {
-  const stackInfo = this.getStackInfo();
-  return this.show({ type: 'log', stackInfo, values: Array.from(arguments) });
+  const stackInfo = _console.getStackInfo();
+  return _console.show({ type: 'log', stackInfo, values: Array.from(arguments) });
 };
 _console.warn = function() {
-  const stackInfo = this.getStackInfo();
-  return this.show({ type: 'warn', stackInfo, values: Array.from(arguments) });
+  const stackInfo = _console.getStackInfo();
+  return _console.show({ type: 'warn', stackInfo, values: Array.from(arguments) });
 };
 _console.error = function() {
-  const stackInfo = this.getStackInfo();
-  return this.show({ type: 'error', stackInfo, values: Array.from(arguments) });
+  const stackInfo = _console.getStackInfo();
+  return _console.show({ type: 'error', stackInfo, values: Array.from(arguments) });
 };
 _console.success = function() {
-  const stackInfo = this.getStackInfo();
-  return this.show({ type: 'success', stackInfo, values: Array.from(arguments) });
+  const stackInfo = _console.getStackInfo();
+  return _console.show({ type: 'success', stackInfo, values: Array.from(arguments) });
 };
 _console.end = function() {
-  const stackInfo = this.getStackInfo();
-  return this.show({ type: 'end', stackInfo, values: Array.from(arguments) });
+  const stackInfo = _console.getStackInfo();
+  return _console.show({ type: 'end', stackInfo, values: Array.from(arguments) });
 };
 _console.dir = function() {
-  const stackInfo = this.getStackInfo();
-  this.show({ type: 'log', typeText: 'dir', stackInfo });
+  const stackInfo = _console.getStackInfo();
+  _console.show({ type: 'log', typeText: 'dir', stackInfo });
 
   for (const value of arguments) {
     if (BaseEnv.isNode) {
-      console.dir(value, this.$options.dirOptions);
+      console.dir(value, _console.$options.dirOptions);
     } else {
       console.dir(value);
     }
   }
 };
 _console.table = function() {
-  const stackInfo = this.getStackInfo();
-  this.show({ type: 'log', typeText: 'table', stackInfo });
+  const stackInfo = _console.getStackInfo();
+  _console.show({ type: 'log', typeText: 'table', stackInfo });
 
   console.table(...arguments);
 };
 _console.group = function(label) {
-  const stackInfo = this.getStackInfo();
-  this.show({ type: 'bold', typeText: 'group', stackInfo });
+  const stackInfo = _console.getStackInfo();
+  _console.show({ type: 'bold', typeText: 'group', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.group(label);
 };
 _console.groupCollapsed = function(label) {
-  const stackInfo = this.getStackInfo();
-  this.show({ type: 'bold', typeText: 'group', stackInfo });
+  const stackInfo = _console.getStackInfo();
+  _console.show({ type: 'bold', typeText: 'group', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.groupCollapsed(label);
@@ -204,8 +204,8 @@ _console.groupCollapsed = function(label) {
 
 _console.groupAction = function(action = () => {
 }, { label, collapse = false } = {}) {
-  const stackInfo = this.getStackInfo();
-  this.show({ type: 'bold', typeText: 'groupAction', stackInfo });
+  const stackInfo = _console.getStackInfo();
+  _console.show({ type: 'bold', typeText: 'groupAction', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console[collapse ? 'groupCollapsed' : 'group'](label);

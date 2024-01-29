@@ -19,7 +19,7 @@ export class _Set extends Set {
     const [first, ...others] = sets;
     return first.filter((value) => {
       return others.every(set => set.includes(value));
-    }).to_Set();
+    }).toCustomSet();
   }
   /**
    * [新增] 并集
@@ -35,7 +35,7 @@ export class _Set extends Set {
     // 统一类型处理
     sets = new _Array(sets).map(set => new _Array(set));
 
-    return sets.flat().to_Set();
+    return sets.flat().toCustomSet();
   }
   /**
    * [新增] 补集
@@ -53,7 +53,7 @@ export class _Set extends Set {
     otherSets = new _Array(otherSets).map(arg => new _Array(arg));
     return mainSet.filter((value) => {
       return otherSets.every(set => !set.includes(value));
-    }).to_Set();
+    }).toCustomSet();
   }
   /**
    * 简写方式，对应 python 运算符 &,|,-
@@ -129,7 +129,7 @@ export class _Set extends Set {
   /**
    * 生成
    */
-  // 直接通过 to_Array 和 to_Set 转换操作即可，无需重复定制
+  // 直接通过 toCustomArray 和 toCustomSet 转换操作即可，无需重复定制
 
   /**
    * 转换系列方法：转换成原始值和其他类型
@@ -168,7 +168,7 @@ export class _Set extends Set {
     return Array.from(this);
   }
   // [新增]
-  to_Array() {
+  toCustomArray() {
     return new _Array(this);
   }
   // [新增]

@@ -1,12 +1,5 @@
 export class _String extends String {
   /**
-   * Static
-   */
-  // static fromCharCode [继承]
-  // static fromCodePoint [继承]
-  // static raw [继承]
-
-  /**
    * [新增] 首字母大写
    * @param name
    * @returns {string}
@@ -67,20 +60,6 @@ export class _String extends String {
   constructor(value) {
     super(value);
   }
-
-  // anchor 继承
-  // big 继承
-  // blink 继承
-  // bold 继承
-  // fixed 继承
-  // fontcolor 继承
-  // fontsize 继承
-  // italics 继承
-  // link 继承
-  // small 继承
-  // strike 继承
-  // sub 继承
-  // sup 继承
 
   // [Symbol.iterator] 继承
   // length 继承

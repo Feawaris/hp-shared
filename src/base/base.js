@@ -1,4 +1,18 @@
-// 运行环境
+/**
+ * 优化 typeof
+ * @param value
+ * @returns {"undefined"|"object"|"boolean"|"number"|"string"|"function"|"symbol"|"bigint"|string}
+ */
+export function _typeof(value) {
+  if (value === null) {
+    return 'null';
+  }
+  return typeof value;
+}
+
+/**
+ * 运行环境
+ */
 export const BaseEnv = Object.create(null);
 // 代码运行平台: browser,node,...
 BaseEnv.codePlatform = (() => {
@@ -45,15 +59,3 @@ BaseEnv.osPlatform = (() => {
 BaseEnv.isWindows = BaseEnv.osPlatform === 'windows';
 BaseEnv.isMac = BaseEnv.osPlatform === 'mac';
 BaseEnv.isLinux = BaseEnv.osPlatform === 'linux';
-
-/**
- * 优化 typeof
- * @param value
- * @returns {"undefined"|"object"|"boolean"|"number"|"string"|"function"|"symbol"|"bigint"|string}
- */
-export function _typeof(value) {
-  if (value === null) {
-    return 'null';
-  }
-  return typeof value;
-}

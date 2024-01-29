@@ -78,7 +78,7 @@ export class _Array extends Array {
   }
   // [新增] 去重
   unique(options = {}) {
-    const value = this.to_Set().to_Array();
+    const value = this.toCustomSet().toCustomArray();
     this.clear().push(...value);
     return this;
   }
@@ -194,12 +194,15 @@ export class _Array extends Array {
   toArray() {
     return Array.from(this);
   }
+  toCustomArray() {
+    return new _Array(this);
+  }
   // [新增]
   toSet() {
     return new Set(this);
   }
   // [新增]
-  to_Set() {
+  toCustomSet() {
     return new _Set(this);
   }
 }

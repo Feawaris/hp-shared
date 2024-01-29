@@ -7,6 +7,7 @@ export * from './_Date';
 export * from './_Math';
 export * from './_Number';
 export * from './_Object';
+export * from './_Function';
 export * from './_Reflect';
 export * from './_Set';
 export * from './_String';
