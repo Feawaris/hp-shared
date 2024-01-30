@@ -14,8 +14,8 @@ export function _typeof(value) {
  * 运行环境
  */
 export const BaseEnv = Object.create(null);
-// 代码运行平台: browser,node,...
-BaseEnv.codePlatform = (() => {
+// 代码运行环境: browser,node,...
+BaseEnv.env = (() => {
   if (typeof window !== 'undefined' && globalThis === window) {
     return 'browser';
   }
@@ -24,10 +24,10 @@ BaseEnv.codePlatform = (() => {
   }
   return '';
 })();
-BaseEnv.isBrowser = BaseEnv.codePlatform === 'browser';
-BaseEnv.isNode = BaseEnv.codePlatform === 'node';
-// 操作系统平台: windows,mac,...
-BaseEnv.osPlatform = (() => {
+BaseEnv.isBrowser = BaseEnv.env === 'browser';
+BaseEnv.isNode = BaseEnv.env === 'node';
+// 操作系统: windows,mac,...
+BaseEnv.os = (() => {
   if (BaseEnv.isBrowser) {
     const text = navigator.userAgentData
       ? navigator.userAgentData.platform.toLowerCase()
@@ -56,6 +56,6 @@ BaseEnv.osPlatform = (() => {
   }
   return '';
 })();
-BaseEnv.isWindows = BaseEnv.osPlatform === 'windows';
-BaseEnv.isMac = BaseEnv.osPlatform === 'mac';
-BaseEnv.isLinux = BaseEnv.osPlatform === 'linux';
+BaseEnv.isWindows = BaseEnv.os === 'windows';
+BaseEnv.isMac = BaseEnv.os === 'mac';
+BaseEnv.isLinux = BaseEnv.os === 'linux';

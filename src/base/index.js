@@ -13,6 +13,3 @@ export * from './_Set';
 export * from './_String';
 
 export * from './Data';
-export * from './Style';
-export * from './Support';
-export * from './VueData';

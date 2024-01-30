@@ -25,7 +25,7 @@ const commandMap = {
  */
 clipboard.writeText = async function(text = '') {
   text = String(text);
-  const command = commandMap[BaseEnv.osPlatform].copy;
+  const command = commandMap[BaseEnv.os].copy;
   return new Promise((resolve, reject) => {
     const child = exec(command, (err, stdout) => {
       // 返回
@@ -40,7 +40,7 @@ clipboard.writeText = async function(text = '') {
  * @returns {Promise<string>}
  */
 clipboard.readText = async function() {
-  const command = commandMap[BaseEnv.osPlatform].paste;
+  const command = commandMap[BaseEnv.os].paste;
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout) => {
       // 移除末尾的换行符
@@ -58,7 +58,7 @@ clipboard.readText = async function() {
  */
 clipboard.writeTextSync = function(text = '') {
   text = String(text);
-  const command = commandMap[BaseEnv.osPlatform].copy;
+  const command = commandMap[BaseEnv.os].copy;
   execSync(command, { input: text, encoding: 'utf8' });
   // 返回
   return text;
@@ -68,7 +68,7 @@ clipboard.writeTextSync = function(text = '') {
  * @returns {string}
  */
 clipboard.readTextSync = function() {
-  const command = commandMap[BaseEnv.osPlatform].paste;
+  const command = commandMap[BaseEnv.os].paste;
   let stdout = execSync(command, { encoding: 'utf8' });
   // 移除末尾的换行符
   stdout = stdout.replace(/\r?\n$/, '');
