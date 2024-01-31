@@ -6,13 +6,13 @@ export class _Array extends Array {
     try {
       value = Array.from(value);
     } catch (e) {
-      console.warn('传参报错，将生成空数组', e);
+      console.warn('传参报错，将生成空数组[]', e);
       value = [];
     }
     if (value.length === 1 && typeof value[0] === 'number') {
-      // 稀疏数组问题，先调 super 生成 this 后再修改 this 内容
+      // 避免稀疏数组问题：先调 super 生成 this 后再修改 this 内容
       const temp = value[0];
-      value[0] = undefined;
+      value[0] = null;
       super(...value);
       this[0] = temp;
     } else {
@@ -20,60 +20,27 @@ export class _Array extends Array {
     }
   }
 
-  // 方法定制：原型同名方法+新增。部分定制成返回 this 便于链式操作
+  // 方法定制：同名方法+新增，部分定制成返回 this 便于链式操作
   push() {
     Array.prototype.push.apply(this, arguments);
     return this;
   }
-  pop(length = 1) {
-    for (let i = 0; i < length; i++) {
-      Array.prototype.pop.apply(this, arguments);
-    }
-    return this;
+  pop(index = -1) {
+    return this.splice(index, 1);
+  }
+  remove(value) {
+    const index = this.findIndex(val => Object.is(val, value));
+    return this.splice(index, 1);
   }
   unshift() {
     Array.prototype.unshift.apply(this, arguments);
     return this;
   }
-  shift(length = 1) {
-    for (let i = 0; i < length; i++) {
-      Array.prototype.shift.apply(this, arguments);
-    }
-    return this;
+  shift(index = 0) {
+    return this.splice(index, 1);
   }
-  splice() {
-    Array.prototype.splice.apply(this, arguments);
-    return this;
-  }
-  // 删除
-  delete(value) {
-    const index = this.findIndex(val => val === value);
-    this.splice(index, 1);
-    return this;
-  }
-  // 清空
   clear() {
     this.splice(0);
-    return this;
-  }
-  // 去重
-  unique(options = {}) {
-    const value = this.toCustomSet().toCustomArray();
-    this.clear().push(...value);
-    return this;
-  }
-  // sort [继承]
-  // 随机排序数组
-  randomSort() {
-    for (let i = this.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this[i], this[j]] = [this[j], this[i]];
-    }
-    return this;
-  }
-  forEach() {
-    Array.prototype.forEach.apply(this, arguments);
-    return this;
   }
   with() {
     const value = Array.prototype.with.apply(this, arguments);
@@ -92,9 +59,7 @@ export class _Array extends Array {
     return new this.constructor(value);
   }
 
-  /**
-   * 转换系列方法：转换成原始值和其他类型
-   */
+  // 转换系列方法：转换成原始值或其他类型
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
@@ -133,6 +98,7 @@ export class _Array extends Array {
     return new _Set(this);
   }
 }
+
 /**
  * 属性名统一成数组格式
  * @param names 属性名。格式 'a,b,c' 或 ['a','b','c']

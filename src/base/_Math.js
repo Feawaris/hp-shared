@@ -41,6 +41,8 @@ _Math.A = function(n, m) {
 _Math.C = function(n, m) {
   return _Math.A(n, m) / _Math.factorial(m);
 };
+_Math.Arrangement = _Math.A;
+_Math.Combination = _Math.C;
 
 // 数列
 _Math.Sequence = class {

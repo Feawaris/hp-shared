@@ -12,7 +12,7 @@ export class _Set extends Set {
     super(value);
   }
 
-  // 方法定制：原型同名方法+新增方法。部分定制成返回 this 便于链式操作
+  // 方法定制：同名方法+新增，部分定制成返回 this 便于链式操作
   add(...values) {
     for (const value of values) {
       Set.prototype.add.apply(this, arguments);
@@ -23,20 +23,10 @@ export class _Set extends Set {
     for (const value of values) {
       Set.prototype.delete.apply(this, arguments);
     }
-    return this;
-  }
-  clear() {
-    Set.prototype.clear.apply(this, arguments);
-    return this;
-  }
-  forEach() {
-    Set.prototype.forEach.apply(this, arguments);
-    return this;
+    return new this.constructor(values);
   }
 
-  /**
-   * 转换系列方法：转换成原始值和其他类型
-   */
+  // 转换系列方法：转换成原始值或其他类型
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
@@ -59,7 +49,7 @@ export class _Set extends Set {
     return this.size > 0;
   }
   toJSON() {
-    return this.toArray();
+    return Array.from(this);
   }
   toArray() {
     return Array.from(this);
@@ -76,7 +66,7 @@ export class _Set extends Set {
 }
 
 /**
- * 交集
+ * 交集 intersection
  * @param sets
  * @returns {*}
  */
@@ -95,7 +85,7 @@ _Set.intersection = function(...sets) {
   }).toCustomSet();
 };
 /**
- * 并集
+ * 并集 union
  * @param sets
  * @returns {*}
  */
@@ -111,7 +101,7 @@ _Set.union = function(...sets) {
   return sets.flat().toCustomSet();
 };
 /**
- * 补集
+ * 补集 complement
  * @param mainSet
  * @param otherSets
  * @returns {*}

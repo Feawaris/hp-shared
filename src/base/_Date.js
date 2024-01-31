@@ -77,9 +77,7 @@ export class _Date extends Date {
     });
   }
 
-  /**
-   * set 系列方法：定制成返回 this 便于链式操作
-   */
+  // set 系列方法：定制成返回 this 便于链式操作
   setTime() {
     Date.prototype.setTime.apply(this, arguments);
     return this;
@@ -147,9 +145,7 @@ export class _Date extends Date {
     return this;
   }
 
-  /**
-   * 转换系列方法：转换成原始值和其他类型
-   */
+  // 转换系列方法：转换成原始值或其他类型
   [Symbol.toPrimitive](hint) {
     if (hint === 'number') {
       return this.toNumber();
