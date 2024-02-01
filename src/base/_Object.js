@@ -1,43 +1,120 @@
 // 对象
-import { _Reflect } from './_Reflect';
 import { _Array } from './_Array';
 
 export const _Object = Object.create(null);
+
 /**
- * 浅合并对象。写法同 Object.assign，通过重定义方式合并，解决 Object.assign 合并两边同名属性混有 value写法 和 get/set写法 时报 TypeError: Cannot set property b of #<Object> which has only a getter 的问题
+ * 获取属性名。默认参数配置成同 Object.keys 行为
  * @param target 目标对象
- * @param sources 数据源。一个或多个对象
+ * @param includeSymbol 是否包含 symbol 属性
+ * @param includeNotEnumerable 是否包含不可枚举属性
+ * @param includeExtend 是否包含承继属性
+ * @param includeExtendFromObjectPrototype 继承场景下是否包含继承自 Object.prototype 的属性，默认 false 以便普通方式 {} 和 Object.create(null) 方式统一关注点
+ * @returns {any[]}
+ */
+_Object.keys = function(target, { includeSymbol = false, includeNotEnumerable = false, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
+  // 选项收集
+  const options = { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype };
+  // set用于key去重
+  let set = new Set();
+  // 自身属性筛选
+  const ownKeys = Reflect.ownKeys(target);
+  for (const key of ownKeys) {
+    const desc = Object.getOwnPropertyDescriptor(target, key);
+    // 忽略 symbol 属性的情况
+    if (typeof key === 'symbol' && !includeSymbol) {
+      continue;
+    }
+    // 忽略不可列举属性的情况
+    if (!desc.enumerable && !includeNotEnumerable) {
+      continue;
+    }
+    // 加入
+    set.add(key);
+  }
+  // 继承属性
+  if (includeExtend) {
+    const __proto__ = Object.getPrototypeOf(target);
+    if ((__proto__ !== null) && (__proto__ === Object.prototype && includeExtendFromObjectPrototype)) {
+      const parentKeys = _Object.keys(__proto__, options);
+      for (const parentKey of parentKeys) {
+        set.add(parentKey);
+      }
+    }
+  }
+  // 返回
+  return Array.from(set);
+};
+// 对应 keys 配套 values 和 entries
+_Object.values = function(target, options = {}) {
+  const keys = _Object.keys(target, options);
+  return keys.map(key => target[key]);
+};
+_Object.entries = function(target, options = {}) {
+  const keys = _Object.keys(target, options);
+  return keys.map(key => [key, target[key]]);
+};
+
+// 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作
+_Object.getOwner = function(target, key) {
+  if (Object.hasOwn(target, key)) {
+    return target;
+  }
+  let __proto__ = Object.getPrototypeOf(target);
+  if (__proto__ === null) {
+    return null;
+  }
+  return _Object.getOwner(__proto__, key);
+};
+// 获取属性描述对象，相比 Object.getOwnPropertyDescriptor 能拿到继承属性的描述对象
+_Object.getPropertyDescriptor = function(target, key) {
+  const owner = _Object.getOwner(target, key);
+  if (owner) {
+    return Object.getOwnPropertyDescriptor(owner, key);
+  }
+};
+_Object.getPropertyDescriptors = function(target, options = {}) {
+  options = Object.assign({ includeSymbol: true, includeNotEnumerable: true, includeExtend: true }, options);
+  const keys = _Object.keys(target, options);
+  const entries = keys.map(key => [key, _Object.getPropertyDescriptor(target, key)]);
+  return Object.fromEntries(entries);
+};
+
+/**
+ * 浅合并对象。写法同 Object.assign，通过重定义方式合并以对 get/set 惰性求值的属性的处理
+ * @param target 目标对象
+ * @param sources 数据源
  * @returns {{}}
  */
-_Object.assign = function(target = {}, ...sources) {
+_Object.assign = function(target, ...sources) {
   for (const source of sources) {
-    // 不使用 target[key] = value 写法，直接使用 Object.defineProperty 重定义
-    for (const [key, desc] of Object.entries(Object.getOwnPropertyDescriptors(source))) {
+    const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
+    for (const key of keys) {
+      const desc = Object.getOwnPropertyDescriptor(source, key);
       Object.defineProperty(target, key, desc);
     }
   }
   return target;
 };
 /**
- * 深合并对象。同 assign 一样也会对属性进行重定义
+ * 深合并对象。写法同 assign 方法
  * @param target 目标对象
  * @param sources 数据源
  * @returns {{}}
  */
 _Object.deepAssign = function(target, ...sources) {
-  if (!target) {
-    return this.assign({}, ...sources);
-  }
+  // console.log('deepAssign', { target, sources });
   for (const source of sources) {
-    for (const [key, desc] of Object.entries(Object.getOwnPropertyDescriptors(source))) {
+    const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
+    for (const key of keys) {
+      const desc = Object.getOwnPropertyDescriptor(source, key);
       if ('value' in desc) {
         // value 写法：对象递归处理，其他直接定义
         if (Object.prototype.toString.apply(desc.value) === '[object Object]') {
-          Object.defineProperty(target, key, {
-            ...desc,
-            value: this.deepAssign(target[key], desc.value),
-          });
+          // console.log('if', target, key, desc);
+          Object.defineProperty(target, key, { ...desc, value: _Object.deepAssign(target[key] || {}, desc.value) });
         } else {
+          // console.warn('else', target, key, desc);
           Object.defineProperty(target, key, desc);
         }
       } else {
@@ -50,132 +127,32 @@ _Object.deepAssign = function(target, ...sources) {
 };
 
 /**
- * 获取属性名。默认参数配置成同 Object.keys 行为
- * @param object 对象
- * @param symbol 是否包含 symbol 属性
- * @param notEnumerable 是否包含不可列举属性
- * @param extend 是否包含承继属性
- * @returns {any[]}
- */
-_Object.keys = function(object, { symbol = false, notEnumerable = false, extend = false } = {}) {
-  // 选项收集
-  const options = { symbol, notEnumerable, extend };
-  // set用于key去重
-  let set = new Set();
-  // 自身属性筛选
-  const descs = Object.getOwnPropertyDescriptors(object);
-  for (const [key, desc] of _Reflect.ownEntries(descs)) {
-    // 忽略symbol属性的情况
-    if (!symbol && typeof key === 'symbol') {
-      continue;
-    }
-    // 忽略不可列举属性的情况
-    if (!notEnumerable && !desc.enumerable) {
-      continue;
-    }
-    // 其他属性加入
-    set.add(key);
-  }
-  // 继承属性
-  if (extend) {
-    const __proto__ = Object.getPrototypeOf(object);
-    if (__proto__ !== null) {
-      const parentKeys = this.keys(__proto__, options);
-      for (const parentKey of parentKeys) {
-        set.add(parentKey);
-      }
-    }
-  }
-  // 返回数组
-  return Array.from(set);
-};
-_Object.values = function() {
-};
-_Object.entries = function() {
-};
-
-/**
- * key自身所属的对象
- * @param object 对象
- * @param key 属性名
- * @returns {*|null}
- */
-_Object.owner = function(object, key) {
-  if (Object.prototype.hasOwnProperty.call(object, key)) {
-    return object;
-  }
-  let __proto__ = Object.getPrototypeOf(object);
-  if (__proto__ === null) {
-    return null;
-  }
-  return this.owner(__proto__, key);
-};
-/**
- * 获取属性描述对象，相比 Object.getOwnPropertyDescriptor，能拿到继承属性的描述对象
- * @param object
- * @param key
- * @returns {undefined|PropertyDescriptor}
- */
-_Object.descriptor = function(object, key) {
-  const findObject = this.owner(object, key);
-  if (!findObject) {
-    return undefined;
-  }
-  return Object.getOwnPropertyDescriptor(findObject, key);
-};
-/**
- * 对应 keys 获取 descriptors，传参同 keys 方法。可用于重定义属性
- * @param object 对象
- * @param symbol 是否包含 symbol 属性
- * @param notEnumerable 是否包含不可列举属性
- * @param extend 是否包含承继属性
- * @returns {(PropertyDescriptor|undefined)[]}
- */
-_Object.descriptors = function(object, { symbol = false, notEnumerable = false, extend = false } = {}) {
-  // 选项收集
-  const options = { symbol, notEnumerable, extend };
-  const _keys = this.keys(object, options);
-  return _keys.map(key => this.descriptor(object, key));
-};
-/**
- * 对应 keys 获取 descriptorEntries，传参同 keys 方法。可用于重定义属性
- * @param object 对象
- * @param symbol 是否包含 symbol 属性
- * @param notEnumerable 是否包含不可列举属性
- * @param extend 是否包含承继属性
- * @returns {[*,(PropertyDescriptor|undefined)][]}
- */
-_Object.descriptorEntries = function(object, { symbol = false, notEnumerable = false, extend = false } = {}) {
-  // 选项收集
-  const options = { symbol, notEnumerable, extend };
-  const _keys = this.keys(object, options);
-  return _keys.map(key => [key, this.descriptor(object, key)]);
-};
-
-/**
  * 过滤对象
- * @param object 对象
+ * @param target 目标对象
  * @param pick 挑选属性
  * @param omit 忽略属性
- * @param emptyPick pick 为空时的取值。all 全部key，empty 空
+ * @param emptyPick pick 为空时的取值。all: 全部 key, empty: 空
  * @param separator 同 namesToArray 的 separator 参数
- * @param symbol 同 keys 的 symbol 参数
- * @param notEnumerable 同 keys 的 notEnumerable 参数
- * @param extend 同 keys 的 extend 参数
+ * @param includeSymbol 同 keys 的 symbol 参数
+ * @param includeNotEnumerable 同 keys 的同名参数
+ * @param includeExtend 同 keys 的同名参数
+ * @param includeExtendFromObjectPrototype 同 keys 的同名参数
  * @returns {{}}
  */
-_Object.filter = function(object, { pick = [], omit = [], emptyPick = 'all', separator = ',', symbol = true, notEnumerable = false, extend = true } = {}) {
-  let result = {};
+_Object.filter = function(target, { pick = [], omit = [], emptyPick = 'all', separator = ',', includeSymbol = true, includeNotEnumerable = true, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
   // pick、omit 统一成数组格式
   pick = _Array.namesToArray(pick, { separator });
   omit = _Array.namesToArray(omit, { separator });
-  let _keys = [];
-  // pick有值直接拿，为空时根据 emptyPick 默认拿空或全部key
-  _keys = pick.length > 0 || emptyPick === 'empty' ? pick : this.keys(object, { symbol, notEnumerable, extend });
-  // omit筛选
-  _keys = _keys.filter(key => !omit.includes(key));
-  for (const key of _keys) {
-    const desc = this.descriptor(object, key);
+
+  let keys = [];
+  // pick 有值直接拿，为空时根据 emptyPick 默认拿空或全部 key
+  keys = (pick.length > 0 || emptyPick === 'empty') ? pick : _Object.keys(target, { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype });
+  // omit 筛选
+  keys = keys.filter(key => !omit.includes(key));
+
+  let result = {};
+  for (const key of keys) {
+    const desc = _Object.getPropertyDescriptor(target, key);
     // 属性不存在导致desc得到undefined时不设置值
     if (desc) {
       Object.defineProperty(result, key, desc);
@@ -183,23 +160,11 @@ _Object.filter = function(object, { pick = [], omit = [], emptyPick = 'all', sep
   }
   return result;
 };
-/**
- * 通过挑选方式选取对象。filter 的简写方式
- * @param object 对象
- * @param keys 属性名集合
- * @param options 选项，同 filter 的各选项值
- * @returns {{}}
- */
-_Object.pick = function(object, keys = [], options = {}) {
-  return this.filter(object, { pick: keys, emptyPick: 'empty', ...options });
+// 通过挑选方式过滤对象
+_Object.pick = function(target, keys = [], options = {}) {
+  return _Object.filter(target, { pick: keys, emptyPick: 'empty', ...options });
 };
-/**
- * 通过排除方式选取对象。filter 的简写方式
- * @param object 对象
- * @param keys 属性名集合
- * @param options 选项，同 filter 的各选项值
- * @returns {{}}
- */
+// 通过排除方式过滤对象
 _Object.omit = function(object, keys = [], options = {}) {
-  return this.filter(object, { omit: keys, ...options });
+  return _Object.filter(object, { omit: keys, ...options });
 };
