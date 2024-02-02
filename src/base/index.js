@@ -11,5 +11,6 @@ export * from './_Object';
 export * from './_Function';
 export * from './_Reflect';
 export * from './_String';
+export * from './_JSON';
 
 export * from './Data';
