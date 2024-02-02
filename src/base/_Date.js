@@ -254,3 +254,7 @@ export class _Date extends Date {
     return this.toString();
   }
 }
+
+_Date.sleep = async function(seconds = 0.3) {
+  return await new Promise(resolve => setTimeout(resolve, seconds * 1000));
+};
