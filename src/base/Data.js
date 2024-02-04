@@ -301,7 +301,7 @@ VueData.getRestFromAttrs = function(attrs, { props, emits, list = [] } = {}) {
     }).flat();
   })();
   list = (() => {
-    const arr = typeof list === 'string'
+    const arr = _typeof(list) === 'string'
       ? list.split(',')
       : list instanceof Array ? list : [];
     return arr.map(val => val.trim()).filter(val => val);

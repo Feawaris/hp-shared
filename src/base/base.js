@@ -1,7 +1,7 @@
 /**
  * 优化 typeof
  * @param value
- * @returns {"undefined"|"object"|"boolean"|"number"|"string"|"function"|"symbol"|"bigint"|string}
+ * @returns {'null'|undefined'|'number'|'string'|'boolean'|'bigint'|'symbol'|'object'|'function"}
  */
 export function _typeof(value) {
   if (value === null) {

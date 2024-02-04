@@ -1,15 +1,16 @@
+import { _typeof } from './base';
 import { _Object } from './_Object';
 
 export const _JSON = Object.create(JSON);
 // 判断类型，只处理 JSON 支持的类型，前后端数据交互用
-_JSON.getType = function(value) {
+_JSON.typeof = function(value) {
   if ([null, undefined].includes(value)) {
     return 'null';
   }
   if (Array.isArray(value)) {
     return 'array';
   }
-  const type = typeof value;
+  const type = _typeof(value);
   if (['number', 'string', 'boolean', 'object'].includes(type)) {
     return type;
   }
@@ -40,7 +41,7 @@ _JSON.DataModel = class {
         type = nullDefaultType;
       } else {
         // type 推导
-        type = _JSON.getType(model);
+        type = _JSON.typeof(model);
       }
     }
     this.type = type;
@@ -48,7 +49,7 @@ _JSON.DataModel = class {
     // 共用选项收集，递归传参用
     const commonOptions = { nullDefaultType, enableObjectListDeep };
     if (type === 'array') {
-      isObjectList = isObjectList ?? (enableObjectListDeep && (model.length === 1 && _JSON.getType(model[0]) === 'object'));
+      isObjectList = isObjectList ?? (enableObjectListDeep && (model.length === 1 && _JSON.typeof(model[0]) === 'object'));
       this.isObjectList = isObjectList;
 
       this.children = model.map(value => new _JSON.DataModel(value, commonOptions));

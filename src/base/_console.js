@@ -1,4 +1,4 @@
-import { BaseEnv } from './base';
+import { BaseEnv, _typeof } from './base';
 import { _Object } from './_Object';
 import { _Date } from './_Date';
 
@@ -72,10 +72,11 @@ _console.$options = {
   },
 };
 _console.create = function(options = {}) {
-  const _console = Object.create(this);
-  _console.$options = _Object.deepAssign({}, this.$options, options);
-  return _console;
+  let result = Object.create(this);
+  result.$options = _Object.deepAssign({}, this.$options, options);
+  return result;
 };
+
 // 根据堆栈跟踪格式提取详细信息
 _console.getStackInfo = function() {
   try {
@@ -122,7 +123,6 @@ _console.getStackInfo = function() {
     }
   }
 };
-
 _console.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
@@ -141,11 +141,79 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
   };
   // node 和 browser 显示
   if (BaseEnv.isNode) {
-    // 使用 chalk
-    console.log(_chalk[styleMap[type].node](prefix), ...values);
-  } else {
+    const valuesArr = [
+      _chalk[styleMap[type].node](prefix),
+      // 第一层简单类型配默认颜色
+      ...values.map((value) => {
+        if ([null, undefined].includes(value)) {
+          return _chalk.grey(value);
+        }
+        if (_typeof(value) === 'number') {
+          return _chalk.blueBright(value);
+        }
+        if (_typeof(value) === 'string') {
+          return _chalk.yellowBright(value);
+        }
+        if (_typeof(value) === 'boolean') {
+          return _chalk.cyanBright(value);
+        }
+        if (_typeof(value) === 'bigint') {
+          return _chalk.greenBright(`${value}n`);
+        }
+        if (_typeof(value) === 'symbol') {
+          return _chalk.magentaBright(value.toString());
+        }
+        return value;
+      }),
+    ];
+    return console.log(...valuesArr);
+  }
+  if (BaseEnv.isBrowser) {
     // 使用浏览器控制台 API 提供的样式化输出
-    console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
+    // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
+    if (values.some(val => ['object', 'function'].includes(_typeof(val)))) {
+      return console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
+    }
+
+    // 第一层简单类型配默认颜色
+    const text = [
+      `%c${prefix}`,
+      values.map((value) => {
+        if (_typeof(value) === 'bigint') {
+          return `%c${value}n`;
+        }
+        if (_typeof(value) === 'symbol') {
+          return `%c${value.toString()}`;
+        }
+        return `%c${value}`;
+      }).join(' '),
+    ].join(' ');
+    const styleArr = [
+      `${styleMap[type].browser}`,
+      ...values.map((value) => {
+        if ([null, undefined].includes(value)) {
+          return 'color:grey;';
+        }
+        if (_typeof(value) === 'number') {
+          return 'color:blue;';
+        }
+        if (_typeof(value) === 'string') {
+          return 'color:orange;';
+        }
+        if (_typeof(value) === 'boolean') {
+          return 'color:#00acc1;';
+        }
+        if (_typeof(value) === 'bigint') {
+          return 'color:green;';
+        }
+        if (_typeof(value) === 'symbol') {
+          return 'color:magenta;';
+        }
+        return '';
+      }),
+    ];
+    const valuesArr = [text, ...styleArr];
+    return console.log(...valuesArr);
   }
 };
 

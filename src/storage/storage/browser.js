@@ -10,7 +10,7 @@ function createCustomStorage(webStorage) {
     value = json ? JSON.stringify(value) : value;
     webStorage.setItem(key, value);
   };
-  customStorage.getItem = function(key, { json = true, defaultValue = null } = {}) {
+  customStorage.getItem = function(key, { default: defaultValue = null, json = true } = {}) {
     const text = webStorage.getItem(key);
     return json ? (() => {
       try {

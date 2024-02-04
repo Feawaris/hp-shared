@@ -1,92 +1,84 @@
 // cookie操作
-import jsCookie from 'js-cookie';
+import { _Object, _Date, _Function, _typeof } from '../../base';
 
-// 同 js-cookie 的选项合并方式
-function assign(target, ...sources) {
-  for (const source of sources) {
-    for (const key in source) {
-      target[key] = source[key];
+export const cookie = Object.create(null);
+// 选项，初始保存和 create 方法用
+cookie.$options = {
+  // 编码解码方法
+  encode: encodeURIComponent,
+  decode: decodeURIComponent,
+  // set 和 get 共用选项
+  json: true,
+  // 对应方法用的选项
+  setValueOptions: {
+    path: '/',
+    'max-age': 86400 * 3,
+  },
+};
+cookie.create = function(options = {}) {
+  let result = Object.create(this);
+  result.$options = _Object.deepAssign({}, this.$options, options);
+  return result;
+};
+
+cookie.getEntries = function({ raw = false } = {}) {
+  const decodeFn = raw ? _Function.RAW : this.$options.decode;
+  const arr = document.cookie.split(/\s*;\s*/).filter(str => str !== '');
+  return arr.map((str) => {
+    const [key, value] = str.split('=');
+    return [decodeFn(key), decodeFn(value)];
+  });
+};
+cookie.set = function(key, value, valueOptions = {}, { json = this.$options.json } = {}) {
+  valueOptions = _Object.assign({}, this.$options.setValueOptions, valueOptions);
+  let result = [];
+
+  value = json ? JSON.stringify(value) : value;
+  result.push(`${this.$options.encode(key)}=${this.$options.encode(value)}`);
+
+  for (const [name, val] of Object.entries(valueOptions)) {
+    // 特殊选项处理
+    if (name === 'expires') {
+      result.push(`${name}=${new _Date(val).toUTCString()}`);
+      continue;
     }
-  }
-  return target;
-}
-// cookie对象
-export class Cookie {
-  /**
-   * init
-   * @param options 选项
-   *          converter  同 js-cookies 的 converter
-   *          attributes 同 js-cookies 的 attributes
-   *          json 是否进行json转换。js-cookie 在3.0版本(commit: 4b79290b98d7fbf1ab493a7f9e1619418ac01e45) 移除了对 json 的自动转换，这里默认 true 加上
-   */
-  constructor(options = {}) {
-    // 选项结果
-    const { converter = {}, attributes = {}, json = true } = options;
-    const optionsResult = {
-      ...options,
-      json,
-      attributes: assign({}, jsCookie.attributes, attributes),
-      converter: assign({}, jsCookie.converter, converter),
-    };
-    // 声明各属性。直接或在constructor中重新赋值
-    // 默认选项结果
-    this.$defaults = optionsResult;
-  }
-  $defaults;
-  // 写入
-  /**
-   * @param name
-   * @param value
-   * @param attributes
-   * @param options 选项
-   *          json 是否进行json转换
-   * @returns {*}
-   */
-  set(name, value, attributes, options = {}) {
-    const json = 'json' in options ? options.json : this.$defaults.json;
-    attributes = assign({}, this.$defaults.attributes, attributes);
-    if (json) {
-      try {
-        value = JSON.stringify(value);
-      } catch (e) {
-        // console.warn(e);
+    // boolean 类型的选项处理
+    if (_typeof(val) === 'boolean') {
+      if (val) {
+        result.push(`${name}`);
       }
+      continue;
     }
-    return jsCookie.set(name, value, attributes);
+    // 其他选项
+    result.push(`${name}=${val}`);
   }
-  // 读取
-  /**
-   *
-   * @param name
-   * @param options 配置项
-   *          json 是否进行json转换
-   * @returns {*}
-   */
-  get(name, options = {}) {
-    const json = 'json' in options ? options.json : this.$defaults.json;
-    let result = jsCookie.get(name);
-    if (json) {
-      try {
-        result = JSON.parse(result);
-      } catch (e) {
-        // console.warn(e);
-      }
+  if (valueOptions.expires) {
+    valueOptions.expires = new _Date(valueOptions.expires).toUTCString();
+  }
+  return (document.cookie = result.join(';'));
+};
+cookie.get = function(key, { raw = false, default: defaultValue = null, json = this.$options.json } = {}) {
+  const findItem = this.getEntries({ raw }).find(entry => entry[0] === key);
+  const text = findItem?.[1];
+  if (raw) {
+    return text ?? defaultValue;
+  }
+  return json ? (() => {
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      return defaultValue;
     }
-    return result;
-  }
-  // 移除
-  remove(name, attributes) {
-    attributes = assign({}, this.$defaults.attributes, attributes);
-    return jsCookie.remove(name, attributes);
-  }
-  // 创建。通过配置默认参数创建新对象，简化传参
-  create(options = {}) {
-    const optionsResult = {
-      ...options,
-      attributes: assign({}, this.$defaults.attributes, options.attributes),
-      converter: assign({}, this.$defaults.attributes, options.converter),
-    };
-    return new Cookie(optionsResult);
-  }
-}
-export const cookie = new Cookie();
+  })() : text ?? defaultValue;
+};
+cookie.remove = function(key, options = {}) {
+  options = _Object.assign({ path: '/' }, options, { 'max-age': 0 });
+  return this.set(key, '', options);
+};
+cookie.clear = function({ paths = ['/', ''] } = {}) {
+  return paths.map((path) => {
+    return this.getEntries().map(([key]) => {
+      return this.remove(key, { path });
+    });
+  }).flat();
+};

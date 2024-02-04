@@ -1,3 +1,5 @@
+import { _typeof } from './base';
+
 export const _Proxy = Object.create(null);
 
 /**
@@ -11,7 +13,7 @@ _Proxy.bindThis = function(target, options = {}) {
     get(target, p, receiver) {
       const value = Reflect.get(...arguments);
       // 函数类型绑定this
-      if (typeof value === 'function') {
+      if (_typeof(value) === 'function') {
         return value.bind(target);
       }
       // 其他属性原样返回
