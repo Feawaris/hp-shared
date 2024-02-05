@@ -20,6 +20,11 @@ function createCustomStorage(webStorage) {
       }
     })() : text;
   };
+  customStorage.toObject = function({ default: defaultValues = {}, ...restOptions } = {}) {
+    return Object.fromEntries(Object.keys(webStorage).map((key) => {
+      return [key, customStorage.getItem(key, { default: defaultValues[key], ...restOptions })];
+    }));
+  };
   return customStorage;
 }
 export const _sessionStorage = createCustomStorage(sessionStorage);

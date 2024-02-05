@@ -140,7 +140,7 @@ pnpm run refresh:build
 
   ```shell
   # 监听打包生成各个 dist，测试引 dist 目录的项目时用
-  pnpm run dev
+  pnpm run build:watch
   # 打包生成各个 dist
   pnpm run build
   ```
