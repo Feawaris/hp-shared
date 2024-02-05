@@ -36,10 +36,12 @@ _Object.keys = function(target, { includeSymbol = false, includeNotEnumerable = 
   // 继承属性
   if (includeExtend) {
     const __proto__ = Object.getPrototypeOf(target);
-    if ((__proto__ !== null) && (__proto__ === Object.prototype && includeExtendFromObjectPrototype)) {
-      const parentKeys = _Object.keys(__proto__, options);
-      for (const parentKey of parentKeys) {
-        set.add(parentKey);
+    if (__proto__ !== null) {
+      if ((__proto__ !== Object.prototype) || (__proto__ === Object.prototype && includeExtendFromObjectPrototype)) {
+        const parentKeys = _Object.keys(__proto__, options);
+        for (const parentKey of parentKeys) {
+          set.add(parentKey);
+        }
       }
     }
   }
