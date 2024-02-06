@@ -89,13 +89,14 @@ _console.getStackInfo = function() {
     const firefoxSafariRegex = /(.*?)@(.*?):(\d+):(\d+)/;
 
     // 匹配，选择正确的对应正则和堆栈行：Chrome 和 Node 使用第 4 行，Firefox 和 Safari 使用第 3 行
-    const match = e.stack.startsWith('Error') ? chromeNodeRegex[Symbol.match](stackArr[3])
+    const match = e.stack.startsWith('Error')
+      ? chromeNodeRegex[Symbol.match](stackArr[3])
       : firefoxSafariRegex[Symbol.match](stackArr[2]);
 
     // 提取信息
     if (match) {
       const method = match[1] || '';
-      const filePath = match[2];
+      const filePath = BaseEnv.isWindows ? match[2].replaceAll('\\', '/') : match[2];
       const line = Number.parseInt(match[3]);
       const column = Number.parseInt(match[4]);
 
