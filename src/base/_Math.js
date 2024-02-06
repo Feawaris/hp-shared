@@ -1,11 +1,10 @@
-// 数学运算。对 Math 对象扩展，提供更直观和符合数学约定的名称
+// 数学运算。相对于 Math 对象提供更直观和符合数学约定的名称，方便解构后顺手使用
 import { _Array } from './_Array';
 import { _Set } from './_Set';
 import { _Number } from './_Number';
 
 export const _Math = Object.create(null);
-
-// 黄金分割比 PHI
+// 黄金分割比 Φ
 _Math.PHI = (Math.sqrt(5) - 1) / 2;
 _Math.PHI_BIG = (Math.sqrt(5) + 1) / 2;
 
@@ -33,16 +32,18 @@ _Math.factorial = function(n) {
   }
   return result;
 };
-// 排列 Arrangement
-_Math.A = function(n, m) {
-  return _Math.factorial(n) / _Math.factorial(n - m);
+// P/() 写法：命名同 latex
+// 排列
+_Math.permutation = function(n, k) {
+  return _Math.factorial(n) / _Math.factorial(n - k);
 };
-// 组合 Combination
-_Math.C = function(n, m) {
-  return _Math.A(n, m) / _Math.factorial(m);
+// 组合
+_Math.combination = function(n, k) {
+  return _Math.A(n, k) / _Math.factorial(k);
 };
-_Math.Arrangement = _Math.A;
-_Math.Combination = _Math.C;
+// A/C 写法
+_Math.A = _Math.permutation;
+_Math.C = _Math.combination;
 
 // 数列
 _Math.Sequence = class {
@@ -69,7 +70,6 @@ _Math.Sequence = class {
     return new _Set(this.toArray(...arguments));
   }
 };
-
 // 等差数列
 _Math.ArithmeticSequence = class extends _Math.Sequence {
   constructor(a1, d, n = 0) {
@@ -112,7 +112,7 @@ _Math.FibonacciSequence = class extends _Math.Sequence {
   }
   // 第n项
   an(n = this.n) {
-    return Math.round((_Math.PHI_BIG ** n - (1 - _Math.PHI_BIG) ** n) / Math.sqrt(5));
+    return Math.round(((_Math.PHI_BIG ** n) - (-_Math.PHI_BIG) ** (-n)) / Math.sqrt(5));
   }
   // 前n项求和
   Sn(n = this.n) {

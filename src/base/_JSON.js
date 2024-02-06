@@ -1,7 +1,8 @@
 import { _Object } from './_Object';
 
+// 专注于 JSON 支持的类型：`null`,`number`,`string`,`boolean`,`array`,`object`，前后端数据交互用
 export const _JSON = Object.create(JSON);
-// 判断类型，只处理 JSON 支持的类型，前后端数据交互用
+// 判断类型
 _JSON.typeof = function(value) {
   if ([null, undefined].includes(value)) {
     return 'null';

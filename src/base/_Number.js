@@ -2,7 +2,7 @@
 export const _Number = Object.create(null);
 
 /**
- * 区别于 Number.prototype.toFixed，会移除尾部多余的零和不必要的小数点，以精简显示
+ * 相对于 Number.prototype.toFixed 会移除尾部多余的零和小数点，以精简显示
  * @param x
  * @param fractionDigits
  * @returns {string}

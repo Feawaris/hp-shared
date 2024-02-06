@@ -242,17 +242,17 @@ export class _Date extends Date {
       }
     });
   }
-  toDateString(format = 'YYYY-MM-DD') {
-    return this.toString(format);
-  }
-  toTimeString(format = 'HH:mm:ss') {
-    return this.toString(format);
-  }
   toBoolean() {
     return !Number.isNaN(this.getTime());
   }
   toJSON(options = {}) {
     return this.toString();
+  }
+  toDateString(format = 'YYYY-MM-DD') {
+    return this.toString(format);
+  }
+  toTimeString(format = 'HH:mm:ss') {
+    return this.toString(format);
   }
 }
 

@@ -66,11 +66,11 @@ export class _Set extends Set {
 }
 
 /**
- * 交集 intersection
+ * 交集
  * @param sets
  * @returns {*}
  */
-_Set.intersection = function(...sets) {
+_Set.cap = function(...sets) {
   // 传参数量
   if (sets.length < 2) {
     sets[0] = sets[0] || [];
@@ -85,11 +85,11 @@ _Set.intersection = function(...sets) {
   }).toCustomSet();
 };
 /**
- * 并集 union
+ * 并集
  * @param sets
  * @returns {*}
  */
-_Set.union = function(...sets) {
+_Set.cup = function(...sets) {
   // 传参数量
   if (sets.length < 2) {
     sets[0] = sets[0] || [];
@@ -101,12 +101,12 @@ _Set.union = function(...sets) {
   return sets.flat().toCustomSet();
 };
 /**
- * 补集 complement
+ * 补集
  * @param mainSet
  * @param otherSets
  * @returns {*}
  */
-_Set.complement = function(mainSet = [], ...otherSets) {
+_Set.setminus = function(mainSet = [], ...otherSets) {
   // 传参数量
   if (otherSets.length < 1) {
     otherSets[0] = otherSets[0] || [];
@@ -118,7 +118,3 @@ _Set.complement = function(mainSet = [], ...otherSets) {
     return otherSets.every(set => !set.includes(value));
   }).toCustomSet();
 };
-// 简写方式，对应 python 运算符 &,|,-
-_Set['&'] = _Set.intersection;
-_Set['|'] = _Set.union;
-_Set['-'] = _Set.complement;

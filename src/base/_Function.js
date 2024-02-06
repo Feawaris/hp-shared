@@ -6,7 +6,7 @@ _Function.pipe = function(value, ...funcs) {
   }
   return value;
 };
-// 传参赋值常用
+// 默认传参常用
 // 空函数
 _Function.NOOP = function NOOP() {};
 // 原样返回

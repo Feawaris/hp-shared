@@ -1,7 +1,7 @@
 export const _Proxy = Object.create(null);
 
 /**
- * 绑定this。用于解构对象方法时绑定 this
+ * 用于解构对象方法时绑定 this
  * @param target
  * @param options
  * @returns {*|object}
