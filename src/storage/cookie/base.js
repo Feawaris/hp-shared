@@ -1,4 +1,4 @@
-import { _Object, _Date, _typeof, _Function, BaseEnv } from '../../base';
+import { _Object, _Date, _Function, BaseEnv } from '../../base';
 
 export class BaseCookie {
   constructor(getValue = _Function.NOOP, setValue = _Function.NOOP) {
@@ -64,7 +64,7 @@ export class BaseCookie {
         return `max-age=${val}`;
       }
       // boolean 类型的选项处理
-      if (_typeof(val) === 'boolean') {
+      if (typeof val === 'boolean') {
         return val ? `${name}` : '';
       }
       // 其他选项

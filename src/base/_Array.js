@@ -1,5 +1,4 @@
 // 数组
-import { _typeof } from './base';
 import { _Set } from './_Set';
 
 export class _Array extends Array {
@@ -7,10 +6,10 @@ export class _Array extends Array {
     try {
       value = Array.from(value);
     } catch (e) {
-      console.warn('传参报错，将生成空数组[]', e);
+      console.warn('传参报错，将生成 []', e);
       value = [];
     }
-    if (value.length === 1 && _typeof(value[0]) === 'number') {
+    if (value.length === 1 && typeof value[0] === 'number') {
       // 避免稀疏数组问题：先调 super 生成 this 后再修改 this 内容
       const temp = value[0];
       value[0] = null;
@@ -76,7 +75,7 @@ export class _Array extends Array {
     try {
       return JSON.stringify(this);
     } catch (e) {
-      console.warn(`toString 转换报错，将生成 '[]'`, e);
+      console.warn(`toString 转换报错，将生成 []`, e);
       return JSON.stringify([]);
     }
   }
@@ -110,10 +109,10 @@ _Array.namesToArray = function(names = [], { separator = ',' } = {}) {
   if (Array.isArray(names)) {
     return names.map(val => _Array.namesToArray(val)).flat();
   }
-  if (_typeof(names) === 'string') {
+  if (typeof names === 'string') {
     return names.split(separator).map(val => val.trim()).filter(val => val);
   }
-  if (_typeof(names) === 'symbol') {
+  if (typeof names === 'symbol') {
     return [names];
   }
   return [];

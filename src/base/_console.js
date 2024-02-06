@@ -1,4 +1,4 @@
-import { BaseEnv, _typeof } from './base';
+import { BaseEnv } from './base';
 import { _Object } from './_Object';
 import { _Date } from './_Date';
 
@@ -149,19 +149,19 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
         if ([null, undefined].includes(value)) {
           return _chalk.grey(value);
         }
-        if (_typeof(value) === 'number') {
+        if (typeof value === 'number') {
           return _chalk.blueBright(value);
         }
-        if (_typeof(value) === 'string') {
+        if (typeof value === 'string') {
           return _chalk.yellowBright(value);
         }
-        if (_typeof(value) === 'boolean') {
+        if (typeof value === 'boolean') {
           return _chalk.cyanBright(value);
         }
-        if (_typeof(value) === 'bigint') {
+        if (typeof value === 'bigint') {
           return _chalk.greenBright(`${value}n`);
         }
-        if (_typeof(value) === 'symbol') {
+        if (typeof value === 'symbol') {
           return _chalk.magentaBright(value.toString());
         }
         return value;
@@ -172,7 +172,7 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
   if (BaseEnv.isBrowser) {
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
-    if (values.some(val => ['object', 'function'].includes(_typeof(val)))) {
+    if (values.some(val => val !== null && ['object', 'function'].includes(typeof val))) {
       return console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
     }
 
@@ -180,10 +180,10 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
     const text = [
       `%c${prefix}`,
       values.map((value) => {
-        if (_typeof(value) === 'bigint') {
+        if (typeof value === 'bigint') {
           return `%c${value}n`;
         }
-        if (_typeof(value) === 'symbol') {
+        if (typeof value === 'symbol') {
           return `%c${value.toString()}`;
         }
         return `%c${value}`;
@@ -195,19 +195,19 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
         if ([null, undefined].includes(value)) {
           return 'color:grey;';
         }
-        if (_typeof(value) === 'number') {
+        if (typeof value === 'number') {
           return 'color:blue;';
         }
-        if (_typeof(value) === 'string') {
+        if (typeof value === 'string') {
           return 'color:orange;';
         }
-        if (_typeof(value) === 'boolean') {
+        if (typeof value === 'boolean') {
           return 'color:#00acc1;';
         }
-        if (_typeof(value) === 'bigint') {
+        if (typeof value === 'bigint') {
           return 'color:green;';
         }
-        if (_typeof(value) === 'symbol') {
+        if (typeof value === 'symbol') {
           return 'color:magenta;';
         }
         return '';

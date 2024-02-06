@@ -1,5 +1,4 @@
 // 对象
-import { _typeof } from './base';
 import { _Array } from './_Array';
 
 export const _Object = Object.create(null);
@@ -23,7 +22,7 @@ _Object.keys = function(target, { includeSymbol = false, includeNotEnumerable = 
   for (const key of ownKeys) {
     const desc = Object.getOwnPropertyDescriptor(target, key);
     // 忽略 symbol 属性的情况
-    if (_typeof(key) === 'symbol' && !includeSymbol) {
+    if (typeof key === 'symbol' && !includeSymbol) {
       continue;
     }
     // 忽略不可列举属性的情况

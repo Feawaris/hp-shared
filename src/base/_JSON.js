@@ -1,4 +1,3 @@
-import { _typeof } from './base';
 import { _Object } from './_Object';
 
 export const _JSON = Object.create(JSON);
@@ -10,8 +9,8 @@ _JSON.typeof = function(value) {
   if (Array.isArray(value)) {
     return 'array';
   }
-  const type = _typeof(value);
-  if (['number', 'string', 'boolean', 'object'].includes(type)) {
+  const type = typeof value;
+  if (value !== null && ['number', 'string', 'boolean', 'object'].includes(type)) {
     return type;
   }
   // 其他 JSON 不转换的视为无效值
@@ -30,7 +29,6 @@ _JSON.DataModel = class {
   constructor(model, { type, nullDefaultType = 'number', isObjectList = null, enableObjectListDeep = true } = {}) {
     // DataModel 对象直接合并即可，不用拆解
     if (model instanceof _JSON.DataModel) {
-      console.log('if');
       return _Object.assign(this, model);
     }
 

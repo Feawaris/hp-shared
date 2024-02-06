@@ -1,20 +1,8 @@
 /**
- * 优化 typeof
- * @param value
- * @returns {'null'|undefined'|'number'|'string'|'boolean'|'bigint'|'symbol'|'object'|'function"}
- */
-export function _typeof(value) {
-  if (value === null) {
-    return 'null';
-  }
-  return typeof value;
-}
-
-/**
  * 运行环境
  */
 export const BaseEnv = Object.create(null);
-// 代码运行环境: browser,node,...
+// 代码运行环境: browser, node, ...
 BaseEnv.env = (() => {
   if (typeof window !== 'undefined' && globalThis === window) {
     return 'browser';
@@ -26,7 +14,7 @@ BaseEnv.env = (() => {
 })();
 BaseEnv.isBrowser = BaseEnv.env === 'browser';
 BaseEnv.isNode = BaseEnv.env === 'node';
-// 操作系统: windows,mac,...
+// 操作系统: windows, mac, linux, ...
 BaseEnv.os = (() => {
   if (BaseEnv.isBrowser) {
     const text = navigator.userAgentData

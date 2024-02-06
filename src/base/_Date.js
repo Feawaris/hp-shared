@@ -1,5 +1,4 @@
 // 日期时间
-import { _typeof } from './base';
 
 export class _Date extends Date {
   constructor(...args) {
@@ -9,7 +8,7 @@ export class _Date extends Date {
         args[0] = undefined;
       }
       // safari 浏览器字符串格式兼容
-      if (_typeof(args[0]) === 'string') {
+      if (typeof args[0] === 'string') {
         args[0] = args[0].replaceAll('-', '/');
       }
     }

@@ -1,4 +1,3 @@
-import { _typeof } from './base';
 import { _String } from './_String';
 
 // 数据处理，处理多格式数据用
@@ -9,7 +8,7 @@ export const Data = Object.create(null);
  * @returns {boolean}
  */
 Data.isSimpleType = function(value) {
-  return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(_typeof(value));
+  return value === null || ['undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(typeof value);
 };
 /**
  * 是否普通对象
@@ -301,7 +300,7 @@ VueData.getRestFromAttrs = function(attrs, { props, emits, list = [] } = {}) {
     }).flat();
   })();
   list = (() => {
-    const arr = _typeof(list) === 'string'
+    const arr = typeof list === 'string'
       ? list.split(',')
       : list instanceof Array ? list : [];
     return arr.map(val => val.trim()).filter(val => val);
