@@ -9,6 +9,10 @@ export class BaseCookie {
       set value(text) {
         setValue(text);
       },
+
+      get length() {
+        return this.toArray().length;
+      },
     });
   }
   toArray() {
