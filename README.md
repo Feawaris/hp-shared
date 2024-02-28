@@ -97,7 +97,7 @@ import { _console } from 'hp-shared/base';
 const { _console } = require('hp-shared/base');
 ```
 
-| 属性                                        | 说明                                        |
+| 属性                                             | 说明                                        |
 | ------------------------------------------------ | ------------------------------------------- |
 | **log**                                          | <strong style="color:blue">常规</strong>    |
 | **warn**                                         | <strong style="color:orange;">警告</strong> |
@@ -109,8 +109,6 @@ const { _console } = require('hp-shared/base');
 | group                                            |                                             |
 | groupCollapsed                                   |                                             |
 | groupAction                                      |                                             |
-| $options                                         | 配置选项                                    |
-| create                                           | 带选项创建新的console实例用                 |
 | getStackInfo                                     | 基础方法                                    |
 | show                                             | 基础方法                                    |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       |

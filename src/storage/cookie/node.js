@@ -10,6 +10,5 @@ export class NodeCookie extends BaseCookie {
         res.setHeader('Set-Cookie', [...arr, text]);
       },
     );
-    this.list = [];
   }
 }

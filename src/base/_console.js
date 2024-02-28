@@ -62,20 +62,6 @@ for (const [method, [start, end]] of Object.entries(styleMap)) {
 }
 
 export const _console = Object.create(console);
-// 选项，初始保存和 create 方法用
-_console.$options = {
-  // 对应方法用的选项
-  dirOptions: {
-    depth: 0,
-    showHidden: true,
-    colors: true,
-  },
-};
-_console.create = function(options = {}) {
-  let result = Object.create(this);
-  result.$options = _Object.deepAssign({}, this.$options, options);
-  return result;
-};
 
 // 根据堆栈跟踪格式提取详细信息
 _console.getStackInfo = function() {
@@ -238,16 +224,18 @@ _console.end = function() {
   const stackInfo = _console.getStackInfo();
   return _console.show({ type: 'end', stackInfo, values: Array.from(arguments) });
 };
-_console.dir = function() {
+_console.dir = function(value, options = {}) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'log', typeText: 'dir', stackInfo });
-
-  for (const value of arguments) {
-    if (BaseEnv.isNode) {
-      console.dir(value, _console.$options.dirOptions);
-    } else {
-      console.dir(value);
-    }
+  if (BaseEnv.isNode) {
+    options = _Object.assign({
+      depth: 0,
+      showHidden: true,
+      colors: true,
+    }, options);
+    console.dir(value, options);
+  } else {
+    console.dir(value);
   }
 };
 _console.table = function() {
@@ -271,8 +259,7 @@ _console.groupCollapsed = function(label) {
   console.groupCollapsed(label);
 };
 
-_console.groupAction = function(action = () => {
-}, { label, collapse = false } = {}) {
+_console.groupAction = function(action = () => {}, { label, collapse = false } = {}) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'bold', typeText: 'groupAction', stackInfo });
 
