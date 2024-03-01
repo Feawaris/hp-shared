@@ -13,18 +13,16 @@ const license = `
 `.trimStart();
 // 生成输出选项
 function getOutputItem(options = {}) {
-  const defaults = {
-    sourcemap: 'inline',
-  };
-  const banner = `${license}
+  return {
+    get banner() {
+      return `${license}
 /*
  * 打包时间：${new _Date()}
- * rollup 打包配置：${JSON.stringify({ ...defaults, ...options }, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}
+ * rollup 打包配置：${JSON.stringify(this, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}
  */
-  `.trimStart();
-  return {
-    banner,
-    ...defaults,
+      `.trimStart();
+    },
+    sourcemap: 'inline',
     ...options,
   };
 }
@@ -64,7 +62,7 @@ export default [
     plugins: browserPlugins,
   },
   {
-    input: 'src/dev/index-browser.js',
+    input: 'src/dev/index.js',
     output: [
       getOutputItem({ file: 'dist/browser/dev.js', format: 'esm' }),
     ],
@@ -96,7 +94,7 @@ export default [
     plugins: nodePlugins,
   },
   {
-    input: 'src/dev/index-node.js',
+    input: 'src/dev/index.js',
     output: [
       getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
     ],

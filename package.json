@@ -11,8 +11,7 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "eslint": "^8.57.0",
-    "eslint-plugin-vue": "^9.22.0",
+    "eslint": "9.0.0-beta.1",
     "rollup": "^4.12.0"
   },
   "exports": {
@@ -25,7 +24,7 @@
       "node": "./dist/node/base.js"
     },
     "./dev": {
-      "browser": "./src/dev/index-browser.js",
+      "browser": "./src/dev/index.js",
       "node": "./dist/node/dev.js"
     },
     "./storage": {
