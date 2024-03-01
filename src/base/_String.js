@@ -62,6 +62,5 @@ _String.getUnitString = function(value = '', { unit = 'px' } = {}) {
   if (value === '') {
     return '';
   }
-  // 注意：这里使用 == 判断，不使用 ===
-  return Number(value) == value ? `${value}${unit}` : String(value);
+  return Number(value) === parseFloat(value) ? `${value}${unit}` : `${value}`;
 };
