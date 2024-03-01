@@ -56,7 +56,7 @@ const styleMap = {
 };
 const _chalk = Object.create(null);
 for (const [method, [start, end]] of Object.entries(styleMap)) {
-  _chalk[method] = function(message) {
+  _chalk[method] = function (message) {
     return `\x1b[${start}m${message}\x1b[${end}m`;
   };
 }
@@ -64,7 +64,7 @@ for (const [method, [start, end]] of Object.entries(styleMap)) {
 export const _console = Object.create(console);
 
 // 根据堆栈跟踪格式提取详细信息
-_console.getStackInfo = function() {
+_console.getStackInfo = function () {
   try {
     throw new Error();
   } catch (e) {
@@ -108,9 +108,10 @@ _console.getStackInfo = function() {
         column,
       };
     }
+    return {};
   }
 };
-_console.show = function({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
+_console.show = function ({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
@@ -153,13 +154,15 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
         return value;
       }),
     ];
-    return console.log(...valuesArr);
+    console.log(...valuesArr);
+    return;
   }
   if (BaseEnv.isBrowser) {
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
     if (values.some(val => val !== null && ['object', 'function'].includes(typeof val))) {
-      return console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
+      console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
+      return;
     }
 
     // 第一层简单类型配默认颜色
@@ -200,31 +203,32 @@ _console.show = function({ type = '', typeText = type, stackInfo = {}, values = 
       }),
     ];
     const valuesArr = [text, ...styleArr];
-    return console.log(...valuesArr);
+    console.log(...valuesArr);
+    return;
   }
 };
 
-_console.log = function() {
+_console.log = function () {
   const stackInfo = _console.getStackInfo();
   return _console.show({ type: 'log', stackInfo, values: Array.from(arguments) });
 };
-_console.warn = function() {
+_console.warn = function () {
   const stackInfo = _console.getStackInfo();
   return _console.show({ type: 'warn', stackInfo, values: Array.from(arguments) });
 };
-_console.error = function() {
+_console.error = function () {
   const stackInfo = _console.getStackInfo();
   return _console.show({ type: 'error', stackInfo, values: Array.from(arguments) });
 };
-_console.success = function() {
+_console.success = function () {
   const stackInfo = _console.getStackInfo();
   return _console.show({ type: 'success', stackInfo, values: Array.from(arguments) });
 };
-_console.end = function() {
+_console.end = function () {
   const stackInfo = _console.getStackInfo();
   return _console.show({ type: 'end', stackInfo, values: Array.from(arguments) });
 };
-_console.dir = function(value, options = {}) {
+_console.dir = function (value, options = {}) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'log', typeText: 'dir', stackInfo });
   if (BaseEnv.isNode) {
@@ -238,20 +242,20 @@ _console.dir = function(value, options = {}) {
     console.dir(value);
   }
 };
-_console.table = function() {
+_console.table = function () {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'log', typeText: 'table', stackInfo });
 
   console.table(...arguments);
 };
-_console.group = function(label) {
+_console.group = function (label) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'bold', typeText: 'group', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.group(label);
 };
-_console.groupCollapsed = function(label) {
+_console.groupCollapsed = function (label) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'bold', typeText: 'group', stackInfo });
 
@@ -259,7 +263,7 @@ _console.groupCollapsed = function(label) {
   console.groupCollapsed(label);
 };
 
-_console.groupAction = function(action = () => {}, { label, collapse = false } = {}) {
+_console.groupAction = function (action = () => {}, { label, collapse = false } = {}) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'bold', typeText: 'groupAction', stackInfo });
 

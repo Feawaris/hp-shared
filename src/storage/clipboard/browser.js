@@ -5,7 +5,7 @@ export const clipboard = Object.create(null);
  * @param text
  * @returns {Promise<void>}
  */
-clipboard.writeText = async function(text = '') {
+clipboard.writeText = async function (text = '') {
   text = String(text);
   try {
     await navigator.clipboard.writeText(text);
@@ -41,7 +41,7 @@ clipboard.writeText = async function(text = '') {
  * 读取文本(粘贴)：异步
  * @returns {Promise<string>}
  */
-clipboard.readText = async function() {
+clipboard.readText = async function () {
   return await navigator.clipboard.readText();
 };
 // 浏览器端没有 sync 写法

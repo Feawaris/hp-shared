@@ -23,7 +23,7 @@ const commandMap = {
  * @param text
  * @returns {Promise<unknown>}
  */
-clipboard.writeText = async function(text = '') {
+clipboard.writeText = async function (text = '') {
   text = String(text);
   const command = commandMap[BaseEnv.os].copy;
   return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ clipboard.writeText = async function(text = '') {
  * 读取文本(粘贴)：异步
  * @returns {Promise<string>}
  */
-clipboard.readText = async function() {
+clipboard.readText = async function () {
   const command = commandMap[BaseEnv.os].paste;
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout) => {
@@ -56,7 +56,7 @@ clipboard.readText = async function() {
  * @param text
  * @returns {string}
  */
-clipboard.writeTextSync = function(text = '') {
+clipboard.writeTextSync = function (text = '') {
   text = String(text);
   const command = commandMap[BaseEnv.os].copy;
   execSync(command, { input: text, encoding: 'utf8' });
@@ -67,7 +67,7 @@ clipboard.writeTextSync = function(text = '') {
  * 读取文本(粘贴)：同步
  * @returns {string}
  */
-clipboard.readTextSync = function() {
+clipboard.readTextSync = function () {
   const command = commandMap[BaseEnv.os].paste;
   let stdout = execSync(command, { encoding: 'utf8' });
   // 移除末尾的换行符

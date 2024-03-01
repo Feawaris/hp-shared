@@ -7,7 +7,7 @@ export const Data = Object.create(null);
  * @param value
  * @returns {boolean}
  */
-Data.isSimpleType = function(value) {
+Data.isSimpleType = function (value) {
   return value === null || ['undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(typeof value);
 };
 /**
@@ -15,7 +15,7 @@ Data.isSimpleType = function(value) {
  * @param value
  * @returns {boolean}
  */
-Data.isPlainObject = function(value) {
+Data.isPlainObject = function (value) {
   return Object.prototype.toString.apply(value) === '[object Object]';
 };
 /**
@@ -23,7 +23,7 @@ Data.isPlainObject = function(value) {
  * @param value 值
  * @returns {ObjectConstructor|*|Function} 返回对应构造函数。null、undefined 原样返回
  */
-Data.getExactType = function(value) {
+Data.getExactType = function (value) {
   // null、undefined 原样返回
   if ([null, undefined].includes(value)) {
     return value;
@@ -49,7 +49,7 @@ Data.getExactType = function(value) {
  * @param value 值
  * @returns {*[]} 统一返回数组。null、undefined 对应为 [null],[undefined]
  */
-Data.getExactTypes = function(value) {
+Data.getExactTypes = function (value) {
   // null、undefined 判断处理
   if ([null, undefined].includes(value)) {
     return [value];
@@ -88,7 +88,7 @@ Data.getExactTypes = function(value) {
  * @param source
  * @returns {Map<any, any>|Set<any>|{}|*|*[]}
  */
-Data.deepClone = function(source) {
+Data.deepClone = function (source) {
   // 数组
   if (source instanceof Array) {
     let result = [];
@@ -140,7 +140,7 @@ Data.deepClone = function(source) {
  * @param unwrap 解包方式函数，如 vue3 的 unref 函数
  * @returns {{[p: string]: *|{[p: string]: any}}|*|(*|{[p: string]: any})[]|{[p: string]: any}}
  */
-Data.deepUnwrap = function(data, { isWrap = () => false, unwrap = val => val } = {}) {
+Data.deepUnwrap = function (data, { isWrap = () => false, unwrap = val => val } = {}) {
   // 选项收集
   const options = { isWrap, unwrap };
   // 包装类型（如vue3响应式对象）数据解包
@@ -167,7 +167,7 @@ export const VueData = Object.create(null);
  * @param data
  * @returns {{[p: string]: *|{[p: string]: *}}|*|(*|{[p: string]: *})[]|{[p: string]: *}}
  */
-VueData.deepUnwrapVue3 = function(data) {
+VueData.deepUnwrapVue3 = function (data) {
   return Data.deepUnwrap(data, {
     isWrap: data => data?.__v_isRef,
     unwrap: data => data.value,
@@ -179,7 +179,7 @@ VueData.deepUnwrapVue3 = function(data) {
  * @param propDefinitions props 定义，如 ElButton.props 等
  * @returns {{}}
  */
-VueData.getPropsFromAttrs = function(attrs, propDefinitions) {
+VueData.getPropsFromAttrs = function (attrs, propDefinitions) {
   // props 定义统一成对象格式，type 统一成数组格式以便后续判断
   if (propDefinitions instanceof Array) {
     propDefinitions = Object.fromEntries(propDefinitions.map(name => [_String.toCamelCase(name), { type: [] }]));
@@ -222,7 +222,7 @@ VueData.getPropsFromAttrs = function(attrs, propDefinitions) {
  * @param emitDefinitions emits 定义，如 ElButton.emits 等
  * @returns {{}}
  */
-VueData.getEmitsFromAttrs = function(attrs, emitDefinitions) {
+VueData.getEmitsFromAttrs = function (attrs, emitDefinitions) {
   // emits 定义统一成数组格式
   if (Data.isPlainObject(emitDefinitions)) {
     emitDefinitions = Object.keys(emitDefinitions);
@@ -265,7 +265,7 @@ VueData.getEmitsFromAttrs = function(attrs, emitDefinitions) {
  * @param list 额外的普通属性
  * @returns {{}}
  */
-VueData.getRestFromAttrs = function(attrs, { props, emits, list = [] } = {}) {
+VueData.getRestFromAttrs = function (attrs, { props, emits, list = [] } = {}) {
   // 统一成数组格式
   props = (() => {
     const arr = (() => {

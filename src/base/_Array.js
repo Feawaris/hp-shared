@@ -67,6 +67,7 @@ export class _Array extends Array {
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
+    return null;
   }
   toNumber() {
     return NaN;
@@ -105,7 +106,7 @@ export class _Array extends Array {
  * @param separator names 为字符串时的拆分规则。同 split 方法的 separator，字符串无需拆分的可以传 null
  * @returns {FlatArray<(FlatArray<*[], 1>[]|*|[*[]]|[])[], 1>[]|*[][]|*[]}
  */
-_Array.namesToArray = function(names = [], { separator = ',' } = {}) {
+_Array.namesToArray = function (names = [], { separator = ',' } = {}) {
   if (Array.isArray(names)) {
     return names.map(val => _Array.namesToArray(val)).flat();
   }

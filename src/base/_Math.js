@@ -17,7 +17,7 @@ _Math.arcosh = Math.acosh;
 _Math.artanh = Math.atanh;
 
 // 对数
-_Math.log = function(a, x) {
+_Math.log = function (a, x) {
   return Math.log(x) / Math.log(a);
 };
 _Math.loge = Math.log;
@@ -25,7 +25,7 @@ _Math.ln = Math.log;
 _Math.lg = Math.log10;
 
 // 阶乘
-_Math.factorial = function(n) {
+_Math.factorial = function (n) {
   let result = 1n;
   for (let i = n; i >= 1; i--) {
     result *= BigInt(i);
@@ -34,11 +34,11 @@ _Math.factorial = function(n) {
 };
 // P/() 写法：命名同 latex
 // 排列
-_Math.permutation = function(n, k) {
+_Math.permutation = function (n, k) {
   return _Math.factorial(n) / _Math.factorial(n - k);
 };
 // 组合
-_Math.combination = function(n, k) {
+_Math.combination = function (n, k) {
   return _Math.A(n, k) / _Math.factorial(k);
 };
 // A/C 写法

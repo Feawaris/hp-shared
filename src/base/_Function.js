@@ -1,6 +1,6 @@
 export const _Function = Object.create(null);
 // 对应管道操作 |>
-_Function.pipe = function(value, ...funcs) {
+_Function.pipe = function (value, ...funcs) {
   for (const func of funcs) {
     value = func(value);
   }

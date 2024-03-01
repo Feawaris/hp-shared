@@ -154,6 +154,7 @@ export class _Date extends Date {
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
+    return null;
   }
   toNumber() {
     return this.getTime();
@@ -240,6 +241,7 @@ export class _Date extends Date {
       if (match in formatMap) {
         return formatMap[match];
       }
+      return '';
     });
   }
   toBoolean() {
@@ -256,6 +258,6 @@ export class _Date extends Date {
   }
 }
 
-_Date.sleep = async function(seconds = 0.3) {
-  return await new Promise(resolve => setTimeout(resolve, seconds * 1000));
+_Date.sleep = async function (seconds = 0.3) {
+  return new Promise(resolve => { setTimeout(resolve, seconds * 1000); });
 };

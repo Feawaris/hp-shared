@@ -12,7 +12,7 @@ export const _Object = Object.create(null);
  * @param includeExtendFromObjectPrototype 继承场景下是否包含继承自 Object.prototype 的属性，默认 false 以便普通方式 {} 和 Object.create(null) 方式统一关注点
  * @returns {any[]}
  */
-_Object.keys = function(target, { includeSymbol = false, includeNotEnumerable = false, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
+_Object.keys = function (target, { includeSymbol = false, includeNotEnumerable = false, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
   // 选项收集
   const options = { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype };
   // set用于key去重
@@ -48,17 +48,17 @@ _Object.keys = function(target, { includeSymbol = false, includeNotEnumerable = 
   return Array.from(set);
 };
 // 对应 keys 配套 values 和 entries
-_Object.values = function(target, options = {}) {
+_Object.values = function (target, options = {}) {
   const keys = _Object.keys(target, options);
   return keys.map(key => target[key]);
 };
-_Object.entries = function(target, options = {}) {
+_Object.entries = function (target, options = {}) {
   const keys = _Object.keys(target, options);
   return keys.map(key => [key, target[key]]);
 };
 
 // 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作
-_Object.getOwner = function(target, key) {
+_Object.getOwner = function (target, key) {
   if (Object.hasOwn(target, key)) {
     return target;
   }
@@ -69,13 +69,14 @@ _Object.getOwner = function(target, key) {
   return _Object.getOwner(__proto__, key);
 };
 // 获取属性描述对象，相比 Object.getOwnPropertyDescriptor 能拿到继承属性的描述对象
-_Object.getPropertyDescriptor = function(target, key) {
+_Object.getPropertyDescriptor = function (target, key) {
   const owner = _Object.getOwner(target, key);
   if (owner) {
     return Object.getOwnPropertyDescriptor(owner, key);
   }
+  return undefined;
 };
-_Object.getPropertyDescriptors = function(target, options = {}) {
+_Object.getPropertyDescriptors = function (target, options = {}) {
   options = Object.assign({ includeSymbol: true, includeNotEnumerable: true, includeExtend: true }, options);
   const keys = _Object.keys(target, options);
   const entries = keys.map(key => [key, _Object.getPropertyDescriptor(target, key)]);
@@ -88,7 +89,7 @@ _Object.getPropertyDescriptors = function(target, options = {}) {
  * @param sources 数据源
  * @returns {{}}
  */
-_Object.assign = function(target, ...sources) {
+_Object.assign = function (target, ...sources) {
   for (const source of sources) {
     const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
     for (const key of keys) {
@@ -104,7 +105,7 @@ _Object.assign = function(target, ...sources) {
  * @param sources 数据源
  * @returns {{}}
  */
-_Object.deepAssign = function(target, ...sources) {
+_Object.deepAssign = function (target, ...sources) {
   // console.log('deepAssign', { target, sources });
   for (const source of sources) {
     const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
@@ -141,7 +142,7 @@ _Object.deepAssign = function(target, ...sources) {
  * @param includeExtendFromObjectPrototype 同 keys 的同名参数
  * @returns {{}}
  */
-_Object.filter = function(target, { pick = [], omit = [], emptyPick = 'all', separator = ',', includeSymbol = true, includeNotEnumerable = true, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
+_Object.filter = function (target, { pick = [], omit = [], emptyPick = 'all', separator = ',', includeSymbol = true, includeNotEnumerable = true, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
   // pick、omit 统一成数组格式
   pick = _Array.namesToArray(pick, { separator });
   omit = _Array.namesToArray(omit, { separator });
@@ -163,10 +164,10 @@ _Object.filter = function(target, { pick = [], omit = [], emptyPick = 'all', sep
   return result;
 };
 // 通过挑选方式过滤对象
-_Object.pick = function(target, keys = [], options = {}) {
+_Object.pick = function (target, keys = [], options = {}) {
   return _Object.filter(target, { pick: keys, emptyPick: 'empty', ...options });
 };
 // 通过排除方式过滤对象
-_Object.omit = function(object, keys = [], options = {}) {
+_Object.omit = function (object, keys = [], options = {}) {
   return _Object.filter(object, { omit: keys, ...options });
 };

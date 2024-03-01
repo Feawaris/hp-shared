@@ -34,6 +34,7 @@ export class _Set extends Set {
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
+    return null;
   }
   toNumber() {
     return NaN;
@@ -70,7 +71,7 @@ export class _Set extends Set {
  * @param sets
  * @returns {*}
  */
-_Set.cap = function(...sets) {
+_Set.cap = function (...sets) {
   // 传参数量
   if (sets.length < 2) {
     sets[0] = sets[0] || [];
@@ -89,7 +90,7 @@ _Set.cap = function(...sets) {
  * @param sets
  * @returns {*}
  */
-_Set.cup = function(...sets) {
+_Set.cup = function (...sets) {
   // 传参数量
   if (sets.length < 2) {
     sets[0] = sets[0] || [];
@@ -106,7 +107,7 @@ _Set.cup = function(...sets) {
  * @param otherSets
  * @returns {*}
  */
-_Set.setminus = function(mainSet = [], ...otherSets) {
+_Set.setminus = function (mainSet = [], ...otherSets) {
   // 传参数量
   if (otherSets.length < 1) {
     otherSets[0] = otherSets[0] || [];

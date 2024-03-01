@@ -3,7 +3,7 @@ import { _Object } from './_Object';
 // 专注于 JSON 支持的类型：`null`,`number`,`string`,`boolean`,`array`,`object`，前后端数据交互用
 export const _JSON = Object.create(JSON);
 // 判断类型
-_JSON.typeof = function(value) {
+_JSON.typeof = function (value) {
   if ([null, undefined].includes(value)) {
     return 'null';
   }
@@ -30,7 +30,8 @@ _JSON.DataModel = class {
   constructor(model, { type, nullDefaultType = 'number', isObjectList = null, enableObjectListDeep = true } = {}) {
     // DataModel 对象直接合并即可，不用拆解
     if (model instanceof _JSON.DataModel) {
-      return _Object.assign(this, model);
+      _Object.assign(this, model);
+      return;
     }
 
     // type
@@ -76,21 +77,21 @@ _JSON.DataModel = class {
   }
 };
 // 简写方式
-_JSON.model = function(...args) {
+_JSON.model = function (...args) {
   return new _JSON.DataModel(...args);
 };
-_JSON.number = function(model, options = {}) {
+_JSON.number = function (model, options = {}) {
   return new _JSON.DataModel(model, { type: 'number', ...options });
 };
-_JSON.string = function(model, options = {}) {
+_JSON.string = function (model, options = {}) {
   return new _JSON.DataModel(model, { type: 'string', ...options });
 };
-_JSON.boolean = function(model, options = {}) {
+_JSON.boolean = function (model, options = {}) {
   return new _JSON.DataModel(model, { type: 'boolean', ...options });
 };
-_JSON.array = function(model, options = {}) {
+_JSON.array = function (model, options = {}) {
   return new _JSON.DataModel(model, { type: 'array', ...options });
 };
-_JSON.object = function(model, options = {}) {
+_JSON.object = function (model, options = {}) {
   return new _JSON.DataModel(model, { type: 'object', ...options });
 };

@@ -5,7 +5,7 @@ export const _String = Object.create(null);
  * @param name
  * @returns {`${string}${string}`}
  */
-_String.toFirstUpperCase = function(name = '') {
+_String.toFirstUpperCase = function (name = '') {
   return `${(name[0] || '').toUpperCase()}${name.slice(1)}`;
 };
 /**
@@ -13,7 +13,7 @@ _String.toFirstUpperCase = function(name = '') {
  * @param name 名称
  * @returns {`${string}${string}`}
  */
-_String.toFirstLowerCase = function(name = '') {
+_String.toFirstLowerCase = function (name = '') {
   return `${(name[0] || '').toLowerCase()}${name.slice(1)}`;
 };
 /**
@@ -25,7 +25,7 @@ _String.toFirstLowerCase = function(name = '') {
  *                           'raw' 或 其他无效值：默认原样返回，不进行处理
  * @returns {*|`${string}${string}`}
  */
-_String.toCamelCase = function(name, { separator = '-', first = 'raw' } = {}) {
+_String.toCamelCase = function (name, { separator = '-', first = 'raw' } = {}) {
   // 生成正则
   const regexp = new RegExp(`${separator}(\\w)`, 'g');
   // 拼接成驼峰
@@ -47,7 +47,7 @@ _String.toCamelCase = function(name, { separator = '-', first = 'raw' } = {}) {
  * @param separator 连接符
  * @returns {string}
  */
-_String.toLineCase = function(name = '', { separator = '-' } = {}) {
+_String.toLineCase = function (name = '', { separator = '-' } = {}) {
   return name
     .replaceAll(/([a-z])([A-Z])/g, `$1${separator}$2`)
     .toLowerCase();
@@ -58,7 +58,7 @@ _String.toLineCase = function(name = '', { separator = '-' } = {}) {
  * @param unit 单位。value没带单位时自动拼接，可传 px/em/% 等
  * @returns {string|string}
  */
-_String.getUnitString = function(value = '', { unit = 'px' } = {}) {
+_String.getUnitString = function (value = '', { unit = 'px' } = {}) {
   if (value === '') {
     return '';
   }

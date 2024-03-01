@@ -7,7 +7,7 @@ export const _Number = Object.create(null);
  * @param fractionDigits
  * @returns {string}
  */
-_Number.toMaxFixed = function(x, fractionDigits = 0) {
+_Number.toMaxFixed = function (x, fractionDigits = 0) {
   const str = Number.prototype.toFixed.call(x, fractionDigits);
   // 移除尾部多余的零和不必要的小数点
   return str.replace(/(\.\d*?[1-9])0+$|\.0*$/, '$1');
@@ -19,7 +19,7 @@ _Number.toMaxFixed = function(x, fractionDigits = 0) {
  * @param to
  * @returns {string}
  */
-_Number.convertBase = function(x, { from = 10, to = 10 } = {}) {
+_Number.convertBase = function (x, { from = 10, to = 10 } = {}) {
   return Number.parseInt(x, from).toString(to);
 };
 /**
@@ -27,7 +27,7 @@ _Number.convertBase = function(x, { from = 10, to = 10 } = {}) {
  * @param x
  * @returns {boolean}
  */
-_Number.isPrime = function(x) {
+_Number.isPrime = function (x) {
   if (x < 2) {
     return false;
   }

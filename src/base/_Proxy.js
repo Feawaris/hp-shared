@@ -6,7 +6,7 @@ export const _Proxy = Object.create(null);
  * @param options
  * @returns {*|object}
  */
-_Proxy.bindThis = function(target, options = {}) {
+_Proxy.bindThis = function (target, options = {}) {
   return new Proxy(target, {
     get(target, p, receiver) {
       const value = Reflect.get(...arguments);
