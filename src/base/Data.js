@@ -1,4 +1,5 @@
 import { _String } from './_String';
+import { _Object } from './_Object';
 
 // 数据处理，处理多格式数据用
 export const Data = Object.create(null);
@@ -9,14 +10,6 @@ export const Data = Object.create(null);
  */
 Data.isSimpleType = function (value) {
   return value === null || ['undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(typeof value);
-};
-/**
- * 是否普通对象
- * @param value
- * @returns {boolean}
- */
-Data.isPlainObject = function (value) {
-  return Object.prototype.toString.apply(value) === '[object Object]';
 };
 /**
  * 获取值的具体类型
@@ -88,12 +81,12 @@ Data.getExactTypes = function (value) {
  * @param source
  * @returns {Map<any, any>|Set<any>|{}|*|*[]}
  */
-Data.deepClone = function (source) {
+Data.deepClone = function deepClone(source) {
   // 数组
-  if (source instanceof Array) {
+  if (Array.isArray(source)) {
     let result = [];
     for (const value of source.values()) {
-      result.push(this.deepClone(value));
+      result.push(deepClone(value));
     }
     return result;
   }
@@ -101,7 +94,7 @@ Data.deepClone = function (source) {
   if (source instanceof Set) {
     let result = new Set();
     for (let value of source.values()) {
-      result.add(this.deepClone(value));
+      result.add(deepClone(value));
     }
     return result;
   }
@@ -109,19 +102,19 @@ Data.deepClone = function (source) {
   if (source instanceof Map) {
     let result = new Map();
     for (let [key, value] of source.entries()) {
-      result.set(key, this.deepClone(value));
+      result.set(key, deepClone(value));
     }
     return result;
   }
   // 对象
-  if (this.getExactType(source) === Object) {
+  if (_Object.isPlainObject(source)) {
     let result = {};
     for (const [key, desc] of Object.entries(Object.getOwnPropertyDescriptors(source))) {
       if ('value' in desc) {
         // value方式：递归处理
         Object.defineProperty(result, key, {
           ...desc,
-          value: this.deepClone(desc.value),
+          value: deepClone(desc.value),
         });
       } else {
         // get/set 方式：直接定义
@@ -140,20 +133,20 @@ Data.deepClone = function (source) {
  * @param unwrap 解包方式函数，如 vue3 的 unref 函数
  * @returns {{[p: string]: *|{[p: string]: any}}|*|(*|{[p: string]: any})[]|{[p: string]: any}}
  */
-Data.deepUnwrap = function (data, { isWrap = () => false, unwrap = val => val } = {}) {
+Data.deepUnwrap = function deepUnwrap(data, { isWrap = () => false, unwrap = val => val } = {}) {
   // 选项收集
   const options = { isWrap, unwrap };
   // 包装类型（如vue3响应式对象）数据解包
   if (isWrap(data)) {
-    return this.deepUnwrap(unwrap(data), options);
+    return deepUnwrap(unwrap(data), options);
   }
   // 递归处理的类型
-  if (data instanceof Array) {
-    return data.map(val => this.deepUnwrap(val, options));
+  if (Array.isArray(data)) {
+    return data.map(val => deepUnwrap(val, options));
   }
-  if (this.getExactType(data) === Object) {
+  if (_Object.isPlainObject(data)) {
     return Object.fromEntries(Object.entries(data).map(([key, val]) => {
-      return [key, this.deepUnwrap(val, options)];
+      return [key, deepUnwrap(val, options)];
     }));
   }
   // 其他原样返回
@@ -181,11 +174,11 @@ VueData.deepUnwrapVue3 = function (data) {
  */
 VueData.getPropsFromAttrs = function (attrs, propDefinitions) {
   // props 定义统一成对象格式，type 统一成数组格式以便后续判断
-  if (propDefinitions instanceof Array) {
+  if (Array.isArray(propDefinitions)) {
     propDefinitions = Object.fromEntries(propDefinitions.map(name => [_String.toCamelCase(name), { type: [] }]));
-  } else if (Data.isPlainObject(propDefinitions)) {
+  } else if (_Object.isPlainObject(propDefinitions)) {
     propDefinitions = Object.fromEntries(Object.entries(propDefinitions).map(([name, definition]) => {
-      definition = Data.isPlainObject(definition)
+      definition = _Object.isPlainObject(definition)
         ? { ...definition, type: [definition.type].flat() }
         : { type: [definition].flat() };
       return [_String.toCamelCase(name), definition];
@@ -224,9 +217,9 @@ VueData.getPropsFromAttrs = function (attrs, propDefinitions) {
  */
 VueData.getEmitsFromAttrs = function (attrs, emitDefinitions) {
   // emits 定义统一成数组格式
-  if (Data.isPlainObject(emitDefinitions)) {
+  if (_Object.isPlainObject(emitDefinitions)) {
     emitDefinitions = Object.keys(emitDefinitions);
-  } else if (!(emitDefinitions instanceof Array)) {
+  } else if (!Array.isArray(emitDefinitions)) {
     emitDefinitions = [];
   }
   // 统一处理成 onEmitName、onUpdate:emitName(v-model系列) 格式
@@ -269,10 +262,10 @@ VueData.getRestFromAttrs = function (attrs, { props, emits, list = [] } = {}) {
   // 统一成数组格式
   props = (() => {
     const arr = (() => {
-      if (props instanceof Array) {
+      if (Array.isArray(props)) {
         return props;
       }
-      if (Data.isPlainObject(props)) {
+      if (_Object.isPlainObject(props)) {
         return Object.keys(props);
       }
       return [];
@@ -281,10 +274,10 @@ VueData.getRestFromAttrs = function (attrs, { props, emits, list = [] } = {}) {
   })();
   emits = (() => {
     const arr = (() => {
-      if (emits instanceof Array) {
+      if (Array.isArray(emits)) {
         return emits;
       }
-      if (Data.isPlainObject(emits)) {
+      if (_Object.isPlainObject(emits)) {
         return Object.keys(emits);
       }
       return [];
@@ -302,7 +295,7 @@ VueData.getRestFromAttrs = function (attrs, { props, emits, list = [] } = {}) {
   list = (() => {
     const arr = typeof list === 'string'
       ? list.split(',')
-      : list instanceof Array ? list : [];
+      : Array.isArray(list) ? list : [];
     return arr.map(val => val.trim()).filter(val => val);
   })();
   const listAll = Array.from(new Set([props, emits, list].flat()));

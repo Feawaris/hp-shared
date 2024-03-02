@@ -5,7 +5,7 @@
 ## 1.安装
 
 ```shell
-pnpm i -w hp-shared
+pnpm i hp-shared
 ```
 
 ### 1.1 引用方式
@@ -454,16 +454,16 @@ router.get('/test', (ctx) => {
 #### 2.3.1 eslint
 
 ```shell
-pnpm i -wD eslint eslint-plugin-vue
+pnpm i -D eslint eslint-plugin-vue
 ```
 
 ```js
 // eslint 8.x 使用 .eslintrc.js
 const { eslint8 } = require('hp-shared/dev');
+
 module.exports = eslint8.merge(
-  // 定制的配置
-  eslint8.use({ vueVersion: 3 }),
-  // 更多配置，同eslint整体导出格式
+  eslint8.baseConfig,
+  eslint8.vue3Config,
   {
     rules: {},
   },
@@ -473,11 +473,15 @@ module.exports = eslint8.merge(
 ```js
 // eslint 9.x 使用 eslint.config.js
 const { eslint9 } = require('hp-shared/dev');
+
 module.exports = [
-  {
-    ...eslint9.baseConfig,
-    files: ['src/**/*.js'],
-  },
+  eslint9.merge(
+    eslint9.baseConfig,
+    {
+      files: ['src/**/*.js', '*.config.js'],
+      rules: {},
+    },
+  ),
 ];
 ```
 

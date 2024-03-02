@@ -3,6 +3,11 @@ import { _Array } from './_Array';
 
 export const _Object = Object.create(null);
 
+// 是否纯对象
+_Object.isPlainObject = function (value) {
+  return Object.prototype.toString.call(value) === '[object Object]';
+};
+
 /**
  * 获取属性名。默认参数配置成同 Object.keys 行为
  * @param target 目标对象
@@ -105,7 +110,7 @@ _Object.assign = function (target, ...sources) {
  * @param sources 数据源
  * @returns {{}}
  */
-_Object.deepAssign = function (target, ...sources) {
+_Object.deepAssign = function deepAssign(target, ...sources) {
   // console.log('deepAssign', { target, sources });
   for (const source of sources) {
     const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
@@ -115,7 +120,7 @@ _Object.deepAssign = function (target, ...sources) {
         // value 写法：对象递归处理，其他直接定义
         if (Object.prototype.toString.apply(desc.value) === '[object Object]') {
           // console.log('if', target, key, desc);
-          Object.defineProperty(target, key, { ...desc, value: _Object.deepAssign(target[key] || {}, desc.value) });
+          Object.defineProperty(target, key, { ...desc, value: deepAssign(target[key] || {}, desc.value) });
         } else {
           // console.warn('else', target, key, desc);
           Object.defineProperty(target, key, desc);

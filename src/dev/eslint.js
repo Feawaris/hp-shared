@@ -1,315 +1,11 @@
 /**
- * [eslint 8.x 配置](http://eslint.cn/docs/rules/)
- * [eslint 9.x 配置](https://zh-hans.eslint.org/docs/latest/rules/)
+ * [eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)
  * [eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)
  */
-import { _Object, Data } from '../base';
+import { _Object } from '../base';
 
-export const eslint8 = Object.create(null);
-/**
- * 常量便捷使用
- */
-eslint8.OFF = 'off';
-eslint8.WARN = 'warn';
-eslint8.ERROR = 'error';
-/**
- * 合并
- * @param objects
- * @returns {Map<*, *>|Set<*>|{}|*|*[]}
- */
-eslint8.merge = function (...objects) {
-  const [target, ...sources] = objects;
-  const result = Data.deepClone(target);
-  for (const source of sources) {
-    for (const [key, value] of Object.entries(source)) {
-      // 特殊字段处理
-      if (key === 'rules') {
-        // console.log({ key, value, 'result[key]': result[key] });
-        // 初始不存在时赋默认值用于合并
-        result[key] = result[key] ?? {};
-        // 对各条规则处理
-        for (let [ruleKey, ruleValue] of Object.entries(value)) {
-          // 已有值统一成数组处理
-          let sourceRuleValue = result[key][ruleKey] ?? [];
-          if (!(sourceRuleValue instanceof Array)) {
-            sourceRuleValue = [sourceRuleValue];
-          }
-          // 要合并的值统一成数组处理
-          if (!(ruleValue instanceof Array)) {
-            ruleValue = [ruleValue];
-          }
-          // 统一格式后进行数组循环操作
-          for (const [valIndex, val] of Object.entries(ruleValue)) {
-            // 对象深合并，其他直接赋值
-            if (Data.getExactType(val) === Object) {
-              sourceRuleValue[valIndex] = _Object.deepAssign(sourceRuleValue[valIndex] ?? {}, val);
-            } else {
-              sourceRuleValue[valIndex] = val;
-            }
-          }
-          // 赋值规则结果
-          result[key][ruleKey] = sourceRuleValue;
-        }
-        continue;
-      }
-      // 其他字段根据类型判断处理
-      // 数组：拼接
-      if (value instanceof Array) {
-        (result[key] = result[key] ?? []).push(...value);
-        continue;
-      }
-      // 其他对象：深合并
-      if (Data.getExactType(value) === Object) {
-        _Object.deepAssign(result[key] = result[key] ?? {}, value);
-        continue;
-      }
-      // 其他直接赋值
-      result[key] = value;
-    }
-  }
-  return result;
-};
-/**
- * 使用定制的配置
- * @param base 使用基础 eslint 定制
- * @param vueVersion vue 版本，开启后需要安装 eslint-plugin-vue
- * @returns {{}}
- */
-eslint8.use = function ({ base = true, vueVersion } = {}) {
-  let result = {};
-  if (base) {
-    result = eslint8.merge(result, eslint8.baseConfig);
-  }
-  if (vueVersion === 2) {
-    result = eslint8.merge(result, eslint8.vue2Config);
-  } else if (vueVersion === 3) {
-    result = eslint8.merge(result, eslint8.vue3Config);
-  }
-  return result;
-};
-/**
- * 定制的配置
- */
-// 基础定制
-eslint8.baseConfig = {
-  // 环境。一个环境定义了一组预定义的全局变量
-  env: {
-    browser: true,
-    node: true,
-  },
-  // 解析器
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  /**
-   * 继承
-   * 使用eslint的规则：eslint:配置名称
-   * 使用插件的配置：plugin:包名简写/配置名称
-   */
-  extends: [
-    // 使用 eslint 推荐的规则
-    'eslint:recommended',
-  ],
-  /**
-   * 规则
-   * 来自 eslint 的规则：规则ID : value
-   * 来自插件的规则：包名简写/规则ID : value
-   */
-  rules: {
-    /**
-     * Possible Errors
-     * 这些规则与 JavaScript 代码中可能的错误或逻辑错误有关：
-     */
-    'getter-return': 'off',
-    'no-constant-condition': 'off',
-    'no-empty': 'off',
-    'no-extra-semi': 'warn',
-    'no-func-assign': 'off',
-    'no-prototype-builtins': 'off',
-
-    /**
-     * Best Practices
-     * 这些规则是关于最佳实践的，帮助你避免一些问题：
-     */
-    'accessor-pairs': 'error',
-    'array-callback-return': 'warn',
-    'block-scoped-var': 'error',
-    curly: 'warn',
-    'no-fallthrough': 'warn',
-    'no-floating-decimal': 'error',
-    'no-multi-spaces': 'warn',
-    'no-new-wrappers': 'error',
-    'no-proto': 'error',
-    'no-return-assign': 'warn',
-    'no-useless-escape': 'warn',
-
-    /**
-     * Variables
-     * 这些规则与变量声明有关：
-     */
-    'no-undef-init': 'warn',
-    'no-unused-vars': 'off',
-    'no-use-before-define': ['error', { functions: false, classes: false, variables: false }],
-
-    /**
-     * Stylistic Issues
-     * 这些规则是关于风格指南的，而且是非常主观的：
-     */
-    'array-bracket-spacing': 'warn',
-    'block-spacing': 'warn',
-    'brace-style': ['warn', '1tbs', { allowSingleLine: true }],
-    'comma-dangle': ['warn', 'always-multiline'],
-    'comma-spacing': 'warn',
-    'comma-style': 'warn',
-    'computed-property-spacing': 'warn',
-    'func-call-spacing': 'warn',
-    'function-paren-newline': 'warn',
-    'implicit-arrow-linebreak': 'warn',
-    indent: ['warn', 2, { SwitchCase: 1 }],
-    'jsx-quotes': 'warn',
-    'key-spacing': 'warn',
-    'keyword-spacing': 'warn',
-    'new-parens': 'warn',
-    'no-mixed-spaces-and-tabs': 'warn',
-    'no-multiple-empty-lines': ['warn', { max: 1, maxEOF: 0, maxBOF: 0 }],
-    'no-trailing-spaces': 'warn',
-    'no-whitespace-before-property': 'warn',
-    'nonblock-statement-body-position': 'warn',
-    'object-curly-newline': ['warn', { multiline: true, consistent: true }],
-    'object-curly-spacing': ['warn', 'always'],
-    'padded-blocks': ['warn', 'never'],
-    quotes: ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
-    semi: 'warn',
-    'semi-spacing': 'warn',
-    'semi-style': 'warn',
-    'space-before-blocks': 'warn',
-    'space-before-function-paren': ['warn', { anonymous: 'always', named: 'never', asyncArrow: 'always' }],
-    'space-in-parens': 'warn',
-    'space-infix-ops': 'warn',
-    'space-unary-ops': 'warn',
-    'spaced-comment': 'warn',
-    'switch-colon-spacing': 'warn',
-    'template-tag-spacing': 'warn',
-
-    /**
-     * ECMAScript 6
-     * 这些规则只与 ES6 有关, 即通常所说的 ES2015：
-     */
-    'arrow-spacing': 'warn',
-    'generator-star-spacing': ['warn', { before: false, after: true, method: { before: true, after: false } }],
-    'no-useless-rename': 'warn',
-    'prefer-template': 'warn',
-    'rest-spread-spacing': 'warn',
-    'template-curly-spacing': 'warn',
-    'yield-star-spacing': 'warn',
-  },
-  // 覆盖
-  overrides: [],
-};
-// vue2/vue3 共用
-eslint8.vueBaseConfig = {
-  rules: {
-    // Priority A: Essential
-    'vue/multi-word-component-names': 'off',
-    'vue/no-unused-components': 'warn',
-    'vue/no-unused-vars': 'off',
-    'vue/require-render-return': 'warn',
-    'vue/require-v-for-key': 'off',
-    'vue/return-in-computed-property': 'warn',
-    'vue/valid-template-root': 'off',
-    'vue/valid-v-for': 'off',
-
-    // Priority B: Strongly Recommended
-    'vue/attribute-hyphenation': 'off',
-    'vue/component-definition-name-casing': 'off',
-    'vue/html-quotes': ['warn', 'double', { avoidEscape: true }],
-    'vue/html-self-closing': 'off',
-    'vue/max-attributes-per-line': ['warn', { singleline: Infinity, multiline: 1 }],
-    'vue/multiline-html-element-content-newline': 'off',
-    'vue/prop-name-casing': 'off',
-    'vue/require-default-prop': 'off',
-    'vue/singleline-html-element-content-newline': 'off',
-    'vue/v-bind-style': 'off',
-    'vue/v-on-style': 'off',
-    'vue/v-slot-style': 'off',
-
-    // Priority C: Recommended
-    'vue/no-v-html': 'off',
-
-    // Uncategorized
-    'vue/block-tag-newline': 'warn',
-    'vue/html-comment-content-spacing': 'warn',
-    'vue/script-indent': ['warn', 2, { baseIndent: 1, switchCase: 1 }],
-
-    // Extension Rules。对应eslint的同名规则，适用于<template>中的表达式
-    'vue/array-bracket-spacing': 'warn',
-    'vue/block-spacing': 'warn',
-    'vue/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
-    'vue/comma-dangle': ['warn', 'always-multiline'],
-    'vue/comma-spacing': 'warn',
-    'vue/comma-style': 'warn',
-    'vue/func-call-spacing': 'warn',
-    'vue/key-spacing': 'warn',
-    'vue/keyword-spacing': 'warn',
-    'vue/object-curly-newline': ['warn', { multiline: true, consistent: true }],
-    'vue/object-curly-spacing': ['warn', 'always'],
-    'vue/space-in-parens': 'warn',
-    'vue/space-infix-ops': 'warn',
-    'vue/space-unary-ops': 'warn',
-    'vue/arrow-spacing': 'warn',
-    'vue/prefer-template': 'warn',
-  },
-  overrides: [
-    {
-      files: ['*.vue'],
-      rules: {
-        indent: 'off',
-      },
-    },
-  ],
-};
-// vue2 用
-eslint8.vue2Config = eslint8.merge(eslint8.vueBaseConfig, {
-  extends: [
-    // 使用 vue2 推荐的规则
-    'plugin:vue/recommended',
-  ],
-});
-// vue3 用
-eslint8.vue3Config = eslint8.merge(eslint8.vueBaseConfig, {
-  env: {
-    'vue/setup-compiler-macros': true,
-  },
-  extends: [
-    // 使用 vue3 推荐的规则
-    'plugin:vue/vue3-recommended',
-  ],
-  rules: {
-    // Priority A: Essential
-    'vue/no-template-key': 'off',
-
-    // Priority A: Essential for Vue.js 3.x
-    'vue/return-in-emits-validator': 'warn',
-
-    // Priority B: Strongly Recommended for Vue.js 3.x
-    'vue/require-explicit-emits': 'off',
-    'vue/v-on-event-hyphenation': 'off',
-  },
-});
-
-export const eslint9 = Object.create(null);
-eslint9.baseConfig = {
-  languageOptions: {
-    ecmaVersion: 'latest',
-  },
-  linterOptions: {
-    noInlineConfig: false,
-    reportUnusedDisableDirectives: true,
-  },
+const eslint = Object.create(null);
+eslint.baseConfig = {
   rules: {
     /**
      * Possible Problems
@@ -988,8 +684,8 @@ eslint9.baseConfig = {
       ExportDeclaration: { multiline: true },
     }],
     'object-curly-spacing': ['warn', 'always', {
-      // arraysInObjects: false,
-      // objectsInObjects: false,
+      arraysInObjects: true,
+      objectsInObjects: true,
     }],
     'object-property-newline': ['off', {
       allowAllPropertiesOnSameLine: true,
@@ -1056,5 +752,180 @@ eslint9.baseConfig = {
     }],
   },
 };
-eslint9.merge = function () {
+
+export const eslint9 = Object.create(null);
+eslint9.merge = function (...sources) {
+  let result = {};
+  for (const source of sources) {
+    _Object.deepAssign(result, source);
+  }
+  return result;
 };
+eslint9.baseConfig = _Object.deepAssign({}, eslint.baseConfig, {
+  languageOptions: {
+    ecmaVersion: 'latest',
+  },
+  linterOptions: {
+    noInlineConfig: false,
+    reportUnusedDisableDirectives: true,
+  },
+});
+
+export const eslint8 = Object.create(null);
+eslint8.merge = function (...sources) {
+  const result = {};
+  for (const source of sources) {
+    for (const [key, value] of Object.entries(source)) {
+      // 特殊字段处理
+      if (key === 'rules') {
+        // console.log({ key, value, 'result[key]': result[key] });
+        // 初始不存在时赋默认值用于合并
+        result[key] = result[key] ?? {};
+        // 对各条规则处理
+        for (let [ruleKey, ruleValue] of Object.entries(value)) {
+          // 已有值统一成数组处理
+          let sourceRuleValue = result[key][ruleKey] ?? [];
+          if (!Array.isArray(sourceRuleValue)) {
+            sourceRuleValue = [sourceRuleValue];
+          }
+          // 要合并的值统一成数组处理
+          if (!Array.isArray(ruleValue)) {
+            ruleValue = [ruleValue];
+          }
+          // 统一格式后进行数组循环操作
+          for (const [valIndex, val] of Object.entries(ruleValue)) {
+            // 对象深合并，其他直接赋值
+            if (_Object.isPlainObject(val)) {
+              sourceRuleValue[valIndex] = _Object.deepAssign(sourceRuleValue[valIndex] ?? {}, val);
+            } else {
+              sourceRuleValue[valIndex] = val;
+            }
+          }
+          // 赋值规则结果
+          result[key][ruleKey] = sourceRuleValue;
+        }
+        continue;
+      }
+      // 其他字段根据类型判断处理
+      // 数组：拼接
+      if (Array.isArray(value)) {
+        (result[key] = result[key] ?? []).push(...value);
+        continue;
+      }
+      // 其他对象：深合并
+      if (_Object.isPlainObject(value)) {
+        _Object.deepAssign(result[key] = result[key] ?? {}, value);
+        continue;
+      }
+      // 其他直接赋值
+      result[key] = value;
+    }
+  }
+  return result;
+};
+// 基础配置
+eslint8.baseConfig = _Object.deepAssign({}, eslint.baseConfig, {
+  env: {
+    browser: true,
+    node: true,
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: {
+      globalReturn: false,
+      impliedStrict: true,
+      jsx: true,
+    },
+  },
+});
+// vue2/vue3 共用
+eslint8.vueBaseConfig = {
+  rules: {
+    // Priority A: Essential
+    'vue/multi-word-component-names': 'off',
+    'vue/no-unused-components': 'warn',
+    'vue/no-unused-vars': 'off',
+    'vue/require-render-return': 'warn',
+    'vue/require-v-for-key': 'off',
+    'vue/return-in-computed-property': 'warn',
+    'vue/valid-template-root': 'off',
+    'vue/valid-v-for': 'off',
+
+    // Priority B: Strongly Recommended
+    'vue/attribute-hyphenation': 'off',
+    'vue/component-definition-name-casing': 'off',
+    'vue/html-quotes': ['warn', 'double', { avoidEscape: true }],
+    'vue/html-self-closing': 'off',
+    'vue/max-attributes-per-line': ['warn', { singleline: Infinity, multiline: 1 }],
+    'vue/multiline-html-element-content-newline': 'off',
+    'vue/prop-name-casing': 'off',
+    'vue/require-default-prop': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/v-bind-style': 'off',
+    'vue/v-on-style': 'off',
+    'vue/v-slot-style': 'off',
+
+    // Priority C: Recommended
+    'vue/no-v-html': 'off',
+
+    // Uncategorized
+    'vue/block-tag-newline': 'warn',
+    'vue/html-comment-content-spacing': 'warn',
+    'vue/script-indent': ['warn', 2, { baseIndent: 1, switchCase: 1 }],
+
+    // Extension Rules。对应eslint的同名规则，适用于<template>中的表达式
+    'vue/array-bracket-spacing': 'warn',
+    'vue/block-spacing': 'warn',
+    'vue/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
+    'vue/comma-dangle': ['warn', 'always-multiline'],
+    'vue/comma-spacing': 'warn',
+    'vue/comma-style': 'warn',
+    'vue/func-call-spacing': 'warn',
+    'vue/key-spacing': 'warn',
+    'vue/keyword-spacing': 'warn',
+    'vue/object-curly-newline': ['warn', { multiline: true, consistent: true }],
+    'vue/object-curly-spacing': ['warn', 'always'],
+    'vue/space-in-parens': 'warn',
+    'vue/space-infix-ops': 'warn',
+    'vue/space-unary-ops': 'warn',
+    'vue/arrow-spacing': 'warn',
+    'vue/prefer-template': 'warn',
+  },
+  overrides: [
+    {
+      files: ['*.vue'],
+      rules: {
+        indent: 'off',
+      },
+    },
+  ],
+};
+// vue2 用
+eslint8.vue2Config = eslint8.merge(eslint8.vueBaseConfig, {
+  extends: [
+    // 使用 vue2 推荐的规则
+    'plugin:vue/recommended',
+  ],
+});
+// vue3 用
+eslint8.vue3Config = eslint8.merge(eslint8.vueBaseConfig, {
+  env: {
+    'vue/setup-compiler-macros': true,
+  },
+  extends: [
+    // 使用 vue3 推荐的规则
+    'plugin:vue/vue3-recommended',
+  ],
+  rules: {
+    // Priority A: Essential
+    'vue/no-template-key': 'off',
+
+    // Priority A: Essential for Vue.js 3.x
+    'vue/return-in-emits-validator': 'warn',
+
+    // Priority B: Strongly Recommended for Vue.js 3.x
+    'vue/require-explicit-emits': 'off',
+    'vue/v-on-event-hyphenation': 'off',
+  },
+});
