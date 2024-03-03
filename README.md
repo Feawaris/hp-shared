@@ -453,6 +453,8 @@ router.get('/test', (ctx) => {
 
 #### 2.3.1 eslint
 
+##### eslint 8.x
+
 ```shell
 pnpm i -D eslint eslint-plugin-vue
 ```
@@ -470,15 +472,34 @@ module.exports = eslint8.merge(
 );
 ```
 
+##### eslint 9.x
+
+```shell
+pnpm i -D eslint@next
+```
+
 ```js
 // eslint 9.x 使用 eslint.config.js
 const { eslint9 } = require('hp-shared/dev');
+const vueParser = require('vue-eslint-parser');
+const vue = require('eslint-plugin-vue');
 
 module.exports = [
   eslint9.merge(
     eslint9.baseConfig,
     {
       files: ['src/**/*.js', '*.config.js'],
+      rules: {},
+    },
+  ),
+  eslint9.merge(
+    eslint9.vue3Config,
+    {
+      files: ['src/**/*.vue'],
+      languageOptions: {
+        parser: vueParser,
+      },
+      plugins: { vue },
       rules: {},
     },
   ),

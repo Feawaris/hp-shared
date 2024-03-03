@@ -5,6 +5,71 @@
 import { _Object } from '../base';
 
 const eslint = Object.create(null);
+eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [] } = {}) {
+  return function merge(...sources) {
+    const result = {};
+
+    for (const source of sources) {
+      for (let [key, value] of Object.entries(source)) {
+        if (simpleKeys.includes(key)) {
+          result[key] = value;
+
+          continue;
+        }
+        if (objectKeys.includes(key)) {
+          result[key] = result[key] || {};
+          _Object.deepAssign(result[key], value);
+
+          continue;
+        }
+        if (arrayKeys.includes(key)) {
+          result[key] = result[key] || [];
+          if (!Array.isArray(value)) {
+            value = [value];
+          }
+          result[key].push(...value);
+
+          continue;
+        }
+        if (key === 'rules') {
+          result[key] = result[key] || {};
+          // 对各条规则处理
+          for (let [ruleKey, ruleValue] of Object.entries(value)) {
+            // 统一成数组处理
+            let ruleValueResult = result[key][ruleKey] || [];
+            if (!Array.isArray(ruleValueResult)) {
+              ruleValueResult = [ruleValueResult];
+            }
+            if (!Array.isArray(ruleValue)) {
+              ruleValue = [ruleValue];
+            }
+            // 规则值格式统一成字符串
+            for (const arr of [ruleValueResult, ruleValue]) {
+              if (typeof arr[0] === 'number') {
+                arr[0] = { 0: 'off', 1: 'warn', 2: 'error' }[arr[0]];
+              }
+            }
+            // 带选项的整个替换，不带选项的单独替换
+            if (ruleValue.length > 1) {
+              ruleValueResult = ruleValue;
+            } else if (ruleValue.length === 1) {
+              ruleValueResult[0] = ruleValue[0];
+            }
+            // 赋值
+            result[key][ruleKey] = ruleValueResult;
+          }
+
+          continue;
+        }
+        // 其他属性：直接赋值
+        result[key] = value;
+      }
+    }
+
+    return result;
+  };
+};
+// 基础配置
 eslint.baseConfig = {
   rules: {
     /**
@@ -752,15 +817,18 @@ eslint.baseConfig = {
     }],
   },
 };
-
-export const eslint9 = Object.create(null);
-eslint9.merge = function (...sources) {
-  let result = {};
-  for (const source of sources) {
-    _Object.deepAssign(result, source);
-  }
-  return result;
-};
+// vue2/vue3 通用
+eslint.vueBaseConfig = {};
+// vue2 用
+eslint.vue2Config = {};
+// vue3 用
+eslint.vue3Config = {};
+export const eslint9 = Object.create(eslint);
+eslint9.merge = eslint.createMerge({
+  simpleKeys: ['processor', 'parser', 'parserOptions'],
+  objectKeys: ['languageOptions', 'linterOptions', 'plugins', 'settings'],
+  arrayKeys: ['files', 'ignores'],
+});
 eslint9.baseConfig = _Object.deepAssign({}, eslint.baseConfig, {
   languageOptions: {
     ecmaVersion: 'latest',
@@ -771,59 +839,12 @@ eslint9.baseConfig = _Object.deepAssign({}, eslint.baseConfig, {
   },
 });
 
-export const eslint8 = Object.create(null);
-eslint8.merge = function (...sources) {
-  const result = {};
-  for (const source of sources) {
-    for (const [key, value] of Object.entries(source)) {
-      // 特殊字段处理
-      if (key === 'rules') {
-        // console.log({ key, value, 'result[key]': result[key] });
-        // 初始不存在时赋默认值用于合并
-        result[key] = result[key] ?? {};
-        // 对各条规则处理
-        for (let [ruleKey, ruleValue] of Object.entries(value)) {
-          // 已有值统一成数组处理
-          let sourceRuleValue = result[key][ruleKey] ?? [];
-          if (!Array.isArray(sourceRuleValue)) {
-            sourceRuleValue = [sourceRuleValue];
-          }
-          // 要合并的值统一成数组处理
-          if (!Array.isArray(ruleValue)) {
-            ruleValue = [ruleValue];
-          }
-          // 统一格式后进行数组循环操作
-          for (const [valIndex, val] of Object.entries(ruleValue)) {
-            // 对象深合并，其他直接赋值
-            if (_Object.isPlainObject(val)) {
-              sourceRuleValue[valIndex] = _Object.deepAssign(sourceRuleValue[valIndex] ?? {}, val);
-            } else {
-              sourceRuleValue[valIndex] = val;
-            }
-          }
-          // 赋值规则结果
-          result[key][ruleKey] = sourceRuleValue;
-        }
-        continue;
-      }
-      // 其他字段根据类型判断处理
-      // 数组：拼接
-      if (Array.isArray(value)) {
-        (result[key] = result[key] ?? []).push(...value);
-        continue;
-      }
-      // 其他对象：深合并
-      if (_Object.isPlainObject(value)) {
-        _Object.deepAssign(result[key] = result[key] ?? {}, value);
-        continue;
-      }
-      // 其他直接赋值
-      result[key] = value;
-    }
-  }
-  return result;
-};
-// 基础配置
+export const eslint8 = Object.create(eslint);
+eslint8.merge = eslint.createMerge({
+  simpleKeys: ['root', 'parser', 'parserOptions'],
+  objectKeys: ['env', 'globals', 'settings'],
+  arrayKeys: ['extends', 'plugins', 'ignorePatterns', 'overrides'],
+});
 eslint8.baseConfig = _Object.deepAssign({}, eslint.baseConfig, {
   env: {
     browser: true,
@@ -839,7 +860,6 @@ eslint8.baseConfig = _Object.deepAssign({}, eslint.baseConfig, {
     },
   },
 });
-// vue2/vue3 共用
 eslint8.vueBaseConfig = {
   rules: {
     // Priority A: Essential
@@ -901,14 +921,12 @@ eslint8.vueBaseConfig = {
     },
   ],
 };
-// vue2 用
 eslint8.vue2Config = eslint8.merge(eslint8.vueBaseConfig, {
   extends: [
     // 使用 vue2 推荐的规则
     'plugin:vue/recommended',
   ],
 });
-// vue3 用
 eslint8.vue3Config = eslint8.merge(eslint8.vueBaseConfig, {
   env: {
     'vue/setup-compiler-macros': true,
