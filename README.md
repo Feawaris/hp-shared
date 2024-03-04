@@ -475,7 +475,7 @@ module.exports = eslint8.merge(
 ##### eslint 9.x
 
 ```shell
-pnpm i -D eslint@next
+pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser
 ```
 
 ```js
@@ -493,12 +493,11 @@ module.exports = [
     },
   ),
   eslint9.merge(
+    eslint9.baseConfig,
     eslint9.vue3Config,
     {
       files: ['src/**/*.vue'],
-      languageOptions: {
-        parser: vueParser,
-      },
+      languageOptions: { parser: vueParser },
       plugins: { vue },
       rules: {},
     },
