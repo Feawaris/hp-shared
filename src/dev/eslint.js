@@ -8,18 +8,16 @@ const eslint = Object.create(null);
 eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [] } = {}) {
   return function merge(...sources) {
     let result = {};
-
     for (const source of sources) {
       for (let [key, value] of Object.entries(source)) {
+        // 视为指定类型的属性
         if (simpleKeys.includes(key)) {
           result[key] = value;
-
           continue;
         }
         if (objectKeys.includes(key)) {
           result[key] = result[key] || {};
           _Object.deepAssign(result[key], value);
-
           continue;
         }
         if (arrayKeys.includes(key)) {
@@ -28,9 +26,9 @@ eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [
             value = [value];
           }
           result[key].push(...value);
-
           continue;
         }
+        // 特殊属性
         if (key === 'rules') {
           result[key] = result[key] || {};
           // 对各条规则处理
@@ -58,14 +56,12 @@ eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [
             // 赋值
             result[key][ruleKey] = ruleValueResult;
           }
-
           continue;
         }
         // 其他属性：直接赋值
         result[key] = value;
       }
     }
-
     return result;
   };
 };

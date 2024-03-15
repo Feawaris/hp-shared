@@ -50,28 +50,28 @@ export default [
     input: 'src/index-browser.js',
     output: [
       getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'shared', noConflict: true }),
-      getOutputItem({ file: 'dist/browser/index.js', format: 'esm' }),
+      getOutputItem({ file: 'dist/browser/index.js', format: 'es' }),
     ],
     plugins: browserPlugins,
   },
   {
     input: 'src/base/index.js',
     output: [
-      getOutputItem({ file: 'dist/browser/base.js', format: 'esm' }),
+      getOutputItem({ file: 'dist/browser/base.js', format: 'es' }),
     ],
     plugins: browserPlugins,
   },
   {
     input: 'src/dev/index.js',
     output: [
-      getOutputItem({ file: 'dist/browser/dev.js', format: 'esm' }),
+      getOutputItem({ file: 'dist/browser/dev.js', format: 'es' }),
     ],
     plugins: browserPlugins,
   },
   {
     input: 'src/storage/index-browser.js',
     output: [
-      getOutputItem({ file: 'dist/browser/storage.js', format: 'esm' }),
+      getOutputItem({ file: 'dist/browser/storage.js', format: 'es' }),
     ],
     plugins: browserPlugins,
   },

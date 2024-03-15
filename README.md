@@ -390,8 +390,6 @@ console.log(a);
 | **_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
 | **_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
 
-
-
 | 属性                                             | 说明                                  | browser                                 | node                                   |
 | ------------------------------------------------ | ------------------------------------- | --------------------------------------- | -------------------------------------- |
 | **setItem**                                      | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
@@ -453,6 +451,8 @@ router.get('/test', (ctx) => {
 
 #### 2.3.1 eslint
 
+[eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)、[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)
+
 ##### eslint 8.x
 
 ```shell
@@ -503,6 +503,52 @@ module.exports = [
     },
   ),
 ];
+```
+
+#### 2.3.2 vite
+
+[vite 配置](https://cn.vitejs.dev/config/)
+
+```shell
+pnpm i -D vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx
+```
+
+```js
+// vite.config.js
+import { vite } from 'hp-shared/dev';
+import { defineConfig } from 'vite';
+
+export default defineConfig((env) => {
+  return vite.merge(vite.createBaseConfig(env), {
+    
+  });
+});
+```
+
+```js
+// vite.config.js: vue 常用示例
+import { vite } from 'hp-shared/dev';
+import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'node:url';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+
+export default defineConfig((env) => {
+  return vite.merge(vite.createBaseConfig(env), {
+    plugins: [
+      vue(),
+      vueJsx(),
+    ],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
+    server: {
+      port: 5173,
+    },
+  });
+});
 ```
 
 
