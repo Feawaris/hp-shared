@@ -3,20 +3,33 @@
  */
 export const BaseEnv = Object.create(null);
 // 代码运行环境: browser, node, ...
-BaseEnv.env = (() => {
+BaseEnv.envs = (() => {
+  let result = [];
   if (typeof window !== 'undefined' && globalThis === window) {
-    return 'browser';
+    result.push('browser');
+  }
+  if (typeof Worker !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' && globalThis instanceof WorkerGlobalScope) {
+    result.push('web-worker');
+  }
+  if (typeof chrome !== 'undefined' && chrome.extension) {
+    result.push('chrome-extension');
+  }
+  if (typeof ServiceWorkerGlobalScope !== 'undefined' && globalThis instanceof ServiceWorkerGlobalScope) {
+    result.push('service-worker');
   }
   if (typeof global !== 'undefined' && globalThis === global) {
-    return 'node';
+    result.push('node');
   }
-  return '';
+  return result;
 })();
-BaseEnv.isBrowser = BaseEnv.env === 'browser';
-BaseEnv.isNode = BaseEnv.env === 'node';
+BaseEnv.isBrowser = BaseEnv.envs.includes('browser');
+BaseEnv.isWebWorker = BaseEnv.envs.includes('web-worker');
+BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
+BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
+BaseEnv.isNode = BaseEnv.envs.includes('node');
 // 操作系统: windows, mac, linux, ...
 BaseEnv.os = (() => {
-  if (BaseEnv.isBrowser) {
+  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
     const text = navigator.userAgentData
       ? navigator.userAgentData.platform.toLowerCase()
       : navigator.platform.toLowerCase();

@@ -7,7 +7,7 @@ import { _Object } from '../base';
 const eslint = Object.create(null);
 eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [] } = {}) {
   return function merge(...sources) {
-    const result = {};
+    let result = {};
 
     for (const source of sources) {
       for (let [key, value] of Object.entries(source)) {

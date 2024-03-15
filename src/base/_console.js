@@ -157,7 +157,7 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
     console.log(...valuesArr);
     return;
   }
-  if (BaseEnv.isBrowser) {
+  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker) {
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
     if (values.some(val => val !== null && ['object', 'function'].includes(typeof val))) {

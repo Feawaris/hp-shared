@@ -81,9 +81,9 @@ const { BaseEnv } = require('hp-shared/base');
 
 | 属性     | 说明                               |
 | ------------- | ---------------------------------- |
-| env           | 代码运行环境: browser, node, ...   |
-| **isBrowser** | 根据 env 得到                      |
-| **isNode**    | 根据 env 得到                      |
+| envs          | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] |
+| **isBrowser** | 根据 envs 得到                     |
+| **isNode**    | 根据 envs 得到                     |
 | os            | 操作系统: windows, mac, linux, ... |
 | **isWindows** | 根据 os 得到                       |
 | **isMac**     | 根据 os 得到                       |
@@ -191,8 +191,8 @@ console.log(C(4,2));
 | factorial                          | $n!$                                           |
 | permutation                        | $A_n^k=P(n,k)=\frac{n!}{(n-k)!}$               |
 | combination                        | $C_n^k=\binom{k}{n}=\frac{n!}{k!(n-k)!}$       |
-| **A**                              | permutation 简写方式                           |
-| **C**                              | combination 简写方式                           |
+| **A**                              | $A_n^k$ 简写方式                    |
+| **C**                              | $C_n^k$ 简写方式                    |
 | Sequence                           | 数列，基础方法用于继承                         |
 | ArithmeticSequence                 | 等差数列：$a_1, a_1+d, a_1+2d, \ldots$         |
 | GeometricSequence                  | 等比数列：$a_1, a_1q, a_1q^2, \ldots$          |
@@ -369,7 +369,7 @@ const { clipboard } = require('hp-shared/storage');
 | writeTextSync | 同 copySync      | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
 | readTextSync  | 同 pasteSync     | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
 
-#### 2.2.2 web storage
+#### 2.2.2 Web Storage
 
 同浏览器 [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API) 使用，同样专注于前后端交互的 JSON， 存取方法默认做了 JSON 转换
 
@@ -399,9 +399,9 @@ console.log(a);
 | toObject                                         | 转换成对象                            | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
 
-#### 2.2.3 cookie
+#### 2.2.3 Web Cookie
 
-操作 [cookie](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/cookie)
+操作 [Web Cookie](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies)
 
 ```js
 // browser

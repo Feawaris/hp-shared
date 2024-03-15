@@ -1,2 +1,2 @@
 export * from './clipboard/node';
-export * from './cookie/node';
+export * from './web-cookie/node';
