@@ -1,12 +1,12 @@
+import { _Date } from 'hp-shared/base';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import { _Date } from './src/base/index.js';
+import { name, version } from './package.json';
 
-const pkg = require('./package.json');
 const license = `
 /*!
- * ${pkg.name} v${pkg.version}
+ * ${name} v${version}
  * (c) 2022 hp
  * Released under the MIT License.
  */ 

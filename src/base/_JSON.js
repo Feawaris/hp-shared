@@ -21,7 +21,7 @@ _JSON.DataModel = class {
   /**
    *
    * @param model 数据模型，同时作为默认值和类型推导用
-   * @param type 数据类型，无法根据 model 推导或特殊情况显式指定
+   * @param type 数据类型，无法根据 model 推导或特殊情况时显式指定
    * @param nullDefaultType model 传 null 时默认推导类型，默认给常用的 number
    * @param isObjectList 显式声明 [{...}] 格式为列表
    * @param enableObjectListDeep 当前和嵌套中的 [{...}] 格式是否理解为列表来处理，默认设置成 true 常用

@@ -451,7 +451,7 @@ router.get('/test', (ctx) => {
 
 #### 2.3.1 eslint
 
-[eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)、[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)
+[eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
 
 ##### eslint 8.x
 
@@ -475,7 +475,7 @@ module.exports = eslint8.merge(
 ##### eslint 9.x
 
 ```shell
-pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser
+pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
 ```js
@@ -483,6 +483,7 @@ pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser
 const { eslint9 } = require('hp-shared/dev');
 const vueParser = require('vue-eslint-parser');
 const vue = require('eslint-plugin-vue');
+const tseslint = require('typescript-eslint');
 
 module.exports = [
   eslint9.merge(
@@ -497,11 +498,32 @@ module.exports = [
     eslint9.vue3Config,
     {
       files: ['src/**/*.vue'],
-      languageOptions: { parser: vueParser },
-      plugins: { vue },
+      languageOptions: {
+        parser: vueParser,
+      },
+      plugins: {
+        vue,
+      },
       rules: {},
     },
   ),
+  eslint9.merge(
+    eslint9.baseConfig,
+    eslint9.tsConfig,
+    {
+      files: ['src/**/*.ts'],
+      languageOptions: {
+        parser: tseslint.parser,
+        parserOptions: {
+          project: true,
+          tsconfigRootDir: __dirname,
+        },
+      },
+      plugins: {
+        '@typescript-eslint': tseslint.plugin,
+      },
+    },
+  )
 ];
 ```
 
