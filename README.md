@@ -61,8 +61,6 @@ const { xx } = require('hp-shared/dist/node/模块名');
 </sctipt>
 ```
 
-
-
 ## 2.各模块示例
 
 ### 2.1 base 基础通用
@@ -170,8 +168,6 @@ console.log(sin(π/6));
 const { C } = _Math;
 console.log(C(4,2));
 ```
-
-
 
 | 属性                          | 说明                                           |
 | ---------------------------------- | ---------------------------------------------- |
@@ -449,14 +445,43 @@ router.get('/test', (ctx) => {
 
 ### 2.3 dev 开发
 
-#### 2.3.1 eslint
+#### 2.3.? markdownlint
+
+```shell
+pnpm i -D markdownlint-cli2
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "markdownlint": "node .markdownlint.js && markdownlint-cli2 'README.md' --fix"
+  }
+}
+```
+
+```js
+// .markdownlint.js 用于生成 json，同时在 .gitignore 中忽略 .markdownlint.json
+const { markdownlint } = require('hp-shared/dev');
+
+markdownlint.createFile({
+  filepath: '.markdownlint.json',
+  keyName: 'alias',
+  config: markdownlint.merge(
+    markdownlint.createBaseConfig(),
+    {},
+  ),
+});
+```
+
+#### 2.3.? eslint
 
 [eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
 
 ##### eslint 8.x
 
 ```shell
-pnpm i -D eslint eslint-plugin-vue
+pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 ```js
@@ -466,7 +491,18 @@ const { eslint8 } = require('hp-shared/dev');
 module.exports = eslint8.merge(
   eslint8.baseConfig,
   eslint8.vue3Config,
+  eslint8.tsConfig,
   {
+    parser: 'vue-eslint-parser',
+    parserOptions: {
+      parser: '@typescript-eslint/parser',
+      project: './tsconfig.json',
+      extraFileExtensions: ['.vue'],
+    },
+    plugins: [
+      'vue',
+      '@typescript-eslint',
+    ],
     rules: {},
   },
 );
@@ -489,21 +525,7 @@ module.exports = [
   eslint9.merge(
     eslint9.baseConfig,
     {
-      files: ['src/**/*.js', '*.config.js'],
-      rules: {},
-    },
-  ),
-  eslint9.merge(
-    eslint9.baseConfig,
-    eslint9.vue3Config,
-    {
-      files: ['src/**/*.vue'],
-      languageOptions: {
-        parser: vueParser,
-      },
-      plugins: {
-        vue,
-      },
+      files: ['**/*.js'],
       rules: {},
     },
   ),
@@ -511,23 +533,43 @@ module.exports = [
     eslint9.baseConfig,
     eslint9.tsConfig,
     {
-      files: ['src/**/*.ts'],
+      files: ['**/*.ts'],
       languageOptions: {
         parser: tseslint.parser,
         parserOptions: {
-          project: true,
-          tsconfigRootDir: __dirname,
+          project: './tsconfig.json',
         },
       },
       plugins: {
         '@typescript-eslint': tseslint.plugin,
       },
     },
-  )
+  ),
+  eslint9.merge(
+    eslint9.baseConfig,
+    eslint9.vue3Config,
+    eslint9.tsConfig,
+    {
+      files: ['**/*.vue'],
+      languageOptions: {
+        parser: vueParser,
+        parserOptions: {
+          parser: tseslint.parser,
+          project: './tsconfig.json',
+          extraFileExtensions: ['.vue'],
+        },
+      },
+      plugins: {
+        vue,
+        '@typescript-eslint': tseslint.plugin,
+      },
+      rules: {},
+    },
+  ),
 ];
 ```
 
-#### 2.3.2 vite
+#### 2.3.? vite
 
 [vite 配置](https://cn.vitejs.dev/config/)
 
@@ -572,8 +614,6 @@ export default defineConfig((env) => {
   });
 });
 ```
-
-
 
 ## 3.当前项目开发
 

@@ -4,7 +4,7 @@ module.exports = [
   eslint9.merge(
     eslint9.baseConfig,
     {
-      files: ['src/**/*.js', '*.config.js'],
+      files: ['**/*.js'],
       rules: {},
     },
   ),

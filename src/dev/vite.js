@@ -219,7 +219,7 @@ vite.merge = function (...sources) {
         result[key].push(...value);
         continue;
       }
-      // 其他属性：直接赋值
+      // 其他属性
       result[key] = value;
     }
   }

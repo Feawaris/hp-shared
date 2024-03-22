@@ -11,24 +11,6 @@ eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [
     let result = {};
     for (const source of sources) {
       for (let [key, value] of Object.entries(source)) {
-        // 视为指定类型的属性
-        if (simpleKeys.includes(key)) {
-          result[key] = value;
-          continue;
-        }
-        if (objectKeys.includes(key)) {
-          result[key] = result[key] || {};
-          _Object.deepAssign(result[key], value);
-          continue;
-        }
-        if (arrayKeys.includes(key)) {
-          result[key] = result[key] || [];
-          if (!Array.isArray(value)) {
-            value = [value];
-          }
-          result[key].push(...value);
-          continue;
-        }
         // 特殊属性
         if (key === 'rules') {
           result[key] = result[key] || {};
@@ -59,7 +41,25 @@ eslint.createMerge = function ({ simpleKeys = [], objectKeys = [], arrayKeys = [
           }
           continue;
         }
-        // 其他属性：直接赋值
+        // 视为指定类型的属性
+        if (simpleKeys.includes(key)) {
+          result[key] = value;
+          continue;
+        }
+        if (objectKeys.includes(key)) {
+          result[key] = result[key] || {};
+          _Object.deepAssign(result[key], value);
+          continue;
+        }
+        if (arrayKeys.includes(key)) {
+          result[key] = result[key] || [];
+          if (!Array.isArray(value)) {
+            value = [value];
+          }
+          result[key].push(...value);
+          continue;
+        }
+        // 其他属性
         result[key] = value;
       }
     }
@@ -73,7 +73,7 @@ eslint.baseConfig = {
      * Possible Problems
      * 可能出现的问题
      */
-    'array-callback-return': ['error', {
+    'array-callback-return': ['warn', {
       allowImplicit: false,
       checkForEach: true,
     }],

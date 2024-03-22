@@ -4,9 +4,6 @@
 import { _Object } from '../base';
 
 export const rollup = Object.create(null);
-rollup.config1 = {
-
-};
 rollup.merge = function (...sources) {
   const simpleKeys = [];
   const objectKeys = [];
@@ -33,7 +30,7 @@ rollup.merge = function (...sources) {
         result[key].push(...value);
         continue;
       }
-      // 其他属性：直接赋值
+      // 其他属性
       result[key] = value;
     }
   }
