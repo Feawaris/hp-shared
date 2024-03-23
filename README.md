@@ -356,7 +356,7 @@ const { clipboard } = require('hp-shared/storage');
 
 | 属性     | 说明             | browser                                 | node                                    |
 | ------------- | ---------------- | --------------------------------------- | --------------------------------------- |
-| **copy**      | 复制             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **copy**      | 复制            | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | **paste**     | 粘贴             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | copySync      | 复制（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
 | pasteSync     | 粘贴（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
@@ -445,7 +445,9 @@ router.get('/test', (ctx) => {
 
 ### 2.3 dev 开发
 
-#### 2.3.? markdownlint
+#### 2.3.1 markdownlint
+
+[markdownlint 配置](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md)
 
 ```shell
 pnpm i -D markdownlint-cli2
@@ -461,7 +463,7 @@ pnpm i -D markdownlint-cli2
 ```
 
 ```js
-// .markdownlint.js 用于生成 json，同时在 .gitignore 中忽略 .markdownlint.json
+// markdownlint.config.js 用于生成 json，同时在 .gitignore 中忽略 .markdownlint.json
 const { markdownlint } = require('hp-shared/dev');
 
 markdownlint.createFile({
@@ -474,7 +476,48 @@ markdownlint.createFile({
 });
 ```
 
-#### 2.3.? eslint
+#### 2.3.2 commitlint
+
+[commitlint 配置](https://commitlint.js.org/reference/rules.html)
+
+```shell
+pnpm i -D commitlint husky
+```
+
+```js
+const { commitlint } = require('hp-shared/dev');
+
+module.exports = commitlint.merge(
+  commitlint.baseConfig,
+  {
+    rules: {},
+  },
+);
+```
+
+#### 2.3.3 stylelint
+
+[stylelint 配置](https://stylelint.io/user-guide/rules)
+
+```shell
+pnpm i -D stylelint postcss-html
+```
+
+```js
+// stylelint.config.js
+const { stylelint } = require('hp-shared/dev');
+
+module.exports = stylelint.merge(
+  stylelint.baseConfig,
+  stylelint.htmlConfig,
+  stylelint.vueConfig,
+  {
+    rules: {},
+  },
+);
+```
+
+#### 2.3.4 eslint
 
 [eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
 
@@ -569,7 +612,7 @@ module.exports = [
 ];
 ```
 
-#### 2.3.? vite
+#### 2.3.5 vite
 
 [vite 配置](https://cn.vitejs.dev/config/)
 
