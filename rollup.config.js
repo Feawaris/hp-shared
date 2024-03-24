@@ -49,7 +49,7 @@ export default [
   {
     input: 'src/index-browser.js',
     output: [
-      getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'shared', noConflict: true }),
+      getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
       getOutputItem({ file: 'dist/browser/index.js', format: 'es' }),
     ],
     plugins: browserPlugins,

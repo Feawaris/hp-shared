@@ -519,7 +519,7 @@ module.exports = stylelint.merge(
 
 #### 2.3.4 eslint
 
-[eslint 配置](https://zh-hans.eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
+[eslint 配置](https://eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
 
 ##### eslint 8.x
 
@@ -529,23 +529,14 @@ pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-esli
 
 ```js
 // eslint 8.x 使用 .eslintrc.js
-const { eslint8 } = require('hp-shared/dev');
+const { ESLint } = require('hp-shared/dev');
 
+const eslint8 = new ESLint({ version: 8 });
 module.exports = eslint8.merge(
   eslint8.baseConfig,
   eslint8.vue3Config,
-  eslint8.tsConfig,
+  eslint8.tsInVueConfig,
   {
-    parser: 'vue-eslint-parser',
-    parserOptions: {
-      parser: '@typescript-eslint/parser',
-      project: './tsconfig.json',
-      extraFileExtensions: ['.vue'],
-    },
-    plugins: [
-      'vue',
-      '@typescript-eslint',
-    ],
     rules: {},
   },
 );
@@ -559,11 +550,9 @@ pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-
 
 ```js
 // eslint 9.x 使用 eslint.config.js
-const { eslint9 } = require('hp-shared/dev');
-const vueParser = require('vue-eslint-parser');
-const vue = require('eslint-plugin-vue');
-const tseslint = require('typescript-eslint');
+const { ESLint } = require('hp-shared/dev');
 
+const eslint9 = new ESLint({ version: 9, require });
 module.exports = [
   eslint9.merge(
     eslint9.baseConfig,
@@ -577,39 +566,30 @@ module.exports = [
     eslint9.tsConfig,
     {
       files: ['**/*.ts'],
-      languageOptions: {
-        parser: tseslint.parser,
-        parserOptions: {
-          project: './tsconfig.json',
-        },
-      },
-      plugins: {
-        '@typescript-eslint': tseslint.plugin,
-      },
+      rules: {},
     },
   ),
   eslint9.merge(
     eslint9.baseConfig,
     eslint9.vue3Config,
-    eslint9.tsConfig,
+    eslint9.tsInVueConfig,
     {
       files: ['**/*.vue'],
-      languageOptions: {
-        parser: vueParser,
-        parserOptions: {
-          parser: tseslint.parser,
-          project: './tsconfig.json',
-          extraFileExtensions: ['.vue'],
-        },
-      },
-      plugins: {
-        vue,
-        '@typescript-eslint': tseslint.plugin,
-      },
       rules: {},
     },
   ),
 ];
+```
+
+##### tsconfig.json
+
+```json
+{
+  "include": [
+    "**/*.ts",
+    "**/*.vue"
+  ]
+}
 ```
 
 #### 2.3.5 vite
