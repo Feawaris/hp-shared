@@ -10,18 +10,11 @@ export class ESLint {
     this.version = Number(version);
     this.require = _require;
 
+    const $this = this;
     this.baseConfig = {
       ...((() => {
         if (this.version === 8) {
           return {
-            root: false,
-            overrides: [],
-            ignorePatterns: [],
-            env: {
-              browser: true,
-              node: true,
-            },
-            globals: {},
             parser: 'espree',
             parserOptions: {
               ecmaVersion: 'latest',
@@ -32,16 +25,10 @@ export class ESLint {
                 impliedStrict: false,
               },
             },
-            extends: [],
-            plugins: [],
-            rules: {},
-            settings: {},
           };
         }
         if (this.version === 9) {
           return {
-            // files: [],
-            // ignores: [],
             languageOptions: {
               ecmaVersion: 'latest',
               sourceType: 'module',
@@ -61,10 +48,6 @@ export class ESLint {
               noInlineConfig: false,
               reportUnusedDisableDirectives: true,
             },
-            // processor: null,
-            plugins: {},
-            rules: {},
-            settings: {},
           };
         }
         return {};
@@ -826,10 +809,14 @@ export class ESLint {
         if (this.version === 9) {
           return {
             languageOptions: {
-              parser: this.require('vue-eslint-parser'),
+              get parser() {
+                return $this.require('vue-eslint-parser');
+              },
             },
             plugins: {
-              vue: this.require('eslint-plugin-vue'),
+              get vue() {
+                return $this.require('eslint-plugin-vue');
+              },
             },
           };
         }
@@ -1867,13 +1854,17 @@ export class ESLint {
         if (this.version === 9) {
           return {
             languageOptions: {
-              parser: this.require('typescript-eslint').parser,
+              get parser() {
+                return $this.require('typescript-eslint').parser;
+              },
               parserOptions: {
                 project: './tsconfig.json',
               },
             },
             plugins: {
-              '@typescript-eslint': this.require('typescript-eslint').plugin,
+              get '@typescript-eslint'() {
+                return $this.require('typescript-eslint').plugin;
+              },
             },
           };
         }
@@ -1896,13 +1887,17 @@ export class ESLint {
           return {
             languageOptions: {
               parserOptions: {
-                parser: this.require('typescript-eslint').parser,
+                get parser() {
+                  return $this.require('typescript-eslint').parser;
+                },
                 project: './tsconfig.json',
                 extraFileExtensions: ['.vue'],
               },
             },
             plugins: {
-              '@typescript-eslint': this.require('typescript-eslint').plugin,
+              get '@typescript-eslint'() {
+                return $this.require('typescript-eslint').plugin;
+              },
             },
           };
         }

@@ -476,26 +476,7 @@ markdownlint.createFile({
 });
 ```
 
-#### 2.3.2 commitlint
-
-[commitlint 配置](https://commitlint.js.org/reference/rules.html)
-
-```shell
-pnpm i -D commitlint husky
-```
-
-```js
-const { commitlint } = require('hp-shared/dev');
-
-module.exports = commitlint.merge(
-  commitlint.baseConfig,
-  {
-    rules: {},
-  },
-);
-```
-
-#### 2.3.3 stylelint
+#### 2.3.2 stylelint
 
 [stylelint 配置](https://stylelint.io/user-guide/rules)
 
@@ -517,7 +498,7 @@ module.exports = stylelint.merge(
 );
 ```
 
-#### 2.3.4 eslint
+#### 2.3.3 eslint
 
 [eslint 配置](https://eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
 
@@ -581,15 +562,23 @@ module.exports = [
 ];
 ```
 
-##### tsconfig.json
+#### 2.3.4 commitlint
 
-```json
-{
-  "include": [
-    "**/*.ts",
-    "**/*.vue"
-  ]
-}
+[commitlint 配置](https://commitlint.js.org/reference/rules.html)
+
+```shell
+pnpm i -D commitlint husky
+```
+
+```js
+const { commitlint } = require('hp-shared/dev');
+
+module.exports = commitlint.merge(
+  commitlint.baseConfig,
+  {
+    rules: {},
+  },
+);
 ```
 
 #### 2.3.5 vite
