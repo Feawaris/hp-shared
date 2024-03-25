@@ -484,7 +484,7 @@ pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-esli
 
 ```js
 // eslint 8.x 使用 .eslintrc.cjs
-const { ESLint } = require('hp-shared/dev');
+const { ESLint, PrettierEslint } = require('hp-shared/dev');
 
 const eslint8 = new ESLint({ eslintVersion: 8, require });
 const prettierEslint8 = new PrettierEslint({ eslintVersion: 8, require });
@@ -501,7 +501,7 @@ pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-
 
 ```js
 // eslint 9.x 使用 eslint.config.cjs
-const { ESLint } = require('hp-shared/dev');
+const { ESLint, PrettierEslint } = require('hp-shared/dev');
 
 const eslint9 = new ESLint({ eslintVersion: 9, require });
 const prettierEslint9 = new PrettierEslint({ eslintVersion: 9, require });
