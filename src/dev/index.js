@@ -1,5 +1,6 @@
 export * from './markdownlint';
-export * from './commitlint';
 export * from './stylelint';
 export * from './eslint';
+export * from './prettier';
+export * from './commitlint';
 export * from './vite';

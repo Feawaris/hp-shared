@@ -6,14 +6,14 @@
 import { _Object } from '../base';
 
 export class ESLint {
-  constructor({ version, require: _require } = {}) {
-    this.version = Number(version);
+  constructor({ eslintVersion, require: _require } = {}) {
+    this.eslintVersion = Number(eslintVersion);
     this.require = _require;
 
     const $this = this;
     this.baseConfig = {
       ...((() => {
-        if (this.version === 8) {
+        if (this.eslintVersion === 8) {
           return {
             parser: 'espree',
             parserOptions: {
@@ -27,7 +27,7 @@ export class ESLint {
             },
           };
         }
-        if (this.version === 9) {
+        if (this.eslintVersion === 9) {
           return {
             languageOptions: {
               ecmaVersion: 'latest',
@@ -800,13 +800,13 @@ export class ESLint {
     };
     this.vueBaseConfig = {
       ...(() => {
-        if (this.version === 8) {
+        if (this.eslintVersion === 8) {
           return {
             parser: 'vue-eslint-parser',
             plugins: ['vue'],
           };
         }
-        if (this.version === 9) {
+        if (this.eslintVersion === 9) {
           return {
             languageOptions: {
               get parser() {
@@ -1842,7 +1842,7 @@ export class ESLint {
     };
     this.tsConfig = this.merge(this.tsBaseConfig, {
       ...(() => {
-        if (this.version === 8) {
+        if (this.eslintVersion === 8) {
           return {
             parser: '@typescript-eslint/parser',
             parserOptions: {
@@ -1851,7 +1851,7 @@ export class ESLint {
             plugins: ['@typescript-eslint'],
           };
         }
-        if (this.version === 9) {
+        if (this.eslintVersion === 9) {
           return {
             languageOptions: {
               get parser() {
@@ -1873,7 +1873,7 @@ export class ESLint {
     });
     this.tsInVueConfig = this.merge(this.tsBaseConfig, {
       ...(() => {
-        if (this.version === 8) {
+        if (this.eslintVersion === 8) {
           return {
             parserOptions: {
               parser: '@typescript-eslint/parser',
@@ -1883,7 +1883,7 @@ export class ESLint {
             plugins: ['@typescript-eslint'],
           };
         }
-        if (this.version === 9) {
+        if (this.eslintVersion === 9) {
           return {
             languageOptions: {
               parserOptions: {
@@ -1907,14 +1907,14 @@ export class ESLint {
   }
   merge(...sources) {
     const { simpleKeys, objectKeys, arrayKeys } = (() => {
-      if (this.version === 8) {
+      if (this.eslintVersion === 8) {
         return {
           simpleKeys: ['root', 'parser'],
           objectKeys: ['env', 'globals', 'parserOptions', 'rules', 'settings'],
           arrayKeys: ['overrides', 'ignorePatterns', 'extends', 'plugins'],
         };
       }
-      if (this.version === 9) {
+      if (this.eslintVersion === 9) {
         return {
           simpleKeys: ['processor', 'parserOptions'],
           objectKeys: ['languageOptions', 'linterOptions', 'plugins', 'rules', 'settings'],
