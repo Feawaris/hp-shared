@@ -34,26 +34,13 @@ commitlint.baseConfig = {
     'subject-max-length': [0],
     'subject-min-length': [0],
     'subject-exclamation-mark': [0],
-    'type-enum': [2, 'always', [
-      'feat',
-      'fix',
-      'docs',
-      'style',
-      'refactor',
-      'perf',
-      'test',
-      'build',
-      'ci',
-      'chore',
-      'revert',
-    ]],
+    'type-enum': [2, 'always', ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']],
     'type-case': [2, 'always', 'lower-case'],
     'type-empty': [2, 'never'],
     'type-max-length': [0],
     'type-min-length': [0],
     'signed-off-by': [0],
     'trailer-exists': [0],
-
   },
 };
 commitlint.merge = function (...sources) {

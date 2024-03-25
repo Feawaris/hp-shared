@@ -22,7 +22,7 @@ export class _Date extends Date {
     });
     Object.defineProperty(this, 'isLeapYear', {
       get() {
-        return (this.year % 4 === 0 && this.year % 100 !== 0) || (this.year % 400 === 0);
+        return (this.year % 4 === 0 && this.year % 100 !== 0) || this.year % 400 === 0;
       },
     });
     Object.defineProperty(this, 'month', {
@@ -259,5 +259,7 @@ export class _Date extends Date {
 }
 
 _Date.sleep = async function (seconds = 0.3) {
-  return new Promise(resolve => { setTimeout(resolve, seconds * 1000); });
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  });
 };

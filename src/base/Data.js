@@ -133,7 +133,7 @@ Data.deepClone = function deepClone(source) {
  * @param unwrap 解包方式函数，如 vue3 的 unref 函数
  * @returns {{[p: string]: *|{[p: string]: any}}|*|(*|{[p: string]: any})[]|{[p: string]: any}}
  */
-Data.deepUnwrap = function deepUnwrap(data, { isWrap = () => false, unwrap = val => val } = {}) {
+Data.deepUnwrap = function deepUnwrap(data, { isWrap = () => false, unwrap = (val) => val } = {}) {
   // 选项收集
   const options = { isWrap, unwrap };
   // 包装类型（如vue3响应式对象）数据解包
@@ -142,12 +142,14 @@ Data.deepUnwrap = function deepUnwrap(data, { isWrap = () => false, unwrap = val
   }
   // 递归处理的类型
   if (Array.isArray(data)) {
-    return data.map(val => deepUnwrap(val, options));
+    return data.map((val) => deepUnwrap(val, options));
   }
   if (_Object.isPlainObject(data)) {
-    return Object.fromEntries(Object.entries(data).map(([key, val]) => {
-      return [key, deepUnwrap(val, options)];
-    }));
+    return Object.fromEntries(
+      Object.entries(data).map(([key, val]) => {
+        return [key, deepUnwrap(val, options)];
+      }),
+    );
   }
   // 其他原样返回
   return data;
@@ -162,8 +164,8 @@ export const VueData = Object.create(null);
  */
 VueData.deepUnwrapVue3 = function (data) {
   return Data.deepUnwrap(data, {
-    isWrap: data => data?.__v_isRef,
-    unwrap: data => data.value,
+    isWrap: (data) => data?.__v_isRef,
+    unwrap: (data) => data.value,
   });
 };
 /**
@@ -175,14 +177,14 @@ VueData.deepUnwrapVue3 = function (data) {
 VueData.getPropsFromAttrs = function (attrs, propDefinitions) {
   // props 定义统一成对象格式，type 统一成数组格式以便后续判断
   if (Array.isArray(propDefinitions)) {
-    propDefinitions = Object.fromEntries(propDefinitions.map(name => [_String.toCamelCase(name), { type: [] }]));
+    propDefinitions = Object.fromEntries(propDefinitions.map((name) => [_String.toCamelCase(name), { type: [] }]));
   } else if (_Object.isPlainObject(propDefinitions)) {
-    propDefinitions = Object.fromEntries(Object.entries(propDefinitions).map(([name, definition]) => {
-      definition = _Object.isPlainObject(definition)
-        ? { ...definition, type: [definition.type].flat() }
-        : { type: [definition].flat() };
-      return [_String.toCamelCase(name), definition];
-    }));
+    propDefinitions = Object.fromEntries(
+      Object.entries(propDefinitions).map(([name, definition]) => {
+        definition = _Object.isPlainObject(definition) ? { ...definition, type: [definition.type].flat() } : { type: [definition].flat() };
+        return [_String.toCamelCase(name), definition];
+      }),
+    );
   } else {
     propDefinitions = {};
   }
@@ -204,7 +206,8 @@ VueData.getPropsFromAttrs = function (attrs, propDefinitions) {
       }
       setResult({ name: _String.toLineCase(name), definition, end: true });
     })({
-      name, definition,
+      name,
+      definition,
     });
   }
   return result;
@@ -223,7 +226,7 @@ VueData.getEmitsFromAttrs = function (attrs, emitDefinitions) {
     emitDefinitions = [];
   }
   // 统一处理成 onEmitName、onUpdate:emitName(v-model系列) 格式
-  const emitNames = emitDefinitions.map(name => _String.toCamelCase(`on-${name}`));
+  const emitNames = emitDefinitions.map((name) => _String.toCamelCase(`on-${name}`));
   // 设置值
   let result = {};
   for (const name of emitNames) {
@@ -270,7 +273,7 @@ VueData.getRestFromAttrs = function (attrs, { props, emits, list = [] } = {}) {
       }
       return [];
     })();
-    return arr.map(name => [_String.toCamelCase(name), _String.toLineCase(name)]).flat();
+    return arr.map((name) => [_String.toCamelCase(name), _String.toLineCase(name)]).flat();
   })();
   emits = (() => {
     const arr = (() => {
@@ -282,21 +285,21 @@ VueData.getRestFromAttrs = function (attrs, { props, emits, list = [] } = {}) {
       }
       return [];
     })();
-    return arr.map((name) => {
-      // update:emitName 或 update:emit-name 格式
-      if (name.startsWith('update:')) {
-        const partName = name.slice(name.indexOf(':') + 1);
-        return [`onUpdate:${_String.toCamelCase(partName)}`, `onUpdate:${_String.toLineCase(partName)}`];
-      }
-      // onEmitName格式，中划线格式已被vue转换不用重复处理
-      return [_String.toCamelCase(`on-${name}`)];
-    }).flat();
+    return arr
+      .map((name) => {
+        // update:emitName 或 update:emit-name 格式
+        if (name.startsWith('update:')) {
+          const partName = name.slice(name.indexOf(':') + 1);
+          return [`onUpdate:${_String.toCamelCase(partName)}`, `onUpdate:${_String.toLineCase(partName)}`];
+        }
+        // onEmitName格式，中划线格式已被vue转换不用重复处理
+        return [_String.toCamelCase(`on-${name}`)];
+      })
+      .flat();
   })();
   list = (() => {
-    const arr = typeof list === 'string'
-      ? list.split(',')
-      : Array.isArray(list) ? list : [];
-    return arr.map(val => val.trim()).filter(val => val);
+    const arr = typeof list === 'string' ? list.split(',') : Array.isArray(list) ? list : [];
+    return arr.map((val) => val.trim()).filter((val) => val);
   })();
   const listAll = Array.from(new Set([props, emits, list].flat()));
   // console.log('listAll', listAll);

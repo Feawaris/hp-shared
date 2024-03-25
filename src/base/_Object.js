@@ -41,7 +41,7 @@ _Object.keys = function (target, { includeSymbol = false, includeNotEnumerable =
   if (includeExtend) {
     const __proto__ = Object.getPrototypeOf(target);
     if (__proto__ !== null) {
-      if ((__proto__ !== Object.prototype) || (__proto__ === Object.prototype && includeExtendFromObjectPrototype)) {
+      if (__proto__ !== Object.prototype || (__proto__ === Object.prototype && includeExtendFromObjectPrototype)) {
         const parentKeys = _Object.keys(__proto__, options);
         for (const parentKey of parentKeys) {
           set.add(parentKey);
@@ -55,11 +55,11 @@ _Object.keys = function (target, { includeSymbol = false, includeNotEnumerable =
 // 对应 keys 配套 values 和 entries
 _Object.values = function (target, options = {}) {
   const keys = _Object.keys(target, options);
-  return keys.map(key => target[key]);
+  return keys.map((key) => target[key]);
 };
 _Object.entries = function (target, options = {}) {
   const keys = _Object.keys(target, options);
-  return keys.map(key => [key, target[key]]);
+  return keys.map((key) => [key, target[key]]);
 };
 
 // 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作
@@ -84,7 +84,7 @@ _Object.getPropertyDescriptor = function (target, key) {
 _Object.getPropertyDescriptors = function (target, options = {}) {
   options = Object.assign({ includeSymbol: true, includeNotEnumerable: true, includeExtend: true }, options);
   const keys = _Object.keys(target, options);
-  const entries = keys.map(key => [key, _Object.getPropertyDescriptor(target, key)]);
+  const entries = keys.map((key) => [key, _Object.getPropertyDescriptor(target, key)]);
   return Object.fromEntries(entries);
 };
 
@@ -154,9 +154,9 @@ _Object.filter = function (target, { pick = [], omit = [], emptyPick = 'all', se
 
   let keys = [];
   // pick 有值直接拿，为空时根据 emptyPick 默认拿空或全部 key
-  keys = (pick.length > 0 || emptyPick === 'empty') ? pick : _Object.keys(target, { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype });
+  keys = pick.length > 0 || emptyPick === 'empty' ? pick : _Object.keys(target, { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype });
   // omit 筛选
-  keys = keys.filter(key => !omit.includes(key));
+  keys = keys.filter((key) => !omit.includes(key));
 
   let result = {};
   for (const key of keys) {

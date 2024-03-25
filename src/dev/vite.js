@@ -89,7 +89,7 @@ vite.createBaseConfig = function (env) {
       modulePreload: {},
       outDir: 'dist',
       assetsDir: 'assets',
-      assetsInlineLimit: 4 * (2 ** 10),
+      assetsInlineLimit: 4 * 2 ** 10,
       cssCodeSplit: true,
       get cssTarget() {
         return this.target;
@@ -126,7 +126,7 @@ vite.createBaseConfig = function (env) {
       emptyOutDir: true,
       copyPublicDir: true,
       reportCompressedSize: true,
-      chunkSizeWarningLimit: 10 * (2 ** 10),
+      chunkSizeWarningLimit: 10 * 2 ** 10,
       watch: null,
     },
 

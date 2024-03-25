@@ -30,9 +30,7 @@ BaseEnv.isNode = BaseEnv.envs.includes('node');
 // 操作系统: windows, mac, linux, ...
 BaseEnv.os = (() => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
-    const text = navigator.userAgentData
-      ? navigator.userAgentData.platform.toLowerCase()
-      : navigator.platform.toLowerCase();
+    const text = navigator.userAgentData ? navigator.userAgentData.platform.toLowerCase() : navigator.platform.toLowerCase();
     if (text.startsWith('win')) {
       return 'windows';
     }

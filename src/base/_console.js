@@ -75,9 +75,7 @@ _console.getStackInfo = function () {
     const firefoxSafariRegex = /(.*?)@(.*?):(\d+):(\d+)/;
 
     // 匹配，选择正确的对应正则和堆栈行：Chrome 和 Node 使用第 4 行，Firefox 和 Safari 使用第 3 行
-    const match = e.stack.startsWith('Error')
-      ? chromeNodeRegex[Symbol.match](stackArr[3])
-      : firefoxSafariRegex[Symbol.match](stackArr[2]);
+    const match = e.stack.startsWith('Error') ? chromeNodeRegex[Symbol.match](stackArr[3]) : firefoxSafariRegex[Symbol.match](stackArr[2]);
 
     // 提取信息
     if (match) {
@@ -160,7 +158,7 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker) {
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
-    if (values.some(val => val !== null && ['object', 'function'].includes(typeof val))) {
+    if (values.some((val) => val !== null && ['object', 'function'].includes(typeof val))) {
       console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
       return;
     }
@@ -168,15 +166,17 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
     // 第一层简单类型配默认颜色
     const text = [
       `%c${prefix}`,
-      values.map((value) => {
-        if (typeof value === 'bigint') {
-          return `%c${value}n`;
-        }
-        if (typeof value === 'symbol') {
-          return `%c${value.toString()}`;
-        }
-        return `%c${value}`;
-      }).join(' '),
+      values
+        .map((value) => {
+          if (typeof value === 'bigint') {
+            return `%c${value}n`;
+          }
+          if (typeof value === 'symbol') {
+            return `%c${value.toString()}`;
+          }
+          return `%c${value}`;
+        })
+        .join(' '),
     ].join(' ');
     const styleArr = [
       `${styleMap[type].browser}`,
@@ -232,11 +232,14 @@ _console.dir = function (value, options = {}) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'log', typeText: 'dir', stackInfo });
   if (BaseEnv.isNode) {
-    options = _Object.assign({
-      depth: 0,
-      showHidden: true,
-      colors: true,
-    }, options);
+    options = _Object.assign(
+      {
+        depth: 0,
+        showHidden: true,
+        colors: true,
+      },
+      options,
+    );
     console.dir(value, options);
   } else {
     console.dir(value);

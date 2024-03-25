@@ -29,7 +29,7 @@ export class _Array extends Array {
     return this.splice(index, 1);
   }
   remove(value) {
-    const index = this.findIndex(val => Object.is(val, value));
+    const index = this.findIndex((val) => Object.is(val, value));
     return this.splice(index, 1);
   }
   unshift() {
@@ -108,10 +108,13 @@ export class _Array extends Array {
  */
 _Array.namesToArray = function (names = [], { separator = ',' } = {}) {
   if (Array.isArray(names)) {
-    return names.map(val => _Array.namesToArray(val)).flat();
+    return names.map((val) => _Array.namesToArray(val)).flat();
   }
   if (typeof names === 'string') {
-    return names.split(separator).map(val => val.trim()).filter(val => val);
+    return names
+      .split(separator)
+      .map((val) => val.trim())
+      .filter((val) => val);
   }
   if (typeof names === 'symbol') {
     return [names];

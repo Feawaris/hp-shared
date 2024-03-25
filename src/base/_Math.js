@@ -83,7 +83,7 @@ _Math.ArithmeticSequence = class extends _Math.Sequence {
   }
   // 前n项求和
   Sn(n = this.n) {
-    return n / 2 * (this.a1 + this.an(n));
+    return (n / 2) * (this.a1 + this.an(n));
   }
 };
 // 等比数列
@@ -102,7 +102,7 @@ _Math.GeometricSequence = class extends _Math.Sequence {
     if (this.q === 1) {
       return n * this.a1;
     }
-    return this.a1 * (1 - this.q ** n) / (1 - this.q);
+    return (this.a1 * (1 - this.q ** n)) / (1 - this.q);
   }
 };
 // 斐波那契数列
@@ -112,7 +112,7 @@ _Math.FibonacciSequence = class extends _Math.Sequence {
   }
   // 第n项
   an(n = this.n) {
-    return Math.round(((_Math.PHI_BIG ** n) - (-_Math.PHI_BIG) ** (-n)) / Math.sqrt(5));
+    return Math.round((_Math.PHI_BIG ** n - (-_Math.PHI_BIG) ** -n) / Math.sqrt(5));
   }
   // 前n项求和
   Sn(n = this.n) {

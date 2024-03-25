@@ -48,9 +48,7 @@ _String.toCamelCase = function (name, { separator = '-', first = 'raw' } = {}) {
  * @returns {string}
  */
 _String.toLineCase = function (name = '', { separator = '-' } = {}) {
-  return name
-    .replaceAll(/([a-z])([A-Z])/g, `$1${separator}$2`)
-    .toLowerCase();
+  return name.replaceAll(/([a-z])([A-Z])/g, `$1${separator}$2`).toLowerCase();
 };
 /**
  * 带单位字符串。对数字或数字格式的字符串自动拼单位，其他字符串原样返回

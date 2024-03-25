@@ -12,18 +12,22 @@ function createCustomStorage(webStorage) {
   };
   customStorage.getItem = function (key, { default: defaultValue = null, json = true } = {}) {
     const text = webStorage.getItem(key);
-    return json ? (() => {
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        return defaultValue;
-      }
-    })() : text;
+    return json
+      ? (() => {
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            return defaultValue;
+          }
+        })()
+      : text;
   };
   customStorage.toObject = function ({ default: defaultValues = {}, ...restOptions } = {}) {
-    return Object.fromEntries(Object.keys(webStorage).map((key) => {
-      return [key, customStorage.getItem(key, { default: defaultValues[key], ...restOptions })];
-    }));
+    return Object.fromEntries(
+      Object.keys(webStorage).map((key) => {
+        return [key, customStorage.getItem(key, { default: defaultValues[key], ...restOptions })];
+      }),
+    );
   };
   return customStorage;
 }

@@ -194,12 +194,18 @@ stylelint.htmlConfig = {
 };
 stylelint.vueConfig = {
   rules: {
-    'selector-pseudo-class-no-unknown': [true, {
-      ignorePseudoClasses: ['deep', 'global', 'slotted'],
-    }],
-    'selector-pseudo-element-no-unknown': [true, {
-      ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
-    }],
+    'selector-pseudo-class-no-unknown': [
+      true,
+      {
+        ignorePseudoClasses: ['deep', 'global', 'slotted'],
+      },
+    ],
+    'selector-pseudo-element-no-unknown': [
+      true,
+      {
+        ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
+      },
+    ],
     'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
   },
   overrides: [

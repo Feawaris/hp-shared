@@ -48,31 +48,22 @@ export default [
    */
   {
     input: 'src/index-browser.js',
-    output: [
-      getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
-      getOutputItem({ file: 'dist/browser/index.js', format: 'es' }),
-    ],
+    output: [getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'hpShared', noConflict: true }), getOutputItem({ file: 'dist/browser/index.js', format: 'es' })],
     plugins: browserPlugins,
   },
   {
     input: 'src/base/index.js',
-    output: [
-      getOutputItem({ file: 'dist/browser/base.js', format: 'es' }),
-    ],
+    output: [getOutputItem({ file: 'dist/browser/base.js', format: 'es' })],
     plugins: browserPlugins,
   },
   {
     input: 'src/dev/index.js',
-    output: [
-      getOutputItem({ file: 'dist/browser/dev.js', format: 'es' }),
-    ],
+    output: [getOutputItem({ file: 'dist/browser/dev.js', format: 'es' })],
     plugins: browserPlugins,
   },
   {
     input: 'src/storage/index-browser.js',
-    output: [
-      getOutputItem({ file: 'dist/browser/storage.js', format: 'es' }),
-    ],
+    output: [getOutputItem({ file: 'dist/browser/storage.js', format: 'es' })],
     plugins: browserPlugins,
   },
 
@@ -81,30 +72,22 @@ export default [
    */
   {
     input: 'src/index-node.js',
-    output: [
-      getOutputItem({ file: 'dist/node/index.js', format: 'cjs' }),
-    ],
+    output: [getOutputItem({ file: 'dist/node/index.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
   {
     input: 'src/base/index.js',
-    output: [
-      getOutputItem({ file: 'dist/node/base.js', format: 'cjs' }),
-    ],
+    output: [getOutputItem({ file: 'dist/node/base.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
   {
     input: 'src/dev/index.js',
-    output: [
-      getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
-    ],
+    output: [getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
   {
     input: 'src/storage/index-node.js',
-    output: [
-      getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
-    ],
+    output: [getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
 ];

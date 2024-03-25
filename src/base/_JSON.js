@@ -49,26 +49,30 @@ _JSON.DataModel = class {
     // 共用选项收集，递归传参用
     const commonOptions = { nullDefaultType, enableObjectListDeep };
     if (type === 'array') {
-      isObjectList = isObjectList ?? (enableObjectListDeep && (model.length === 1 && _JSON.typeof(model[0]) === 'object'));
+      isObjectList = isObjectList ?? (enableObjectListDeep && model.length === 1 && _JSON.typeof(model[0]) === 'object');
       this.isObjectList = isObjectList;
 
-      this.children = model.map(value => new _JSON.DataModel(value, commonOptions));
+      this.children = model.map((value) => new _JSON.DataModel(value, commonOptions));
 
       _Object.assign(this, {
         get default() {
-          return this.isObjectList ? [] : this.children.map(child => child.default);
+          return this.isObjectList ? [] : this.children.map((child) => child.default);
         },
       });
     } else if (type === 'object') {
-      this.children = Object.fromEntries(Object.entries(model).map(([key, value]) => {
-        return [key, new _JSON.DataModel(value, commonOptions)];
-      }));
+      this.children = Object.fromEntries(
+        Object.entries(model).map(([key, value]) => {
+          return [key, new _JSON.DataModel(value, commonOptions)];
+        }),
+      );
 
       _Object.assign(this, {
         get default() {
-          return Object.fromEntries(Object.entries(this.children).map(([name, child]) => {
-            return [name, child.default];
-          }));
+          return Object.fromEntries(
+            Object.entries(this.children).map(([name, child]) => {
+              return [name, child.default];
+            }),
+          );
         },
       });
     } else {

@@ -78,12 +78,14 @@ _Set.cap = function (...sets) {
     sets[1] = sets[1] || [];
   }
   // 统一类型处理
-  sets = new _Array(sets).map(set => new _Array(set));
+  sets = new _Array(sets).map((set) => new _Array(set));
 
   const [first, ...others] = sets;
-  return first.filter((value) => {
-    return others.every(set => set.includes(value));
-  }).toCustomSet();
+  return first
+    .filter((value) => {
+      return others.every((set) => set.includes(value));
+    })
+    .toCustomSet();
 };
 /**
  * 并集
@@ -97,7 +99,7 @@ _Set.cup = function (...sets) {
     sets[1] = sets[1] || [];
   }
   // 统一类型处理
-  sets = new _Array(sets).map(set => new _Array(set));
+  sets = new _Array(sets).map((set) => new _Array(set));
 
   return sets.flat().toCustomSet();
 };
@@ -114,8 +116,10 @@ _Set.setminus = function (mainSet = [], ...otherSets) {
   }
   // 统一类型处理
   mainSet = new _Array(mainSet);
-  otherSets = new _Array(otherSets).map(arg => new _Array(arg));
-  return mainSet.filter((value) => {
-    return otherSets.every(set => !set.includes(value));
-  }).toCustomSet();
+  otherSets = new _Array(otherSets).map((arg) => new _Array(arg));
+  return mainSet
+    .filter((value) => {
+      return otherSets.every((set) => !set.includes(value));
+    })
+    .toCustomSet();
 };
