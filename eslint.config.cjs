@@ -5,8 +5,10 @@ const prettierEslint9 = new PrettierEslint({ eslintVersion: 9, require });
 
 module.exports = [
   eslint9.merge(eslint9.baseConfig, {
-    files: ['src/**/*.js'],
+    files: ['**/*.js'],
     rules: {},
   }),
-  prettierEslint9.eslintConfig,
+  eslint9.merge(prettierEslint9.eslintConfig, {
+    ignores: ['dist/**'],
+  }),
 ];

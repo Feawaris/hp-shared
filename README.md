@@ -518,7 +518,9 @@ module.exports = [
     files: ['**/*.vue'],
     rules: {},
   }),
-  prettierEslint9.eslintConfig,
+  eslint9.merge(prettierEslint9.eslintConfig, {
+    ignores: ['dist/**'],
+  }),
 ];
 ```
 
