@@ -1,4 +1,4 @@
-import { _Date } from 'hp-shared/base';
+import { _Date } from './src/base/index.js';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
