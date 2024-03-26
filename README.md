@@ -599,25 +599,22 @@ export default defineConfig((env) => {
 ### 3.1 开始
 
 ```shell
-# 刷新：安装/更新依赖+打包。可在拉取成员代码时用，防止更新了依赖忘记安装，同时可用于项目初始化
-pnpm run refresh:build
+# 刷新：用于初始化和更新依赖
+pnpm run refresh
 ```
 
 ### 3.2 开发中
 
 ```shell
-# 监听打包生成各个 dist，测试引 dist 目录的项目时用
 pnpm run build:watch
-# 打包生成各个 dist
-pnpm run build
 ```
 
 ### 3.3 发布
 
 ```shell
 # 1.检查版本号的修改情况
-# 2.运行 refresh:build 命令以确保 dist 也打包
-pnpm run refresh:build
+# 2.运行 refresh 命令以确保 dist 也打包
+pnpm run refresh
 # 3.可能产生的 git 提交
 # 4.发布
 npm publish
