@@ -5,7 +5,7 @@ const prettierEslint9 = new PrettierEslint({ eslintVersion: 9, require });
 
 module.exports = [
   eslint9.merge(eslint9.baseConfig, {
-    files: ['**/*.js'],
+    files: ['**/*.{js,cjs}'],
     rules: {},
   }),
   eslint9.merge(prettierEslint9.eslintConfig, {

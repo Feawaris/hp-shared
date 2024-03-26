@@ -541,18 +541,16 @@ module.exports = prettier.merge(prettier.baseConfig, {});
 
 #### 2.3.5 commitlint
 
-[commitlint 配置](https://commitlint.js.org/reference/rules.html)
+[commitlint 配置](https://commitlint.js.org/reference/rules.html)，[husky](https://typicode.github.io/husky/get-started.html)
 
 ```shell
-pnpm i -D commitlint husky
+pnpm i -D @commitlint/cli husky
 ```
 
 ```js
 const { commitlint } = require('hp-shared/dev');
 
-module.exports = commitlint.merge(commitlint.baseConfig, {
-  rules: {},
-});
+module.exports = commitlint.merge(commitlint.baseConfig, {});
 ```
 
 #### 2.3.6 vite

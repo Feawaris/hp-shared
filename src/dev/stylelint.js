@@ -1,6 +1,8 @@
 /**
  * [stylelint 配置](https://stylelint.io/user-guide/rules)
  */
+import { _Object } from '../base';
+
 export const stylelint = Object.create(null);
 stylelint.baseConfig = {
   rules: {
@@ -216,8 +218,8 @@ stylelint.vueConfig = {
   ],
 };
 stylelint.merge = function (...sources) {
-  const simpleKeys = ['customSyntax', 'defaultSeverity', 'reportDescriptionlessDisables', 'reportInvalidScopeDisables', 'reportNeedlessDisables', 'configurationComment', 'ignoreDisables', 'allowEmptyInput', 'cache', 'true'];
-  const objectKeys = [];
+  const simpleKeys = ['customSyntax', 'defaultSeverity', 'reportDescriptionlessDisables', 'reportInvalidScopeDisables', 'reportNeedlessDisables', 'configurationComment', 'ignoreDisables', 'allowEmptyInput', 'cache', 'fix'];
+  const objectKeys = ['rules'];
   const arrayKeys = ['extends', 'plugins', 'overrides', 'ignoreFiles'];
 
   let result = {};

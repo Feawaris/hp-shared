@@ -1,0 +1,1 @@
+echo "\x1b[32mpost-commit\x1b[39m"

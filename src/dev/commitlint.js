@@ -1,9 +1,17 @@
 /**
  * [commitlint 配置](https://commitlint.js.org/reference/rules.html)
  */
+import { _Object } from '../base';
 
 export const commitlint = Object.create(null);
 commitlint.baseConfig = {
+  // extends: [],
+  // parserPreset: '',
+  // formatter: '',
+  // ignores: [],
+  // defaultIgnores: true,
+  // helpUrl: '',
+  // prompt: {},
   rules: {
     'body-full-stop': [0],
     'body-leading-blank': [1, 'always'],
@@ -44,6 +52,10 @@ commitlint.baseConfig = {
   },
 };
 commitlint.merge = function (...sources) {
+  const simpleKeys = ['parserPreset', 'formatter', 'defaultIgnores', 'helpUrl'];
+  const objectKeys = ['rules', 'prompt'];
+  const arrayKeys = ['extends', 'ignores'];
+
   let result = {};
   for (const source of sources) {
     for (let [key, value] of Object.entries(source)) {
@@ -69,6 +81,24 @@ commitlint.merge = function (...sources) {
           // 赋值
           result[key][ruleKey] = ruleValueResult;
         }
+        continue;
+      }
+      // 视为指定类型的属性
+      if (simpleKeys.includes(key)) {
+        result[key] = value;
+        continue;
+      }
+      if (objectKeys.includes(key)) {
+        result[key] = result[key] || {};
+        _Object.deepAssign(result[key], value);
+        continue;
+      }
+      if (arrayKeys.includes(key)) {
+        result[key] = result[key] || [];
+        if (!Array.isArray(value)) {
+          value = [value];
+        }
+        result[key].push(...value);
         continue;
       }
       // 其他属性
