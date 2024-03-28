@@ -19,7 +19,12 @@ _Object.isPlainObject = function (value) {
  */
 _Object.keys = function (target, { includeSymbol = false, includeNotEnumerable = false, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
   // 选项收集
-  const options = { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype };
+  const options = {
+    includeSymbol,
+    includeNotEnumerable,
+    includeExtend,
+    includeExtendFromObjectPrototype,
+  };
   // set用于key去重
   let set = new Set();
   // 自身属性筛选
@@ -96,7 +101,10 @@ _Object.getPropertyDescriptors = function (target, options = {}) {
  */
 _Object.assign = function (target, ...sources) {
   for (const source of sources) {
-    const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
+    const keys = _Object.keys(source, {
+      includeSymbol: true,
+      includeNotEnumerable: true,
+    });
     for (const key of keys) {
       const desc = Object.getOwnPropertyDescriptor(source, key);
       Object.defineProperty(target, key, desc);
@@ -113,14 +121,20 @@ _Object.assign = function (target, ...sources) {
 _Object.deepAssign = function deepAssign(target, ...sources) {
   // console.log('deepAssign', { target, sources });
   for (const source of sources) {
-    const keys = _Object.keys(source, { includeSymbol: true, includeNotEnumerable: true });
+    const keys = _Object.keys(source, {
+      includeSymbol: true,
+      includeNotEnumerable: true,
+    });
     for (const key of keys) {
       const desc = Object.getOwnPropertyDescriptor(source, key);
       if ('value' in desc) {
         // value 写法：对象递归处理，其他直接定义
         if (Object.prototype.toString.apply(desc.value) === '[object Object]') {
           // console.log('if', target, key, desc);
-          Object.defineProperty(target, key, { ...desc, value: deepAssign(target[key] || {}, desc.value) });
+          Object.defineProperty(target, key, {
+            ...desc,
+            value: deepAssign(target[key] || {}, desc.value),
+          });
         } else {
           // console.warn('else', target, key, desc);
           Object.defineProperty(target, key, desc);
@@ -154,7 +168,15 @@ _Object.filter = function (target, { pick = [], omit = [], emptyPick = 'all', se
 
   let keys = [];
   // pick 有值直接拿，为空时根据 emptyPick 默认拿空或全部 key
-  keys = pick.length > 0 || emptyPick === 'empty' ? pick : _Object.keys(target, { includeSymbol, includeNotEnumerable, includeExtend, includeExtendFromObjectPrototype });
+  keys =
+    pick.length > 0 || emptyPick === 'empty'
+      ? pick
+      : _Object.keys(target, {
+          includeSymbol,
+          includeNotEnumerable,
+          includeExtend,
+          includeExtendFromObjectPrototype,
+        });
   // omit 筛选
   keys = keys.filter((key) => !omit.includes(key));
 

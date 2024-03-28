@@ -6,11 +6,14 @@ import { Lint } from './base';
 
 export class MarkdownLint extends Lint {
   constructor({ process: _process, require: _require } = {}) {
-    super({ require: _require, process: _process });
+    super({ process: _process, require: _require });
 
     const $this = this;
     this.baseConfigMap = [
-      { key: '$schema', value: 'https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json' },
+      {
+        key: '$schema',
+        value: 'https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json',
+      },
       { key: 'default', value: false },
       { key: 'extends', value: null },
       {

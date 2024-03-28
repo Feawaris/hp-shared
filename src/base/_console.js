@@ -210,23 +210,43 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
 
 _console.log = function () {
   const stackInfo = _console.getStackInfo();
-  return _console.show({ type: 'log', stackInfo, values: Array.from(arguments) });
+  return _console.show({
+    type: 'log',
+    stackInfo,
+    values: Array.from(arguments),
+  });
 };
 _console.warn = function () {
   const stackInfo = _console.getStackInfo();
-  return _console.show({ type: 'warn', stackInfo, values: Array.from(arguments) });
+  return _console.show({
+    type: 'warn',
+    stackInfo,
+    values: Array.from(arguments),
+  });
 };
 _console.error = function () {
   const stackInfo = _console.getStackInfo();
-  return _console.show({ type: 'error', stackInfo, values: Array.from(arguments) });
+  return _console.show({
+    type: 'error',
+    stackInfo,
+    values: Array.from(arguments),
+  });
 };
 _console.success = function () {
   const stackInfo = _console.getStackInfo();
-  return _console.show({ type: 'success', stackInfo, values: Array.from(arguments) });
+  return _console.show({
+    type: 'success',
+    stackInfo,
+    values: Array.from(arguments),
+  });
 };
 _console.end = function () {
   const stackInfo = _console.getStackInfo();
-  return _console.show({ type: 'end', stackInfo, values: Array.from(arguments) });
+  return _console.show({
+    type: 'end',
+    stackInfo,
+    values: Array.from(arguments),
+  });
 };
 _console.dir = function (value, options = {}) {
   const stackInfo = _console.getStackInfo();

@@ -25,7 +25,13 @@ function createCustomStorage(webStorage) {
   customStorage.toObject = function ({ default: defaultValues = {}, ...restOptions } = {}) {
     return Object.fromEntries(
       Object.keys(webStorage).map((key) => {
-        return [key, customStorage.getItem(key, { default: defaultValues[key], ...restOptions })];
+        return [
+          key,
+          customStorage.getItem(key, {
+            default: defaultValues[key],
+            ...restOptions,
+          }),
+        ];
       }),
     );
   };

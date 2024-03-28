@@ -10,3 +10,4 @@ docs/.vuepress/.cache
 .markdownlint.json
 .stylelintrc.cjs
 eslint.config.cjs
+prettier.config.cjs

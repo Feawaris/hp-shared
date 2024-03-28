@@ -1,10 +1,14 @@
 /**
  * [prettier 配置](https://prettier.io/docs/en/options)
  */
-import { _Object } from '../base';
+import { _Object, _console } from '../base';
+import { Lint } from './base';
 
-export class Prettier {
-  constructor() {
+export class Prettier extends Lint {
+  constructor(...args) {
+    super(...args);
+
+    const $this = this;
     this.baseConfig = {
       experimentalTernaries: false,
       printWidth: Infinity,
@@ -35,16 +39,21 @@ export class Prettier {
   merge(...sources) {
     return _Object.assign({}, ...sources);
   }
+  createIgnoreFile() {
+    const fs = require('fs');
+  }
 }
-export const prettier = new Prettier();
 
-export class PrettierEslint {
-  constructor({ eslintVersion, require: _require } = {}) {
+export class PrettierEslint extends Lint {
+  constructor({ eslintVersion, process: _process, require: _require } = {}) {
+    super({ require: _require, process: _process });
+
     this.eslintVersion = Number(eslintVersion);
-    this.require = _require;
+    if (!this.eslintVersion) {
+      _console.error('缺少参数: eslintVersion');
+    }
 
     const $this = this;
-
     this.eslintConfig = {
       ...(() => {
         if (this.eslintVersion === 8) {

@@ -242,7 +242,10 @@ VueData.getEmitsFromAttrs = function (attrs, emitDefinitions) {
         if (end) {
           return;
         }
-        setResult({ name: `onUpdate:${_String.toLineCase(name.slice(name.indexOf(':') + 1))}`, end: true });
+        setResult({
+          name: `onUpdate:${_String.toLineCase(name.slice(name.indexOf(':') + 1))}`,
+          end: true,
+        });
       }
       // onEmitName格式，中划线格式已被vue转换不用重复处理
       if (name in attrs) {

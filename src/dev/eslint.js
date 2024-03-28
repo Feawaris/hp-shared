@@ -7,7 +7,7 @@ import { _Object, _console } from '../base';
 import { Lint } from './base';
 
 export class EsLint extends Lint {
-  constructor({ eslintVersion, require: _require, process: _process } = {}) {
+  constructor({ eslintVersion, process: _process, require: _require } = {}) {
     super({ require: _require, process: _process });
 
     this.eslintVersion = Number(eslintVersion);

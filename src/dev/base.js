@@ -165,9 +165,17 @@ dev.getIgnoresFromFiles = function (files = []) {
 
 // 几个 lint 工具共用基础类
 export class Lint {
-  constructor({ process: _process, require: _require } = {}) {
+  constructor({ process: _process, require: _require, __filename: _filename } = {}) {
     this.process = _process;
     this.require = _require;
+    this.__filename = _filename;
+    this.__dirname = (() => {
+      if (BaseEnv.isNode) {
+        const path = require('path');
+        return path.dirname(this.__filename);
+      }
+      return '';
+    })();
     this.argv = (() => {
       const arr = this.process?.argv?.slice(2) || [];
       return {

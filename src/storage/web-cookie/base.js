@@ -29,7 +29,10 @@ export class BaseCookie {
       if (set.has(key)) {
         continue;
       }
-      result[key] = this.get(key, { default: defaultValues[key], ...restOptions });
+      result[key] = this.get(key, {
+        default: defaultValues[key],
+        ...restOptions,
+      });
       set.add(key);
     }
     return result;

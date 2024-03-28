@@ -1,12 +1,12 @@
 /**
  * [stylelint 配置](https://stylelint.io/user-guide/rules)
  */
-import { _Object, BaseEnv } from '../base';
+import { _Object } from '../base';
 import { Lint } from './base';
 
 export class StyleLint extends Lint {
-  constructor({ require: _require, process: _process } = {}) {
-    super({ require: _require, process: _process });
+  constructor({ process: _process, require: _require } = {}) {
+    super({ process: _process, require: _require });
 
     const $this = this;
     this.baseConfig = {
