@@ -1,14 +1,10 @@
 /**
  * [vite 配置](https://cn.vitejs.dev/config/)
  */
-import { _Object, _Date } from '../base';
+import { _Object } from '../base';
+import { dev } from './base';
 
 export const vite = Object.create(null);
-
-// 当前时间转成文件名，替换无法使用的符号
-vite.getDateNameForFile = function () {
-  return new _Date().toString().replaceAll(':', '_').replaceAll(' ', '__');
-};
 vite.createBaseConfig = function (env) {
   const result = {
     /**
@@ -101,13 +97,13 @@ vite.createBaseConfig = function (env) {
       rollupOptions: {
         output: {
           entryFileNames(chunkInfo) {
-            return `static/entryFileNames-${chunkInfo.type}-[name]-[hash]-${vite.getDateNameForFile()}.[format].js`;
+            return `entryFileNames-${chunkInfo.type}-[name]-[hash]-${dev.getDateNameForFile()}.[format].js`;
           },
           chunkFileNames(chunkInfo) {
-            return `static/chunkFileNames-${chunkInfo.type}-[name]-[hash]--${vite.getDateNameForFile()}.[format].js`;
+            return `chunkFileNames-${chunkInfo.type}-[name]-[hash]-${dev.getDateNameForFile()}.[format].js`;
           },
           assetFileNames(chunkInfo) {
-            return `static/assetFileNames-${chunkInfo.type}-[name]-[hash]-${vite.getDateNameForFile()}.[ext]`;
+            return `assetFileNames-${chunkInfo.type}-[name]-[hash]-${dev.getDateNameForFile()}.[ext]`;
           },
         },
       },

@@ -1,2 +1,2 @@
 echo "\x1b[33mcommit-msg\x1b[39m"
-commitlint --edit $1
+npx commitlint --edit $1

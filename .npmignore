@@ -2,3 +2,6 @@
 .idea
 
 node_modules
+
+docs/.vuepress/.temp
+docs/.vuepress/.cache

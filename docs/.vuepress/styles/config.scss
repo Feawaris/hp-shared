@@ -1,0 +1,35 @@
+// 用于纯变量配置
+
+/* Content Class */
+$content-class: '.theme-hope-content';
+
+/* responsive breakpoints */
+
+// wide screen
+$pc: 1440px;
+
+// desktop
+$laptop: 1280px;
+
+// narrow desktop / iPad
+$pad: 959px;
+
+// wide mobile
+$tablet: 719px;
+
+// narrow mobile
+$mobile: 419px;
+
+/* Color list */
+$colors: #cf1322, #fa541c, #f39c12, #2ecc71, #25a55b, #10a5a5, #096dd9, #aa6fe9, #eb2f96;
+
+/* Code Block */
+// only available with shiki highlighter
+$code-color: (
+  light: #383a42,
+  dark: #abb2bf,
+);
+$code-bg-color: (
+  light: #ecf4fa,
+  dark: #282c34,
+);

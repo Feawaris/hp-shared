@@ -3,3 +3,10 @@
 
 node_modules
 dist
+
+docs/.vuepress/.temp
+docs/.vuepress/.cache
+
+.markdownlint.json
+.stylelintrc.cjs
+eslint.config.cjs

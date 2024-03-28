@@ -1,3 +1,4 @@
+export * from './base';
 export * from './markdownlint';
 export * from './stylelint';
 export * from './eslint';

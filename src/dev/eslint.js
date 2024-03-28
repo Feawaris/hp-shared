@@ -3,12 +3,17 @@
  * [eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)
  * [typescript-eslint 配置](https://typescript-eslint.io/rules/)
  */
-import { _Object } from '../base';
+import { _Object, _console } from '../base';
+import { Lint } from './base';
 
-export class ESLint {
-  constructor({ eslintVersion, require: _require } = {}) {
+export class EsLint extends Lint {
+  constructor({ eslintVersion, require: _require, process: _process } = {}) {
+    super({ require: _require, process: _process });
+
     this.eslintVersion = Number(eslintVersion);
-    this.require = _require;
+    if (!this.eslintVersion) {
+      _console.error('缺少参数: eslintVersion');
+    }
 
     const $this = this;
     this.baseConfig = {
@@ -2608,8 +2613,8 @@ export class ESLint {
       }
       if (this.eslintVersion === 9) {
         return {
-          simpleKeys: ['processor', 'parserOptions'],
-          objectKeys: ['languageOptions', 'linterOptions', 'plugins', 'rules', 'settings'],
+          simpleKeys: ['processor'],
+          objectKeys: ['parserOptions', 'languageOptions', 'linterOptions', 'plugins', 'rules', 'settings'],
           arrayKeys: ['files', 'ignores'],
         };
       }
