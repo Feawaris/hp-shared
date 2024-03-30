@@ -35,11 +35,13 @@ export default defineUserConfig({
        * 主题基本选项
        */
       // hostname:'',
-      author: {
-        name: 'hp',
-        url: '',
-        email: '',
-      },
+      author: [
+        {
+          name: 'hp',
+          url: '',
+          email: '',
+        },
+      ],
       license: 'MIT',
       favicon: '/static/logo.jpg',
       locales: {},
@@ -178,7 +180,11 @@ export default defineUserConfig({
         // @vuepress/external-link-icon
         externalLinkIcon: {},
         // @vuepress/plugin-catalog
-        catalog: {},
+        /* catalog: {
+          title: '',
+          level: 3,
+          index: true,
+        }, */
         // @vuepress/plugin-copy-code
         copyCode: {
           showInMobile: true,

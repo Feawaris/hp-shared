@@ -2,7 +2,6 @@
  * [vite 配置](https://cn.vitejs.dev/config/)
  */
 import { _Object } from '../base';
-import { dev } from './base';
 
 export const vite = Object.create(null);
 vite.createBaseConfig = function (env) {

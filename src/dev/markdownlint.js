@@ -1,21 +1,17 @@
 /**
  * [markdownlint 配置](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md)
+ * [markdownlint schema](https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json)
+ * [markdownlint-cli2 schema](https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json)
  */
-import { BaseEnv, _console, _Object } from '../base';
+import { _Object } from '../base';
 import { Lint } from './base';
+const path = require('path');
 
 export class MarkdownLint extends Lint {
-  constructor({ process: _process, require: _require } = {}) {
-    super({ process: _process, require: _require });
+  constructor({ configFile = '.markdownlint-cli2.cjs', ignoreFile = '', scriptName = 'fix:md', ...restOptions } = {}) {
+    super({ configFile, ignoreFile, scriptName, ...restOptions });
 
-    const $this = this;
-    this.baseConfigMap = [
-      {
-        key: '$schema',
-        value: 'https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json',
-      },
-      { key: 'default', value: false },
-      { key: 'extends', value: null },
+    this.aliasConfigMap = [
       {
         key: 'MD001',
         alias: 'heading-increment',
@@ -270,12 +266,27 @@ export class MarkdownLint extends Lint {
   }
 
   createBaseConfig({ keyName = 'key' } = {}) {
-    return Object.fromEntries(
-      this.baseConfigMap.map((item) => {
-        const key = keyName === 'alias' ? item.alias || item.key : item.key;
-        return [key, item.value];
-      }),
-    );
+    return {
+      $schema: 'https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json',
+      // markdownlint 原有选项
+      config: {
+        $schema: 'https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json',
+        default: false,
+        extends: null,
+        // 带别名选项
+        ...(() => {
+          const withAliasConfig = Object.fromEntries(
+            this.aliasConfigMap.map((item) => {
+              const key = keyName === 'alias' ? item.alias || item.key : item.key;
+              return [key, item.value];
+            }),
+          );
+          return withAliasConfig;
+        })(),
+      },
+      // markdownlint-cli2 扩展选项
+      ignores: [],
+    };
   }
   merge(...sources) {
     return _Object.assign({}, ...sources);
@@ -284,12 +295,20 @@ export class MarkdownLint extends Lint {
     sources = sources.map((source) => {
       return Object.fromEntries(
         Object.entries(source).map(([key, value]) => {
-          const findItem = this.baseConfigMap.find((item) => [item.key, item.alias].includes(key));
+          const findItem = this.aliasConfigMap.find((item) => [item.key, item.alias].includes(key));
           key = findItem ? findItem[keyName] : key;
           return [key, value];
         }),
       );
     });
     return this.merge(...sources);
+  }
+  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
+    key = key ?? this.scriptName;
+    const filenameRelative = path.relative(this.rootDir, this.__filename);
+    const defaultValue = `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
+    const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
+    super.insertPackageJsonScripts(key, value);
+    return this;
   }
 }

@@ -2,12 +2,19 @@
 .idea
 
 node_modules
+.husky/_
 dist
-
 docs/.vuepress/.temp
 docs/.vuepress/.cache
 
-.markdownlint.json
-.stylelintrc.cjs
+.markdownlint-cli2.cjs
+
+stylelint.config.cjs
+.stylelintignore
+
 eslint.config.cjs
+
 prettier.config.cjs
+.prettierignore
+
+commitlint.config.cjs

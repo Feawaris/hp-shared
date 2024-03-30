@@ -3,12 +3,29 @@
  * [eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)
  * [typescript-eslint 配置](https://typescript-eslint.io/rules/)
  */
-import { _Object, _console } from '../base';
+import { _Object, _console, _chalk } from '../base';
 import { Lint } from './base';
+import path from 'path';
+import fs from 'fs';
 
 export class EsLint extends Lint {
-  constructor({ eslintVersion, process: _process, require: _require } = {}) {
-    super({ require: _require, process: _process });
+  /**
+   *
+   * @param eslintVersion
+   * @param configFile
+   * @param ignoreFile
+   * @param scriptName
+   * @param restOptions
+   */
+  constructor({
+    eslintVersion,
+
+    configFile = eslintVersion === 9 ? 'eslint.config.cjs' : '.eslintrc.cjs',
+    ignoreFile = '',
+    scriptName = 'fix:js',
+    ...restOptions
+  } = {}) {
+    super({ configFile, ignoreFile, scriptName, ...restOptions });
 
     this.eslintVersion = Number(eslintVersion);
     if (!this.eslintVersion) {
@@ -1224,14 +1241,32 @@ export class EsLint extends Lint {
         if (this.eslintVersion === 9) {
           return {
             languageOptions: {
-              get parser() {
-                return $this.require('vue-eslint-parser');
-              },
+              ...(this.requireResolve === 'string'
+                ? {
+                    parser: `require('vue-eslint-parser')`,
+                  }
+                : {}),
+              ...(this.requireResolve === 'getter'
+                ? {
+                    get parser() {
+                      return $this.require('vue-eslint-parser');
+                    },
+                  }
+                : {}),
             },
             plugins: {
-              get vue() {
-                return $this.require('eslint-plugin-vue');
-              },
+              ...(this.requireResolve === 'string'
+                ? {
+                    vue: `require('eslint-plugin-vue')`,
+                  }
+                : {}),
+              ...(this.requireResolve === 'getter'
+                ? {
+                    get vue() {
+                      return $this.require('eslint-plugin-vue');
+                    },
+                  }
+                : {}),
             },
           };
         }
@@ -2551,17 +2586,35 @@ export class EsLint extends Lint {
         if (this.eslintVersion === 9) {
           return {
             languageOptions: {
-              get parser() {
-                return $this.require('typescript-eslint').parser;
-              },
+              ...(this.requireResolve === 'string'
+                ? {
+                    parser: `require('typescript-eslint').parser`,
+                  }
+                : {}),
+              ...(this.requireResolve === 'getter'
+                ? {
+                    get parser() {
+                      return $this.require('typescript-eslint').parser;
+                    },
+                  }
+                : {}),
               parserOptions: {
                 project: './tsconfig.json',
               },
             },
             plugins: {
-              get '@typescript-eslint'() {
-                return $this.require('typescript-eslint').plugin;
-              },
+              ...(this.requireResolve === 'string'
+                ? {
+                    '@typescript-eslint': `require('typescript-eslint').plugin`,
+                  }
+                : {}),
+              ...(this.requireResolve === 'getter'
+                ? {
+                    get '@typescript-eslint'() {
+                      return $this.require('typescript-eslint').plugin;
+                    },
+                  }
+                : {}),
             },
           };
         }
@@ -2584,17 +2637,35 @@ export class EsLint extends Lint {
           return {
             languageOptions: {
               parserOptions: {
-                get parser() {
-                  return $this.require('typescript-eslint').parser;
-                },
+                ...(this.requireResolve === 'string'
+                  ? {
+                      parser: `require('typescript-eslint').parser`,
+                    }
+                  : {}),
+                ...(this.requireResolve === 'getter'
+                  ? {
+                      get parser() {
+                        return $this.require('typescript-eslint').parser;
+                      },
+                    }
+                  : {}),
                 project: './tsconfig.json',
                 extraFileExtensions: ['.vue'],
               },
             },
             plugins: {
-              get '@typescript-eslint'() {
-                return $this.require('typescript-eslint').plugin;
-              },
+              ...(this.requireResolve === 'string'
+                ? {
+                    '@typescript-eslint': `require('typescript-eslint').plugin`,
+                  }
+                : {}),
+              ...(this.requireResolve === 'getter'
+                ? {
+                    get '@typescript-eslint'() {
+                      return $this.require('typescript-eslint').plugin;
+                    },
+                  }
+                : {}),
             },
           };
         }
@@ -2681,5 +2752,47 @@ export class EsLint extends Lint {
       }
     }
     return result;
+  }
+  createConfigFile(config) {
+    super.createConfigFile(config);
+    if (this.requireResolve === 'string') {
+      // 补充处理
+      let text = fs.readFileSync(path.resolve(this.rootDir, this.configFile), 'utf-8');
+
+      // 正则表达式匹配 "require('xx')" 或 "require('xx').prop" 形式的字符串，并去除外部双引号
+      const regex = /"require\('([^']+)'\)(\.\w+)?"/g;
+      // 替换时去除双引号，只保留require调用部分
+      text = text.replace(regex, "require('$1')$2");
+
+      // _console.log(text);
+      fs.writeFileSync(path.resolve(this.rootDir, this.configFile), text);
+    }
+
+    return this;
+  }
+  /* createIgnoreFile(...args) {
+    if (this.eslintVersion === 9) {
+      _console.warn(_chalk.yellow(`未创建 .eslintignore (eslint 9.x 版本已不再支持，改在 ignores 属性中配置。可结合 eslint9.getIgnores 方法拿项目中现成的 ignore 文件，如 .gitignore)`));
+    }
+    if (this.eslintVersion === 8) {
+      super.createConfigFile()
+    }
+    return this;
+  } */
+  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
+    key = key ?? this.scriptName;
+    const filenameRelative = path.relative(this.rootDir, this.__filename);
+    const defaultValue = (() => {
+      if (this.eslintVersion === 9) {
+        return `node ${filenameRelative} && eslint --fix || true`;
+      }
+      if (this.eslintVersion === 8) {
+        return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}' --fix || true`;
+      }
+      return '';
+    })();
+    const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
+    super.insertPackageJsonScripts(key, value);
+    return this;
   }
 }

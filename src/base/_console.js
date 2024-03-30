@@ -54,7 +54,7 @@ const styleMap = {
   hidden: [8, 28],
   strikethrough: [9, 29],
 };
-const _chalk = Object.create(null);
+export const _chalk = Object.create(null);
 for (const [method, [start, end]] of Object.entries(styleMap)) {
   _chalk[method] = function (message) {
     return `\x1b[${start}m${message}\x1b[${end}m`;
@@ -113,9 +113,9 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
-  const { method, fullPathShow } = stackInfo;
+  // console.log(stackInfo);
   // 前缀内容
-  let prefix = `[${date}] [${typeText}] ${fullPathShow} ${method} :`;
+  let prefix = `${[`[${date}]`, `[${typeText}]`, stackInfo.fullPathShow, stackInfo.method].join(' ')}:`;
   // 样式映射
   const styleMap = {
     log: { node: 'blue', browser: 'color:blue;' },
@@ -208,68 +208,61 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
   }
 };
 
-_console.log = function () {
+_console.log = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
     type: 'log',
     stackInfo,
-    values: Array.from(arguments),
+    values: args,
   });
 };
-_console.warn = function () {
+_console.warn = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
     type: 'warn',
     stackInfo,
-    values: Array.from(arguments),
+    values: args,
   });
 };
-_console.error = function () {
+_console.error = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
     type: 'error',
     stackInfo,
-    values: Array.from(arguments),
+    values: args,
   });
 };
-_console.success = function () {
+_console.success = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
     type: 'success',
     stackInfo,
-    values: Array.from(arguments),
+    values: args,
   });
 };
-_console.end = function () {
+_console.end = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
     type: 'end',
     stackInfo,
-    values: Array.from(arguments),
+    values: args,
   });
 };
 _console.dir = function (value, options = {}) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'log', typeText: 'dir', stackInfo });
   if (BaseEnv.isNode) {
-    options = _Object.assign(
-      {
-        depth: 0,
-        showHidden: true,
-        colors: true,
-      },
-      options,
-    );
+    options = _Object.assign({ depth: 0, showHidden: true, colors: true }, options);
     console.dir(value, options);
   } else {
     console.dir(value);
   }
 };
-_console.table = function () {
+_console.table = function (...args) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'log', typeText: 'table', stackInfo });
 
-  console.table(...arguments);
+  console.table(...args);
 };
 _console.group = function (label) {
   const stackInfo = _console.getStackInfo();
@@ -286,7 +279,7 @@ _console.groupCollapsed = function (label) {
   console.groupCollapsed(label);
 };
 
-_console.groupAction = function (action = () => {}, { label, collapse = false } = {}) {
+_console.groupAction = function (action = () => {}, label = null, collapse = false) {
   const stackInfo = _console.getStackInfo();
   _console.show({ type: 'bold', typeText: 'groupAction', stackInfo });
 
@@ -295,3 +288,25 @@ _console.groupAction = function (action = () => {}, { label, collapse = false } 
   action();
   console.groupEnd();
 };
+_console.decideBoolean = function (value, ...restValues) {
+  const stackInfo = _console.getStackInfo();
+  const values = [value, ...restValues];
+  if (value) {
+    _console.show({
+      type: 'success',
+      typeText: 'decideBoolean',
+      stackInfo,
+      values,
+    });
+  } else {
+    _console.show({
+      type: 'error',
+      typeText: 'decideBoolean',
+      stackInfo,
+      values,
+    });
+  }
+};
+
+export class BaseConsole {}
+// export const _console=new BaseConsole()

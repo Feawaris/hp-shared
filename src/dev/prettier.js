@@ -3,12 +3,12 @@
  */
 import { _Object, _console } from '../base';
 import { Lint } from './base';
+import path from 'path';
 
 export class Prettier extends Lint {
-  constructor(...args) {
-    super(...args);
+  constructor({ configFile = 'prettier.config.cjs', ignoreFile = '.prettierignore', scriptName = 'fix:prettier', ...restOptions } = {}) {
+    super({ configFile, ignoreFile, scriptName, ...restOptions });
 
-    const $this = this;
     this.baseConfig = {
       experimentalTernaries: false,
       printWidth: Infinity,
@@ -39,8 +39,14 @@ export class Prettier extends Lint {
   merge(...sources) {
     return _Object.assign({}, ...sources);
   }
-  createIgnoreFile() {
-    const fs = require('fs');
+
+  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
+    key = key ?? this.scriptName;
+    const filenameRelative = path.relative(this.rootDir, this.__filename);
+    const defaultValue = `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
+    const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
+    super.insertPackageJsonScripts(key, value);
+    return this;
   }
 }
 

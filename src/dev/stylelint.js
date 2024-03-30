@@ -3,12 +3,12 @@
  */
 import { _Object } from '../base';
 import { Lint } from './base';
+import path from 'path';
 
 export class StyleLint extends Lint {
-  constructor({ process: _process, require: _require } = {}) {
-    super({ process: _process, require: _require });
+  constructor({ configFile = 'stylelint.config.cjs', ignoreFile = '.stylelintignore', scriptName = 'fix:css', ...restOptions } = {}) {
+    super({ configFile, ignoreFile, scriptName, ...restOptions });
 
-    const $this = this;
     this.baseConfig = {
       rules: {
         /**
@@ -187,9 +187,9 @@ export class StyleLint extends Lint {
       // configurationComment: '',
       ignoreDisables: false,
       ignoreFiles: [],
-      allowEmptyInput: false,
-      cache: true,
-      fix: true,
+      allowEmptyInput: true,
+      cache: false,
+      fix: false,
     };
     this.scssConfig = {
       rules: {
@@ -361,5 +361,13 @@ export class StyleLint extends Lint {
       }
     }
     return result;
+  }
+  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
+    key = key ?? this.scriptName;
+    const filenameRelative = path.relative(this.rootDir, this.__filename);
+    const defaultValue = `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
+    const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
+    super.insertPackageJsonScripts(key, value);
+    return this;
   }
 }

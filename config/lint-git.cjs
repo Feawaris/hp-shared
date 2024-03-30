@@ -1,18 +1,18 @@
 const { _console } = require('hp-shared/base');
-const { Prettier } = require('hp-shared/dev');
+const { CommitLint } = require('hp-shared/dev');
 
-const lint = new Prettier({
+const lint = new CommitLint({
   rootDir: '../',
   __filename,
-  configFile: 'prettier.config.cjs',
+  configFile: 'commitlint.config.cjs',
 });
 const config = lint.merge(lint.baseConfig, {
   // ...
 });
 lint
   .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
+    return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
   })
   .insertGitIgnoreFile()
-  .createIgnoreFile(['pnpm-lock.yaml'])
+  .createIgnoreFile()
   .createConfigFile(config);

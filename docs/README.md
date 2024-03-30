@@ -1,7 +1,7 @@
 ---
 name: hp-shared
 category: 文档
-tag: v1.3.1
+tag: 1.4.0-alpha.0
 ---
 
 基础库
@@ -733,7 +733,7 @@ yarn add -D markdownlint-cli
 @tab npm
 
 ```shell
-npm i -D markdownlint-cli
+npm i -D markdownlint-cli2
 ```
 
 :::
@@ -743,54 +743,32 @@ npm i -D markdownlint-cli
 
 ```js
 // config/lint-md.cjs
-const { MarkdownLint, dev } = require('hp-shared/dev');
-const path = require('path');
+const { MarkdownLint } = require('hp-shared/dev');
 
-const markdownlint = new MarkdownLint({ process, require });
-module.exports = markdownlint.merge(markdownlint.createBaseConfig(), {});
-if (markdownlint.argv.create) {
-  // 在根目录创建 .markdownlint.cjs
-  const res = dev.createSameFile({
-    inputFile: __filename,
-    outputFile: path.resolve(__dirname, `../.markdownlint.cjs`),
-  });
-  // 可选择将生成的文件添加到 .gitignore，配置专注于当前 configs 目录
-  res.success &&
-    dev.appendIgnoreFile({
-      inputData: [res.outputFileRelative],
-      outputFile: path.resolve(__dirname, '../.gitignore'),
-    });
-}
-```
-
-@tab 生成 .json
-
-```js
-// config/lint-md.cjs
-const { MarkdownLint, dev } = require('hp-shared/dev');
-const path = require('path');
-
-const markdownlint = new MarkdownLint({ process, require });
-if (markdownlint.argv.create) {
-  // 在根目录创建 .markdownlint.json
-  const res = dev.createJsonFile({
-    inputData: markdownlint.merge(markdownlint.createBaseConfig(), {}),
-    outputFile: path.resolve(__dirname, '../.markdownlint.json'),
-  });
-  // 可选择将生成的文件添加到 .gitignore，配置专注于当前 configs 目录
-  res.success &&
-    dev.appendIgnoreFile({
-      inputData: [res.outputFileRelative],
-      outputFile: path.resolve(__dirname, '../.gitignore'),
-    });
-}
+const lint = new MarkdownLint({
+  rootDir: '../',
+  __filename,
+  configFile: '.markdownlint-cli2.cjs',
+});
+const config = lint.merge(lint.createBaseConfig(), {
+  ignores: [
+    ...lint.getIgnores(lint.gitIgnoreFile),
+    // ...
+  ],
+  config: {
+    // ...
+  },
+});
+lint
+  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+    return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
+  })
+  .insertGitIgnoreFile()
+  .createIgnoreFile()
+  .createConfigFile(config);
 ```
 
 :::
-
-```shell
-node config/lint-md.cjs --create && markdownlint '**/*.md'
-```
 
 #### 2.3.2 stylelint
 
@@ -823,123 +801,33 @@ npm i -D stylelint postcss-html
 @tab 生成 .cjs
 
 ```js
-// config/lint-md.cjs
-const { StyleLint, dev } = require('hp-shared/dev');
-const path = require('path');
+// config/lint-css.cjs
+const { StyleLint } = require('hp-shared/dev');
 
-const stylelint = new StyleLint({ process, require });
-module.exports = stylelint.merge(stylelint.baseConfig, stylelint.htmlConfig, stylelint.vueConfig, {
-  rules: {},
+const lint = new StyleLint({
+  rootDir: '../',
+  __filename,
+  configFile: 'stylelint.config.cjs',
 });
-if (stylelint.argv.create) {
-  // 在根目录创建 .stylelintrc.cjs
-  const res = dev.createSameFile({
-    inputFile: __filename,
-    outputFile: path.resolve(__dirname, `../.stylelintrc.cjs`),
-  });
-  // 可选择将生成的文件添加到 .gitignore，配置专注于当前 configs 目录
-  res.success &&
-    dev.appendIgnoreFile({
-      inputData: [res.outputFileRelative],
-      outputFile: path.resolve(__dirname, '../.gitignore'),
-    });
-}
-```
-
-@tab 生成 .json
-
-```js
-// config/lint-md.cjs
-const { StyleLint, dev } = require('hp-shared/dev');
-const path = require('path');
-
-const stylelint = new StyleLint({ process, require });
-if (stylelint.argv.create) {
-  // 在根目录创建 .stylelint.json
-  const res = dev.createJsonFile({
-    inputData: stylelint.merge(stylelint.baseConfig, stylelint.htmlConfig, stylelint.vueConfig, {
-      rules: {},
-    }),
-    outputFile: path.resolve(__dirname, '../.stylelintrc.json'),
-  });
-  // 可选择将生成的文件添加到 .gitignore，配置专注于当前 configs 目录
-  res.success &&
-    dev.appendIgnoreFile({
-      inputData: [res.outputFileRelative],
-      outputFile: path.resolve(__dirname, '../.gitignore'),
-    });
-}
+const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
+  rules: {
+    // ...
+  },
+});
+lint
+  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+    return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
+  })
+  .insertGitIgnoreFile()
+  .createIgnoreFile()
+  .createConfigFile(config);
 ```
 
 :::
-
-```shell
-node config/lint-css.cjs --create && stylelint 'src/**/*.{css,vue}'
-```
 
 #### 2.3.3 eslint
 
 [eslint 配置](https://eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
-
-##### eslint 8.x
-
-::: code-tabs#install
-
-@tab pnpm
-
-```shell
-pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
-```
-
-@tab yarn
-
-```shell
-yarn add -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
-```
-
-@tab npm
-
-```shell
-npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
-```
-
-:::
-
-::: code-tabs#lint
-
-@tab 生成 .cjs
-
-```js
-// config/lint-js.cjs
-const { EsLint, dev } = require('hp-shared/dev');
-const path = require('path');
-
-const eslint8 = new EsLint({ eslintVersion: 8, process, require });
-module.exports = eslint8.merge(eslint8.baseConfig, eslint8.vue3Config, eslint8.tsInVueConfig, {
-  rules: {},
-});
-if (eslint8.argv.create) {
-  // 在根目录创建 .eslintrc.cjs
-  const res = dev.createSameFile({
-    inputFile: __filename,
-    outputFile: path.resolve(__dirname, `../.eslintrc.cjs`),
-  });
-  // 可选择将生成的文件添加到 .gitignore，配置专注于当前 configs 目录
-  res.success &&
-    dev.appendIgnoreFile({
-      inputData: [res.outputFileRelative],
-      outputFile: path.resolve(__dirname, '../.gitignore'),
-    });
-}
-```
-
-@tab 生成 .json
-
-```js
-
-```
-
-:::
 
 ##### eslint 9.x
 
@@ -971,50 +859,100 @@ npm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-e
 
 ```js
 // config/lint-js.cjs
-const { EsLint, dev } = require('hp-shared/dev');
-const path = require('path');
+const { EsLint } = require('hp-shared/dev');
 
-const eslint9 = new EsLint({ eslintVersion: 9, process, require });
-module.exports = [
+const lint = new EsLint({
+  eslintVersion: 9,
+  requireResolve: 'string',
+  require,
+
+  rootDir: '../',
+  __filename,
+  configFile: 'eslint.config.cjs',
+});
+const config = [
   {
-    ignores: dev.getIgnoresFromFiles([path.resolve(process.cwd(), '.gitignore')]),
+    ignores: [
+      ...lint.getIgnores(lint.gitIgnoreFile),
+      // ...
+    ],
   },
-  eslint9.merge(eslint9.baseConfig, {
+  lint.merge(lint.baseConfig, {
     files: ['**/*.{js,cjs}'],
     rules: {},
   }),
-  eslint9.merge(eslint9.baseConfig, eslint9.vue3Config, {
+  lint.merge(lint.baseConfig, lint.vue3Config, {
     files: ['**/*.vue'],
     rules: {},
   }),
 ];
 
-if (eslint9.argv.create) {
-  // 在根目录创建 eslint.config.cjs
-  const res = dev.createSameFile({
-    inputFile: __filename,
-    outputFile: path.resolve(__dirname, `../eslint.config.cjs`),
-  });
-  // 可选择将生成的文件添加到 .gitignore，配置专注于当前 configs 目录
-  res.success &&
-    dev.appendIgnoreFile({
-      inputData: [res.outputFileRelative],
-      outputFile: path.resolve(__dirname, '../.gitignore'),
-    });
-}
-```
-
-@tab 生成 .json
-
-```js
-
+lint
+  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+    return `node ${filenameRelative} && eslint --fix || true`;
+  })
+  .insertGitIgnoreFile()
+  .createIgnoreFile()
+  .createConfigFile(config);
 ```
 
 :::
 
+##### eslint 8.x
+
+::: code-tabs#install
+
+@tab pnpm
+
 ```shell
-node config/lint-js.cjs --create && eslint
+pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
 ```
+
+@tab yarn
+
+```shell
+yarn add -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+```
+
+@tab npm
+
+```shell
+npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+```
+
+:::
+
+::: code-tabs#lint
+
+@tab 生成 .cjs
+
+```js
+// config/lint-js.cjs
+const { EsLint } = require('hp-shared/dev');
+
+const lint = new EsLint({
+  eslintVersion: 8,
+  requireResolve: 'string',
+  require,
+
+  rootDir: '../',
+  __filename,
+  configFile: '.eslintrc.cjs',
+});
+const config = lint.merge(lint.baseConfig, lint.vue3Config, lint.tsInVueConfig, {
+  ignorePatterns: lint.getIgnores(lint.gitIgnoreFile),
+  rules: {},
+});
+lint
+  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+    return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}' --fix || true`;
+  })
+  .insertGitIgnoreFile()
+  .createIgnoreFile()
+  .createConfigFile(config);
+```
+
+:::
 
 #### 2.3.4 prettier
 
@@ -1042,21 +980,29 @@ npm i -D prettier
 
 :::
 
-::: code-tabs#import
+::: code-tabs#lint
 
-@tab browser
-
-```js
-
-```
-
-@tab node
+@tab 生成 .cjs
 
 ```js
-// .prettierrc.cjs
-const { prettier } = require('hp-shared/dev');
+// config/lint-prettier.cjs
+const { Prettier } = require('hp-shared/dev');
 
-module.exports = prettier.merge(prettier.baseConfig, {});
+const lint = new Prettier({
+  rootDir: '../',
+  __filename,
+  configFile: 'prettier.config.cjs',
+});
+const config = lint.merge(lint.baseConfig, {
+  // ...
+});
+lint
+  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+    return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
+  })
+  .insertGitIgnoreFile()
+  .createIgnoreFile(['pnpm-lock.yaml'])
+  .createConfigFile(config);
 ```
 
 :::
@@ -1087,20 +1033,29 @@ npm i -D @commitlint/cli husky
 
 :::
 
-::: code-tabs#import
+::: code-tabs#lint
 
-@tab browser
-
-```js
-
-```
-
-@tab node
+@tab 生成 .cjs
 
 ```js
-const { commitlint } = require('hp-shared/dev');
+// config/lint-git.js
+const { CommitLint } = require('hp-shared/dev');
 
-module.exports = commitlint.merge(commitlint.baseConfig, {});
+const lint = new CommitLint({
+  rootDir: '../',
+  __filename,
+  configFile: 'commitlint.config.cjs',
+});
+const config = lint.merge(lint.baseConfig, {
+  // ...
+});
+lint
+  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+    return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
+  })
+  .insertGitIgnoreFile()
+  .createIgnoreFile()
+  .createConfigFile(config);
 ```
 
 :::
