@@ -22,17 +22,15 @@ if (require.main === module) {
     .updateGroup({
       group: 'lint',
       data: [md, css, js, prettier, git]
-        .map(obj => [obj.lint.configFile, obj.lint.ignoreFile])
+        .map((obj) => [obj.lint.configFile, obj.lint.ignoreFile])
         .flat()
-        .filter(val => val?.trim() !== ''),
+        .filter((val) => val?.trim() !== ''),
     })
     .formatFile();
   npmignoreLint
     .updateFile({
       data: gitignoreLint.getText(),
-      exclude: [
-        { tag: 'manual', group: 'npm:reserve' },
-      ],
+      exclude: [{ tag: 'manual', group: 'npm:reserve' }],
     })
     .formatFile();
 }

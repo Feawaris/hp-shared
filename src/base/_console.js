@@ -191,7 +191,7 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
           return 'color:orange;';
         }
         if (typeof value === 'boolean') {
-          return value?'color:green;':'color:red;'
+          return value ? 'color:green;' : 'color:red;';
         }
         if (typeof value === 'bigint') {
           return 'color:#00acc1;';

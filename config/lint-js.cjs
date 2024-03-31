@@ -28,7 +28,8 @@ const config = [
 ];
 
 module.exports = {
-  lint, config,
+  lint,
+  config,
 };
 if (require.main === module) {
   lint

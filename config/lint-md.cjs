@@ -18,7 +18,8 @@ const config = lint.merge(lint.createBaseConfig(), {
 });
 
 module.exports = {
-  lint, config,
+  lint,
+  config,
 };
 if (require.main === module) {
   lint

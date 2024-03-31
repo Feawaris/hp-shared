@@ -13,7 +13,7 @@ export class Dev {
   // 当前时间转成文件名，替换无法使用的符号
   static getDateNameForFile() {
     return new _Date().toString().replaceAll(':', '_').replaceAll(' ', '__');
-  };
+  }
   /**
    * 原样创建文件
    * @param inputFile 输入文件，常用 __filename
@@ -52,7 +52,7 @@ export class Dev {
       outputDir,
       outputFileRelative,
     };
-  };
+  }
   // 添加内容到 ignore 文件
   static appendIgnoreFile({ inputData = [], outputFile } = {}) {
     // 参数验证
@@ -95,7 +95,7 @@ export class Dev {
       outputDir,
       outputFileRelative,
     };
-  };
+  }
   // 从 ignore 文件如 .gitignore 拿内容，用于传 ignores 数组
   static getIgnoresFromFiles(files = []) {
     // 统一成数组处理
@@ -111,7 +111,7 @@ export class Dev {
       })
       .flat();
     return new _Set(arr).toArray();
-  };
+  }
   // 创建文件
   static createFile({ inputData, outputFile } = {}) {
     // 参数验证
@@ -161,7 +161,7 @@ export class Dev {
       outputDir,
       outputFileRelative,
     };
-  };
+  }
 }
 
 // 几个 lint 工具共用基础类
@@ -266,11 +266,7 @@ export class IgnoreLint {
     return new RegExp(pattern, 'g');
   }
   static createText(group = '', data = [], tag = 'auto') {
-    return [
-      `# ---[${tag}] ${group} start---`,
-      ...data,
-      `# ---[${tag}] ${group} end---`,
-    ].join('\n');
+    return [`# ---[${tag}] ${group} start---`, ...data, `# ---[${tag}] ${group} end---`].join('\n');
   }
   constructor({ rootDir, __filename: _filename, ignoreFile } = {}) {
     this.__filename = _filename;
@@ -329,18 +325,12 @@ export class IgnoreLint {
     const matches = text.match(reg);
     const result = (() => {
       if (matches) {
-        const oldData = matches[0].split('\n').filter(str => str.trim() !== '' && !/^#/.test(str) && !data.includes(str));
+        const oldData = matches[0].split('\n').filter((str) => str.trim() !== '' && !/^#/.test(str) && !data.includes(str));
         console.log(oldData);
-        data = [
-          ...(oldData.length ? [
-            ...oldData,
-            '',
-          ] : []),
-          ...data,
-        ];
+        data = [...(oldData.length ? [...oldData, ''] : []), ...data];
         return text.replace(reg, IgnoreLint.createText(group, data));
       } else {
-        return text + '\n' + IgnoreLint.createText(group, data);
+        return `${text}\n${IgnoreLint.createText(group, data)}`;
       }
     })();
     if (result === text) {

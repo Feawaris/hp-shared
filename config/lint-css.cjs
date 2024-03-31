@@ -13,7 +13,8 @@ const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
 });
 
 module.exports = {
-  lint, config,
+  lint,
+  config,
 };
 if (require.main === module) {
   lint
