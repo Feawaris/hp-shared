@@ -9,10 +9,16 @@ const lint = new Prettier({
 const config = lint.merge(lint.baseConfig, {
   // ...
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile(['pnpm-lock.yaml'])
-  .createConfigFile(config);
+
+module.exports = {
+  lint, config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile(['pnpm-lock.yaml'])
+    .createConfigFile(config);
+}

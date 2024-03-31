@@ -1,20 +1,23 @@
+# ---[manual] default start---
 .DS_Store
 .idea
-
 node_modules
 .husky/_
-dist
 docs/.vuepress/.temp
 docs/.vuepress/.cache
+# ---[manual] default end---
 
+# ---[manual] npm:reserve start---
+dist
+
+# ---[manual] npm:reserve end---
+
+# ---[auto] lint start---
 .markdownlint-cli2.cjs
-
 stylelint.config.cjs
 .stylelintignore
-
 eslint.config.cjs
-
 prettier.config.cjs
 .prettierignore
-
 commitlint.config.cjs
+# ---[auto] lint end---

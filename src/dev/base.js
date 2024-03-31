@@ -3,165 +3,166 @@ import path from 'path';
 import fs from 'fs';
 const serialize = require('serialize-javascript');
 
-export const Dev = Object.create(null);
-Dev.REG_EXPS = {
-  json: /^\.(json|json5|jsonc)$/,
-  js: /^\.(js|cjs|mjs)$/,
-  yaml: /^\.(yaml|yml)$/,
-  ignore: /ignore$/,
-};
-// 当前时间转成文件名，替换无法使用的符号
-Dev.getDateNameForFile = function () {
-  return new _Date().toString().replaceAll(':', '_').replaceAll(' ', '__');
-};
-/**
- * 原样创建文件
- * @param inputFile 输入文件，常用 __filename
- * @param outputFile 输出文件
- * @returns {{success: boolean}|{}|{outputData: string, inputFile: *, outputFile: *, outputDir: string, inputData: string, success: boolean, outputFileRelative: string}}
- */
-Dev.createSameFile = function ({ inputFile, outputFile } = {}) {
-  // 参数验证
-  let need = { inputFile, outputFile };
-  for (const [key, value] of Object.entries(need)) {
-    if (![null, undefined].includes(value)) {
-      delete need[key];
-    }
-  }
-  if (Object.keys(need).length > 0) {
-    _console.error(`缺少参数: ${Object.keys(need)}`);
-    return {
-      success: false,
-    };
-  }
-
-  // 创建文件
-  const outputDir = path.dirname(outputFile);
-  const outputFileRelative = path.relative(outputDir, outputFile);
-  // 写入文件
-  const inputData = fs.readFileSync(inputFile, 'utf-8');
-  const outputData = inputData;
-  fs.writeFileSync(outputFile, outputData);
-  // 返回用于输出反馈的信息
-  return {
-    success: true,
-    inputFile,
-    inputData,
-    outputFile,
-    outputData,
-    outputDir,
-    outputFileRelative,
+export class Dev {
+  static REG_EXPS = {
+    json: /^\.(json|json5|jsonc)$/,
+    js: /^\.(js|cjs|mjs)$/,
+    yaml: /^\.(yaml|yml)$/,
+    ignore: /ignore$/,
   };
-};
-// 添加内容到 ignore 文件
-Dev.appendIgnoreFile = function ({ inputData = [], outputFile } = {}) {
-  // 参数验证
-  let need = { inputData, outputFile };
-  for (const [key, value] of Object.entries(need)) {
-    if (![null, undefined].includes(value)) {
-      delete need[key];
-    }
-  }
-  if (Object.keys(need).length > 0) {
-    _console.error(`缺少参数: ${Object.keys(need)}`);
-    return {
-      success: false,
-    };
-  }
-
-  // 传参统一处理
-  if (!Array.isArray(inputData)) {
-    inputData = [inputData];
-  }
-
-  const outputDir = path.dirname(outputFile);
-  const outputFileRelative = path.relative(outputDir, outputFile);
-  const ignoreText = fs.readFileSync(outputFile, 'utf-8');
-  const ignoreArr = ignoreText.split('\n').filter((str) => str.trim() !== '' && !str.startsWith('#'));
-  // 添加内容
-  const appendData = new _Set(inputData.filter((str) => !ignoreArr.includes(str))).toArray();
-  const appendText = `\n${appendData.join('\n')}\n`;
-  const needChange = appendData.length > 0;
-  if (needChange) {
-    fs.appendFileSync(outputFile, appendText);
-  }
-  // 返回用于输出反馈的信息
-  return {
-    success: true,
-    needChange,
-    inputData,
-    appendData,
-    outputFile,
-    outputDir,
-    outputFileRelative,
+  // 当前时间转成文件名，替换无法使用的符号
+  static getDateNameForFile() {
+    return new _Date().toString().replaceAll(':', '_').replaceAll(' ', '__');
   };
-};
-// 从 ignore 文件如 .gitignore 拿内容，用于传 ignores 数组
-Dev.getIgnoresFromFiles = function (files = []) {
-  // 统一成数组处理
-  if (typeof files === 'string') {
-    files = [files];
-  }
-
-  const arr = files
-    .map((file) => {
-      const text = fs.readFileSync(file, 'utf-8');
-      const arr = text.split('\n').filter((str) => str.trim() !== '' && !str.startsWith('#'));
-      return arr;
-    })
-    .flat();
-  return new _Set(arr).toArray();
-};
-// 创建文件
-Dev.createFile = function ({ inputData, outputFile } = {}) {
-  // 参数验证
-  let need = { inputData, outputFile };
-  for (const [key, value] of Object.entries(need)) {
-    if (![null, undefined].includes(value)) {
-      delete need[key];
-    }
-  }
-  if (Object.keys(need).length > 0) {
-    _console.error(`缺少参数: ${Object.keys(need)}`);
-    return {
-      success: false,
-    };
-  }
-
-  const ext = path.extname(outputFile);
-  const outputData = (() => {
-    // 不同文件类型的处理
-    if (Dev.REG_EXPS.json.test(ext)) {
-      return JSON.stringify(inputData, null, 2);
-    }
-    // 注意这里 .xxignore 得到的 ext 值为 ''，用 outputFile 判断
-    if (Dev.REG_EXPS.ignore.test(outputFile)) {
-      if (Array.isArray(inputData)) {
-        return inputData.join('\n');
+  /**
+   * 原样创建文件
+   * @param inputFile 输入文件，常用 __filename
+   * @param outputFile 输出文件
+   * @returns {{success: boolean}|{}|{outputData: string, inputFile: *, outputFile: *, outputDir: string, inputData: string, success: boolean, outputFileRelative: string}}
+   */
+  static createSameFile({ inputFile, outputFile } = {}) {
+    // 参数验证
+    let need = { inputFile, outputFile };
+    for (const [key, value] of Object.entries(need)) {
+      if (![null, undefined].includes(value)) {
+        delete need[key];
       }
     }
-    const serializedInput = serialize(inputData, { space: 2, unsafe: true });
-    if (Dev.REG_EXPS.js.test(ext)) {
-      return `module.exports = ${serializedInput}`;
+    if (Object.keys(need).length > 0) {
+      _console.error(`缺少参数: ${Object.keys(need)}`);
+      return {
+        success: false,
+      };
     }
-    // 其他原样返回
-    return inputData;
-  })();
-  // 写入文件
-  fs.writeFileSync(outputFile, outputData);
 
-  // 返回用于输出反馈的信息
-  const outputDir = path.dirname(outputFile);
-  const outputFileRelative = path.relative(outputDir, outputFile);
-  return {
-    success: true,
-    inputData,
-    outputFile,
-    outputData,
-    outputDir,
-    outputFileRelative,
+    // 创建文件
+    const outputDir = path.dirname(outputFile);
+    const outputFileRelative = path.relative(outputDir, outputFile);
+    // 写入文件
+    const inputData = fs.readFileSync(inputFile, 'utf-8');
+    const outputData = inputData;
+    fs.writeFileSync(outputFile, outputData);
+    // 返回用于输出反馈的信息
+    return {
+      success: true,
+      inputFile,
+      inputData,
+      outputFile,
+      outputData,
+      outputDir,
+      outputFileRelative,
+    };
   };
-};
+  // 添加内容到 ignore 文件
+  static appendIgnoreFile({ inputData = [], outputFile } = {}) {
+    // 参数验证
+    let need = { inputData, outputFile };
+    for (const [key, value] of Object.entries(need)) {
+      if (![null, undefined].includes(value)) {
+        delete need[key];
+      }
+    }
+    if (Object.keys(need).length > 0) {
+      _console.error(`缺少参数: ${Object.keys(need)}`);
+      return {
+        success: false,
+      };
+    }
+
+    // 传参统一处理
+    if (!Array.isArray(inputData)) {
+      inputData = [inputData];
+    }
+
+    const outputDir = path.dirname(outputFile);
+    const outputFileRelative = path.relative(outputDir, outputFile);
+    const ignoreText = fs.readFileSync(outputFile, 'utf-8');
+    const ignoreArr = ignoreText.split('\n').filter((str) => str.trim() !== '' && !str.startsWith('#'));
+    // 添加内容
+    const appendData = new _Set(inputData.filter((str) => !ignoreArr.includes(str))).toArray();
+    const appendText = `\n${appendData.join('\n')}\n`;
+    const needChange = appendData.length > 0;
+    if (needChange) {
+      fs.appendFileSync(outputFile, appendText);
+    }
+    // 返回用于输出反馈的信息
+    return {
+      success: true,
+      needChange,
+      inputData,
+      appendData,
+      outputFile,
+      outputDir,
+      outputFileRelative,
+    };
+  };
+  // 从 ignore 文件如 .gitignore 拿内容，用于传 ignores 数组
+  static getIgnoresFromFiles(files = []) {
+    // 统一成数组处理
+    if (typeof files === 'string') {
+      files = [files];
+    }
+
+    const arr = files
+      .map((file) => {
+        const text = fs.readFileSync(file, 'utf-8');
+        const arr = text.split('\n').filter((str) => str.trim() !== '' && !str.startsWith('#'));
+        return arr;
+      })
+      .flat();
+    return new _Set(arr).toArray();
+  };
+  // 创建文件
+  static createFile({ inputData, outputFile } = {}) {
+    // 参数验证
+    let need = { inputData, outputFile };
+    for (const [key, value] of Object.entries(need)) {
+      if (![null, undefined].includes(value)) {
+        delete need[key];
+      }
+    }
+    if (Object.keys(need).length > 0) {
+      _console.error(`缺少参数: ${Object.keys(need)}`);
+      return {
+        success: false,
+      };
+    }
+
+    const ext = path.extname(outputFile);
+    const outputData = (() => {
+      // 不同文件类型的处理
+      if (Dev.REG_EXPS.json.test(ext)) {
+        return JSON.stringify(inputData, null, 2);
+      }
+      // 注意这里 .xxignore 得到的 ext 值为 ''，用 outputFile 判断
+      if (Dev.REG_EXPS.ignore.test(outputFile)) {
+        if (Array.isArray(inputData)) {
+          return inputData.join('\n');
+        }
+      }
+      const serializedInput = serialize(inputData, { space: 2, unsafe: true });
+      if (Dev.REG_EXPS.js.test(ext)) {
+        return `module.exports = ${serializedInput}`;
+      }
+      // 其他原样返回
+      return inputData;
+    })();
+    // 写入文件
+    fs.writeFileSync(outputFile, outputData);
+
+    // 返回用于输出反馈的信息
+    const outputDir = path.dirname(outputFile);
+    const outputFileRelative = path.relative(outputDir, outputFile);
+    return {
+      success: true,
+      inputData,
+      outputFile,
+      outputData,
+      outputDir,
+      outputFileRelative,
+    };
+  };
+}
 
 // 几个 lint 工具共用基础类
 export class Lint {
@@ -233,7 +234,7 @@ export class Lint {
   createIgnoreFile(data = [], { includeGitignore = true } = {}) {
     if (this.ignoreFile) {
       const res = Dev.createFile({
-        inputData: [...(includeGitignore ? ['# --- from .gitignore start ---', this.getIgnores(this.gitIgnoreFile).join('\n'), '# --- from .gitignore end ---'] : []), ...(typeof data === 'string' ? data.split('\n') : data)],
+        inputData: [...(includeGitignore ? ['# ---[auto] from:.gitignore start---', this.getIgnores(this.gitIgnoreFile).join('\n'), '# ---[auto] from:.gitignore end---'] : []), ...(typeof data === 'string' ? data.split('\n') : data)],
         outputFile: path.resolve(this.rootDir, this.ignoreFile),
       });
       res.success && _console.success(_chalk.green(`已创建 ${res.outputFileRelative}`));
@@ -247,13 +248,122 @@ export class Lint {
     const pkg = JSON.parse(text);
     pkg.scripts = pkg.scripts || {};
     const existValue = pkg.scripts[key] || '';
-    // _console.decideBoolean(value === existValue, { value, existValue });
+    // _console.log(value === existValue, { value, existValue });
     if (value !== existValue) {
       pkg.scripts[key] = value;
       fs.writeFileSync(path.resolve(this.rootDir, this.packageFile), `${JSON.stringify(pkg, null, 2)}\n`);
       _console.success(_chalk.green(`${key} 命令已加入 ${this.packageFile}`));
     } else {
       _console.end(_chalk.grey(`${this.packageFile} 内容无需重复添加`));
+    }
+    return this;
+  }
+}
+
+export class IgnoreLint {
+  static getReg(group = '', tag = 'auto') {
+    const pattern = `# ---\\[${tag}\\] ${group} start---[\\s\\S]*?# ---\\[${tag}\\] ${group} end---`;
+    return new RegExp(pattern, 'g');
+  }
+  static createText(group = '', data = [], tag = 'auto') {
+    return [
+      `# ---[${tag}] ${group} start---`,
+      ...data,
+      `# ---[${tag}] ${group} end---`,
+    ].join('\n');
+  }
+  constructor({ rootDir, __filename: _filename, ignoreFile } = {}) {
+    this.__filename = _filename;
+    this.__dirname = this.__filename ? path.dirname(this.__filename) : '';
+    this.rootDir = this.__filename ? path.dirname(this.__dirname, rootDir) : '';
+    this.ignoreFile = ignoreFile;
+    this.basename = path.basename(this.ignoreFile);
+  }
+  getText() {
+    return fs.readFileSync(path.resolve(this.rootDir, this.ignoreFile), 'utf-8');
+  }
+  getData() {
+    return this.getText().split('\n');
+  }
+  setText(text) {
+    fs.writeFileSync(path.resolve(this.rootDir, this.ignoreFile), text);
+    return this;
+  }
+  getFormatText(text = this.getText()) {
+    const arr = text.split('\n');
+    let resultArr = [];
+    const reg = /^# ---\[/;
+    for (const str of arr) {
+      // 检查当前行和上一行是否为特殊注释行
+      if (reg.test(str) && reg.test(resultArr[resultArr.length - 1] || '')) {
+        resultArr.push(''); // 使用 \n 会在下面 join('\n') 时变成两行，添加一个空字符串代表一个空行，而不是直接的换行符
+        resultArr.push(str);
+        continue;
+      }
+      if (str.trim() === '') {
+        // 多个空行转成单个
+        if (str.trim() === '' && resultArr[resultArr.length - 1]?.trim() === '') {
+          continue;
+        }
+      }
+      // 其他直接加入
+      resultArr.push(str);
+    }
+    const result = resultArr.join('\n');
+    return result;
+  }
+  formatFile() {
+    const text = this.getText();
+    const result = this.getFormatText(text);
+    if (result === text) {
+      _console.end(_chalk.grey(`${this.basename} 无需格式化`));
+    } else {
+      this.setText(result);
+      _console.success(_chalk.green(`${this.basename} 已格式化`));
+    }
+    return this;
+  }
+  updateGroup({ group = '', data = [] } = {}) {
+    const text = this.getText();
+    const reg = IgnoreLint.getReg(group);
+    const matches = text.match(reg);
+    const result = (() => {
+      if (matches) {
+        const oldData = matches[0].split('\n').filter(str => str.trim() !== '' && !/^#/.test(str) && !data.includes(str));
+        console.log(oldData);
+        data = [
+          ...(oldData.length ? [
+            ...oldData,
+            '',
+          ] : []),
+          ...data,
+        ];
+        return text.replace(reg, IgnoreLint.createText(group, data));
+      } else {
+        return text + '\n' + IgnoreLint.createText(group, data);
+      }
+    })();
+    if (result === text) {
+      _console.end(_chalk.grey(`${this.basename} 内容无需重复添加`));
+    } else {
+      this.setText(result);
+      _console.success(_chalk.green(`${this.basename}: ${group} 组内容已更新`));
+    }
+    return this;
+  }
+  updateFile({ data = [], exclude = [] } = {}) {
+    let result = Array.isArray(data) ? data.join('\n') : data;
+    for (const item of exclude) {
+      result = result.replace(IgnoreLint.getReg(item.group, item.tag), '');
+    }
+    result = this.getFormatText(result);
+
+    const text = this.getText();
+    if (result === text) {
+      _console.end(_chalk.grey(`${this.basename} 内容无需重复添加`));
+    } else {
+      this.setText(result);
+      _console.success(_chalk.green(`${this.basename}: 内容已更新`));
     }
     return this;
   }

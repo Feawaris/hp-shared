@@ -27,10 +27,15 @@ const config = [
   }),
 ];
 
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && eslint --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+module.exports = {
+  lint, config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && eslint --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}

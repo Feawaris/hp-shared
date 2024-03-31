@@ -9,10 +9,16 @@ const lint = new CommitLint({
 const config = lint.merge(lint.baseConfig, {
   // ...
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+
+module.exports = {
+  lint, config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}

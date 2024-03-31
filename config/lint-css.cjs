@@ -11,10 +11,16 @@ const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
     // ...
   },
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+
+module.exports = {
+  lint, config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}

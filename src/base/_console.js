@@ -141,10 +141,10 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
           return _chalk.yellowBright(value);
         }
         if (typeof value === 'boolean') {
-          return _chalk.cyanBright(value);
+          return value ? _chalk.greenBright(value) : _chalk.redBright(value);
         }
         if (typeof value === 'bigint') {
-          return _chalk.greenBright(`${value}n`);
+          return _chalk.cyanBright(`${value}n`);
         }
         if (typeof value === 'symbol') {
           return _chalk.magentaBright(value.toString());
@@ -191,10 +191,10 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
           return 'color:orange;';
         }
         if (typeof value === 'boolean') {
-          return 'color:#00acc1;';
+          return value?'color:green;':'color:red;'
         }
         if (typeof value === 'bigint') {
-          return 'color:green;';
+          return 'color:#00acc1;';
         }
         if (typeof value === 'symbol') {
           return 'color:magenta;';
@@ -288,25 +288,3 @@ _console.groupAction = function (action = () => {}, label = null, collapse = fal
   action();
   console.groupEnd();
 };
-_console.decideBoolean = function (value, ...restValues) {
-  const stackInfo = _console.getStackInfo();
-  const values = [value, ...restValues];
-  if (value) {
-    _console.show({
-      type: 'success',
-      typeText: 'decideBoolean',
-      stackInfo,
-      values,
-    });
-  } else {
-    _console.show({
-      type: 'error',
-      typeText: 'decideBoolean',
-      stackInfo,
-      values,
-    });
-  }
-};
-
-export class BaseConsole {}
-// export const _console=new BaseConsole()

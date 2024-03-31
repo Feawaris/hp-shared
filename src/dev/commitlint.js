@@ -41,7 +41,7 @@ export class CommitLint extends Lint {
         'scope-empty': [0],
         'scope-max-length': [0],
         'scope-min-length': [0],
-        'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
+        'subject-case': [0, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
         'subject-empty': [2, 'never'],
         'subject-full-stop': [2, 'never', '.'],
         'subject-max-length': [0],

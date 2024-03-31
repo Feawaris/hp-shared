@@ -1,4 +1,4 @@
-const { _console, _Date } = require('hp-shared/base');
+const { _console } = require('hp-shared/base');
 const { MarkdownLint } = require('hp-shared/dev');
 
 const lint = new MarkdownLint({
@@ -16,10 +16,16 @@ const config = lint.merge(lint.createBaseConfig(), {
     // ...
   },
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+
+module.exports = {
+  lint, config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}
