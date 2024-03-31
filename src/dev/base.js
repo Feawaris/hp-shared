@@ -244,6 +244,7 @@ export class Lint {
     return this;
   }
   insertPackageJsonScripts(key, value) {
+    value = value.replaceAll('\\', '/');
     const text = fs.readFileSync(path.resolve(this.rootDir, this.packageFile), 'utf-8');
     const pkg = JSON.parse(text);
     pkg.scripts = pkg.scripts || {};
@@ -326,7 +327,6 @@ export class IgnoreLint {
     const result = (() => {
       if (matches) {
         const oldData = matches[0].split('\n').filter((str) => str.trim() !== '' && !/^#/.test(str) && !data.includes(str));
-        console.log(oldData);
         data = [...(oldData.length ? [...oldData, ''] : []), ...data];
         return text.replace(reg, IgnoreLint.createText(group, data));
       } else {

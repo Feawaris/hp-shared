@@ -5,7 +5,7 @@
     "refresh": "pnpm install && husky && pnpm run build",
     "update": "npx ncu --target newest --deep --upgrade && pnpm run refresh",
     "fix": "pnpm run fix:ignore && pnpm run fix:md && pnpm run fix:css && pnpm run fix:js && pnpm run fix:prettier && pnpm run fix:git",
-    "fix:ignore": "node config/lint-ignore.cjs",
+    "fix:ignore": "node config/lint-ignore.cjs || true",
     "fix:md": "node config/lint-md.cjs && markdownlint-cli2 '**/*.md' --fix || true",
     "fix:css": "node config/lint-css.cjs && stylelint '**/*.{css,vue}' --fix || true",
     "fix:js": "node config/lint-js.cjs && eslint --fix || true",

@@ -168,8 +168,8 @@ _Object.filter = function (target, { pick = [], omit = [], emptyPick = 'all', se
 
   let keys = [];
   // pick 有值直接拿，为空时根据 emptyPick 默认拿空或全部 key
-  keys =
-    pick.length > 0 || emptyPick === 'empty'
+  keys
+    = pick.length > 0 || emptyPick === 'empty'
       ? pick
       : _Object.keys(target, {
           includeSymbol,
