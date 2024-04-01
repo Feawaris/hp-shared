@@ -8,6 +8,7 @@ import { hopeTheme } from 'vuepress-theme-hope';
 import { viteBundler } from '@vuepress/bundler-vite';
 import { fileURLToPath } from 'url';
 import path from 'path';
+const { version } = require('../../package.json');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,7 @@ export default defineUserConfig({
   base: {
     local: '/',
     github: '/hp-shared/',
-    npm: '/hp-shared/dist/docs/',
+    npm: `/hp-shared@${version}/dist/docs/`,
   }[process.env.vuepress_to || 'local'],
   lang: 'zh-CN',
   title: 'hp-shared',
