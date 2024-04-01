@@ -759,13 +759,25 @@ const config = lint.merge(lint.createBaseConfig(), {
     // ...
   },
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+
+module.exports = {
+  lint,
+  config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}
+```
+
+@tab 直接引用
+```js
+
 ```
 
 :::
@@ -814,13 +826,25 @@ const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
     // ...
   },
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+module.exports = {
+  lint,
+  config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}
+```
+
+@tab 直接引用
+
+```js
+
 ```
 
 :::
@@ -887,13 +911,25 @@ const config = [
   }),
 ];
 
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && eslint --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+module.exports = {
+  lint,
+  config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && eslint --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}
+```
+
+@tab 直接引用
+
+```js
+
 ```
 
 :::
@@ -943,13 +979,26 @@ const config = lint.merge(lint.baseConfig, lint.vue3Config, lint.tsInVueConfig, 
   ignorePatterns: lint.getIgnores(lint.gitIgnoreFile),
   rules: {},
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}' --fix || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+
+module.exports = {
+  lint,
+  config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}' --fix || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}
+```
+
+@tab 直接引用
+
+```js
+
 ```
 
 :::
@@ -996,13 +1045,26 @@ const lint = new Prettier({
 const config = lint.merge(lint.baseConfig, {
   // ...
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile(['pnpm-lock.yaml'])
-  .createConfigFile(config);
+
+module.exports = {
+  lint,
+  config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile(['pnpm-lock.yaml'])
+    .createConfigFile(config);
+}
+```
+
+@tab 直接引用
+
+```js
+
 ```
 
 :::
@@ -1049,13 +1111,26 @@ const lint = new CommitLint({
 const config = lint.merge(lint.baseConfig, {
   // ...
 });
-lint
-  .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-    return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
-  })
-  .insertGitIgnoreFile()
-  .createIgnoreFile()
-  .createConfigFile(config);
+
+module.exports = {
+  lint,
+  config,
+};
+if (require.main === module) {
+  lint
+    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
+      return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
+    })
+    .insertGitIgnoreFile()
+    .createIgnoreFile()
+    .createConfigFile(config);
+}
+```
+
+@tab 直接引用
+
+```js
+
 ```
 
 :::
