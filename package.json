@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.4.0-alpha.0",
+  "version": "1.4.0",
   "scripts": {
     "refresh": "pnpm install && husky && pnpm run build",
     "update": "npx ncu --target newest --deep --upgrade && pnpm run refresh",

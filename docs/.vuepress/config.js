@@ -76,7 +76,7 @@ export default defineUserConfig({
         return this.logo;
       },
       // navTitle: $siteLocale.title,
-      repo: 'https://gitee.com/Feawaris/hp-shared',
+      repo: 'https://github.com/Feawaris/hp-shared',
       repoDisplay: true,
       repoLabel: true,
       navbarAutoHide: 'none',
