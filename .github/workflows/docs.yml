@@ -1,5 +1,4 @@
 name: docs 构建和部署
-run-name: docs 构建和部署
 on:
   push:
     branches:
@@ -14,7 +13,7 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: lts
+          node-version: 'lts/*'
 
       - name: 构建
         run: |
