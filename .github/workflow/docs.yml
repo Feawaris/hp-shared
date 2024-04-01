@@ -1,0 +1,29 @@
+name: docs 构建和部署
+on:
+  push:
+    branches:
+      - main
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts
+
+      - name: 构建
+        run: |
+          npm install -g pnpm@next-9
+          pnpm install
+          pnpm run docs:build
+
+      - name: 部署
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist/docs
+          branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -13,13 +13,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const sourceDir = path.resolve(__dirname, '..');
 const rootDir = path.resolve(sourceDir, '..');
-_console.log({ sourceDir, rootDir });
+_console.log({ rootDir, sourceDir });
 
 export default defineUserConfig({
   /**
    * 站点配置
    */
-  base: '/',
+  base: '/hp-shared/',
   lang: 'zh-CN',
   title: 'hp-shared',
   description: '基础库',
