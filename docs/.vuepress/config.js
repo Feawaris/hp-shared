@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 const sourceDir = path.resolve(__dirname, '..');
 const rootDir = path.resolve(sourceDir, '..');
 _console.log({ rootDir, sourceDir });
-_console.log('process.env: ', process.env, process.env.vupress_to);
+_console.log('process.env: ', process.env, process.env.vuepress_to);
 export default defineUserConfig({
   /**
    * 站点配置
