@@ -1215,6 +1215,6 @@ pnpm run docs:dev
 ### 3.3 发布
 
 ```shell
-# prepublish 已配置
+# prepublishOnly 已配置
 npm publish
 ```

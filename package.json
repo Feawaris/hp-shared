@@ -17,7 +17,7 @@
     "docs:build": "vuepress build docs",
     "docs:preview": "npx serve dist/docs",
     "clean:ignoredConfigFiles": "npx rimraf .markdownlint.json .markdownlint-cli2.cjs .markdownlint-cli2.cjs .markdownlintignore stylelint.config.cjs .stylelintrc.json .stylelintignore eslint.config.cjs .eslintrc.cjs .eslintignore prettier.config.cjs .prettierignore commitlint.config.cjs",
-    "prepublish": "pnpm run refresh && pnpm run docs:build"
+    "prepublishOnly": "pnpm run refresh && pnpm run docs:build"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",
