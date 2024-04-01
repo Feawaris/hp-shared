@@ -309,7 +309,7 @@ export default defineUserConfig({
          * 以下插件受到主题支持，但你需要在使用前自行安装它们:
          */
         // @vuepress/plugin-docsearch
-        docsearch: {},
+        // docsearch: {},
         // @vuepress/plugin-search
         // @vuepress/plugin-feed
         // @vuepress/plugin-redirect
