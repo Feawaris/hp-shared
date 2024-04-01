@@ -1,0 +1,1 @@
+echo "\x1b[34mpost-merge\x1b[39m"

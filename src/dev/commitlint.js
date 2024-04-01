@@ -1,9 +1,10 @@
 /**
  * [commitlint 配置](https://commitlint.js.org/reference/rules.html)
  */
-import { _Object } from '../base';
+import { _Object, _console, _chalk, _JSON } from '../base';
 import { Lint } from './base';
 import path from 'path';
+import fs from 'fs';
 
 export class CommitLint extends Lint {
   constructor({ configFile = 'commitlint.config.cjs', ignoreFile = '', scriptName = 'fix:git', ...restOptions } = {}) {
@@ -121,5 +122,66 @@ export class CommitLint extends Lint {
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
     super.insertPackageJsonScripts(key, value);
     return this;
+  }
+}
+export class GitHooks {
+  static HOOKS = [
+    // 客户端钩子
+    'pre-commit',
+    'prepare-commit-msg',
+    'commit-msg',
+    'post-commit',
+    'pre-rebase',
+    'post-checkout',
+    'post-merge',
+    'pre-push',
+
+    // 服务器端钩子
+    'pre-receive',
+    'update',
+    'post-receive',
+
+    // 其他钩子
+    'applypatch-msg',
+    'pre-applypatch',
+  ];
+  constructor({ config = {}, __filename: _filename, rootDir } = {}) {
+    this.__filename = _filename;
+    this.__dirname = this.__filename ? path.dirname(this.__filename) : '';
+    this.rootDir = this.__filename ? path.dirname(this.__dirname, rootDir) : '';
+    this.huskyDir = path.resolve(this.rootDir, '.husky');
+    this.config = Object.fromEntries(GitHooks.HOOKS.map((hookName) => {
+      let data = config[hookName] || [{ styleName: 'blue' }];
+      return [hookName, data];
+    }));
+  }
+  getText(hookName) {
+    let data = this.config[hookName].map((val) => {
+      if (_JSON.typeof(val) === 'object') {
+        // return getEchoText({ inputText: hookName, ...val });
+        const [start, end] = _chalk.styleMap[val.styleName || 'blue'];
+        return `echo "\\x1b[${start}m${hookName}\\x1b[${end}m"`;
+      }
+      return val;
+    });
+    return data.join('\n');
+  }
+  updateFile(hookName) {
+    const hookFile = path.resolve(this.huskyDir, hookName);
+
+    const newText = this.getText(hookName) + '\n';
+    const exists = fs.existsSync(hookFile);
+    const oldText = exists ? fs.readFileSync(hookFile, 'utf-8') : '';
+    if (newText === oldText) {
+      _console.end(_chalk.grey(`.husky/${hookName}: 文件无需修改`));
+    } else {
+      fs.writeFileSync(hookFile, newText);
+      _console.success(_chalk.green(`.husky/${hookName}: 文件已更新`));
+    }
+  }
+  updateFiles(hookNames = []) {
+    for (const hookName of hookNames) {
+      this.updateFile(hookName);
+    }
   }
 }

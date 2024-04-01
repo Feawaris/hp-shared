@@ -3,7 +3,8 @@ import { _Object } from './_Object';
 import { _Date } from './_Date';
 
 // 简易 chalk
-const styleMap = {
+export const _chalk = Object.create(null);
+_chalk.styleMap={
   black: [30, 39],
   red: [31, 39],
   green: [32, 39],
@@ -53,9 +54,8 @@ const styleMap = {
   inverse: [7, 27],
   hidden: [8, 28],
   strikethrough: [9, 29],
-};
-export const _chalk = Object.create(null);
-for (const [method, [start, end]] of Object.entries(styleMap)) {
+}
+for (const [method, [start, end]] of Object.entries(_chalk.styleMap)) {
   _chalk[method] = function (message) {
     return `\x1b[${start}m${message}\x1b[${end}m`;
   };
