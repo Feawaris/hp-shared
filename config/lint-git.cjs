@@ -14,13 +14,8 @@ const gitHooks = new GitHooks({
   rootDir: '../',
   huskyDir: '.husky',
   config: {
-    'commit-msg': [
-      { styleName: 'yellow' },
-      'npx commitlint --edit $1',
-    ],
-    'post-commit': [
-      { styleName: 'green' },
-    ],
+    'commit-msg': [{ styleName: 'yellow' }, 'npx commitlint --edit $1'],
+    'post-commit': [{ styleName: 'green' }],
   },
 });
 

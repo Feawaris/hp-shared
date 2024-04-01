@@ -150,10 +150,12 @@ export class GitHooks {
     this.__dirname = this.__filename ? path.dirname(this.__filename) : '';
     this.rootDir = this.__filename ? path.dirname(this.__dirname, rootDir) : '';
     this.huskyDir = path.resolve(this.rootDir, '.husky');
-    this.config = Object.fromEntries(GitHooks.HOOKS.map((hookName) => {
-      let data = config[hookName] || [{ styleName: 'blue' }];
-      return [hookName, data];
-    }));
+    this.config = Object.fromEntries(
+      GitHooks.HOOKS.map((hookName) => {
+        let data = config[hookName] || [{ styleName: 'blue' }];
+        return [hookName, data];
+      }),
+    );
   }
   getText(hookName) {
     let data = this.config[hookName].map((val) => {
@@ -169,7 +171,7 @@ export class GitHooks {
   updateFile(hookName) {
     const hookFile = path.resolve(this.huskyDir, hookName);
 
-    const newText = this.getText(hookName) + '\n';
+    const newText = `${this.getText(hookName)}\n`;
     const exists = fs.existsSync(hookFile);
     const oldText = exists ? fs.readFileSync(hookFile, 'utf-8') : '';
     if (newText === oldText) {
