@@ -14,12 +14,16 @@ const __dirname = path.dirname(__filename);
 const sourceDir = path.resolve(__dirname, '..');
 const rootDir = path.resolve(sourceDir, '..');
 _console.log({ rootDir, sourceDir });
-
+_console.log('process.env: ', process.env, process.env.vupress_to);
 export default defineUserConfig({
   /**
    * 站点配置
    */
-  base: '/hp-shared/',
+  base: {
+    local: '/',
+    github: '/hp-shared/',
+    npm: '/hp-shared/dist/docs/',
+  }[process.env.vuepress_to || 'local'],
   lang: 'zh-CN',
   title: 'hp-shared',
   description: '基础库',

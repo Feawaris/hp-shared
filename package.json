@@ -13,11 +13,13 @@
     "fix:git": "node config/lint-git.cjs && echo 'feat: test' | commitlint || true",
     "build": "rollup --config --bundleConfigAsCjs",
     "build:watch": "pnpm run build --watch",
-    "docs:dev": "vuepress dev docs --clean-cache",
-    "docs:build": "vuepress build docs",
+    "docs:dev": "cross-env vupress_to=local vuepress dev docs --clean-cache",
+    "docs:build:local": "cross-env vupress_to=local vuepress build docs",
+    "docs:build:github": "cross-env vupress_to=github vuepress build docs",
+    "docs:build:npm": "cross-env vupress_to=npm vuepress build docs",
     "docs:preview": "npx serve dist/docs",
     "clean:ignoredConfigFiles": "npx rimraf .markdownlint.json .markdownlint-cli2.cjs .markdownlint-cli2.cjs .markdownlintignore stylelint.config.cjs .stylelintrc.json .stylelintignore eslint.config.cjs .eslintrc.cjs .eslintignore prettier.config.cjs .prettierignore commitlint.config.cjs",
-    "prepublishOnly": "pnpm run refresh && pnpm run docs:build"
+    "prepublishOnly": "pnpm run refresh && pnpm run docs:build:npm"
   },
   "dependencies": {
     "serialize-javascript": "^6.0.2"
@@ -33,6 +35,7 @@
     "@vuepress/bundler-vite": "2.0.0-rc.9",
     "@vuepress/plugin-docsearch": "2.0.0-rc.21",
     "chart.js": "^4.4.2",
+    "cross-env": "^7.0.3",
     "echarts": "^5.5.0",
     "eslint": "9.0.0-rc.0",
     "eslint-plugin-prettier": "^5.1.3",

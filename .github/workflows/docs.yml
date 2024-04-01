@@ -21,7 +21,7 @@ jobs:
           npm install -g pnpm@next-9
           pnpm install
           pnpm run build
-          pnpm run docs:build
+          pnpm run docs:build:github
 
       - name: 部署
         uses: JamesIves/github-pages-deploy-action@v4
