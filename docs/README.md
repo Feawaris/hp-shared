@@ -1134,16 +1134,12 @@ pnpm run refresh
 
 ```shell
 pnpm run build:watch
+pnpm run docs:dev
 ```
 
 ### 3.3 发布
 
 ```shell
-# 1.检查版本号的修改情况
-# 2.运行 refresh 命令以确保 dist 也打包
-pnpm run refresh
-# 3.可能产生的 git 提交
-# 4.发布
+# prepublish 已配置
 npm publish
-# 5.加 tag，推送到仓库
 ```

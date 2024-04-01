@@ -9,7 +9,6 @@ docs/.vuepress/.cache
 
 # ---[manual] npm:reserve start---
 dist
-
 # ---[manual] npm:reserve end---
 
 # ---[auto] lint start---
