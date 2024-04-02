@@ -10,7 +10,6 @@ const config = lint.merge(lint.createBaseConfig(), {
   ignores: [
     ...lint.getIgnores(lint.gitIgnoreFile),
     // ...
-    'docs/**/*.md',
   ],
   config: {
     // ...

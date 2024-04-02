@@ -275,13 +275,12 @@ export class MarkdownLint extends Lint {
         extends: null,
         // 带别名选项
         ...(() => {
-          const withAliasConfig = Object.fromEntries(
+          return Object.fromEntries(
             this.aliasConfigMap.map((item) => {
               const key = keyName === 'alias' ? item.alias || item.key : item.key;
               return [key, item.value];
             }),
           );
-          return withAliasConfig;
         })(),
       },
       // markdownlint-cli2 扩展选项
@@ -289,7 +288,44 @@ export class MarkdownLint extends Lint {
     };
   }
   merge(...sources) {
-    return _Object.assign({}, ...sources);
+    const simpleKeys = ['$schema'];
+    const objectKeys = ['config'];
+    const arrayKeys = ['ignores'];
+
+    let result = {};
+    for (const source of sources) {
+      for (let [key, value] of Object.entries(source)) {
+        // 特殊属性
+        if (key === 'config') {
+          result[key] = result[key] || {};
+          for (let [ruleKey, ruleValue] of Object.entries(value)) {
+            result[key][ruleKey] = ruleValue;
+          }
+          continue;
+        }
+        // 视为指定类型的属性
+        if (simpleKeys.includes(key)) {
+          result[key] = value;
+          continue;
+        }
+        if (objectKeys.includes(key)) {
+          result[key] = result[key] || {};
+          _Object.deepAssign(result[key], value);
+          continue;
+        }
+        if (arrayKeys.includes(key)) {
+          result[key] = result[key] || [];
+          if (!Array.isArray(value)) {
+            value = [value];
+          }
+          result[key].push(...value);
+          continue;
+        }
+        // 其他属性
+        result[key] = value;
+      }
+    }
+    return result;
   }
   mergeWithOptions({ keyName = 'key' } = {}, ...sources) {
     sources = sources.map((source) => {

@@ -4,23 +4,24 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { name, version } from './package.json';
 
-const license = `
-/*!
- * ${name} v${version}
- * (c) 2022 hp
- * Released under the MIT License.
- */ 
-`.trimStart();
+const license = [
+  `/*!`,
+  ` * ${name} v${version}`,
+  ` * (c) 2022 hp`,
+  ` * Released under the MIT License.`,
+  ` */`,
+].join('\n');
 // 生成输出选项
 function getOutputItem(options = {}) {
   return {
     get banner() {
-      return `${license}
-/*
- * 打包时间：${new _Date()}
- * rollup 打包配置：${JSON.stringify(this, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}
- */
-      `.trimStart();
+      return [
+        `${license}`,
+        `/*`,
+        ` * 打包时间：${new _Date()}`,
+        ` * rollup 打包配置：${JSON.stringify(this, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}`,
+        ` */`,
+      ].join('\n');
     },
     sourcemap: 'inline',
     ...options,

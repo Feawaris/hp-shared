@@ -29,7 +29,7 @@ yarn add hp-shared
 @tab npm
 
 ```shell
-npm install hp-shared
+npm i hp-shared
 ```
 
 :::
