@@ -1184,8 +1184,8 @@ export default defineConfig((env) => {
 ### 3.1 开始
 
 ```shell
-# 刷新：用于初始化和更新依赖
-pnpm run refresh
+# 已配置 postinstall
+pnpm i
 ```
 
 ### 3.2 开发中
@@ -1198,6 +1198,6 @@ pnpm run docs:dev
 ### 3.3 发布
 
 ```shell
-# prepublishOnly 已配置
+# 已配置 prepublishOnly
 npm publish
 ```
