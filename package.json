@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "license": "MIT",
   "scripts": {
     "postinstall": "echo '\\x1b[32mpostinstall\\x1b[39m' && husky && pnpm run build",
