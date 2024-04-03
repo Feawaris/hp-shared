@@ -1,6 +1,7 @@
 {
   "name": "hp-shared",
   "version": "1.4.5",
+  "license": "MIT",
   "scripts": {
     "refresh": "pnpm install && husky && pnpm run build",
     "update": "npx ncu --target newest --deep --upgrade && pnpm run refresh",
@@ -82,7 +83,11 @@
     },
     "./*": "./*"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Feawaris/hp-shared.git"
+  },
+  "homepage": "https://github.com/Feawaris/hp-shared",
   "unpkg": "./dist/browser/index.umd.js",
-  "jsdelivr": "./dist/browser/index.umd.js",
-  "license": "MIT"
+  "jsdelivr": "./dist/browser/index.umd.js"
 }
