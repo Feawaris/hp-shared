@@ -1,1 +1,1 @@
-echo "\x1b[34mprepare-commit-msg\x1b[39m"
+echo '\x1b[34mprepare-commit-msg\x1b[39m'

@@ -1,1 +1,1 @@
-echo "\x1b[34mpre-applypatch\x1b[39m"
+echo '\x1b[34mpre-applypatch\x1b[39m'

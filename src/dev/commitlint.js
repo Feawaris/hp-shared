@@ -162,7 +162,7 @@ export class GitHooks {
       if (_JSON.typeof(val) === 'object') {
         // return getEchoText({ inputText: hookName, ...val });
         const [start, end] = _chalk.styleMap[val.styleName || 'blue'];
-        return `echo "\\x1b[${start}m${hookName}\\x1b[${end}m"`;
+        return `echo '\\x1b[${start}m${hookName}\\x1b[${end}m'`;
       }
       return val;
     });

@@ -1,2 +1,2 @@
-echo "\x1b[33mcommit-msg\x1b[39m"
+echo '\x1b[33mcommit-msg\x1b[39m'
 npx commitlint --edit $1
