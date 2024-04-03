@@ -748,7 +748,6 @@ const { MarkdownLint } = require('hp-shared/dev');
 const lint = new MarkdownLint({
   rootDir: '../',
   __filename,
-  configFile: '.markdownlint-cli2.cjs',
 });
 const config = lint.merge(lint.createBaseConfig(), {
   ignores: [
@@ -766,9 +765,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);
@@ -820,7 +817,6 @@ const { StyleLint } = require('hp-shared/dev');
 const lint = new StyleLint({
   rootDir: '../',
   __filename,
-  configFile: 'stylelint.config.cjs',
 });
 const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
   rules: {
@@ -833,9 +829,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);
@@ -893,7 +887,6 @@ const lint = new EsLint({
 
   rootDir: '../',
   __filename,
-  configFile: 'eslint.config.cjs',
 });
 const config = [
   {
@@ -918,9 +911,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && eslint --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);
@@ -974,7 +965,6 @@ const lint = new EsLint({
 
   rootDir: '../',
   __filename,
-  configFile: '.eslintrc.cjs',
 });
 const config = lint.merge(lint.baseConfig, lint.vue3Config, lint.tsInVueConfig, {
   ignorePatterns: lint.getIgnores(lint.gitIgnoreFile),
@@ -987,9 +977,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}' --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);
@@ -1041,7 +1029,6 @@ const { Prettier } = require('hp-shared/dev');
 const lint = new Prettier({
   rootDir: '../',
   __filename,
-  configFile: 'prettier.config.cjs',
 });
 const config = lint.merge(lint.baseConfig, {
   // ...
@@ -1053,9 +1040,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile(['pnpm-lock.yaml'])
     .createConfigFile(config);
@@ -1107,7 +1092,6 @@ const { CommitLint } = require('hp-shared/dev');
 const lint = new CommitLint({
   rootDir: '../',
   __filename,
-  configFile: 'commitlint.config.cjs',
 });
 const config = lint.merge(lint.baseConfig, {
   // ...
@@ -1119,9 +1103,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);

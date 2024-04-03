@@ -211,11 +211,16 @@ export class Lint {
     return this.merge(...sources);
   }
 
-  createConfigFile(config) {
-    const inputData = config;
+  createConfigFile(data) {
     const outputFile = path.resolve(this.rootDir, this.configFile);
-    const res = Dev.createFile({ inputData, outputFile });
-    res.success && _console.success(_chalk.green(`已创建 ${res.outputFileRelative}`));
+    const oldText = fs.existsSync(outputFile) ? fs.readFileSync(outputFile, 'utf-8') : '';
+    const newText = `module.exports = ${typeof data === 'string' ? data : serialize(data, { space: 2, unsafe: true })}`;
+    if (newText === oldText) {
+      _console.end(_chalk.grey(`${this.configFile} 无需更新`));
+    } else {
+      fs.writeFileSync(outputFile, newText);
+      _console.success(_chalk.green(`已生成: ${this.configFile}`));
+    }
     return this;
   }
   insertGitIgnoreFile(moreData = []) {
@@ -224,22 +229,36 @@ export class Lint {
       inputData,
       outputFile: path.resolve(this.rootDir, this.gitIgnoreFile),
     });
-    // _console.log(res);
-    res.success && res.needChange ? _console.success(_chalk.green(`ignores: ${new _Array(res.appendData)} 已加入到: ${res.outputFileRelative}`)) : _console.end(_chalk.grey(`${res.outputFileRelative} 内容无需重复添加`));
+    res.success && res.needChange ? _console.success(_chalk.green(`ignores: ${new _Array(res.appendData)} 已加入到: ${res.outputFileRelative}`)) : _console.end(_chalk.grey(`${res.outputFileRelative} 无需更新`));
     return this;
   }
   getIgnores(ignoreFile) {
     return Dev.getIgnoresFromFiles(path.resolve(this.rootDir, ignoreFile));
   }
   createIgnoreFile(data = [], { includeGitignore = true } = {}) {
-    if (this.ignoreFile) {
-      const res = Dev.createFile({
-        inputData: [...(includeGitignore ? ['# ---[auto] from:.gitignore start---', this.getIgnores(this.gitIgnoreFile).join('\n'), '# ---[auto] from:.gitignore end---'] : []), ...(typeof data === 'string' ? data.split('\n') : data)],
-        outputFile: path.resolve(this.rootDir, this.ignoreFile),
-      });
-      res.success && _console.success(_chalk.green(`已创建 ${res.outputFileRelative}`));
+    if (!this.ignoreFile) {
+      _console.end(_chalk.grey(`ignore 文件无需创建`));
+      return this;
+    }
+    const outputFile = path.resolve(this.rootDir, this.ignoreFile);
+    const oldText = fs.existsSync(outputFile) ? fs.readFileSync(outputFile, 'utf-8') : '';
+
+    const gitIgnoreData = includeGitignore ? [
+      '# ---[auto] from:.gitignore start---',
+      this.getIgnores(this.gitIgnoreFile).join('\n'),
+      '# ---[auto] from:.gitignore end---',
+    ] : [];
+    data = [
+      ...gitIgnoreData,
+      ...(typeof data === 'string' ? data.split('\n') : data),
+    ];
+    const newText = data.join('\n');
+
+    if (newText === oldText) {
+      _console.end(_chalk.grey(`${this.ignoreFile} 无需更新`));
     } else {
-      _console.end(_chalk.grey(`当前 ignores 可能统一写在了配置文件中，无额外的 ignore 文件，未创建`));
+      fs.writeFileSync(outputFile, newText);
+      _console.success(_chalk.green(`已生成: ${this.ignoreFile}`));
     }
     return this;
   }
@@ -253,9 +272,9 @@ export class Lint {
     if (value !== existValue) {
       pkg.scripts[key] = value;
       fs.writeFileSync(path.resolve(this.rootDir, this.packageFile), `${JSON.stringify(pkg, null, 2)}\n`);
-      _console.success(_chalk.green(`${key} 命令已加入 ${this.packageFile}`));
+      _console.success(_chalk.green(`${key} 命令已更新到: ${this.packageFile}`));
     } else {
-      _console.end(_chalk.grey(`${this.packageFile} 内容无需重复添加`));
+      _console.end(_chalk.grey(`${this.packageFile} 无需更新`));
     }
     return this;
   }
@@ -334,7 +353,7 @@ export class IgnoreLint {
       }
     })();
     if (result === text) {
-      _console.end(_chalk.grey(`${this.basename} 内容无需重复添加`));
+      _console.end(_chalk.grey(`${this.basename} 无需更新`));
     } else {
       this.setText(result);
       _console.success(_chalk.green(`${this.basename}: ${group} 组内容已更新`));
@@ -350,7 +369,7 @@ export class IgnoreLint {
 
     const text = this.getText();
     if (result === text) {
-      _console.end(_chalk.grey(`${this.basename} 内容无需重复添加`));
+      _console.end(_chalk.grey(`${this.basename}: 无需更新`));
     } else {
       this.setText(result);
       _console.success(_chalk.green(`${this.basename}: 内容已更新`));

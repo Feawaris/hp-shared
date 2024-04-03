@@ -172,10 +172,9 @@ export class GitHooks {
     const hookFile = path.resolve(this.huskyDir, hookName);
 
     const newText = `${this.getText(hookName)}\n`;
-    const exists = fs.existsSync(hookFile);
-    const oldText = exists ? fs.readFileSync(hookFile, 'utf-8') : '';
+    const oldText = fs.existsSync(hookFile) ? fs.readFileSync(hookFile, 'utf-8') : '';
     if (newText === oldText) {
-      _console.end(_chalk.grey(`.husky/${hookName}: 文件无需修改`));
+      _console.end(_chalk.grey(`.husky/${hookName}: 无需更新`));
     } else {
       fs.writeFileSync(hookFile, newText);
       _console.success(_chalk.green(`.husky/${hookName}: 文件已更新`));

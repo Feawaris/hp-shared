@@ -4,7 +4,6 @@ const { MarkdownLint } = require('hp-shared/dev');
 const lint = new MarkdownLint({
   rootDir: '../',
   __filename,
-  configFile: '.markdownlint-cli2.cjs',
 });
 const config = lint.merge(lint.createBaseConfig(), {
   ignores: [
@@ -22,9 +21,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);

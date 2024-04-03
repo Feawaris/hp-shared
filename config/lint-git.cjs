@@ -3,7 +3,6 @@ const { CommitLint, GitHooks } = require('hp-shared/dev');
 const lint = new CommitLint({
   __filename,
   rootDir: '../',
-  configFile: 'commitlint.config.cjs',
 });
 const config = lint.merge(lint.baseConfig, {
   // ...
@@ -14,7 +13,10 @@ const gitHooks = new GitHooks({
   rootDir: '../',
   huskyDir: '.husky',
   config: {
-    'commit-msg': [{ styleName: 'yellow' }, 'npx commitlint --edit $1'],
+    'commit-msg': [
+      { styleName: 'yellow' },
+      'npx commitlint --edit $1',
+    ],
     'post-commit': [{ styleName: 'green' }],
   },
 });
@@ -25,12 +27,9 @@ module.exports = {
   gitHooks,
 };
 if (require.main === module) {
-  // _console.dir(gitHooks, { depth: Infinity });
   gitHooks.updateFiles(GitHooks.HOOKS);
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);

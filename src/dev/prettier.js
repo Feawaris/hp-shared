@@ -43,7 +43,7 @@ export class Prettier extends Lint {
   insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
     key = key ?? this.scriptName;
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && prettier --check --write '**/*.*' || true`;
+    const defaultValue = `node ${filenameRelative} && prettier --check . --write || true`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
     super.insertPackageJsonScripts(key, value);
     return this;

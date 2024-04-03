@@ -4,7 +4,6 @@ const { StyleLint } = require('hp-shared/dev');
 const lint = new StyleLint({
   rootDir: '../',
   __filename,
-  configFile: 'stylelint.config.cjs',
 });
 const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
   rules: {
@@ -18,9 +17,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);

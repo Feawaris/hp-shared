@@ -342,7 +342,7 @@ export class MarkdownLint extends Lint {
   insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
     key = key ?? this.scriptName;
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && markdownlint-cli2 '**/*.md' --fix || true`;
+    const defaultValue = `node ${filenameRelative} && markdownlint-cli2 '**/*.{md,markdown}' --fix || true`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
     super.insertPackageJsonScripts(key, value);
     return this;

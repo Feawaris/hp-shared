@@ -8,7 +8,6 @@ const lint = new EsLint({
 
   rootDir: '../',
   __filename,
-  configFile: 'eslint.config.cjs',
 });
 const config = [
   {
@@ -33,9 +32,7 @@ module.exports = {
 };
 if (require.main === module) {
   lint
-    .insertPackageJsonScripts(lint.scriptName, ({ filenameRelative }) => {
-      return `node ${filenameRelative} && eslint --fix || true`;
-    })
+    .insertPackageJsonScripts()
     .insertGitIgnoreFile()
     .createIgnoreFile()
     .createConfigFile(config);
