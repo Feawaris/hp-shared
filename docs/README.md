@@ -1184,8 +1184,8 @@ export default defineConfig((env) => {
 ### 3.1 开始
 
 ```shell
-# 已配置 postinstall
-pnpm i
+# 刷新状态
+pnpm run refresh
 ```
 
 ### 3.2 开发中

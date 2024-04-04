@@ -3,8 +3,8 @@
   "version": "1.4.6",
   "license": "MIT",
   "scripts": {
-    "postinstall": "echo '\\x1b[32mpostinstall\\x1b[39m' && husky && pnpm run build",
-    "update": "npx ncu --target newest --upgrade && pnpm install",
+    "refresh": "pnpm install && husky && pnpm run build",
+    "update": "npx ncu --target newest --upgrade && pnpm run refresh",
     "fix": "pnpm run fix:ignore && pnpm run fix:md && pnpm run fix:css && pnpm run fix:js && pnpm run fix:prettier && pnpm run fix:git",
     "fix:ignore": "node config/lint-ignore.cjs || true",
     "fix:md": "node config/lint-md.cjs && markdownlint-cli2 '**/*.{md,markdown}' --fix || true",
@@ -20,7 +20,7 @@
     "docs:build:npm": "cross-env vuepress_to=npm vuepress build docs",
     "docs:preview": "npx serve dist/docs",
     "clean:ignoredConfigFiles": "npx rimraf .markdownlint.json .markdownlint-cli2.cjs .markdownlint-cli2.cjs .markdownlintignore stylelint.config.cjs .stylelintrc.json .stylelintignore eslint.config.cjs .eslintrc.cjs .eslintignore prettier.config.cjs .prettierignore commitlint.config.cjs",
-    "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m' && pnpm install && pnpm run docs:build:npm"
+    "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m' && pnpm run refresh && pnpm run docs:build:npm"
   },
   "dependencies": {
     "serialize-javascript": "^6.0.2"
