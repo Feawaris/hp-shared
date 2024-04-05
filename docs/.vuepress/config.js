@@ -92,7 +92,7 @@ export default defineUserConfig({
       sidebar: [{ text: 'README', link: '/' }],
       sidebarIcon: true,
       sidebarSorter: ['readme', 'order', 'title', 'filename'],
-      headerDepth: Infinity,
+      headerDepth: 6,
       /**
        * 路径导航
        */
@@ -368,7 +368,11 @@ export default defineUserConfig({
   /**
    * Markdown 配置
    */
-  markdown: {},
+  markdown: {
+    headers:{
+      level: [1, 2, 3, 4, 5, 6],
+    },
+  },
 
   /**
    * 插件配置
