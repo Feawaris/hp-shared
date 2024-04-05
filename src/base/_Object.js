@@ -195,6 +195,16 @@ _Object.pick = function (target, keys = [], options = {}) {
   return _Object.filter(target, { pick: keys, emptyPick: 'empty', ...options });
 };
 // 通过排除方式过滤对象
-_Object.omit = function (object, keys = [], options = {}) {
-  return _Object.filter(object, { omit: keys, ...options });
+_Object.omit = function (target, keys = [], options = {}) {
+  return _Object.filter(target, { omit: keys, ...options });
+};
+
+// 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法
+_Object.bindThis = function (target) {
+  for (const [key, value] of Object.entries(target)) {
+    if (typeof value === 'function') {
+      target[key] = value.bind(target);
+    }
+  }
+  return target;
 };

@@ -185,20 +185,21 @@ const { _Object } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明                                                                       |
-| ---------------------------------- | -------------------------------------------------------------------------- |
-| <i style="color:pink;">static:</i> |                                                                            |
-| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况                  |
-| values                             | 对应 keys 配套                                                             |
-| entries                            | 对应 keys 配套                                                             |
+| 属性                                 | 说明                                           |
+|------------------------------------|----------------------------------------------|
+| <i style="color:pink;">static:</i> |                                              |
+| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况          |
+| values                             | 对应 keys 配套                                   |
+| entries                            | 对应 keys 配套                                   |
 | getOwner                           | 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作 |
-| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展                                |
-| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展                                  |
-| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理            |
-| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                                       |
-| **filter**                         | 过滤对象取部分值                                                           |
-| pick                               | 根据 filter 得到，挑选方式                                                 |
-| omit                               | 根据 filter 得到，排除方式                                                 |
+| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展       |
+| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展         |
+| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理         |
+| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                       |
+| **filter**                         | 过滤对象取部分值                                     |
+| pick                               | 根据 filter 得到，挑选方式                            |
+| omit                               | 根据 filter 得到，排除方式                            |
+| bindThis                           | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法                              |
 
 #### 2.1.4 \_Function
 
@@ -558,7 +559,6 @@ const { _Proxy } = require('hp-shared/base');
 | 属性                               | 说明                        |
 | ---------------------------------- | --------------------------- |
 | <i style="color:pink;">static:</i> |                             |
-| bindThis                           | 用于解构对象方法时绑定 this |
 
 ### 2.2 storage 存储
 
