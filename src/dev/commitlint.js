@@ -1,7 +1,7 @@
 /**
  * [commitlint 配置](https://commitlint.js.org/reference/rules.html)
  */
-import { _Object, _console, _chalk, _JSON } from '../base';
+import { _Object, _console, _chalk } from '../base';
 import { Lint } from './base';
 import path from 'path';
 import fs from 'fs';
@@ -159,7 +159,7 @@ export class GitHooks {
   }
   getText(hookName) {
     let data = this.config[hookName].map((val) => {
-      if (_JSON.typeof(val) === 'object') {
+      if (_Object.isPlainObject(val)) {
         // return getEchoText({ inputText: hookName, ...val });
         const [start, end] = _chalk.styleMap[val.styleName || 'blue'];
         return `echo '\\x1b[${start}m${hookName}\\x1b[${end}m'`;
