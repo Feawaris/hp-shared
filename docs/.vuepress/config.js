@@ -104,7 +104,7 @@ export default defineUserConfig({
        * 标题
        */
       titleIcon: true,
-      pageInfo: ['Word', 'ReadingTime', 'PageView', 'Category', 'Tag', 'Author', 'Date'],
+      pageInfo: ['Word', 'ReadingTime', 'Category', 'Tag'],
       /**
        * Meta
        */
