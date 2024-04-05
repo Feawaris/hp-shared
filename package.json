@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "license": "MIT",
   "scripts": {
     "refresh": "pnpm install && husky && pnpm run build",
