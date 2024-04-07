@@ -1,4 +1,4 @@
-import { _Set, _Date, _Object, _console, _chalk, _Array } from '../base';
+import { _Set, _Date, _Object, _console, _Array } from '../base';
 import path from 'path';
 import fs from 'fs';
 const serialize = require('serialize-javascript');
@@ -178,11 +178,10 @@ export class Lint {
    * @param _require
    * @param configFile
    * @param ignoreFile
-   * @param scriptName
    * @param gitIgnoreFile
    * @param packageFile
    */
-  constructor({ rootDir, __filename: _filename, process: _process, requireResolve = null, require: _require, configFile, ignoreFile, scriptName, gitIgnoreFile = '.gitignore', packageFile = 'package.json' } = {}) {
+  constructor({ rootDir, __filename: _filename, process: _process, requireResolve = null, require: _require, configFile, ignoreFile, gitIgnoreFile = '.gitignore', packageFile = 'package.json' } = {}) {
     this.__filename = _filename;
     this.__dirname = this.__filename ? path.dirname(this.__filename) : '';
     this.rootDir = this.__filename ? path.dirname(this.__dirname, rootDir) : '';
@@ -197,7 +196,6 @@ export class Lint {
     this.require = _require;
     this.configFile = configFile;
     this.ignoreFile = ignoreFile;
-    this.scriptName = scriptName;
     this.gitIgnoreFile = gitIgnoreFile;
     this.packageFile = packageFile;
   }
@@ -216,10 +214,10 @@ export class Lint {
     const oldText = fs.existsSync(outputFile) ? fs.readFileSync(outputFile, 'utf-8') : '';
     const newText = `module.exports = ${typeof data === 'string' ? data : serialize(data, { space: 2, unsafe: true })}`;
     if (newText === oldText) {
-      _console.end(_chalk.grey(`${this.configFile} 无需更新`));
+      _console.end(`${this.configFile} 无需更新`);
     } else {
       fs.writeFileSync(outputFile, newText);
-      _console.success(_chalk.green(`已生成: ${this.configFile}`));
+      _console.success(`已生成: ${this.configFile}`);
     }
     return this;
   }
@@ -229,7 +227,7 @@ export class Lint {
       inputData,
       outputFile: path.resolve(this.rootDir, this.gitIgnoreFile),
     });
-    res.success && res.needChange ? _console.success(_chalk.green(`ignores: ${new _Array(res.appendData)} 已加入到: ${res.outputFileRelative}`)) : _console.end(_chalk.grey(`${res.outputFileRelative} 无需更新`));
+    res.success && res.needChange ? _console.success(`ignores: ${new _Array(res.appendData)} 已加入到: ${res.outputFileRelative}`) : _console.end(`${res.outputFileRelative} 无需更新`);
     return this;
   }
   getIgnores(ignoreFile) {
@@ -237,7 +235,7 @@ export class Lint {
   }
   createIgnoreFile(data = [], { includeGitignore = true } = {}) {
     if (!this.ignoreFile) {
-      _console.end(_chalk.grey(`ignore 文件无需创建`));
+      _console.end(`ignore 文件无需创建`);
       return this;
     }
     const outputFile = path.resolve(this.rootDir, this.ignoreFile);
@@ -255,45 +253,43 @@ export class Lint {
     const newText = data.join('\n');
 
     if (newText === oldText) {
-      _console.end(_chalk.grey(`${this.ignoreFile} 无需更新`));
+      _console.end(`${this.ignoreFile} 无需更新`);
     } else {
       fs.writeFileSync(outputFile, newText);
-      _console.success(_chalk.green(`已生成: ${this.ignoreFile}`));
+      _console.success(`已生成: ${this.ignoreFile}`);
     }
     return this;
   }
-  insertPackageJsonScripts(key, value) {
+  insertPackageJsonScripts(name, value) {
     value = value.replaceAll('\\', '/');
-    const text = fs.readFileSync(path.resolve(this.rootDir, this.packageFile), 'utf-8');
-    const pkg = JSON.parse(text);
+    let pkg = require(path.resolve(this.rootDir, this.packageFile));
     pkg.scripts = pkg.scripts || {};
-    const existValue = pkg.scripts[key] || '';
-    // _console.log(value === existValue, { value, existValue });
-    if (value !== existValue) {
-      pkg.scripts[key] = value;
+    const oldValue = pkg.scripts[name] || '';
+    if (value !== oldValue) {
+      pkg.scripts[name] = value;
       fs.writeFileSync(path.resolve(this.rootDir, this.packageFile), `${JSON.stringify(pkg, null, 2)}\n`);
-      _console.success(_chalk.green(`${key} 命令已更新到: ${this.packageFile}`));
+      _console.success(`${name} 命令已更新到: ${this.packageFile}`);
     } else {
-      _console.end(_chalk.grey(`${this.packageFile} 无需更新`));
+      _console.end(`${this.packageFile} ${name} 无需更新`);
     }
     return this;
   }
 }
 
 export class IgnoreLint {
-  static getReg(group = '', tag = 'auto') {
-    const pattern = `# ---\\[${tag}\\] ${group} start---[\\s\\S]*?# ---\\[${tag}\\] ${group} end---`;
-    return new RegExp(pattern, 'g');
-  }
-  static createText(group = '', data = [], tag = 'auto') {
-    return [`# ---[${tag}] ${group} start---`, ...data, `# ---[${tag}] ${group} end---`].join('\n');
-  }
   constructor({ rootDir, __filename: _filename, ignoreFile } = {}) {
     this.__filename = _filename;
     this.__dirname = this.__filename ? path.dirname(this.__filename) : '';
     this.rootDir = this.__filename ? path.dirname(this.__dirname, rootDir) : '';
     this.ignoreFile = ignoreFile;
     this.basename = path.basename(this.ignoreFile);
+  }
+  static getReg(group = '', tag = 'auto') {
+    const pattern = `# ---\\[${tag}\\] ${group} start---[\\s\\S]*?# ---\\[${tag}\\] ${group} end---`;
+    return new RegExp(pattern, 'g');
+  }
+  static createText(group = '', data = [], tag = 'auto') {
+    return [`# ---[${tag}] ${group} start---`, ...data, `# ---[${tag}] ${group} end---`].join('\n');
   }
   getText() {
     return fs.readFileSync(path.resolve(this.rootDir, this.ignoreFile), 'utf-8');
@@ -332,10 +328,10 @@ export class IgnoreLint {
     const text = this.getText();
     const result = this.getFormatText(text);
     if (result === text) {
-      _console.end(_chalk.grey(`${this.basename} 无需格式化`));
+      _console.end(`${this.basename} 无需格式化`);
     } else {
       this.setText(result);
-      _console.success(_chalk.green(`${this.basename} 已格式化`));
+      _console.success(`${this.basename} 已格式化`);
     }
     return this;
   }
@@ -353,10 +349,10 @@ export class IgnoreLint {
       }
     })();
     if (result === text) {
-      _console.end(_chalk.grey(`${this.basename} 无需更新`));
+      _console.end(`${this.basename} 无需更新`);
     } else {
       this.setText(result);
-      _console.success(_chalk.green(`${this.basename}: ${group} 组内容已更新`));
+      _console.success(`${this.basename}: ${group} 组内容已更新`);
     }
     return this;
   }
@@ -369,10 +365,10 @@ export class IgnoreLint {
 
     const text = this.getText();
     if (result === text) {
-      _console.end(_chalk.grey(`${this.basename}: 无需更新`));
+      _console.end(`${this.basename}: 无需更新`);
     } else {
       this.setText(result);
-      _console.success(_chalk.green(`${this.basename}: 内容已更新`));
+      _console.success(`${this.basename}: 内容已更新`);
     }
     return this;
   }

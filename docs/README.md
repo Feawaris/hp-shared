@@ -1,7 +1,7 @@
 ---
 name: hp-shared
 category: 文档
-tag: 1.4.8
+tag: 1.5.0-rc.0
 ---
 
 基础库
@@ -95,6 +95,13 @@ import { _console } from 'hp-shared/base';
 const { _console } = require('hp-shared/base');
 ```
 
+@tab shell
+
+```shell
+# 已配置同名 cli，按指引操作即可
+hp-shared
+```
+
 :::
 
 ## 2.各模块示例
@@ -185,21 +192,21 @@ const { _Object } = require('hp-shared/base');
 
 :::
 
-| 属性                                 | 说明                                           |
-|------------------------------------|----------------------------------------------|
-| <i style="color:pink;">static:</i> |                                              |
-| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况          |
-| values                             | 对应 keys 配套                                   |
-| entries                            | 对应 keys 配套                                   |
+| 属性                               | 说明                                                                       |
+| ---------------------------------- | -------------------------------------------------------------------------- |
+| <i style="color:pink;">static:</i> |                                                                            |
+| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况                  |
+| values                             | 对应 keys 配套                                                             |
+| entries                            | 对应 keys 配套                                                             |
 | getOwner                           | 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作 |
-| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展       |
-| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展         |
-| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理         |
-| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                       |
-| **filter**                         | 过滤对象取部分值                                     |
-| pick                               | 根据 filter 得到，挑选方式                            |
-| omit                               | 根据 filter 得到，排除方式                            |
-| bindThis                           | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法                              |
+| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展                                |
+| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展                                  |
+| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理            |
+| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                                       |
+| **filter**                         | 过滤对象取部分值                                                           |
+| pick                               | 根据 filter 得到，挑选方式                                                 |
+| omit                               | 根据 filter 得到，排除方式                                                 |
+| bindThis                           | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法    |
 
 #### 2.1.4 \_Function
 
@@ -556,9 +563,9 @@ const { _Proxy } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明                        |
-| ---------------------------------- | --------------------------- |
-| <i style="color:pink;">static:</i> |                             |
+| 属性                               | 说明 |
+| ---------------------------------- | ---- |
+| <i style="color:pink;">static:</i> |      |
 
 ### 2.2 storage 存储
 
@@ -721,13 +728,13 @@ router.get('/test', (ctx) => {
 @tab pnpm
 
 ```shell
-pnpm i -D markdownlint-cli
+pnpm i -D markdownlint-cli2
 ```
 
 @tab yarn
 
 ```shell
-yarn add -D markdownlint-cli
+yarn add -D markdownlint-cli2
 ```
 
 @tab npm
@@ -742,34 +749,7 @@ npm i -D markdownlint-cli2
 @tab 生成 .cjs
 
 ```js
-// config/lint-md.cjs
-const { MarkdownLint } = require('hp-shared/dev');
-
-const lint = new MarkdownLint({
-  rootDir: '../',
-  __filename,
-});
-const config = lint.merge(lint.createBaseConfig(), {
-  ignores: [
-    ...lint.getIgnores(lint.gitIgnoreFile),
-    // ...
-  ],
-  config: {
-    // ...
-  },
-});
-
-module.exports = {
-  lint,
-  config,
-};
-if (require.main === module) {
-  lint
-    .insertPackageJsonScripts()
-    .insertGitIgnoreFile()
-    .createIgnoreFile()
-    .createConfigFile(config);
-}
+// config/lint-md.cjs 通过 cli 初始化
 ```
 
 @tab 直接引用
@@ -811,29 +791,7 @@ npm i -D stylelint postcss-html
 @tab 生成 .cjs
 
 ```js
-// config/lint-css.cjs
-const { StyleLint } = require('hp-shared/dev');
-
-const lint = new StyleLint({
-  rootDir: '../',
-  __filename,
-});
-const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
-  rules: {
-    // ...
-  },
-});
-module.exports = {
-  lint,
-  config,
-};
-if (require.main === module) {
-  lint
-    .insertPackageJsonScripts()
-    .insertGitIgnoreFile()
-    .createIgnoreFile()
-    .createConfigFile(config);
-}
+// config/lint-css.cjs 通过 cli 初始化
 ```
 
 @tab 直接引用
@@ -855,19 +813,19 @@ if (require.main === module) {
 @tab pnpm
 
 ```shell
-pnpm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
+pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
 ```
 
 @tab yarn
 
 ```shell
-yarn add -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
+yarn add -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
 ```
 
 @tab npm
 
 ```shell
-npm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
+npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
 ```
 
 :::
@@ -877,45 +835,7 @@ npm i -D eslint@next eslint-plugin-vue vue-eslint-parser typescript typescript-e
 @tab 生成 .cjs
 
 ```js
-// config/lint-js.cjs
-const { EsLint } = require('hp-shared/dev');
-
-const lint = new EsLint({
-  eslintVersion: 9,
-  requireResolve: 'string',
-  require,
-
-  rootDir: '../',
-  __filename,
-});
-const config = [
-  {
-    ignores: [
-      ...lint.getIgnores(lint.gitIgnoreFile),
-      // ...
-    ],
-  },
-  lint.merge(lint.baseConfig, {
-    files: ['**/*.{js,cjs}'],
-    rules: {},
-  }),
-  lint.merge(lint.baseConfig, lint.vue3Config, {
-    files: ['**/*.vue'],
-    rules: {},
-  }),
-];
-
-module.exports = {
-  lint,
-  config,
-};
-if (require.main === module) {
-  lint
-    .insertPackageJsonScripts()
-    .insertGitIgnoreFile()
-    .createIgnoreFile()
-    .createConfigFile(config);
-}
+// config/lint-js.cjs 通过 cli 初始化
 ```
 
 @tab 直接引用
@@ -933,19 +853,19 @@ if (require.main === module) {
 @tab pnpm
 
 ```shell
-pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+pnpm i -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
 ```
 
 @tab yarn
 
 ```shell
-yarn add -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+yarn add -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
 ```
 
 @tab npm
 
 ```shell
-npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+npm i -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
 ```
 
 :::
@@ -955,33 +875,7 @@ npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript @typescript-eslin
 @tab 生成 .cjs
 
 ```js
-// config/lint-js.cjs
-const { EsLint } = require('hp-shared/dev');
-
-const lint = new EsLint({
-  eslintVersion: 8,
-  requireResolve: 'string',
-  require,
-
-  rootDir: '../',
-  __filename,
-});
-const config = lint.merge(lint.baseConfig, lint.vue3Config, lint.tsInVueConfig, {
-  ignorePatterns: lint.getIgnores(lint.gitIgnoreFile),
-  rules: {},
-});
-
-module.exports = {
-  lint,
-  config,
-};
-if (require.main === module) {
-  lint
-    .insertPackageJsonScripts()
-    .insertGitIgnoreFile()
-    .createIgnoreFile()
-    .createConfigFile(config);
-}
+// config/lint-js.cjs 通过 cli 初始化
 ```
 
 @tab 直接引用
@@ -1023,28 +917,7 @@ npm i -D prettier
 @tab 生成 .cjs
 
 ```js
-// config/lint-prettier.cjs
-const { Prettier } = require('hp-shared/dev');
-
-const lint = new Prettier({
-  rootDir: '../',
-  __filename,
-});
-const config = lint.merge(lint.baseConfig, {
-  // ...
-});
-
-module.exports = {
-  lint,
-  config,
-};
-if (require.main === module) {
-  lint
-    .insertPackageJsonScripts()
-    .insertGitIgnoreFile()
-    .createIgnoreFile(['pnpm-lock.yaml'])
-    .createConfigFile(config);
-}
+// config/lint-prettier.cjs 通过 cli 初始化
 ```
 
 @tab 直接引用
@@ -1086,28 +959,7 @@ npm i -D @commitlint/cli husky
 @tab 生成 .cjs
 
 ```js
-// config/lint-git.js
-const { CommitLint } = require('hp-shared/dev');
-
-const lint = new CommitLint({
-  rootDir: '../',
-  __filename,
-});
-const config = lint.merge(lint.baseConfig, {
-  // ...
-});
-
-module.exports = {
-  lint,
-  config,
-};
-if (require.main === module) {
-  lint
-    .insertPackageJsonScripts()
-    .insertGitIgnoreFile()
-    .createIgnoreFile()
-    .createConfigFile(config);
-}
+// config/lint-git.js 通过 cli 初始化
 ```
 
 @tab 直接引用
@@ -1186,6 +1038,8 @@ export default defineConfig((env) => {
 ```shell
 # 刷新状态
 pnpm run refresh
+# 自引用，确保引 dist 的文件也能导航到源代码
+pnpm link ./
 ```
 
 ### 3.2 开发中

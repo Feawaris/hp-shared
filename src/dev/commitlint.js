@@ -115,12 +115,11 @@ export class CommitLint extends Lint {
     return result;
   }
 
-  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
-    key = key ?? this.scriptName;
+  insertPackageJsonScripts({ name = '', fix = false, getValue = () => '' } = {}) {
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && echo 'feat: test' | commitlint || true`;
+    const defaultValue = `node ${filenameRelative} && echo 'test: commitlint' | commitlint`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
-    super.insertPackageJsonScripts(key, value);
+    super.insertPackageJsonScripts(name, value);
     return this;
   }
 }
@@ -150,6 +149,9 @@ export class GitHooks {
     this.__dirname = this.__filename ? path.dirname(this.__filename) : '';
     this.rootDir = this.__filename ? path.dirname(this.__dirname, rootDir) : '';
     this.huskyDir = path.resolve(this.rootDir, '.husky');
+    if (!fs.existsSync(this.huskyDir)) {
+      fs.mkdirSync(this.huskyDir);
+    }
     this.config = Object.fromEntries(
       GitHooks.HOOKS.map((hookName) => {
         let data = config[hookName] || [{ styleName: 'blue' }];
@@ -174,10 +176,10 @@ export class GitHooks {
     const newText = `${this.getText(hookName)}\n`;
     const oldText = fs.existsSync(hookFile) ? fs.readFileSync(hookFile, 'utf-8') : '';
     if (newText === oldText) {
-      _console.end(_chalk.grey(`.husky/${hookName}: 无需更新`));
+      _console.end(`.husky/${hookName}: 无需更新`);
     } else {
       fs.writeFileSync(hookFile, newText);
-      _console.success(_chalk.green(`.husky/${hookName}: 文件已更新`));
+      _console.success(`.husky/${hookName}: 文件已更新`);
     }
   }
   updateFiles(hookNames = []) {

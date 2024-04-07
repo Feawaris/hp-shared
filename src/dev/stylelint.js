@@ -6,8 +6,8 @@ import { Lint } from './base';
 import path from 'path';
 
 export class StyleLint extends Lint {
-  constructor({ configFile = 'stylelint.config.cjs', ignoreFile = '.stylelintignore', scriptName = 'fix:css', ...restOptions } = {}) {
-    super({ configFile, ignoreFile, scriptName, ...restOptions });
+  constructor({ configFile = 'stylelint.config.cjs', ignoreFile = '.stylelintignore', ...restOptions } = {}) {
+    super({ configFile, ignoreFile, ...restOptions });
 
     this.baseConfig = {
       rules: {
@@ -362,12 +362,11 @@ export class StyleLint extends Lint {
     }
     return result;
   }
-  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
-    key = key ?? this.scriptName;
+  insertPackageJsonScripts({ name = '', fix = false, getValue = () => '' } = {}) {
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && stylelint '**/*.{css,vue}' --fix || true`;
+    const defaultValue = `node ${filenameRelative} && stylelint '**/*.{css,vue}'${fix ? ' --fix' : ''}`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
-    super.insertPackageJsonScripts(key, value);
+    super.insertPackageJsonScripts(name, value);
     return this;
   }
 }

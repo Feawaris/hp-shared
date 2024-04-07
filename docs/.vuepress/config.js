@@ -369,7 +369,7 @@ export default defineUserConfig({
    * Markdown 配置
    */
   markdown: {
-    headers:{
+    headers: {
       level: [1, 2, 3, 4, 5, 6],
     },
   },

@@ -14,7 +14,6 @@ export class EsLint extends Lint {
    * @param eslintVersion
    * @param configFile
    * @param ignoreFile
-   * @param scriptName
    * @param restOptions
    */
   constructor({
@@ -22,10 +21,9 @@ export class EsLint extends Lint {
 
     configFile = eslintVersion === 9 ? 'eslint.config.cjs' : '.eslintrc.cjs',
     ignoreFile = '',
-    scriptName = 'fix:js',
     ...restOptions
   } = {}) {
-    super({ configFile, ignoreFile, scriptName, ...restOptions });
+    super({ configFile, ignoreFile, ...restOptions });
 
     this.eslintVersion = Number(eslintVersion);
     if (!this.eslintVersion) {
@@ -1124,7 +1122,7 @@ export class EsLint extends Lint {
           },
         ],
         'operator-linebreak': [
-          'warn',
+          'off',
           'before',
           {
             overrides: {},
@@ -2763,20 +2761,19 @@ export class EsLint extends Lint {
     }
     return super.createConfigFile(newText);
   }
-  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
-    key = key ?? this.scriptName;
+  insertPackageJsonScripts({ name = '', fix = false, getValue = () => '' } = {}) {
     const filenameRelative = path.relative(this.rootDir, this.__filename);
     const defaultValue = (() => {
       if (this.eslintVersion === 9) {
-        return `node ${filenameRelative} && eslint --fix || true`;
+        return `node ${filenameRelative} && eslint${fix ? ' --fix' : ''}`;
       }
       if (this.eslintVersion === 8) {
-        return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}' --fix || true`;
+        return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}'${fix ? ' --fix' : ''}`;
       }
       return '';
     })();
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
-    super.insertPackageJsonScripts(key, value);
+    super.insertPackageJsonScripts(name, value);
     return this;
   }
 }

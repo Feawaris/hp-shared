@@ -40,12 +40,11 @@ export class Prettier extends Lint {
     return _Object.assign({}, ...sources);
   }
 
-  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
-    key = key ?? this.scriptName;
+  insertPackageJsonScripts({ name = '', fix = false, getValue = () => '' } = {}) {
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && prettier --check . --write || true`;
+    const defaultValue = `node ${filenameRelative} && prettier --check .${fix ? ' --write' : ''}`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
-    super.insertPackageJsonScripts(key, value);
+    super.insertPackageJsonScripts(name, value);
     return this;
   }
 }

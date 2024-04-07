@@ -109,26 +109,26 @@ _console.getStackInfo = function () {
     return {};
   }
 };
-_console.show = function ({ type = '', typeText = type, stackInfo = {}, values = [] } = {}) {
+_console.show = function ({ style = '', type = '', stackInfo = {}, values = [] } = {}) {
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
   // console.log(stackInfo);
   // 前缀内容
-  let prefix = `${[`[${date}]`, `[${typeText}]`, stackInfo.fullPathShow, stackInfo.method].join(' ')}:`;
+  let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fullPathShow, stackInfo.method].join(' ')}:`;
   // 样式映射
   const styleMap = {
-    log: { node: 'blue', browser: 'color:blue;' },
-    warn: { node: 'yellow', browser: 'color:orange;' },
-    error: { node: 'red', browser: 'color:red;' },
-    success: { node: 'green', browser: 'color:green;' },
-    end: { node: 'grey', browser: 'color:grey;' },
+    blue: { node: 'blue', browser: 'color:blue;' },
+    yellow: { node: 'yellow', browser: 'color:orange;' },
+    red: { node: 'red', browser: 'color:red;' },
+    green: { node: 'green', browser: 'color:green;' },
+    grey: { node: 'grey', browser: 'color:grey;' },
     bold: { node: 'bold', browser: 'font-weight:bold;' },
   };
   // node 和 browser 显示
   if (BaseEnv.isNode) {
     const valuesArr = [
-      _chalk[styleMap[type].node](prefix),
+      _chalk[styleMap[style].node](prefix),
       // 第一层简单类型配默认颜色
       ...values.map((value) => {
         if ([null, undefined].includes(value)) {
@@ -138,6 +138,10 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
           return _chalk.blueBright(value);
         }
         if (typeof value === 'string') {
+          // 特殊 style 显示：只输出一个字符串，不同其他类型组合时同 style 风格
+          if (values.length === 1 && ['yellow', 'red', 'green', 'grey'].includes(style)) {
+            return _chalk[styleMap[style].node](value);
+          }
           return _chalk.yellowBright(value);
         }
         if (typeof value === 'boolean') {
@@ -159,7 +163,7 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
     if (values.some((val) => val !== null && ['object', 'function'].includes(typeof val))) {
-      console.log(`%c${prefix}`, `${styleMap[type].browser}`, ...values);
+      console.log(`%c${prefix}`, `${styleMap[style].browser}`, ...values);
       return;
     }
 
@@ -179,7 +183,7 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
         .join(' '),
     ].join(' ');
     const styleArr = [
-      `${styleMap[type].browser}`,
+      `${styleMap[style].browser}`,
       ...values.map((value) => {
         if ([null, undefined].includes(value)) {
           return 'color:grey;';
@@ -188,6 +192,10 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
           return 'color:blue;';
         }
         if (typeof value === 'string') {
+          // 特殊 style 显示：只输出一个字符串，不同其他类型组合时同 style 风格
+          if (values.length === 1 && ['yellow', 'red', 'green', 'grey'].includes(style)) {
+            return styleMap[style].browser;
+          }
           return 'color:orange;';
         }
         if (typeof value === 'boolean') {
@@ -204,13 +212,13 @@ _console.show = function ({ type = '', typeText = type, stackInfo = {}, values =
     ];
     const valuesArr = [text, ...styleArr];
     console.log(...valuesArr);
-    return;
   }
 };
 
 _console.log = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
+    style: 'blue',
     type: 'log',
     stackInfo,
     values: args,
@@ -219,6 +227,7 @@ _console.log = function (...args) {
 _console.warn = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
+    style: 'yellow',
     type: 'warn',
     stackInfo,
     values: args,
@@ -227,6 +236,7 @@ _console.warn = function (...args) {
 _console.error = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
+    style: 'red',
     type: 'error',
     stackInfo,
     values: args,
@@ -235,6 +245,7 @@ _console.error = function (...args) {
 _console.success = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
+    style: 'green',
     type: 'success',
     stackInfo,
     values: args,
@@ -243,6 +254,7 @@ _console.success = function (...args) {
 _console.end = function (...args) {
   const stackInfo = _console.getStackInfo();
   return _console.show({
+    style: 'grey',
     type: 'end',
     stackInfo,
     values: args,
@@ -250,7 +262,7 @@ _console.end = function (...args) {
 };
 _console.dir = function (value, options = {}) {
   const stackInfo = _console.getStackInfo();
-  _console.show({ type: 'log', typeText: 'dir', stackInfo });
+  _console.show({ style: 'blue', type: 'dir', stackInfo });
   if (BaseEnv.isNode) {
     options = _Object.assign({ depth: 0, showHidden: true, colors: true }, options);
     console.dir(value, options);
@@ -260,20 +272,20 @@ _console.dir = function (value, options = {}) {
 };
 _console.table = function (...args) {
   const stackInfo = _console.getStackInfo();
-  _console.show({ type: 'log', typeText: 'table', stackInfo });
+  _console.show({ style: 'log', type: 'table', stackInfo });
 
   console.table(...args);
 };
 _console.group = function (label) {
   const stackInfo = _console.getStackInfo();
-  _console.show({ type: 'bold', typeText: 'group', stackInfo });
+  _console.show({ style: 'bold', type: 'group', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.group(label);
 };
 _console.groupCollapsed = function (label) {
   const stackInfo = _console.getStackInfo();
-  _console.show({ type: 'bold', typeText: 'group', stackInfo });
+  _console.show({ style: 'bold', type: 'group', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.groupCollapsed(label);
@@ -281,7 +293,7 @@ _console.groupCollapsed = function (label) {
 
 _console.groupAction = function (action = () => {}, label = null, collapse = false) {
   const stackInfo = _console.getStackInfo();
-  _console.show({ type: 'bold', typeText: 'groupAction', stackInfo });
+  _console.show({ style: 'bold', type: 'groupAction', stackInfo });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console[collapse ? 'groupCollapsed' : 'group'](label);

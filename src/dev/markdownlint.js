@@ -8,8 +8,8 @@ import { Lint } from './base';
 const path = require('path');
 
 export class MarkdownLint extends Lint {
-  constructor({ configFile = '.markdownlint-cli2.cjs', ignoreFile = '', scriptName = 'fix:md', ...restOptions } = {}) {
-    super({ configFile, ignoreFile, scriptName, ...restOptions });
+  constructor({ configFile = '.markdownlint-cli2.cjs', ignoreFile = '', ...restOptions } = {}) {
+    super({ configFile, ignoreFile, ...restOptions });
 
     this.aliasConfigMap = [
       {
@@ -339,12 +339,11 @@ export class MarkdownLint extends Lint {
     });
     return this.merge(...sources);
   }
-  insertPackageJsonScripts(key = this.scriptName, getValue = () => '') {
-    key = key ?? this.scriptName;
+  insertPackageJsonScripts({ name = '', fix = false, getValue = () => '' } = {}) {
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && markdownlint-cli2 '**/*.{md,markdown}' --fix || true`;
+    const defaultValue = `node ${filenameRelative} && markdownlint-cli2 '**/*.{md,markdown}'${fix ? ' --fix' : ''}`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
-    super.insertPackageJsonScripts(key, value);
+    super.insertPackageJsonScripts(name, value);
     return this;
   }
 }
