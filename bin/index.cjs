@@ -126,7 +126,7 @@ program
       ],
     });
     const command = [
-      'pnpm install',
+      'pnpm i -D',
       (() => {
         const map = {
           markdownlint: 'markdownlint-cli2',
