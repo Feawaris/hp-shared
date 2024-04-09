@@ -166,13 +166,15 @@ program
       });
       child.on('close', (code) => {
         _console.end(`子进程退出，退出码 ${code}`);
+        _console.success('init 完成');
       });
     } else if (install === 'copy') {
       clipboard.copySync(command);
       _console.success('命令已复制，可粘贴执行');
+      _console.success('init 完成');
     } else if (install === 'skip') {
+      _console.success('init 完成');
     }
-    _console.success('init 完成');
   });
 program.parse(process.argv);
 
