@@ -13,6 +13,6 @@
     "@vuepress/plugin-docsearch": "2.0.0-rc.24",
     "vue": "^3.4.21",
     "vuepress": "2.0.0-rc.9",
-    "vuepress-theme-hope": "2.0.0-rc.35"
+    "vuepress-theme-hope": "2.0.0-rc.34"
   }
 }
