@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 const sourceDir = path.resolve(__dirname, '..');
 const rootDir = path.resolve(sourceDir, '..');
 _console.log({ rootDir, sourceDir });
-_console.log('process.env: ', process.env, process.env.vuepress_to);
+// _console.log('process.env: ', process.env, process.env.vuepress_to);
 export default defineUserConfig({
   /**
    * 站点配置
@@ -149,9 +149,9 @@ export default defineUserConfig({
          * 下列插件被内部调用，不可禁用:
          */
         // @vuepress/plugin-theme-data
-        themeData: {},
+        // themeData: {},
         // vuepress-plugin-components
-        components: {
+        /* components: {
           components: [
             // 代码组件
             'CodePen',
@@ -172,9 +172,9 @@ export default defineUserConfig({
           rootComponents: {
             notice: [],
           },
-        },
+        }, */
         // vuepress-plugin-sass-palette
-        sassPalette: {},
+        // sassPalette: {},
 
         /**
          * 自动启用的插件
@@ -260,16 +260,16 @@ export default defineUserConfig({
            */
           chart: true,
           echarts: true,
-          markmap: true,
-          mermaid: true,
+          // markmap: true,
+          // mermaid: true,
           flowchart: true,
 
           /**
            * 代码
            */
-          kotlinPlayground: true,
-          sandpack: true,
-          vuePlayground: true,
+          // kotlinPlayground: true,
+          // sandpack: true,
+          // vuePlayground: true,
           playground: {},
           codetabs: true,
           demo: {
@@ -317,7 +317,7 @@ export default defineUserConfig({
         docsearch: {
           apiKey: 'e6e80d21728b1b7b7c5a608c06cc1c41',
           indexName: 'feawarisio',
-          appId:'XJIF4AN787'
+          appId: 'XJIF4AN787',
         },
         // @vuepress/plugin-search
         // @vuepress/plugin-feed
