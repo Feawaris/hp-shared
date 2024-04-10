@@ -314,7 +314,11 @@ export default defineUserConfig({
          * 以下插件受到主题支持，但你需要在使用前自行安装它们:
          */
         // @vuepress/plugin-docsearch
-        // docsearch: {},
+        docsearch: {
+          apiKey: 'e6e80d21728b1b7b7c5a608c06cc1c41',
+          indexName: 'feawarisio',
+          appId:'XJIF4AN787'
+        },
         // @vuepress/plugin-search
         // @vuepress/plugin-feed
         // @vuepress/plugin-redirect
