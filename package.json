@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "license": "MIT",
   "bin": "./bin/index.cjs",
   "scripts": {
@@ -22,9 +22,9 @@
     "build": "rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
     "build:watch": "pnpm run build --watch",
     "docs:dev": "pnpm -F docs run dev",
-    "docs:build:local": "pnpm -F docs run docs:build:local",
-    "docs:build:github": "pnpm -F docs run docs:build:github",
-    "docs:build:npm": "pnpm -F docs run docs:build:npm",
+    "docs:build:local": "pnpm -F docs run build:local",
+    "docs:build:github": "pnpm -F docs run build:github",
+    "docs:build:npm": "pnpm -F docs run build:npm",
     "docs:preview": "pnpm -F docs run docs:preview",
     "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m'; pnpm run refresh && pnpm run docs:build:npm"
   },
