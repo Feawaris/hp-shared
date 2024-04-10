@@ -219,7 +219,7 @@ export default defineUserConfig({
           /**
            * 语法
            */
-          katex: true,
+          // katex: true,
           // mathjax: true,
           sub: true,
           sup: true,
@@ -258,11 +258,11 @@ export default defineUserConfig({
           /**
            * 图表
            */
-          chart: true,
-          echarts: true,
+          // chart: true,
+          // echarts: true,
           // markmap: true,
           // mermaid: true,
-          flowchart: true,
+          // flowchart: true,
 
           /**
            * 代码
