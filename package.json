@@ -59,19 +59,19 @@
   },
   "exports": {
     ".": {
-      "browser": "./src/index-browser.js",
+      "browser": "./dist/browser/index.js",
       "node": "./dist/node/index.js"
     },
     "./base": {
-      "browser": "./src/base/index.js",
+      "browser": "./dist/browser/base.js",
       "node": "./dist/node/base.js"
     },
     "./dev": {
-      "browser": "./src/dev/index.js",
+      "browser": "./dist/browser/dev.js",
       "node": "./dist/node/dev.js"
     },
     "./storage": {
-      "browser": "./src/storage/index-browser.js",
+      "browser": "./dist/browser/storage.js",
       "node": "./dist/node/storage.js"
     },
     "./*": "./*"
