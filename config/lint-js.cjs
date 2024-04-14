@@ -20,6 +20,10 @@ const config = [
     files: ['**/*.{js,cjs}'],
     rules: {},
   }),
+  lint.merge(lint.baseConfig, lint.tsConfig, {
+    files: ['**/*.{ts,cts}'],
+    rules: {},
+  }),
   lint.merge(lint.baseConfig, lint.vue3Config, {
     files: ['**/*.vue'],
     rules: {},
