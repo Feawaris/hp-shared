@@ -1,10 +1,18 @@
-/**
- * 运行环境
- */
-export const BaseEnv = Object.create(null);
+export const BaseEnv: {
+  envs: string[],
+  isBrowser: boolean,
+  isWebWorker: boolean,
+  isChromeExtension: boolean,
+  isServiceWorker: boolean,
+  isNode: boolean,
+  os: string,
+  isWindows: boolean,
+  isMac: boolean,
+  isLinux: boolean
+} = Object.create(null);
 // 代码运行环境: browser, node, ...
-BaseEnv.envs = (() => {
-  let result = [];
+BaseEnv.envs = ((): string[] => {
+  let result: string[] = [];
   if (typeof window !== 'undefined' && globalThis === window) {
     result.push('browser');
   }
@@ -28,7 +36,7 @@ BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
 // 操作系统: windows, mac, linux, ...
-BaseEnv.os = (() => {
+BaseEnv.os = ((): string => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
     const text = navigator.userAgentData ? navigator.userAgentData.platform.toLowerCase() : navigator.platform.toLowerCase();
     if (text.startsWith('win')) {

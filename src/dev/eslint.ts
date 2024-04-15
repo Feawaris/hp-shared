@@ -1173,7 +1173,7 @@ export class EsLint extends Lint {
           },
         ],
         'space-before-function-paren': [
-          'warn',
+          'off',
           {
             anonymous: 'always',
             named: 'never',

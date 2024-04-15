@@ -216,53 +216,47 @@ _console.show = function ({ style = '', type = '', stackInfo = {}, values = [] }
 };
 
 _console.log = function (...args) {
-  const stackInfo = _console.getStackInfo();
   return _console.show({
     style: 'blue',
     type: 'log',
-    stackInfo,
+    stackInfo: _console.getStackInfo(),
     values: args,
   });
 };
 _console.warn = function (...args) {
-  const stackInfo = _console.getStackInfo();
   return _console.show({
     style: 'yellow',
     type: 'warn',
-    stackInfo,
+    stackInfo: _console.getStackInfo(),
     values: args,
   });
 };
 _console.error = function (...args) {
-  const stackInfo = _console.getStackInfo();
   return _console.show({
     style: 'red',
     type: 'error',
-    stackInfo,
+    stackInfo: _console.getStackInfo(),
     values: args,
   });
 };
 _console.success = function (...args) {
-  const stackInfo = _console.getStackInfo();
   return _console.show({
     style: 'green',
     type: 'success',
-    stackInfo,
+    stackInfo: _console.getStackInfo(),
     values: args,
   });
 };
 _console.end = function (...args) {
-  const stackInfo = _console.getStackInfo();
   return _console.show({
     style: 'grey',
     type: 'end',
-    stackInfo,
+    stackInfo: _console.getStackInfo(),
     values: args,
   });
 };
 _console.dir = function (value, options = {}) {
-  const stackInfo = _console.getStackInfo();
-  _console.show({ style: 'blue', type: 'dir', stackInfo });
+  _console.show({ style: 'blue', type: 'dir', stackInfo:_console.getStackInfo() });
   if (BaseEnv.isNode) {
     options = _Object.assign({ depth: 0, showHidden: true, colors: true }, options);
     console.dir(value, options);
@@ -271,29 +265,25 @@ _console.dir = function (value, options = {}) {
   }
 };
 _console.table = function (...args) {
-  const stackInfo = _console.getStackInfo();
-  _console.show({ style: 'log', type: 'table', stackInfo });
+  _console.show({ style: 'log', type: 'table', stackInfo: _console.getStackInfo() });
 
   console.table(...args);
 };
 _console.group = function (label) {
-  const stackInfo = _console.getStackInfo();
-  _console.show({ style: 'bold', type: 'group', stackInfo });
+  _console.show({ style: 'bold', type: 'group', stackInfo: _console.getStackInfo() });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.group(label);
 };
 _console.groupCollapsed = function (label) {
-  const stackInfo = _console.getStackInfo();
-  _console.show({ style: 'bold', type: 'group', stackInfo });
+  _console.show({ style: 'bold', type: 'group', stackInfo: _console.getStackInfo() });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.groupCollapsed(label);
 };
 
 _console.groupAction = function (action = () => {}, label = null, collapse = false) {
-  const stackInfo = _console.getStackInfo();
-  _console.show({ style: 'bold', type: 'groupAction', stackInfo });
+  _console.show({ style: 'bold', type: 'groupAction', stackInfo: _console.getStackInfo() });
 
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console[collapse ? 'groupCollapsed' : 'group'](label);
