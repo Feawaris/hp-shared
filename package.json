@@ -5,8 +5,8 @@
   "bin": "./bin/index.cjs",
   "scripts": {
     "refresh": "pnpm install && husky && pnpm run build",
-    "update": "npx ncu -t newest --deep -u && pnpm run refresh",
-    "clean:ignoredConfigFiles": "npx rimraf .markdownlint.json .markdownlint-cli2.cjs .markdownlint-cli2.cjs .markdownlintignore stylelint.config.cjs .stylelintrc.json .stylelintignore eslint.config.cjs .eslintrc.cjs .eslintignore prettier.config.cjs .prettierignore commitlint.config.cjs",
+    "update": "pnpx npm-check-updates --format group --upgrade && (cd docs && npm-check-updates --target newest --format group --upgrade) && pnpm run refresh",
+    "clean:ignoredConfigFiles": "pnpx rimraf .markdownlint.json .markdownlint-cli2.cjs .markdownlint-cli2.cjs .markdownlintignore stylelint.config.cjs .stylelintrc.json .stylelintignore eslint.config.cjs .eslintrc.cjs .eslintignore prettier.config.cjs .prettierignore commitlint.config.cjs",
     "lint": "pnpm run lint:ignore ; pnpm run lint:md ; pnpm run lint:css ; pnpm run lint:js ; pnpm run lint:prettier ; pnpm run lint:git",
     "lint:fix": "pnpm run lint:ignore ; pnpm run lint:md:fix ; pnpm run lint:css:fix ; pnpm run lint:js:fix ; pnpm run lint:prettier:fix ; pnpm run lint:git",
     "lint:ignore": "node config/lint-ignore.cjs",
@@ -29,7 +29,7 @@
     "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m'; pnpm run refresh && pnpm run docs:build:npm"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.0.0",
+    "@inquirer/prompts": "^5.0.1",
     "commander": "^12.0.0",
     "ejs": "^3.1.10",
     "serialize-javascript": "^6.0.2"
@@ -42,21 +42,21 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/chrome": "^0.0.266",
     "@types/node": "^20.12.7",
-    "@typescript-eslint/eslint-plugin": "^7.6.1-alpha.2",
-    "@typescript-eslint/parser": "^7.6.1-alpha.2",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
     "cross-env": "^7.0.3",
-    "eslint": "9.0.0",
+    "eslint": "9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-vue": "^9.25.0",
     "husky": "^9.0.11",
     "markdownlint-cli2": "^0.13.0",
     "postcss-html": "^1.6.0",
     "prettier": "^3.2.5",
-    "rollup": "^4.14.2",
+    "rollup": "^4.16.0",
     "rollup-plugin-dts": "^6.1.0",
     "stylelint": "^16.3.1",
     "typescript": "5.5.0-dev.20240414",
-    "typescript-eslint": "7.6.1-alpha.2",
+    "typescript-eslint": "7.7.0",
     "vue-eslint-parser": "^9.4.2"
   },
   "exports": {
