@@ -1,7 +1,7 @@
 import { _Set, _Date, _Object, _console, _Array } from '../base';
 import path from 'path';
 import fs from 'fs';
-const serialize = require('serialize-javascript');
+import serialize from 'serialize-javascript';
 
 export class Dev {
   static REG_EXPS = {

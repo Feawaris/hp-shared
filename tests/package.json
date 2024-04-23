@@ -1,0 +1,13 @@
+{
+  "name": "tests",
+  "private": true,
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "hp-shared": "workspace:*",
+    "jest": "^29.7.0",
+    "jest-puppeteer": "^10.0.1"
+  }
+}

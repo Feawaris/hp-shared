@@ -109,7 +109,8 @@ _console.getStackInfo = function () {
     return {};
   }
 };
-_console.show = function ({ style = '', type = '', stackInfo = {}, values = [] } = {}) {
+// 处理成要传入 console.log 显示的值，在 show 显示和 jest 测试用
+_console.getValues = function ({ style = '', type = '', stackInfo = {}, values = [] } = {}) {
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
@@ -156,8 +157,7 @@ _console.show = function ({ style = '', type = '', stackInfo = {}, values = [] }
         return value;
       }),
     ];
-    console.log(...valuesArr);
-    return;
+    return valuesArr
   }
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker) {
     // 使用浏览器控制台 API 提供的样式化输出
@@ -211,10 +211,13 @@ _console.show = function ({ style = '', type = '', stackInfo = {}, values = [] }
       }),
     ];
     const valuesArr = [text, ...styleArr];
-    console.log(...valuesArr);
+    return valuesArr;
   }
+  return values;
 };
-
+_console.show = function (...args) {
+  return console.log(..._console.getValues(...args));
+};
 _console.log = function (...args) {
   return _console.show({
     style: 'blue',
