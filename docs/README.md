@@ -1,7 +1,7 @@
 ---
 name: hp-shared
 category: 文档
-tag: 1.5.3
+tag: 1.6.0
 ---
 
 基础库
@@ -54,8 +54,8 @@ CDN 方式
 
 ### 2.使用
 
-- 简洁路径：已在 package.json 的 `exports` 字段配置，常用于 vue 或 node 环境。
-- 完整路径：可自行选用 src 或 dist 目录，无法使用简洁路径的环境可使用完整路径。
+- 简洁路径：已在 package.json 的 `exports` 和 `miniprogram` 字段配置，常用于 vue、node、小程序环境。
+- 完整路径：可自行选用 src 或 dist 目录，无法使用简洁路径的环境可使用完整路径，或配置 alias 使用简洁路径。
 
 ::: code-tabs#path
 
@@ -67,8 +67,8 @@ import { _console } from 'hp-shared/base';
 
 @tab 完整路径 src
 
-```js
-import { _console } from 'hp-shared/src/base/index.js';
+```ts
+import { _console } from 'hp-shared/src/base/index.ts';
 ```
 
 @tab 完整路径 dist
@@ -93,6 +93,13 @@ import { _console } from 'hp-shared/base';
 ```js
 // const { xx } = require('hp-shared/模块名');
 const { _console } = require('hp-shared/base');
+```
+
+@tab uniapp/小程序
+
+```js
+// import { xx } from 'hp-shared/模块名';
+import { _console } from 'hp-shared/base';
 ```
 
 @tab shell

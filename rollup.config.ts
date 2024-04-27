@@ -1,3 +1,11 @@
+/**
+ * [rollup](https://www.npmjs.com/package/rollup)
+ * [@rollup/plugin-typescript](https://www.npmjs.com/package/@rollup/plugin-typescript)
+ * [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
+ * [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve)
+ * [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs)
+ * [@rollup/plugin-json](https://www.npmjs.com/package/@rollup/plugin-json)
+ */
 import { _Date } from './src/base/index.ts';
 import type { OutputOptions, RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
@@ -61,13 +69,13 @@ const config: RollupOptions[] = [
     ],
     plugins: browserPlugins,
   },
-  /*{
+  {
     input: 'src/index-browser.ts',
     output: [
       getOutputItem({ file: 'dist/browser/index.d.ts', format: 'es' }),
     ],
     plugins: dtsPlugins,
-  },*/
+  },
   {
     input: 'src/index-node.ts',
     output: [
@@ -75,17 +83,34 @@ const config: RollupOptions[] = [
     ],
     plugins: nodePlugins,
   },
-  /*{
+  {
     input: 'src/index-node.ts',
     output: [
-      getOutputItem({ file: 'dist/node/index.d.ts', format: 'cjs',  }),
+      getOutputItem({ file: 'dist/node/index.d.ts', format: 'cjs' }),
     ],
-    plugins: dtsPlugins
-  },*/
+    plugins: dtsPlugins,
+  },
+  {
+    input: 'src/index-wx.ts',
+    output: [
+      getOutputItem({ file: 'dist/wx/index.js', format: 'es' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
+    input: 'src/index-wx.ts',
+    output: [
+      getOutputItem({ file: 'dist/wx/index.d.ts', format: 'es' }),
+    ],
+    plugins: dtsPlugins,
+  },
 
   {
     input: 'src/base/index.ts',
-    output: [getOutputItem({ file: 'dist/browser/base.js', format: 'es' })],
+    output: [
+      getOutputItem({ file: 'dist/browser/base.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/base.js', format: 'es' }),
+    ],
     plugins: browserPlugins,
   },
   {
@@ -93,35 +118,36 @@ const config: RollupOptions[] = [
     output: [getOutputItem({ file: 'dist/node/base.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
-  /*{
+  {
     input: 'src/base/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/base.d.ts', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/base.d.ts', format: 'es' }),
       getOutputItem({ file: 'dist/node/base.d.ts', format: 'cjs' }),
     ],
     plugins: dtsPlugins,
-  },*/
+  },
 
   {
     input: 'src/storage/index-browser.ts',
     output: [getOutputItem({ file: 'dist/browser/storage.js', format: 'es' })],
     plugins: browserPlugins,
   },
-  /*{
+  {
     input: 'src/storage/index-browser.ts',
     output: [getOutputItem({ file: 'dist/browser/storage.d.ts', format: 'es' })],
     plugins: dtsPlugins,
-  },*/
+  },
   {
     input: 'src/storage/index-node.ts',
     output: [getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
-  /*{
+  {
     input: 'src/storage/index-node.js',
     output: [getOutputItem({ file: 'dist/node/storage.d.ts', format: 'cjs' })],
     plugins: dtsPlugins,
-  },*/
+  },
 
   {
     input: 'src/dev/index.ts',
@@ -133,13 +159,13 @@ const config: RollupOptions[] = [
     output: [getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' })],
     plugins: nodePlugins,
   },
-  /*{
+  {
     input: 'src/dev/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/dev.d.ts', format: 'es' }),
       getOutputItem({ file: 'dist/node/dev.d.ts', format: 'cjs' }),
     ],
     plugins: dtsPlugins,
-  },*/
+  },
 ];
 export default config;

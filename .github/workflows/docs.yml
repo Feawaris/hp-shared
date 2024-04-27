@@ -26,6 +26,6 @@ jobs:
       - name: 部署
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist/docs
+          folder: docs/.vuepress/dist
           branch: gh-pages
           token: ${{ secrets.ACCESS_TOKEN }}

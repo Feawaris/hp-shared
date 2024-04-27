@@ -23,7 +23,7 @@ export default defineUserConfig({
   base: {
     local: '/',
     github: '/hp-shared/',
-    npm: `/hp-shared@${version}/dist/docs/`,
+    npm: `/hp-shared@${version}/docs/.vuepress/dist/`,
   }[process.env.vuepress_to || 'local'],
   lang: 'zh-CN',
   title: 'hp-shared',
@@ -345,7 +345,7 @@ export default defineUserConfig({
   /**
    * 通用配置项
    */
-  dest: `${rootDir}/dist/docs`,
+  dest: `${sourceDir}/.vuepress/dist`,
   temp: `${sourceDir}/.vuepress/.temp`,
   cache: `${sourceDir}/.vuepress/.cache`,
   public: `${sourceDir}/.vuepress/public`,

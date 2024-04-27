@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "license": "MIT",
   "bin": "./bin/index.cjs",
   "scripts": {
@@ -20,7 +20,7 @@
     "lint:prettier:fix": "node config/lint-prettier.cjs && prettier --check . --write",
     "lint:git": "node config/lint-git.cjs && echo 'test: commitlint' | commitlint",
     "test:watch": "pnpm -C tests run test:watch",
-    "build": "rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
+    "build": "(pnpx rimraf dist/* src/**/*.js src/**/*.d.ts && tsc src/**/*.ts --declaration) ; rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
     "build:watch": "pnpm run build --watch",
     "docs:dev": "pnpm -C docs run dev",
     "docs:build:local": "pnpm -C docs run build:local",
@@ -30,7 +30,7 @@
     "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m'; pnpm run refresh && pnpm run docs:build:npm"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.0.1",
+    "@inquirer/prompts": "^5.0.2",
     "commander": "^12.0.0",
     "ejs": "^3.1.10",
     "serialize-javascript": "^6.0.2"
@@ -56,7 +56,7 @@
     "prettier": "^3.2.5",
     "rollup": "^4.16.4",
     "rollup-plugin-dts": "^6.1.0",
-    "stylelint": "^16.3.1",
+    "stylelint": "^16.4.0",
     "ts-node": "^10.9.2",
     "typescript": "5.4.5",
     "typescript-eslint": "7.7.1",
@@ -81,6 +81,7 @@
     },
     "./*": "./*"
   },
+  "miniprogram": "dist/wx",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Feawaris/hp-shared.git"

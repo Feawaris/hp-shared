@@ -8,7 +8,8 @@ export const BaseEnv: {
   os: string,
   isWindows: boolean,
   isMac: boolean,
-  isLinux: boolean
+  isLinux: boolean,
+  isWx: boolean
 } = Object.create(null);
 // 代码运行环境: browser, node, ...
 BaseEnv.envs = ((): string[] => {
@@ -28,6 +29,9 @@ BaseEnv.envs = ((): string[] => {
   if (typeof global !== 'undefined' && globalThis === global) {
     result.push('node');
   }
+  if (typeof wx !== 'undefined') {
+    result.push('wx');
+  }
   return result;
 })();
 BaseEnv.isBrowser = BaseEnv.envs.includes('browser');
@@ -35,10 +39,18 @@ BaseEnv.isWebWorker = BaseEnv.envs.includes('web-worker');
 BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
+BaseEnv.isWx = BaseEnv.envs.includes('wx');
 // 操作系统: windows, mac, linux, ...
 BaseEnv.os = ((): string => {
-  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
-    const text = navigator.userAgentData ? navigator.userAgentData.platform.toLowerCase() : navigator.platform.toLowerCase();
+  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWx) {
+    const { navigator } = globalThis;
+    const text = (() => {
+      try {
+        return navigator.userAgentData.platform.toLowerCase() || '';
+      } catch (e) {
+        return navigator.platform.toLowerCase();
+      }
+    })();
     if (text.startsWith('win')) {
       return 'windows';
     }

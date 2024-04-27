@@ -1,4 +1,4 @@
-// 日期时间
+import { BaseEnv } from './base';
 
 export class _Date extends Date {
   constructor(...args) {
@@ -13,6 +13,11 @@ export class _Date extends Date {
       }
     }
     super(...args);
+
+    // 小程序环境实例原型修正
+    if (BaseEnv.isWx && Object.getPrototypeOf(this) !== _Date.prototype) {
+      Object.setPrototypeOf(this, _Date.prototype);
+    }
 
     // 这里惰性求值，不使用如 this.year=xx 的静态方式
     Object.defineProperty(this, 'year', {
@@ -255,6 +260,12 @@ export class _Date extends Date {
   }
   toTimeString(format = 'HH:mm:ss') {
     return this.toString(format);
+  }
+  toDate() {
+    return new Date(this.getTime());
+  }
+  toCustomDate() {
+    return new _Date(this);
   }
 }
 
