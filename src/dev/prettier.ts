@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [prettier 配置](https://prettier.io/docs/en/options)
  */

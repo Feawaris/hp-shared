@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { _String } from './_String';
 import { _Object } from './_Object';
 

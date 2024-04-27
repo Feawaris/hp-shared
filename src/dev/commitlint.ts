@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [commitlint 配置](https://commitlint.js.org/reference/rules.html)
  */

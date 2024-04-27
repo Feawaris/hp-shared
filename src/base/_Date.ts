@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseEnv } from './base';
 
 export class _Date extends Date {

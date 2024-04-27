@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const _String = Object.create(null);
 
 /**

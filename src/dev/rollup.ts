@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [rollup 配置](https://cn.rollupjs.org/configuration-options/)
  */

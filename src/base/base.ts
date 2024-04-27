@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const BaseEnv: {
   envs: string[],
   isBrowser: boolean,

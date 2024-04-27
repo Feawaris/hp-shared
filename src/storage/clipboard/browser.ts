@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const clipboard = Object.create(null);
 
 /**

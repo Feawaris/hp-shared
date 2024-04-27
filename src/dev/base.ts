@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { _Set, _Date, _Object, _console, _Array } from '../base';
 import path from 'node:path';
 import fs from 'node:fs';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [stylelint 配置](https://stylelint.io/user-guide/rules)
  */

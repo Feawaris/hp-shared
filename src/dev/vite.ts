@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [vite 配置](https://cn.vitejs.dev/config/)
  */

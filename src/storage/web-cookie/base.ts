@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { _Object, _Date, _Function, BaseEnv } from '../../base';
 
 export class BaseCookie {

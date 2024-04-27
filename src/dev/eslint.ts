@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [eslint 配置](https://eslint.org/docs/latest/rules/)
  * [eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)

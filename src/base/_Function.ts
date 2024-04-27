@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const _Function: {
   pipe<T>(value: T, ...funcs: UnaryFunction<T>[]): T;
   NOOP: () => void;

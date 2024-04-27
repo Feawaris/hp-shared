@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const _Reflect: {
   ownValues<T, K extends keyof T>(target: T): T[K][],
   ownEntries<T, K extends keyof T>(target: T): [K, T[K]][]

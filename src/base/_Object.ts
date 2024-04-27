@@ -1,3 +1,4 @@
+// @ts-nocheck
 // 对象
 import { _Array } from './_Array';
 

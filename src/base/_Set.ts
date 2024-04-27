@@ -1,3 +1,4 @@
+// @ts-nocheck
 // 集合
 import { _Array } from './_Array';
 

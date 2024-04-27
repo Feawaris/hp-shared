@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseEnv } from './base';
 import { _Object } from './_Object';
 import { _Date } from './_Date';

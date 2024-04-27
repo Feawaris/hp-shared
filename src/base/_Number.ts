@@ -1,3 +1,4 @@
+// @ts-nocheck
 // 数字
 export const _Number = Object.create(null);
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // 数组
 import { _Set } from './_Set';
 

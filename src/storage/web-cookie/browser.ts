@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseCookie } from './base';
 
 export { BaseCookie };

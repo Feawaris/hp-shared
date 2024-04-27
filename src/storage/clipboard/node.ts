@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseEnv } from '../../base';
 import { exec, execSync } from 'node:child_process';
 

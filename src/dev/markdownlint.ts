@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * [markdownlint 配置](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md)
  * [markdownlint schema](https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json)

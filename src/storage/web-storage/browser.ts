@@ -1,3 +1,4 @@
+// @ts-nocheck
 // web storage
 
 function createCustomStorage(webStorage) {

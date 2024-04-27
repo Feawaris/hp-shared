@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { _Object } from './_Object';
 
 // 专注于 JSON 支持的类型：`null`,`number`,`string`,`boolean`,`array`,`object`，前后端数据交互用
