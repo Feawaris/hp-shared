@@ -3,7 +3,7 @@
  */
 import { _Object, _console } from '../base';
 import { Lint } from './base';
-import path from 'path';
+import path from 'node:path';
 
 export class Prettier extends Lint {
   constructor({ configFile = 'prettier.config.cjs', ignoreFile = '.prettierignore', scriptName = 'fix:prettier', ...restOptions } = {}) {

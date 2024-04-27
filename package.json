@@ -20,7 +20,7 @@
     "lint:prettier:fix": "node config/lint-prettier.cjs && prettier --check . --write",
     "lint:git": "node config/lint-git.cjs && echo 'test: commitlint' | commitlint",
     "test:watch": "pnpm -C tests run test:watch",
-    "build": "(pnpx rimraf dist/* src/**/*.js src/**/*.d.ts && tsc src/**/*.ts --declaration) ; rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
+    "build": "pnpx rimraf dist/* && rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
     "build:watch": "pnpm run build --watch",
     "docs:dev": "pnpm -C docs run dev",
     "docs:build:local": "pnpm -C docs run build:local",

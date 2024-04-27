@@ -1,6 +1,6 @@
 import { _Set, _Date, _Object, _console, _Array } from '../base';
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import serialize from 'serialize-javascript';
 
 export class Dev {

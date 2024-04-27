@@ -5,7 +5,7 @@
  */
 import { _Object, _console } from '../base';
 import { Lint } from './base';
-import path from 'path';
+import path from 'node:path';
 import serialize from 'serialize-javascript';
 
 export class EsLint extends Lint {

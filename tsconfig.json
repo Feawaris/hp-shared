@@ -12,6 +12,7 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "noEmitOnError": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true
   }
 }

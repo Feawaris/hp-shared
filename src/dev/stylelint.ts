@@ -3,7 +3,7 @@
  */
 import { _Object } from '../base';
 import { Lint } from './base';
-import path from 'path';
+import path from 'node:path';
 
 export class StyleLint extends Lint {
   constructor({ configFile = 'stylelint.config.cjs', ignoreFile = '.stylelintignore', ...restOptions } = {}) {

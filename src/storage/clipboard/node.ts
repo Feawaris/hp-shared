@@ -1,5 +1,5 @@
 import { BaseEnv } from '../../base';
-import { exec, execSync } from 'child_process';
+import { exec, execSync } from 'node:child_process';
 
 export const clipboard = Object.create(null);
 

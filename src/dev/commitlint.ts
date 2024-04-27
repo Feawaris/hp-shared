@@ -3,8 +3,8 @@
  */
 import { _Object, _console, _chalk } from '../base';
 import { Lint } from './base';
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 
 export class CommitLint extends Lint {
   constructor({ configFile = 'commitlint.config.cjs', ignoreFile = '', scriptName = 'fix:git', ...restOptions } = {}) {

@@ -5,7 +5,7 @@
  */
 import { _Object } from '../base';
 import { Lint } from './base';
-const path = require('path');
+import path from 'node:path';
 
 export class MarkdownLint extends Lint {
   constructor({ configFile = '.markdownlint-cli2.cjs', ignoreFile = '', ...restOptions } = {}) {
