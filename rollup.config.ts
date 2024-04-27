@@ -144,7 +144,7 @@ const config: RollupOptions[] = [
     plugins: nodePlugins,
   },
   {
-    input: 'src/storage/index-node.js',
+    input: 'src/storage/index-node.ts',
     output: [getOutputItem({ file: 'dist/node/storage.d.ts', format: 'cjs' })],
     plugins: dtsPlugins,
   },
