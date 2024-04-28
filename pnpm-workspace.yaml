@@ -1,3 +1,6 @@
 packages:
   - 'docs'
   - 'tests'
+  - 'tests/helpers/fe-wx'
+  - 'tests/helpers/fe-browser'
+  - 'tests/helpers/be'

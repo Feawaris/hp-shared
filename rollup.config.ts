@@ -72,9 +72,16 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-browser.ts',
     output: [
-      getOutputItem({ file: 'dist/browser/index.d.ts', format: 'es' }),
+      getOutputItem({ file: 'dist/browser/index.d.ts' }),
     ],
     plugins: dtsPlugins,
+  },
+  {
+    input: 'src/index-node.ts',
+    output: [
+      getOutputItem({ file: 'dist/node/index.mjs.js', format: 'es' }),
+    ],
+    plugins: browserPlugins,
   },
   {
     input: 'src/index-node.ts',
@@ -86,7 +93,7 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-node.ts',
     output: [
-      getOutputItem({ file: 'dist/node/index.d.ts', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/index.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
@@ -100,7 +107,14 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-wx.ts',
     output: [
-      getOutputItem({ file: 'dist/wx/index.d.ts', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/index.cjs.js', format: 'cjs' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
+    input: 'src/index-wx.ts',
+    output: [
+      getOutputItem({ file: 'dist/wx/index.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
@@ -109,61 +123,79 @@ const config: RollupOptions[] = [
     input: 'src/base/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/base.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/base.mjs.js', format: 'es' }),
       getOutputItem({ file: 'dist/wx/base.js', format: 'es' }),
     ],
     plugins: browserPlugins,
   },
   {
     input: 'src/base/index.ts',
-    output: [getOutputItem({ file: 'dist/node/base.js', format: 'cjs' })],
+    output: [
+      getOutputItem({ file: 'dist/node/base.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/wx/base.cjs.js', format: 'cjs' }),
+    ],
     plugins: nodePlugins,
   },
   {
     input: 'src/base/index.ts',
     output: [
-      getOutputItem({ file: 'dist/browser/base.d.ts', format: 'es' }),
-      getOutputItem({ file: 'dist/wx/base.d.ts', format: 'es' }),
-      getOutputItem({ file: 'dist/node/base.d.ts', format: 'cjs' }),
+      getOutputItem({ file: 'dist/browser/base.d.ts' }),
+      getOutputItem({ file: 'dist/wx/base.d.ts' }),
+      getOutputItem({ file: 'dist/node/base.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
 
   {
     input: 'src/storage/index-browser.ts',
-    output: [getOutputItem({ file: 'dist/browser/storage.js', format: 'es' })],
+    output: [
+      getOutputItem({ file: 'dist/browser/storage.js', format: 'es' }),
+    ],
     plugins: browserPlugins,
   },
   {
     input: 'src/storage/index-browser.ts',
-    output: [getOutputItem({ file: 'dist/browser/storage.d.ts', format: 'es' })],
+    output: [
+      getOutputItem({ file: 'dist/browser/storage.d.ts' }),
+    ],
     plugins: dtsPlugins,
   },
   {
     input: 'src/storage/index-node.ts',
-    output: [getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' })],
+    output: [
+      getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/storage.mjs.js', format: 'es' }),
+    ],
     plugins: nodePlugins,
   },
   {
     input: 'src/storage/index-node.ts',
-    output: [getOutputItem({ file: 'dist/node/storage.d.ts', format: 'cjs' })],
+    output: [
+      getOutputItem({ file: 'dist/node/storage.d.ts' }),
+    ],
     plugins: dtsPlugins,
   },
 
   {
     input: 'src/dev/index.ts',
-    output: [getOutputItem({ file: 'dist/browser/dev.js', format: 'es' })],
+    output: [
+      getOutputItem({ file: 'dist/browser/dev.js', format: 'es' }),
+    ],
     plugins: browserPlugins,
   },
   {
     input: 'src/dev/index.ts',
-    output: [getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' })],
+    output: [
+      getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/dev.mjs.js', format: 'es' }),
+    ],
     plugins: nodePlugins,
   },
   {
     input: 'src/dev/index.ts',
     output: [
-      getOutputItem({ file: 'dist/browser/dev.d.ts', format: 'es' }),
-      getOutputItem({ file: 'dist/node/dev.d.ts', format: 'cjs' }),
+      getOutputItem({ file: 'dist/browser/dev.d.ts' }),
+      getOutputItem({ file: 'dist/node/dev.d.ts' }),
     ],
     plugins: dtsPlugins,
   },

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>browser</title>
+  </head>
+  <body>
+    <!-- template -->
+    <div class="app-root">
+      <button onclick="test()">test</button>
+    </div>
+    <!-- script -->
+    <script type="importmap">
+      {
+        "imports": {
+          "hp-shared/base": "./node_modules/hp-shared/dist/browser/base.js"
+        }
+       }
+    </script>
+    <script type="module" src="./index.js"></script>
+    <!-- style -->
+    <link rel="stylesheet" href="./index.css">
+  </body>
+</html>

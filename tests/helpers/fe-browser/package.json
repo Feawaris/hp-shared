@@ -1,0 +1,13 @@
+{
+  "name": "@tests/fe-browser",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm-run-all -p preview open",
+    "preview": "pnpx serve ./",
+    "open": "open http://localhost:3000"
+  },
+  "dependencies": {
+    "hp-shared": "workspace:*"
+  }
+}

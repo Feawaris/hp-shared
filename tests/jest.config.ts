@@ -4,17 +4,24 @@ const config: Config = {
   verbose: true,
   projects: [
     {
-      displayName: 'node 端测试',
+      displayName: 'node',
       testEnvironment: 'node',
       testMatch: [
-        '**/node/**/*.ts',
+        '**/platforms/node/**/*.js',
       ],
     },
     {
-      preset: 'jest-puppeteer',
-      displayName: 'browser 端测试',
+      displayName: '浏览器',
+      testEnvironment: 'node',
       testMatch: [
-        '**/browser/**/*.ts',
+        '**/platforms/browser/**/*.js',
+      ],
+    },
+    {
+      displayName: '小程序',
+      testEnvironment: 'node',
+      testMatch: [
+        '**/platforms/wx/**/*.js',
       ],
     },
   ],

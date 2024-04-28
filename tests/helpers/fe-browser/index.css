@@ -1,0 +1,4 @@
+*{margin: 0;box-sizing: border-box;}
+.app-root{height: 100vh;display: flex;align-items: center;justify-content: center;
+  > button{width: 120px;height: 60px;font-size: 30px;}
+}

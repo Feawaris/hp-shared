@@ -1,0 +1,5 @@
+<scroll-view scroll-y type="list">
+  <view class="app-container">
+    <button bindtap="test">test</button>
+  </view>
+</scroll-view>

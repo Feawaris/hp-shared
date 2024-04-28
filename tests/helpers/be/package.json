@@ -1,0 +1,11 @@
+{
+  "name": "@tests/be",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon main.js"
+  },
+  "dependencies": {
+    "hp-shared": "workspace:*"
+  }
+}

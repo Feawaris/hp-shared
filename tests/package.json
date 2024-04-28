@@ -3,11 +3,13 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "helpers/be": "pnpm -C helpers/be run dev",
+    "helpers/fe": "npm-run-all -p 'helpers/fe-*'",
+    "helpers/fe-browser": "pnpm -C helpers/fe-browser run dev",
+    "helpers/fe-wx": "pnpm -C helpers/fe-wx run dev"
   },
-  "devDependencies": {
+  "dependencies": {
     "hp-shared": "workspace:*",
-    "jest": "^29.7.0",
-    "jest-puppeteer": "^10.0.1"
+    "jest": "^29.7.0"
   }
 }

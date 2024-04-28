@@ -55,7 +55,7 @@ CDN 方式
 ### 2.使用
 
 - 简洁路径：已在 package.json 的 `exports` 和 `miniprogram` 字段配置，常用于 vue、node、小程序环境。
-- 完整路径：可自行选用 src 或 dist 目录，无法使用简洁路径的环境可使用完整路径，或配置 alias 使用简洁路径。
+- 完整路径：可自行选用 src 或 dist 目录，无法使用简洁路径的环境可使用完整路径，或配置 [alias](https://cn.vitejs.dev/config/shared-options.html#resolve-alias)、[Import maps](https://cn.vuejs.org/guide/quick-start.html#enabling-import-maps) 使用简洁路径。
 
 ::: code-tabs#path
 
