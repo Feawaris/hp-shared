@@ -134,8 +134,7 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
     if (values.some((val) => val !== null && ['object', 'function'].includes(typeof val))) {
-      console.log(`%c${prefix}`, `${styleMap[style].browser}`, ...values);
-      return;
+      return [`%c${prefix}`, `${styleMap[style].browser}`, ...values];
     }
 
     // 第一层简单类型配默认颜色
@@ -181,11 +180,10 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
         return '';
       }),
     ];
-    const valuesArr = [text, ...styleArr];
-    return valuesArr;
+    return [text, ...styleArr];
   }
   if (BaseEnv.isNode) {
-    const valuesArr = [
+    return [
       _chalk[styleMap[style].node](prefix),
       // 第一层简单类型配默认颜色
       ...values.map((value) => {
@@ -214,12 +212,12 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
         return value;
       }),
     ];
-    return valuesArr;
   }
   return values;
 };
 _console.show = function (...args) {
-  return console.log(..._console.getValues(...args));
+  const values = _console.getValues(...args);
+  return console.log(...values);
 };
 _console.log = function (...args) {
   return _console.show({
@@ -266,7 +264,7 @@ _console.dir = function (value, options = {}) {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker || BaseEnv.isWx) {
     return console.dir(value);
   }
-  if(BaseEnv.isNode){
+  if (BaseEnv.isNode) {
     options = _Object.assign({ depth: 0, showHidden: true, colors: true }, options);
     return console.dir(value, options);
   }
