@@ -112,7 +112,7 @@ importers:
         specifier: 2.0.0-rc.26
         version: 2.0.0-rc.26(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.4.5)(vuepress@2.0.0-rc.9(@vuepress/bundler-vite@2.0.0-rc.9(@types/node@20.12.7)(jiti@1.21.0)(less@3.13.1)(sass@1.75.0)(typescript@5.4.5))(typescript@5.4.5)(vue@3.4.25(typescript@5.4.5)))
       hp-shared:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:..
       vue:
         specifier: ^3.4.25
@@ -127,7 +127,7 @@ importers:
   tests:
     dependencies:
       hp-shared:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:..
       jest:
         specifier: ^29.7.0
@@ -136,19 +136,19 @@ importers:
   tests/helpers/be:
     dependencies:
       hp-shared:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../..
 
   tests/helpers/fe-browser:
     dependencies:
       hp-shared:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../..
 
   tests/helpers/fe-wx:
     dependencies:
       hp-shared:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../..
 
 packages:

@@ -6,6 +6,6 @@
     "dev": "open -a /Applications/wechatwebdevtools.app"
   },
   "dependencies": {
-    "hp-shared": "workspace:*"
+    "hp-shared": "workspace:^"
   }
 }

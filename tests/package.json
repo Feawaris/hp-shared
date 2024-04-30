@@ -9,7 +9,7 @@
     "helpers/fe-wx": "pnpm -C helpers/fe-wx run dev"
   },
   "dependencies": {
-    "hp-shared": "workspace:*",
+    "hp-shared": "workspace:^",
     "jest": "^29.7.0"
   }
 }

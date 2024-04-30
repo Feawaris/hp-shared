@@ -6,6 +6,6 @@
     "dev": "nodemon main.js"
   },
   "dependencies": {
-    "hp-shared": "workspace:*"
+    "hp-shared": "workspace:^"
   }
 }
