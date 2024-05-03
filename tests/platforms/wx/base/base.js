@@ -6,8 +6,8 @@ describe('BaseEnv', () => {
     const { BaseEnv } = (await testInfo.getData()).base;
     expect(BaseEnv.envs).toContain('wx');
   }, timeout);
-  /* test('isWx', async () => {
+  test('isWx', async () => {
     const { BaseEnv } = (await testInfo.getData()).base;
     expect(BaseEnv.isWx).toBe(true);
-  }, timeout); */
+  }, timeout);
 });

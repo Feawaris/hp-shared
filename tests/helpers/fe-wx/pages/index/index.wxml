@@ -1,5 +1,9 @@
 <scroll-view scroll-y type="list">
   <view class="app-container">
+    <text>home</text>
     <button bindtap="test">test</button>
+    <button bindtap="requestError">requestError</button>
+    <button bindtap="codeError">codeError</button>
+    <button bindtap="goPage1">page1</button>
   </view>
 </scroll-view>

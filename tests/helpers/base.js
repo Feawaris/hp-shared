@@ -16,7 +16,7 @@ class TestData {
         }),
       });
       if (res.status === 200) {
-        this.data = await res.json();
+        this.data = (await res.json()).data;
       }
     }
     return this.data;

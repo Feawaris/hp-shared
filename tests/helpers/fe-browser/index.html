@@ -3,22 +3,77 @@
   <head>
     <meta charset="UTF-8">
     <title>browser</title>
-  </head>
-  <body>
-    <!-- template -->
-    <div class="app-root">
-      <button onclick="test()">test</button>
-    </div>
-    <!-- script -->
+    <link rel="stylesheet" href="./index.css">
+    <script src="./node_modules/hp-shared/dist/browser/index.umd.js"></script>
     <script type="importmap">
       {
         "imports": {
-          "hp-shared/base": "./node_modules/hp-shared/dist/browser/base.js"
+          "vue2": "https://unpkg.com/vue@2/dist/vue.esm.browser.js",
+          "vue3": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
         }
-       }
+      }
     </script>
-    <script type="module" src="./index.js"></script>
-    <!-- style -->
-    <link rel="stylesheet" href="./index.css">
+    <script type="module">
+      import Vue2 from 'vue2';
+      import * as Vue3 from 'vue3';
+      document.addEventListener('DOMContentLoaded', function () {
+        Object.assign(window, { Vue2, Vue3 });
+      });
+    </script>
+    <script src="./index.js"></script>
+  </head>
+  <body>
+    <main class="app-root">
+      <h1>tests</h1>
+      <section>
+        <button class="test-button" onclick="examples.test()">test</button>
+      </section>
+      <section>
+        <h2>monitor</h2>
+        <ul>
+          <li>
+            <h3>ResourceError</h3>
+            <button onclick="examples.source()">资源示例</button>
+          </li>
+          <li>
+            <h3>CodeError</h3>
+            <h4>js</h4>
+            <button onclick="examples.code()">代码示例</button>
+            <button onclick="examples.Promise()">Promise</button>
+            <nav id="vue2">
+              <h4>vue2</h4>
+              <article>{{ message }}</article>
+              <button @click="click">click</button>
+            </nav>
+            <nav id="vue3">
+              <h4>vue3</h4>
+              <article>{{ message }}</article>
+              <button @click="click">click</button>
+            </nav>
+          </li>
+          <li>
+            <h4>RequestError</h4>
+            <button onclick="examples.xhr()">xhr 正常</button>
+            <button onclick="examples.xhrError()">xhr 异常</button>
+            <button onclick="examples.fetch()">fetch 正常</button>
+            <button onclick="examples.fetchError()">fetch 异常</button>
+          </li>
+        </ul>
+        <nav>
+          <h4>RouteChange</h4>
+          <a href="#id1">popstate id1</a>
+          <a href="#id2">popstate id2</a>
+          <button onclick="examples.pushState()">pushState id3</button>
+          <button onclick="examples.replaceState()">replaceState id4</button>
+          <button onclick="history.back()">back</button>
+          <button onclick="history.forward()">forward</button>
+          <button onclick="history.go(-1)">go(-1)</button>
+          <h2 id="id1">导航 id1</h2>
+          <h2 id="id2">导航 id2</h2>
+          <h2 id="id3">导航 id3</h2>
+          <h2 id="id4">导航 id4</h2>
+        </nav>
+      </section>
+    </main>
   </body>
 </html>

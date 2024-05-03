@@ -1,0 +1,10 @@
+<scroll-view scroll-y type="list">
+  <view class="app-container">
+    <text>page1</text>
+    <button bindtap="goHome">home</button>
+    <button bindtap="reLaunch">reLaunch</button>
+    <button bindtap="redirectTo">redirectTo</button>
+    <button bindtap="navigateTo">navigateTo</button>
+    <button bindtap="navigateBack">navigateBack</button>
+  </view>
+</scroll-view>

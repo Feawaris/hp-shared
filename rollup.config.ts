@@ -140,8 +140,8 @@ const config: RollupOptions[] = [
     input: 'src/base/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/base.d.ts' }),
-      getOutputItem({ file: 'dist/wx/base.d.ts' }),
       getOutputItem({ file: 'dist/node/base.d.ts' }),
+      getOutputItem({ file: 'dist/wx/base.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
@@ -175,6 +175,21 @@ const config: RollupOptions[] = [
     ],
     plugins: dtsPlugins,
   },
+  {
+    input: 'src/storage/index-wx.ts',
+    output: [
+      getOutputItem({ file: 'dist/wx/storage.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/storage.cjs.js', format: 'cjs' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
+    input: 'src/storage/index-wx.ts',
+    output: [
+      getOutputItem({ file: 'dist/wx/storage.d.ts' }),
+    ],
+    plugins: dtsPlugins,
+  },
 
   {
     input: 'src/dev/index.ts',
@@ -196,6 +211,33 @@ const config: RollupOptions[] = [
     output: [
       getOutputItem({ file: 'dist/browser/dev.d.ts' }),
       getOutputItem({ file: 'dist/node/dev.d.ts' }),
+    ],
+    plugins: dtsPlugins,
+  },
+
+  {
+    input: 'src/performance/index.ts',
+    output: [
+      getOutputItem({ file: 'dist/browser/performance.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/performance.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/performance.cjs.js', format: 'cjs' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
+    input: 'src/performance/index.ts',
+    output: [
+      getOutputItem({ file: 'dist/node/performance.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/node/performance.mjs.js', format: 'es' }),
+    ],
+    plugins: nodePlugins,
+  },
+  {
+    input: 'src/performance/index.ts',
+    output: [
+      getOutputItem({ file: 'dist/browser/performance.d.ts' }),
+      getOutputItem({ file: 'dist/node/performance.d.ts' }),
+      getOutputItem({ file: 'dist/wx/performance.d.ts' }),
     ],
     plugins: dtsPlugins,
   },

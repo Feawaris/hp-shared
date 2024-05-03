@@ -1,4 +1,3 @@
-// @ts-nocheck
 export * from './base';
 
 export * from './markdownlint';
