@@ -1,11 +1,12 @@
 {
-  "name": "@tests/fe-wx",
+  "name": "tests-fe-wx",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "open -a /Applications/wechatwebdevtools.app"
   },
   "dependencies": {
-    "hp-shared": "workspace:^"
+    "hp-shared": "workspace:^",
+    "tests-shared": "workspace:^"
   }
 }

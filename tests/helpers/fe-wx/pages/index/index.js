@@ -1,4 +1,5 @@
 import { BaseEnv, _console, _Date } from 'hp-shared/base';
+const { default: { localConfig } } = require('tests-shared');
 
 Page({
   onLoad(query) {
@@ -7,7 +8,7 @@ Page({
   },
   test() {
     wx.request({
-      url: 'http://localhost:9001/set-data',
+      url: `http://${localConfig.nwIP}:9001/set-data`,
       method: 'post',
       data: {
         platform: 'wx',
@@ -24,10 +25,9 @@ Page({
   },
   requestError() {
     wx.request({
-      url: 'http://localhost:9001/error',
+      url: `http://${localConfig.nwIP}:9001/error`,
       method: 'post',
       success(res) {
-        _console.log('success', res);
       },
     });
   },

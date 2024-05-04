@@ -64,7 +64,7 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-browser.ts',
     output: [
-      getOutputItem({ file: 'dist/browser/index-umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
+      getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
       getOutputItem({ file: 'dist/browser/index.js', format: 'es' }),
     ],
     plugins: browserPlugins,

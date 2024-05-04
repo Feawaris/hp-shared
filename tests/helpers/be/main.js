@@ -1,6 +1,8 @@
-const { _console } = require('hp-shared/base');
+const { _console, _Date } = require('hp-shared/base');
 const http = require('node:http');
 const EventEmitter = require('node:events');
+const { MongoClient } = require('mongodb');
+const { localConfig } = require('tests-shared/src');
 
 const dataStore = {
   browser: null,
@@ -8,8 +10,8 @@ const dataStore = {
 };
 const eventBus = new EventEmitter();
 
-async function getBody(req) {
-  // console.log('getBody', req.body);
+async function getRequestBody(req) {
+  // console.log('getRequestBody', req.body);
   if (req.body) {
     return req.body;
   }
@@ -26,6 +28,26 @@ async function getBody(req) {
     });
   });
 }
+async function getRequest(req) {
+  return {
+    httpVersion: req.httpVersion,
+    ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+    method: req.method,
+    url: req.method,
+    socket: {
+      remoteFamily: req.socket.remoteFamily,
+      remoteAddress: req.socket.remoteAddress,
+      remotePort: req.socket.remotePort,
+      localFamily: req.socket.localFamily,
+      localAddress: req.socket.localAddress,
+      localPort: req.socket.localPort,
+      bytesRead: req.socket.bytesRead,
+      bytesWritten: req.socket.bytesWritten,
+    },
+    headers: req.headers,
+    body: await getRequestBody(req),
+  };
+}
 class Response {
   constructor(req, res) {
     this.req = req;
@@ -34,30 +56,10 @@ class Response {
   async setResponse({ status = 200, message = status === 200 ? '成功' : '失败', data = null } = {}) {
     const { req, res } = this;
     const success = 200 <= status && status < 300;
-
-    const body = await getBody(req);
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     res
       .writeHead(status)
       .end(JSON.stringify({
-        _request: {
-          httpVersion: req.httpVersion,
-          ip,
-          method: req.method,
-          url: req.method,
-          socket: {
-            remoteFamily: req.socket.remoteFamily,
-            remoteAddress: req.socket.remoteAddress,
-            remotePort: req.socket.remotePort,
-            localFamily: req.socket.localFamily,
-            localAddress: req.socket.localAddress,
-            localPort: req.socket.localPort,
-            bytesRead: req.socket.bytesRead,
-            bytesWritten: req.socket.bytesWritten,
-          },
-          headers: req.headers,
-          body,
-        },
+        _request: await getRequest(req),
         success,
         code: success ? 0 : -1,
         message,
@@ -81,14 +83,23 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // 显示简易请求信息
   const { httpVersion, method, url } = req;
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   _console.log(`HTTP/${httpVersion}`, ip, method, url);
 
-  if (req.url === '/') {
+  // 数据库
+  const { mongodb: { hostname, port, username, password } } = localConfig;
+  const client = new MongoClient(`mongodb://${[username, password].join(':')}@${[hostname, port].join(':')}`);
+  await client.connect();
+  const db = client.db('tests');
+
+  // routes
+  if (url === '/') {
     await new Response(req, res).setResponse();
   }
-  if (req.url === '/error') {
+  // 随机错误测试
+  if (url === '/error') {
     const getRandomCode = () => {
       const codes = [
         400, 401, 403, 404,
@@ -96,11 +107,24 @@ const server = http.createServer(async (req, res) => {
       ];
       return codes[Math.floor(Math.random() * codes.length)];
     };
-    const { code = getRandomCode() } = await getBody(req);
+    const { code = getRandomCode() } = await getRequestBody(req);
     new Response(req, res).setResponse({ status: code });
   }
-  if (method === 'POST' && req.url === '/set-data') {
-    const { platform, data } = await getBody(req);
+  // 稳定性监控用 /performance[?type=xx]
+  if (method === 'POST' && /^\/performance(\?.*)?$/.test(url)) {
+    const body = await getRequestBody(req);
+    const dbRes = await db.collection('monitor').insertOne({
+      ip,
+      createTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
+      ...body,
+    });
+    const _id = dbRes.insertedId.toString();
+    _console.success('insertOne:', _id);
+    await new Response(req, res).setResponse({ data: _id });
+  }
+  // jest 测试用
+  if (method === 'POST' && url === '/set-data') {
+    const { platform, data } = await getRequestBody(req);
     // 保存数据
     dataStore[platform] = data;
     eventBus.emit('set-data');
@@ -109,8 +133,8 @@ const server = http.createServer(async (req, res) => {
       message: `${platform} 完成`,
     });
   }
-  if (method === 'POST' && req.url === '/get-data') {
-    const { platform } = await getBody(req);
+  if (method === 'POST' && url === '/get-data') {
+    const { platform } = await getRequestBody(req);
     if (dataStore[platform]) {
       _console.success(`${platform} 数据已添加，直接返回`);
       await new Response(req, res).setResponse({

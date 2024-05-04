@@ -1,6 +1,5 @@
 import { _console, _Date, _Object, BaseEnv } from '../base';
 import { _localStorage } from '../storage/web-storage';
-import ObjectId from 'bson-objectid';
 import { v4 as uuidv4 } from 'uuid';
 
 function getSearchParams(url = '') {
@@ -13,10 +12,8 @@ function getSearchParams(url = '') {
 }
 
 export interface MonitorInfoData {
-  // 生成 uid 以区分来源
+  // 生成 uid 以区分用户
   uid?: string;
-  // 生成 id
-  _id?: string,
   // 生成时间
   time?: string,
   // BaseEnv 关键信息
@@ -33,6 +30,7 @@ export interface MonitorInfoData {
     name?: string,
     version?: string | number,
   },
+
   // 类型
   type?: string,
   // 触发方式
@@ -41,22 +39,29 @@ export interface MonitorInfoData {
   detail?: object,
 }
 export interface MonitorInfoOptions {
-  // uid 属性名用于本地存储
+  // 各实例共用 uid 属性名本地存储
   uidName?: string;
+  // 上报地址
+  reportUrl?: string,
+  // 上报方式
+  reportType?: 'fetch' | 'xhr' | 'img' | 'sendBeacon' | 'wxRequest',
 }
 export class MonitorInfo {
   private _options: MonitorInfoOptions;
+  type: string;
+  trigger: string;
   detail: object;
   constructor(info: MonitorInfoData = {}, options: MonitorInfoOptions = {}) {
     Object.defineProperty(this, '_options', {
       value: _Object.deepAssign({
         uidName: 'monitor_uid',
+        reportType: BaseEnv.isWx ? 'wxRequest' : 'fetch',
       }, options),
+      enumerable: false,
     });
     _Object.deepAssign(this, {
       uid: this.getUid(),
-      _id: `${new ObjectId()}`,
-      time: `${new _Date()}`,
+      time: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
       env: {
         envs: BaseEnv.envs,
         os: BaseEnv.os,
@@ -86,6 +91,8 @@ export class MonitorInfo {
       detail: {},
     }, info);
   }
+
+  // 获取 uid
   getUid(): string {
     const uid = _localStorage.getItem(this._options.uidName);
     return uid || (() => {
@@ -104,24 +111,36 @@ export class MonitorInfo {
       return result;
     })();
   }
-  report() {
-    _console.warn(this);
+  // 上报
+  async report() {
+    let { reportUrl, reportType } = this._options;
+    reportUrl = `${reportUrl}?type=${this.type}`;
+    // _console.log({ reportUrl, reportType });
+    if (reportType === 'fetch') {
+      await Monitor.fetch(reportUrl, {
+        method: 'POST',
+        body: JSON.stringify(this),
+      });
+
+      return this;
+    }
+    if (reportType === 'wxRequest') {
+      Monitor.wxRequest({
+        url: reportUrl,
+        method: 'POST',
+        data: this,
+      });
+
+      return this;
+    }
   }
 }
-
-export interface MonitorOptions {
-  uid?: string,
-  appInfo?: {
-    name?: string;
-    version?: string;
-  };
-  monitorInfoOptions?: MonitorInfoOptions;
-}
 export class Monitor {
-  private static XMLHttpRequest: any;
-  private static fetch: (input: (RequestInfo | URL), init?: RequestInit) => Promise<Response>;
-  private static wxRequest: any;
+  static XMLHttpRequest: any;
+  static fetch: any;
+  static wxRequest: any;
   static {
+    // _console.log('static',wx.request);
     // 自身发请求时使用未重写的方法防止循环触发
     this.XMLHttpRequest = BaseEnv.isBrowser ? (() => {
       const XHR = Object.create(XMLHttpRequest);
@@ -132,17 +151,27 @@ export class Monitor {
       }));
       return XHR;
     })() : null;
-    this.fetch = BaseEnv.isBrowser ? fetch : null;
-    this.wxRequest = BaseEnv.isWx ? wx.request : null;
+    this.fetch = BaseEnv.isBrowser ? window.fetch.bind(window) : null;
+    this.wxRequest = BaseEnv.isWx ? wx.request.bind(wx) : null;
   }
 
+  private monitorInfoData: MonitorInfoData;
   private monitorInfoOptions: MonitorInfoOptions;
-  constructor(options: MonitorOptions = {}) {
-    _Object.deepAssign(this, {
-      monitorInfoOptions: {
-        uidName: 'monitor_uid',
-      },
-    }, options);
+  constructor(options = {}) {
+    _Object.deepAssign(this, options);
+    // MonitorInfoData 和 MonitorInfoOptions 收集
+    this.monitorInfoData = _Object.filter(options, {
+      pick: ['uid', 'appInfo'],
+    });
+    this.monitorInfoOptions = _Object.filter(options, {
+      pick: ['uidName', 'reportUrl', 'reportType'],
+    });
+  }
+
+  // 创建 MonitorInfo 实例
+  createMonitorInfo(data: MonitorInfoData = {}) {
+    data = _Object.deepAssign({}, this.monitorInfoData, data);
+    return new MonitorInfo(data, this.monitorInfoOptions);
   }
   // 资源异常
   watchResourceError() {
@@ -150,14 +179,14 @@ export class Monitor {
       window.addEventListener('error', (event) => {
         const target = event.target as any;
         if (target.tagName) {
-          const monitorInfo = new MonitorInfo({
+          const monitorInfo = this.createMonitorInfo({
             type: 'SourceError',
             trigger: 'window:error',
             detail: {
               tagName: target.tagName,
               src: target.src,
             },
-          }, this.monitorInfoOptions);
+          });
           monitorInfo.report();
         }
       }, true); // 设置为 true 以使用捕获阶段监听，以支持捕获资源加载错误
@@ -172,9 +201,8 @@ export class Monitor {
   watchCodeError() {
     if (BaseEnv.isBrowser) {
       window.addEventListener('error', (event: ErrorEvent) => {
-        // _console.log(event);
         if (event instanceof ErrorEvent) {
-          const monitorInfo = new MonitorInfo({
+          const monitorInfo = this.createMonitorInfo({
             type: 'CodeError',
             trigger: 'window:error',
             detail: {
@@ -184,7 +212,7 @@ export class Monitor {
               colno: event.colno,
               error: event.error,
             },
-          }, this.monitorInfoOptions);
+          });
           monitorInfo.report();
         }
       });
@@ -192,13 +220,13 @@ export class Monitor {
     }
     if (BaseEnv.isWx) {
       wx.onError((message) => {
-        const monitorInfo = new MonitorInfo({
+        const monitorInfo = this.createMonitorInfo({
           type: 'CodeError',
           trigger: 'wx.onError',
           detail: {
             message,
           },
-        }, this.monitorInfoOptions);
+        });
         monitorInfo.report();
       });
       return this;
@@ -209,13 +237,13 @@ export class Monitor {
   watchPromiseError() {
     if (BaseEnv.isBrowser) {
       window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
-        const monitorInfo = new MonitorInfo({
+        const monitorInfo = this.createMonitorInfo({
           type: 'PromiseError',
           trigger: 'window:unhandledrejection',
           detail: {
             reason: event.reason,
           },
-        }, this.monitorInfoOptions);
+        });
         monitorInfo.report();
       });
       return this;
@@ -227,8 +255,9 @@ export class Monitor {
   }
   // Vue 异常
   watchVueError(app) {
+    const _this = this;
     app.config.errorHandler = (err, instance, info) => {
-      const monitorInfo = new MonitorInfo({
+      const monitorInfo = _this.createMonitorInfo({
         type: 'VueError',
         trigger: (() => {
           if (app.version.startsWith('3')) {
@@ -240,10 +269,13 @@ export class Monitor {
           return '';
         })(),
         detail: {
-          err,
+          error: {
+            stack: err.stack,
+            message: err.message,
+          },
           info,
         },
-      }, this.monitorInfoOptions);
+      });
       monitorInfo.report();
     };
     return this;
@@ -256,7 +288,7 @@ export class Monitor {
       const nativeOpen = XMLHttpRequest.prototype.open;
       XMLHttpRequest.prototype.open = function () {
         const [method, url] = arguments;
-        this._monitorInfo = new MonitorInfo({
+        this._monitorInfo = _this.createMonitorInfo({
           type: 'RequestError',
           trigger: 'XMLHttpRequest',
           detail: {
@@ -276,7 +308,7 @@ export class Monitor {
             startTime: null,
             endTime: null,
           },
-        }, _this.monitorInfoOptions);
+        });
         this.onloadend = function (event: ProgressEvent) {
           const monitorInfo = this._monitorInfo;
           _Object.deepAssign(monitorInfo.detail, {
@@ -331,7 +363,14 @@ export class Monitor {
         _Object.deepAssign(monitorInfo.detail, {
           startTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
           request: {
-            body,
+            body: (() => {
+              try {
+                // @ts-ignore
+                return JSON.parse(body);
+              } catch (e) {
+                return body;
+              }
+            })(),
           },
         });
         return nativeSend.apply(this, arguments);
@@ -342,7 +381,7 @@ export class Monitor {
       // @ts-ignore
       fetch = async function () {
         const [url, { method = 'GET', headers: reqHeaders = {}, body: reqBody = '{}' } = {}] = arguments;
-        const monitorInfo = new MonitorInfo({
+        const monitorInfo = _this.createMonitorInfo({
           type: 'RequestError',
           trigger: 'fetch',
           detail: {
@@ -362,8 +401,8 @@ export class Monitor {
             },
             response: {},
           },
-        }, _this.monitorInfoOptions);
-        nativeFetch.apply(this, arguments).then(async (res) => {
+        });
+        return nativeFetch.apply(this, arguments).then(async (res) => {
           _Object.deepAssign(monitorInfo.detail, {
             endTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
           });
@@ -384,13 +423,14 @@ export class Monitor {
             });
             monitorInfo.report();
           }
+
           return res;
         }).catch((e) => {
-          // _console.dir(e);
           _Object.deepAssign(monitorInfo.detail, {
             endTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
           });
           monitorInfo.report();
+
           throw e;
         });
       };
@@ -401,7 +441,7 @@ export class Monitor {
       // wx.request
       const nativeRequest = wx.request;
       wx.request = function (options: WechatMiniprogram.RequestOption = { url: '' }) {
-        const monitorInfo = new MonitorInfo({
+        const monitorInfo = _this.createMonitorInfo({
           type: 'RequestError',
           trigger: 'wx.request',
           detail: {
@@ -415,7 +455,7 @@ export class Monitor {
             startTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
             endTime: null,
           },
-        }, _this.monitorInfoOptions);
+        });
         return nativeRequest.call(this, {
           ...options,
           success(res) {
@@ -477,11 +517,11 @@ export class Monitor {
         record.update();
         if (!record.isSamePage()) {
           const { from, to, fromState, toState } = record;
-          const monitorInfo = new MonitorInfo({
+          const monitorInfo = _this.createMonitorInfo({
             type: 'RouteChange',
             trigger: 'window:popstate',
             detail: { success: true, from, to, fromState, toState },
-          }, _this.monitorInfoOptions);
+          });
           monitorInfo.report();
         }
       });
@@ -493,11 +533,11 @@ export class Monitor {
         });
         if (!record.isSamePage()) {
           const { from, to, fromState, toState } = record;
-          const monitorInfo = new MonitorInfo({
+          const monitorInfo = _this.createMonitorInfo({
             type: 'RouteChange',
             trigger: 'history.pushState',
             detail: { success: true, from, to, fromState, toState },
-          }, _this.monitorInfoOptions);
+          });
           monitorInfo.report();
         }
         nativePushState.apply(this, arguments);
@@ -510,11 +550,11 @@ export class Monitor {
         });
         if (!record.isSamePage()) {
           const { from, to, fromState, toState } = record;
-          const monitorInfo = new MonitorInfo({
+          const monitorInfo = _this.createMonitorInfo({
             type: 'RouteChange',
             trigger: 'history.replaceState',
             detail: { success: true, from, to, fromState, toState },
-          }, _this.monitorInfoOptions);
+          });
           monitorInfo.report();
         }
         nativeReplaceState.apply(this, arguments);
@@ -537,15 +577,15 @@ export class Monitor {
           const pages = getCurrentPages();
           const fromPage = pages[pages.length - 1];
           const toPage = routeName === 'navigateBack' ? pages[pages.length - 1 - delta] : { route: url, options: {} };
-          const monitorInfo = new MonitorInfo({
+          const monitorInfo = _this.createMonitorInfo({
             type: 'RouteChange',
             trigger: `wx.${routeName}`,
             detail: {
               success: null,
               from: fromPage.route,
-              fromState: fromPage.options || getSearchParams(fromPage.route),
+              fromState: getSearchParams(fromPage.route),
               to: toPage.route,
-              toState: toPage.options || getSearchParams(toPage.route),
+              toState: getSearchParams(toPage.route),
             },
           });
           nativeMethod.call(this, {
@@ -582,11 +622,11 @@ export class Monitor {
       const po = new PerformanceObserver(function (list, observer) {
         const entries = list.getEntries();
         for (const entry of entries) {
-          const monitorInfo = new MonitorInfo({
-            type: 'performance',
-            trigger: ['PerformanceObserver', entry.entryType, ...(entry.entryType === 'paint' ? [entry.name] : [])].join(':'),
+          const monitorInfo = _this.createMonitorInfo({
+            type: 'Performance',
+            trigger: 'PerformanceObserver',
             detail: entry.toJSON(),
-          }, _this.monitorInfoOptions);
+          });
           monitorInfo.report();
         }
       });

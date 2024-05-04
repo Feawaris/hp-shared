@@ -1,5 +1,5 @@
 {
-  "name": "@tests/fe-browser",
+  "name": "tests-fe-browser",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "open": "open http://localhost:3000"
   },
   "dependencies": {
-    "hp-shared": "workspace:^"
+    "hp-shared": "workspace:^",
+    "tests-shared": "workspace:^"
   }
 }

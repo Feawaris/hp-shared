@@ -8,6 +8,8 @@ const {
     Monitor,
   },
 } = window.hpShared;
+const { localConfig } = window.testsShared;
+
 window.addEventListener('DOMContentLoaded', function () {
   // vue2
   (function () {
@@ -32,7 +34,7 @@ window.addEventListener('DOMContentLoaded', function () {
         return {
           message: 'hello vue3',
           click() {
-            throw new Error('vue2 error');
+            throw new Error('vue3 error');
           },
         };
       },
@@ -41,12 +43,12 @@ window.addEventListener('DOMContentLoaded', function () {
     app.mount('#vue3');
   })();
 
-  // 打开时反馈到 jest 测试
+  // 打开时反馈给 jest 测试用
   window.examples.test();
 });
 window.examples = {
   async test() {
-    const res = await fetch('http://localhost:9001/set-data', {
+    const res = await fetch(`http://${localConfig.nwIP}:9001/set-data`, {
       method: 'post',
       body: JSON.stringify({
         platform: 'browser',
@@ -71,7 +73,7 @@ window.examples = {
   },
   xhr() {
     const xhr = new XMLHttpRequest();
-    xhr.open('post', 'http://localhost:9001', true, 'user1', '123456');
+    xhr.open('post', `http://${localConfig.nwIP}:9001`, true, 'user1', '123456');
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
@@ -79,11 +81,11 @@ window.examples = {
     for (const [key, value] of Object.entries(headers)) {
       xhr.setRequestHeader(key, value);
     }
-    xhr.send({ a: 1 });
+    xhr.send(JSON.stringify({ a: 1 }));
   },
   xhrError() {
     const xhr = new XMLHttpRequest();
-    xhr.open('post', 'http://localhost:9001/error');
+    xhr.open('post', `http://${localConfig.nwIP}:9001/error`);
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
@@ -94,7 +96,7 @@ window.examples = {
     xhr.send(JSON.stringify({ a: 1 }));
   },
   async fetch() {
-    await fetch('http://localhost:9001', {
+    await fetch(`http://${localConfig.nwIP}:9001`, {
       method: 'post',
       headers: {
         accept: 'application/json',
@@ -104,7 +106,7 @@ window.examples = {
     });
   },
   async fetchError() {
-    await fetch('http://localhost:9001/error', {
+    await fetch(`http://${localConfig.nwIP}:9001/error`, {
       method: 'post',
       headers: {
         accept: 'application/json',
@@ -125,10 +127,11 @@ window.examples = {
   },
 };
 
-window.appMonitor = new Monitor()
+window.appMonitor = new Monitor({
+  reportUrl: `http://${localConfig.nwIP}:9001/performance`,
+})
   .watchResourceError()
   .watchCodeError()
   .watchRequestError()
   .watchRouteChange()
-  .watchPerformance()
-
+  .watchPerformance();

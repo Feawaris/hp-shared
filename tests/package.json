@@ -2,7 +2,8 @@
   "name": "tests",
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test": "pnpm run helpers/shared && jest",
+    "helpers/shared": "pnpm -C helpers/shared run build",
     "helpers/be": "pnpm -C helpers/be run dev",
     "helpers/fe": "npm-run-all -p 'helpers/fe-*'",
     "helpers/fe-browser": "pnpm -C helpers/fe-browser run dev",

@@ -10,9 +10,11 @@ export const BaseEnv: {
   isWindows: boolean,
   isMac: boolean,
   isLinux: boolean,
-  isWx: boolean
+  isWx: boolean,
+  isAndroid: boolean,
+  isIOS: boolean,
 } = Object.create(null);
-// 代码运行环境: browser, node, ...
+// 代码运行环境: browser, node, wx, ...
 BaseEnv.envs = ((): string[] => {
   let result: string[] = [];
   if (typeof window !== 'undefined' && globalThis === window) {
@@ -41,9 +43,14 @@ BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
 BaseEnv.isWx = BaseEnv.envs.includes('wx');
-// 操作系统: windows, mac, linux, ...
+// 操作系统: windows, mac, linux, android, ios, ...
 BaseEnv.os = ((): string => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWx) {
+    // 小程序真机环境通过 wx.getSystemInfoSync 得到，开发者工具可使用 navigator 方法，继续走下面浏览器逻辑
+    if (BaseEnv.isWx && !globalThis.navigator) {
+      const si = wx.getSystemInfoSync();
+      return si.platform;
+    }
     const { navigator } = globalThis;
     const text = (() => {
       try {
@@ -79,3 +86,5 @@ BaseEnv.os = ((): string => {
 BaseEnv.isWindows = BaseEnv.os === 'windows';
 BaseEnv.isMac = BaseEnv.os === 'mac';
 BaseEnv.isLinux = BaseEnv.os === 'linux';
+BaseEnv.isAndroid = BaseEnv.os === 'android';
+BaseEnv.isIOS = BaseEnv.os === 'ios';

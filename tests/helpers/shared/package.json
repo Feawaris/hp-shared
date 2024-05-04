@@ -1,0 +1,22 @@
+{
+  "name": "tests-shared",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "pnpx rimraf dist/* && rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
+    "build:watch": "pnpm run build --watch"
+  },
+  "dependencies": {
+    "hp-shared": "workspace:^"
+  },
+  ".": {
+    "browser": {
+      "import": "./dist/index.js",
+      "script": "./dist/index.umd.js"
+    },
+    "node": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "miniprogram": "dist"
+}

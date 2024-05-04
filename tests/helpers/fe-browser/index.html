@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>browser</title>
     <link rel="stylesheet" href="./index.css">
-    <script src="./node_modules/hp-shared/dist/browser/index-umd.js"></script>
+    <script src="./node_modules/hp-shared/dist/browser/index.umd.js"></script>
+    <script src="./node_modules/tests-shared/dist/index.umd.js"></script>
     <script type="importmap">
       {
         "imports": {
@@ -33,7 +34,7 @@
         <ul>
           <li>
             <h3>ResourceError</h3>
-            <button onclick="examples.source()">资源示例</button>
+            <button onclick="examples.source()">资源异常</button>
           </li>
           <li>
             <h3>CodeError</h3>
@@ -61,6 +62,7 @@
         </ul>
         <nav>
           <h4>RouteChange</h4>
+          <a href="#">popstate</a>
           <a href="#id1">popstate id1</a>
           <a href="#id2">popstate id2</a>
           <button onclick="examples.pushState()">pushState id3</button>

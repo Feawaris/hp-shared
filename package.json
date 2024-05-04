@@ -7,9 +7,10 @@
     "refresh": "pnpm install && husky && pnpm run build",
     "update": "(pnpx npm-check-updates --format group --deep --upgrade) && (cd docs && npm-check-updates --format group --target newest --upgrade) && pnpm run refresh",
     "clean:ignoredConfigFiles": "pnpx rimraf .markdownlint.json .markdownlint-cli2.cjs .markdownlint-cli2.cjs .markdownlintignore stylelint.config.cjs .stylelintrc.json .stylelintignore eslint.config.cjs .eslintrc.cjs .eslintignore prettier.config.cjs .prettierignore commitlint.config.cjs",
-    "lint": "pnpm run lint:ignore ; pnpm run lint:md ; pnpm run lint:css ; pnpm run lint:js ; pnpm run lint:prettier ; pnpm run lint:git",
-    "lint:fix": "pnpm run lint:ignore ; pnpm run lint:md:fix ; pnpm run lint:css:fix ; pnpm run lint:js:fix ; pnpm run lint:prettier:fix ; pnpm run lint:git",
+    "lint": "pnpm run lint:ignore ; pnpm run lint:json ; pnpm run lint:md ; pnpm run lint:css ; pnpm run lint:js ; pnpm run lint:prettier ; pnpm run lint:git",
+    "lint:fix": "pnpm run lint:ignore ; pnpm run lint:json ; pnpm run lint:md:fix ; pnpm run lint:css:fix ; pnpm run lint:js:fix ; pnpm run lint:prettier:fix ; pnpm run lint:git",
     "lint:ignore": "node config/lint-ignore.cjs",
+    "lint:json": "node config/lint-json.cjs",
     "lint:md": "node config/lint-md.cjs && markdownlint-cli2 '**/*.{md,markdown}'",
     "lint:md:fix": "node config/lint-md.cjs && markdownlint-cli2 '**/*.{md,markdown}' --fix",
     "lint:css": "node config/lint-css.cjs && stylelint '**/*.{css,vue}'",
@@ -30,7 +31,6 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^5.0.2",
-    "bson-objectid": "^2.0.4",
     "commander": "^12.0.0",
     "ejs": "^3.1.10",
     "serialize-javascript": "^6.0.2",
@@ -70,7 +70,7 @@
     ".": {
       "browser": {
         "import": "./dist/browser/index.js",
-        "script": "./dist/browser/index-umd.js"
+        "script": "./dist/browser/index.umd.js"
       },
       "node": {
         "import": "./dist/node/index.mjs",
@@ -121,6 +121,6 @@
     "url": "git+https://github.com/Feawaris/hp-shared.git"
   },
   "homepage": "https://github.com/Feawaris/hp-shared",
-  "unpkg": "./dist/browser/index-umd.js",
-  "jsdelivr": "./dist/browser/index-umd.js"
+  "unpkg": "./dist/browser/index.umd.js",
+  "jsdelivr": "./dist/browser/index.umd.js"
 }

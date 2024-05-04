@@ -11,7 +11,7 @@ const newPkg = {
     '.': {
       browser: {
         import: './dist/browser/index.js',
-        script: './dist/browser/index-umd.js',
+        script: './dist/browser/index.umd.js',
       },
       node: {
         import: './dist/node/index.mjs',

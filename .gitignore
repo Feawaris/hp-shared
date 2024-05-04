@@ -7,6 +7,8 @@ docs/.vuepress/.temp
 docs/.vuepress/.cache
 # tests
 tests/coverage
+tests/helpers/shared/dist
+tests/helpers/shared/config.local.js
 tests/helpers/fe-wx/miniprogram_npm
 # tsc 生成的 .d.ts 和 .js 文件仅本地调试用
 src/**/*.d.ts
