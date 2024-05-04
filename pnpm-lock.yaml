@@ -11,9 +11,6 @@ importers:
       '@inquirer/prompts':
         specifier: ^5.0.2
         version: 5.0.2
-      bson:
-        specifier: ^6.7.0
-        version: 6.7.0
       bson-objectid:
         specifier: ^2.0.4
         version: 2.0.4
@@ -1797,10 +1794,6 @@ packages:
 
   bson-objectid@2.0.4:
     resolution: {integrity: sha512-vgnKAUzcDoa+AeyYwXCoHyF2q6u/8H46dxu5JN+4/TZeq/Dlinn0K6GvxsCLb3LHUJl0m/TLiEK31kUwtgocMQ==}
-
-  bson@6.7.0:
-    resolution: {integrity: sha512-w2IquM5mYzYZv6rs3uN2DZTOBe2a0zXLj53TGDqwF4l6Sz/XsISrisXOJihArF9+BZ6Cq/GjVht7Sjfmri7ytQ==}
-    engines: {node: '>=16.20.1'}
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
@@ -6242,8 +6235,6 @@ snapshots:
       node-int64: 0.4.0
 
   bson-objectid@2.0.4: {}
-
-  bson@6.7.0: {}
 
   buffer-from@1.1.2: {}
 

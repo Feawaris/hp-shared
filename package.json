@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^5.0.2",
-    "bson": "^6.7.0",
     "bson-objectid": "^2.0.4",
     "commander": "^12.0.0",
     "ejs": "^3.1.10",
@@ -69,24 +68,50 @@
   },
   "exports": {
     ".": {
-      "browser": "./dist/browser/index.js",
-      "node": "./dist/node/index.js"
+      "browser": {
+        "import": "./dist/browser/index.js",
+        "script": "./dist/browser/index-umd.js"
+      },
+      "node": {
+        "import": "./dist/node/index.mjs",
+        "require": "./dist/node/index.js"
+      }
     },
     "./base": {
-      "browser": "./dist/browser/base.js",
-      "node": "./dist/node/base.js"
+      "browser": {
+        "import": "./dist/browser/base.js"
+      },
+      "node": {
+        "import": "./dist/node/base.mjs",
+        "require": "./dist/node/base.js"
+      }
     },
     "./dev": {
-      "browser": "./dist/browser/dev.js",
-      "node": "./dist/node/dev.js"
-    },
-    "./storage": {
-      "browser": "./dist/browser/storage.js",
-      "node": "./dist/node/storage.js"
+      "browser": {
+        "import": "./dist/browser/dev.js"
+      },
+      "node": {
+        "import": "./dist/node/dev.mjs",
+        "require": "./dist/node/dev.js"
+      }
     },
     "./performance": {
-      "browser": "./dist/browser/performance.js",
-      "node": "./dist/node/performance.js"
+      "browser": {
+        "import": "./dist/browser/performance.js"
+      },
+      "node": {
+        "import": "./dist/node/performance.mjs",
+        "require": "./dist/node/performance.js"
+      }
+    },
+    "./storage": {
+      "browser": {
+        "import": "./dist/browser/storage.js"
+      },
+      "node": {
+        "import": "./dist/node/storage.mjs",
+        "require": "./dist/node/storage.js"
+      }
     },
     "./*": "./*"
   },

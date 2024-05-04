@@ -103,5 +103,5 @@ export class WebStorage {
     }
   }
 }
-export const _sessionStorage = new WebStorage('localStorage');
-export const _localStorage = new WebStorage('sessionStorage');
+export const _localStorage = new WebStorage('localStorage');
+export const _sessionStorage = new WebStorage('sessionStorage');
