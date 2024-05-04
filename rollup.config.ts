@@ -64,7 +64,7 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-browser.ts',
     output: [
-      getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
+      getOutputItem({ file: 'dist/browser/index-umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
       getOutputItem({ file: 'dist/browser/index.js', format: 'es' }),
     ],
     plugins: browserPlugins,
@@ -79,7 +79,7 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-node.ts',
     output: [
-      getOutputItem({ file: 'dist/node/index.mjs.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/index.mjs', format: 'es' }),
     ],
     plugins: browserPlugins,
   },
@@ -107,7 +107,7 @@ const config: RollupOptions[] = [
   {
     input: 'src/index-wx.ts',
     output: [
-      getOutputItem({ file: 'dist/wx/index.cjs.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/wx/index.cjs', format: 'cjs' }),
     ],
     plugins: browserPlugins,
   },
@@ -123,7 +123,7 @@ const config: RollupOptions[] = [
     input: 'src/base/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/base.js', format: 'es' }),
-      getOutputItem({ file: 'dist/node/base.mjs.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/base.mjs', format: 'es' }),
       getOutputItem({ file: 'dist/wx/base.js', format: 'es' }),
     ],
     plugins: browserPlugins,
@@ -132,7 +132,7 @@ const config: RollupOptions[] = [
     input: 'src/base/index.ts',
     output: [
       getOutputItem({ file: 'dist/node/base.js', format: 'cjs' }),
-      getOutputItem({ file: 'dist/wx/base.cjs.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/wx/base.cjs', format: 'cjs' }),
     ],
     plugins: nodePlugins,
   },
@@ -164,7 +164,7 @@ const config: RollupOptions[] = [
     input: 'src/storage/index-node.ts',
     output: [
       getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
-      getOutputItem({ file: 'dist/node/storage.mjs.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/storage.mjs', format: 'es' }),
     ],
     plugins: nodePlugins,
   },
@@ -179,7 +179,7 @@ const config: RollupOptions[] = [
     input: 'src/storage/index-wx.ts',
     output: [
       getOutputItem({ file: 'dist/wx/storage.js', format: 'es' }),
-      getOutputItem({ file: 'dist/wx/storage.cjs.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/wx/storage.cjs', format: 'cjs' }),
     ],
     plugins: browserPlugins,
   },
@@ -202,7 +202,7 @@ const config: RollupOptions[] = [
     input: 'src/dev/index.ts',
     output: [
       getOutputItem({ file: 'dist/node/dev.js', format: 'cjs' }),
-      getOutputItem({ file: 'dist/node/dev.mjs.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/dev.mjs', format: 'es' }),
     ],
     plugins: nodePlugins,
   },
@@ -220,7 +220,7 @@ const config: RollupOptions[] = [
     output: [
       getOutputItem({ file: 'dist/browser/performance.js', format: 'es' }),
       getOutputItem({ file: 'dist/wx/performance.js', format: 'es' }),
-      getOutputItem({ file: 'dist/wx/performance.cjs.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/wx/performance.cjs', format: 'cjs' }),
     ],
     plugins: browserPlugins,
   },
@@ -228,7 +228,7 @@ const config: RollupOptions[] = [
     input: 'src/performance/index.ts',
     output: [
       getOutputItem({ file: 'dist/node/performance.js', format: 'cjs' }),
-      getOutputItem({ file: 'dist/node/performance.mjs.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/performance.mjs', format: 'es' }),
     ],
     plugins: nodePlugins,
   },

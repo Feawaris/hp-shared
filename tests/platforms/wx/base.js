@@ -1,4 +1,4 @@
-const { TestData, timeout } = require('../../../helpers/base');
+const { TestData, timeout } = require('../../helpers/base');
 
 const testInfo = new TestData('wx');
 describe('BaseEnv', () => {

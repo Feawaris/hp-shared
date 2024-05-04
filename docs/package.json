@@ -12,7 +12,7 @@
     "@vuepress/bundler-vite": "2.0.0-rc.9",
     "@vuepress/plugin-docsearch": "2.0.0-rc.26",
     "hp-shared": "workspace:^",
-    "vue": "^3.4.26",
+    "vue": "^3.5.0-alpha.2",
     "vuepress": "2.0.0-rc.9",
     "vuepress-theme-hope": "2.0.0-rc.38"
   }
