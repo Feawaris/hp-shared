@@ -1,7 +1,7 @@
 ---
 name: hp-shared
 category: 文档
-tag: 1.7.0
+tag: 1.8.0
 ---
 
 基础库
