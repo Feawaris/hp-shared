@@ -2,7 +2,7 @@ const { _console, _Date } = require('hp-shared/base');
 const http = require('node:http');
 const EventEmitter = require('node:events');
 const { MongoClient } = require('mongodb');
-const { localConfig } = require('tests-shared/src');
+const { localConfig } = require('shared');
 
 const dataStore = {
   browser: null,

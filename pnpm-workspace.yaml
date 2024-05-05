@@ -1,4 +1,4 @@
 packages:
   - 'docs'
   - 'tests'
-  - 'tests/helpers/*'
+  - 'examples/*'

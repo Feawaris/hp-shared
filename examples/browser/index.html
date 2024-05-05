@@ -5,7 +5,7 @@
     <title>browser</title>
     <link rel="stylesheet" href="./index.css">
     <script src="./node_modules/hp-shared/dist/browser/index.umd.js"></script>
-    <script src="./node_modules/tests-shared/dist/index.umd.js"></script>
+    <script src="./node_modules/shared/dist/index.umd.js"></script>
     <script type="importmap">
       {
         "imports": {
@@ -34,12 +34,12 @@
         <ul>
           <li>
             <h3>ResourceError</h3>
-            <button onclick="examples.source()">资源异常</button>
+            <button onclick="examples.sourceError()">资源异常</button>
           </li>
           <li>
             <h3>CodeError</h3>
             <h4>js</h4>
-            <button onclick="examples.code()">代码异常</button>
+            <button onclick="examples.codeError()">代码异常</button>
             <button onclick="examples.promiseError()">Promise 异常</button>
             <nav id="vue2">
               <h4>vue2</h4>

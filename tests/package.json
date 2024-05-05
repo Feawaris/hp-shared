@@ -2,15 +2,11 @@
   "name": "tests",
   "private": true,
   "scripts": {
-    "test": "pnpm run helpers/shared && jest",
-    "helpers/shared": "pnpm -C helpers/shared run build",
-    "helpers/be": "pnpm -C helpers/be run dev",
-    "helpers/fe": "npm-run-all -p 'helpers/fe-*'",
-    "helpers/fe-browser": "pnpm -C helpers/fe-browser run dev",
-    "helpers/fe-wx": "pnpm -C helpers/fe-wx run dev"
+    "test": "pnpm -C ../examples/shared run build && jest"
   },
   "dependencies": {
     "hp-shared": "workspace:^",
+    "shared": "workspace:^",
     "jest": "^29.7.0"
   }
 }

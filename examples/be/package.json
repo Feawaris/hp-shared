@@ -1,13 +1,12 @@
 {
-  "name": "tests-be",
-  "version": "0.0.0",
+  "name": "be",
   "private": true,
   "scripts": {
     "dev": "nodemon main.js"
   },
   "dependencies": {
     "hp-shared": "workspace:^",
-    "tests-shared": "workspace:^",
+    "shared": "workspace:^",
     "mongodb": "^6.6.0"
   }
 }

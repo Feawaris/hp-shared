@@ -13,7 +13,7 @@ function getSearchParams(url = '') {
 
 export interface MonitorInfoData {
   // 生成 uid 以区分用户
-  uid?: string;
+  uid?: string | Function;
   // 生成时间
   time?: string,
   // BaseEnv 关键信息
@@ -46,6 +46,7 @@ export interface MonitorInfoOptions {
   // 上报方式
   reportType?: 'fetch' | 'xhr' | 'img' | 'sendBeacon' | 'wxRequest',
 }
+
 export class MonitorInfo {
   private _options: MonitorInfoOptions;
   type: string;
@@ -60,7 +61,6 @@ export class MonitorInfo {
       enumerable: false,
     });
     _Object.deepAssign(this, {
-      uid: this.getUid(),
       time: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
       env: {
         envs: BaseEnv.envs,
@@ -89,11 +89,26 @@ export class MonitorInfo {
       type: '',
       trigger: '',
       detail: {},
-    }, info);
+    }, info, {
+      get uid() {
+        if (typeof info.uid === 'string') {
+          return info.uid;
+        }
+        if (typeof info.uid === 'function') {
+          try {
+            _localStorage.removeItem(this._options.uidName);
+            return info.uid() || this.getDefaultUid();
+          } catch (e) {
+            return this.getDefaultUid();
+          }
+        }
+        return this.getDefaultUid();
+      },
+    });
   }
 
   // 获取 uid
-  getUid(): string {
+  getDefaultUid(): string {
     const uid = _localStorage.getItem(this._options.uidName);
     return uid || (() => {
       const result = (() => {
@@ -241,7 +256,8 @@ export class Monitor {
           type: 'PromiseError',
           trigger: 'window:unhandledrejection',
           detail: {
-            reason: event.reason,
+            message: event.reason.message,
+            stack: event.reason.stack,
           },
         });
         monitorInfo.report();

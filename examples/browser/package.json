@@ -1,6 +1,5 @@
 {
-  "name": "tests-fe-browser",
-  "version": "0.0.0",
+  "name": "browser",
   "private": true,
   "scripts": {
     "dev": "npm-run-all -p preview open",
@@ -9,6 +8,6 @@
   },
   "dependencies": {
     "hp-shared": "workspace:^",
-    "tests-shared": "workspace:^"
+    "shared": "workspace:^"
   }
 }

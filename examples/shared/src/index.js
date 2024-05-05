@@ -24,7 +24,7 @@ const timeout = 60000;
 // 本地配置信息，不进行 git 提交
 const localConfig = (function getLocalConfig() {
   try {
-    return require('../config.local');
+    return require('hp-shared/local.config.cjs');
   } catch (e) {
     // 没有文件时使用演示数据
     return {
@@ -35,8 +35,8 @@ const localConfig = (function getLocalConfig() {
         username: '',
         password: '',
       },
-      // 内网 ip，小程序真机调试用
-      nwIP: 'localhost',
+      // 远程接口地址
+      remoteURL:'http://localhost:9001',
     };
   }
 })();

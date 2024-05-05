@@ -1,7 +1,4 @@
-const {
-  BaseEnv, _console,
-  _Date,
-} = require('hp-shared/base');
+const { BaseEnv, _console, _Date, } = require('hp-shared/base');
 
 describe('BaseEnv', () => {
   test('envs', () => {

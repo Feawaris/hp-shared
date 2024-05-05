@@ -1,9 +1,9 @@
 import { _console } from 'hp-shared/base';
 import { Monitor } from 'hp-shared/performance';
-const { default: { localConfig } } = require('tests-shared');
+const { default: { localConfig } } = require('shared');
 
 wx.appMonitor = new Monitor({
-  reportUrl: `http://${localConfig.nwIP}:9001/performance`,
+  reportUrl: `${localConfig.remoteURL}/performance`,
 })
   .watchResourceError()
   .watchCodeError()

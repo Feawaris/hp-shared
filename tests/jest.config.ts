@@ -7,21 +7,21 @@ const config: Config = {
       displayName: 'node',
       testEnvironment: 'node',
       testMatch: [
-        '**/platforms/node/**/*.js',
+        '**/node/**/*.js',
       ],
     },
     {
       displayName: '浏览器',
       testEnvironment: 'node',
       testMatch: [
-        '**/platforms/browser/**/*.js',
+        '**/browser/**/*.js',
       ],
     },
     {
       displayName: '小程序',
       testEnvironment: 'node',
       testMatch: [
-        '**/platforms/wx/**/*.js',
+        '**/wx/**/*.js',
       ],
     },
   ],

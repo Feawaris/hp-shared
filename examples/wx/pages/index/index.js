@@ -1,20 +1,34 @@
 import { BaseEnv, _console, _Date } from 'hp-shared/base';
-const { default: { localConfig } } = require('tests-shared');
+import { clipboard } from 'hp-shared/storage';
+const { default: { localConfig } } = require('shared');
 
 Page({
   onLoad(query) {
     // _console.log(query);
-    this.test();
+    // 反馈给 jest 测试用
+    // this.test();
   },
-  test() {
+  // 反馈给 jest 测试用
+  async test() {
+    const copyText = `wx:copy`;
+    const copyTextRes = await clipboard.copy(copyText);
+    const pasteText = `wx:paste`;
+    await clipboard.copy(pasteText);
+    const pasteTextRes = await clipboard.paste();
     wx.request({
-      url: `http://${localConfig.nwIP}:9001/set-data`,
+      url: `${localConfig.remoteURL}/set-data`,
       method: 'post',
       data: {
         platform: 'wx',
         data: {
           base: {
             BaseEnv,
+          },
+          storage: {
+            clipboard: {
+              copyText, copyTextRes,
+              pasteText, pasteTextRes,
+            },
           },
         },
       },
@@ -25,7 +39,7 @@ Page({
   },
   requestError() {
     wx.request({
-      url: `http://${localConfig.nwIP}:9001/error`,
+      url: `${localConfig.remoteURL}/error`,
       method: 'post',
       success(res) {
       },

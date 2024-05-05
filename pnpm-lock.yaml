@@ -120,6 +120,9 @@ importers:
       hp-shared:
         specifier: workspace:^
         version: link:..
+      shared:
+        specifier: workspace:^
+        version: link:../examples/shared
       vue:
         specifier: ^3.5.0-alpha.2
         version: 3.5.0-alpha.2(typescript@5.4.5)
@@ -130,6 +133,42 @@ importers:
         specifier: 2.0.0-rc.38
         version: 2.0.0-rc.38(@vuepress/plugin-docsearch@2.0.0-rc.26(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.4.5)(vuepress@2.0.0-rc.9(@vuepress/bundler-vite@2.0.0-rc.9(@types/node@20.12.8)(jiti@1.21.0)(less@3.13.1)(sass@1.75.0)(typescript@5.4.5))(typescript@5.4.5)(vue@3.5.0-alpha.2(typescript@5.4.5))))(markdown-it@14.1.0)(typescript@5.4.5)(vuepress@2.0.0-rc.9(@vuepress/bundler-vite@2.0.0-rc.9(@types/node@20.12.8)(jiti@1.21.0)(less@3.13.1)(sass@1.75.0)(typescript@5.4.5))(typescript@5.4.5)(vue@3.5.0-alpha.2(typescript@5.4.5)))
 
+  examples/be:
+    dependencies:
+      hp-shared:
+        specifier: workspace:^
+        version: link:../..
+      mongodb:
+        specifier: ^6.6.0
+        version: 6.6.0
+      shared:
+        specifier: workspace:^
+        version: link:../shared
+
+  examples/browser:
+    dependencies:
+      hp-shared:
+        specifier: workspace:^
+        version: link:../..
+      shared:
+        specifier: workspace:^
+        version: link:../shared
+
+  examples/shared:
+    dependencies:
+      hp-shared:
+        specifier: workspace:^
+        version: link:../..
+
+  examples/wx:
+    dependencies:
+      hp-shared:
+        specifier: workspace:^
+        version: link:../..
+      shared:
+        specifier: workspace:^
+        version: link:../shared
+
   tests:
     dependencies:
       hp-shared:
@@ -138,42 +177,9 @@ importers:
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.12.8)(ts-node@10.9.2(@types/node@20.12.8)(typescript@5.4.5))
-
-  tests/helpers/be:
-    dependencies:
-      hp-shared:
+      shared:
         specifier: workspace:^
-        version: link:../../..
-      mongodb:
-        specifier: ^6.6.0
-        version: 6.6.0
-      tests-shared:
-        specifier: workspace:^
-        version: link:../shared
-
-  tests/helpers/fe-browser:
-    dependencies:
-      hp-shared:
-        specifier: workspace:^
-        version: link:../../..
-      tests-shared:
-        specifier: workspace:^
-        version: link:../shared
-
-  tests/helpers/fe-wx:
-    dependencies:
-      hp-shared:
-        specifier: workspace:^
-        version: link:../../..
-      tests-shared:
-        specifier: workspace:^
-        version: link:../shared
-
-  tests/helpers/shared:
-    dependencies:
-      hp-shared:
-        specifier: workspace:^
-        version: link:../../..
+        version: link:../examples/shared
 
 packages:
 

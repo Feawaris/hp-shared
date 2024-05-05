@@ -1,13 +1,13 @@
-const { TestData, timeout } = require('../../helpers/shared/src');
+const { TestData, timeout } = require('shared');
 
 const testInfo = new TestData('wx');
 describe('BaseEnv', () => {
   test('envs', async () => {
-    const { BaseEnv } = (await testInfo.getData()).base;
+    const { base: { BaseEnv } } = await testInfo.getData();
     expect(BaseEnv.envs).toContain('wx');
   }, timeout);
   test('isWx', async () => {
-    const { BaseEnv } = (await testInfo.getData()).base;
+    const { base: { BaseEnv } } = await testInfo.getData();
     expect(BaseEnv.isWx).toBe(true);
   }, timeout);
 });

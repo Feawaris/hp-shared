@@ -1,3 +1,3 @@
-export * from './clipboard/browser';
+export * from './clipboard';
 export * from './web-cookie/browser';
 export * from './web-storage';

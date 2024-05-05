@@ -3,6 +3,9 @@ const {
     BaseEnv, _console,
     _Object, _Date,
   },
+  storage: {
+    clipboard,
+  },
   performance: {
     MonitorInfo,
     Monitor,
@@ -10,6 +13,15 @@ const {
 } = window.hpShared;
 const { localConfig } = window.testsShared;
 
+window.appMonitor = new Monitor({
+  reportUrl: `${localConfig.remoteURL}/performance`,
+})
+  .watchResourceError()
+  .watchCodeError()
+  .watchPromiseError()
+  .watchRequestError()
+  .watchRouteChange()
+  // .watchPerformance()
 window.addEventListener('DOMContentLoaded', function () {
   // vue2
   (function () {
@@ -43,12 +55,19 @@ window.addEventListener('DOMContentLoaded', function () {
     app.mount('#vue3');
   })();
 
-  // 打开时反馈给 jest 测试用
-  window.examples.test();
+  // 反馈给 jest 测试用
+  // window.examples.test();
 });
 window.examples = {
+  // 反馈给 jest 测试用
   async test() {
-    const res = await fetch(`http://${localConfig.nwIP}:9001/set-data`, {
+    const copyText = `browser:copy:${new _Date()}`;
+    const copyTextRes = await clipboard.copy(copyText);
+    const pasteText = `browser:paste:${new _Date()}`;
+    await clipboard.copy(pasteText);
+    const pasteTextRes = await clipboard.paste();
+
+    const res = await fetch(`${localConfig.remoteURL}/set-data`, {
       method: 'post',
       body: JSON.stringify({
         platform: 'browser',
@@ -56,24 +75,31 @@ window.examples = {
           base: {
             BaseEnv,
           },
+          storage: {
+            clipboard: {
+              copyText, copyTextRes,
+              pasteText, pasteTextRes,
+            },
+          },
         },
       }),
     });
     const data = await res.json();
     _console.log(data);
   },
-  code() {
+
+  codeError() {
     const a = 1;
     a = 2;
   },
-  source() {
+  sourceError() {
     const img = document.createElement('img');
     img.src = './favicon.ico';
     document.body.append(img);
   },
   xhr() {
     const xhr = new XMLHttpRequest();
-    xhr.open('post', `http://${localConfig.nwIP}:9001`, true, 'user1', '123456');
+    xhr.open('post', `${localConfig.remoteURL}`, true, 'user1', '123456');
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
@@ -85,7 +111,7 @@ window.examples = {
   },
   xhrError() {
     const xhr = new XMLHttpRequest();
-    xhr.open('post', `http://${localConfig.nwIP}:9001/error`);
+    xhr.open('post', `${localConfig.remoteURL}/error`);
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
@@ -96,7 +122,7 @@ window.examples = {
     xhr.send(JSON.stringify({ a: 1 }));
   },
   async fetch() {
-    await fetch(`http://${localConfig.nwIP}:9001`, {
+    await fetch(`${localConfig.remoteURL}`, {
       method: 'post',
       headers: {
         accept: 'application/json',
@@ -106,7 +132,7 @@ window.examples = {
     });
   },
   async fetchError() {
-    await fetch(`http://${localConfig.nwIP}:9001/error`, {
+    await fetch(`${localConfig.remoteURL}/error`, {
       method: 'post',
       headers: {
         accept: 'application/json',
@@ -126,12 +152,3 @@ window.examples = {
     history.replaceState({ time: `${new _Date()}` }, '', '#id4');
   },
 };
-
-window.appMonitor = new Monitor({
-  reportUrl: `http://${localConfig.nwIP}:9001/performance`,
-})
-  .watchResourceError()
-  .watchCodeError()
-  .watchRequestError()
-  .watchRouteChange()
-  .watchPerformance();
