@@ -120,9 +120,6 @@ importers:
       hp-shared:
         specifier: workspace:^
         version: link:..
-      shared:
-        specifier: workspace:^
-        version: link:../examples/shared
       vue:
         specifier: ^3.5.0-alpha.2
         version: 3.5.0-alpha.2(typescript@5.4.5)

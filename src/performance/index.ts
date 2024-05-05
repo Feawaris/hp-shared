@@ -519,6 +519,7 @@ export class Monitor {
 
       return this;
     }
+    return this;
   }
   // 路由切换
   watchRouteChange() {
