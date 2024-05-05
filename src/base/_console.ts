@@ -270,7 +270,7 @@ _console.dir = function (value, options = {}) {
   }
 };
 _console.table = function (...args) {
-  _console.show({ style: 'log', type: 'table', stackInfo: _console.getStackInfo() });
+  _console.show({ style: 'blue', type: 'table', stackInfo: _console.getStackInfo() });
 
   console.table(...args);
 };
