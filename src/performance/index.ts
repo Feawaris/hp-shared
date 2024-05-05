@@ -56,7 +56,7 @@ export class MonitorInfo {
     Object.defineProperty(this, '_options', {
       value: _Object.deepAssign({
         uidName: 'monitor_uid',
-        reportType: BaseEnv.isWx ? 'wxRequest' : 'fetch',
+        reportType: BaseEnv.isWx ? 'wxRequest' : 'sendBeacon',
       }, options),
       enumerable: false,
     });
@@ -107,6 +107,42 @@ export class MonitorInfo {
     });
   }
 
+  // 上报
+  async report() {
+    let { reportUrl, reportType } = this._options;
+    reportUrl = `${reportUrl}?type=${this.type}`;
+    // _console.log({ reportUrl, reportType });
+
+    if (reportType === 'sendBeacon') {
+      navigator.sendBeacon(reportUrl,JSON.stringify(this));
+
+      return this;
+    }
+    if (reportType === 'xhr') {
+      const xhr = new Monitor.XMLHttpRequest();
+      xhr.open('post', reportUrl);
+      xhr.send(JSON.stringify(this));
+
+      return this;
+    }
+    if (reportType === 'fetch') {
+      await Monitor.fetch(reportUrl, {
+        method: 'POST',
+        body: JSON.stringify(this),
+      });
+
+      return this;
+    }
+    if (reportType === 'wxRequest') {
+      Monitor.wxRequest({
+        url: reportUrl,
+        method: 'POST',
+        data: this,
+      });
+
+      return this;
+    }
+  }
   // 获取 uid
   getDefaultUid(): string {
     const uid = _localStorage.getItem(this._options.uidName);
@@ -126,29 +162,6 @@ export class MonitorInfo {
       return result;
     })();
   }
-  // 上报
-  async report() {
-    let { reportUrl, reportType } = this._options;
-    reportUrl = `${reportUrl}?type=${this.type}`;
-    // _console.log({ reportUrl, reportType });
-    if (reportType === 'fetch') {
-      await Monitor.fetch(reportUrl, {
-        method: 'POST',
-        body: JSON.stringify(this),
-      });
-
-      return this;
-    }
-    if (reportType === 'wxRequest') {
-      Monitor.wxRequest({
-        url: reportUrl,
-        method: 'POST',
-        data: this,
-      });
-
-      return this;
-    }
-  }
 }
 export class Monitor {
   static XMLHttpRequest: any;
@@ -158,7 +171,7 @@ export class Monitor {
     // _console.log('static',wx.request);
     // 自身发请求时使用未重写的方法防止循环触发
     this.XMLHttpRequest = BaseEnv.isBrowser ? (() => {
-      const XHR = Object.create(XMLHttpRequest);
+      const XHR = XMLHttpRequest.bind(window);
       Object.setPrototypeOf(XHR, Object.assign(Object.create(XMLHttpRequest), {
         open: XMLHttpRequest.prototype.open,
         setRequestHeader: XMLHttpRequest.prototype.setRequestHeader,
