@@ -15,13 +15,16 @@ const { localConfig } = window.testsShared;
 
 window.appMonitor = new Monitor({
   reportUrl: `${localConfig.remoteURL}/performance`,
+  appInfo: {
+    name: 'browser',
+    version: '1.8.0',
+  },
 })
   .watchResourceError()
   .watchCodeError()
   .watchPromiseError()
   .watchRequestError()
-  .watchRouteChange()
-  // .watchPerformance()
+  .watchRouteChange();
 window.addEventListener('DOMContentLoaded', function () {
   // vue2
   (function () {
