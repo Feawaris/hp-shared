@@ -1,14 +1,34 @@
-// @ts-nocheck
-import { _Object, _Date, _Function, BaseEnv } from '../../base';
+import { BaseEnv, _Object, _Date } from '../base';
 
 export class BaseCookie {
-  constructor(getValue = _Function.NOOP, setValue = _Function.NOOP) {
+  value: string;
+  constructor(req, res) {
     _Object.assign(this, {
       get value() {
-        return typeof getValue === 'function' ? getValue() : getValue;
+        if (BaseEnv.isBrowser) {
+          return document.cookie;
+        }
+        if (BaseEnv.isWx) {
+          return '';
+        }
+        if (BaseEnv.isNode) {
+          return req.headers.cookie;
+        }
+        return '';
       },
       set value(text) {
-        setValue(text);
+        if (BaseEnv.isBrowser) {
+          document.cookie = text;
+          return
+        }
+        if (BaseEnv.isWx) {
+          return
+        }
+        if (BaseEnv.isNode) {
+          const arr = res.getHeader('Set-Cookie') || [];
+          res.setHeader('Set-Cookie', [...arr, text]);
+          return
+        }
       },
 
       get length() {
@@ -16,6 +36,7 @@ export class BaseCookie {
       },
     });
   }
+
   toArray() {
     const arr = this.value.split(/\s*;\s*/).filter((str) => str !== '');
     return arr.map((str) => {
@@ -51,17 +72,8 @@ export class BaseCookie {
       {
         path: '/',
         // 受影响属性处理
-        ...('expires' in options
-          ? {}
-          : {
-              maxAge: 86400 * 3,
-            }),
-        ...(BaseEnv.isNode
-          ? {
-              httponly: true,
-              secure: true,
-            }
-          : {}),
+        ...('expires' in options ? {} : { maxAge: 86400 * 3 }),
+        ...(BaseEnv.isNode ? { httponly: true, secure: true } : {}),
       },
       options,
     );
@@ -99,3 +111,5 @@ export class BaseCookie {
       .flat();
   }
 }
+// @ts-ignore
+export const cookie = new BaseCookie();

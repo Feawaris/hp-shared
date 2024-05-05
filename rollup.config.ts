@@ -147,21 +147,16 @@ const config: RollupOptions[] = [
   },
 
   {
-    input: 'src/storage/index-browser.ts',
+    input: 'src/storage/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/storage.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/storage.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/storage.cjs', format: 'cjs' }),
     ],
     plugins: browserPlugins,
   },
   {
-    input: 'src/storage/index-browser.ts',
-    output: [
-      getOutputItem({ file: 'dist/browser/storage.d.ts' }),
-    ],
-    plugins: dtsPlugins,
-  },
-  {
-    input: 'src/storage/index-node.ts',
+    input: 'src/storage/index.ts',
     output: [
       getOutputItem({ file: 'dist/node/storage.js', format: 'cjs' }),
       getOutputItem({ file: 'dist/node/storage.mjs', format: 'es' }),
@@ -169,24 +164,11 @@ const config: RollupOptions[] = [
     plugins: nodePlugins,
   },
   {
-    input: 'src/storage/index-node.ts',
+    input: 'src/storage/index.ts',
     output: [
-      getOutputItem({ file: 'dist/node/storage.d.ts' }),
-    ],
-    plugins: dtsPlugins,
-  },
-  {
-    input: 'src/storage/index-wx.ts',
-    output: [
-      getOutputItem({ file: 'dist/wx/storage.js', format: 'es' }),
-      getOutputItem({ file: 'dist/wx/storage.cjs', format: 'cjs' }),
-    ],
-    plugins: browserPlugins,
-  },
-  {
-    input: 'src/storage/index-wx.ts',
-    output: [
-      getOutputItem({ file: 'dist/wx/storage.d.ts' }),
+      getOutputItem({ file: 'dist/browser/dev.d.ts' }),
+      getOutputItem({ file: 'dist/node/dev.d.ts' }),
+      getOutputItem({ file: 'dist/wx/dev.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
@@ -195,6 +177,8 @@ const config: RollupOptions[] = [
     input: 'src/dev/index.ts',
     output: [
       getOutputItem({ file: 'dist/browser/dev.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/dev.js', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/dev.cjs', format: 'cjs' }),
     ],
     plugins: browserPlugins,
   },
@@ -211,6 +195,7 @@ const config: RollupOptions[] = [
     output: [
       getOutputItem({ file: 'dist/browser/dev.d.ts' }),
       getOutputItem({ file: 'dist/node/dev.d.ts' }),
+      getOutputItem({ file: 'dist/wx/dev.d.ts' }),
     ],
     plugins: dtsPlugins,
   },

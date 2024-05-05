@@ -1,5 +1,5 @@
 import { _console, _Date, _Object, BaseEnv } from '../base';
-import { _localStorage } from '../storage/web-storage';
+import { _localStorage } from '../storage';
 import { v4 as uuidv4 } from 'uuid';
 
 function getSearchParams(url = '') {

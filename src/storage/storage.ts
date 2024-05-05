@@ -1,7 +1,7 @@
-import { BaseEnv } from '../../base';
+import { BaseEnv } from '../base';
 
-export class WebStorage {
-  private value: any;
+export class BaseStorage {
+  value: any;
   constructor(webStorage: string = '') {
     this.value = BaseEnv.isBrowser ? window[webStorage] : {};
   }
@@ -103,5 +103,5 @@ export class WebStorage {
     }
   }
 }
-export const _localStorage = new WebStorage('localStorage');
-export const _sessionStorage = new WebStorage('sessionStorage');
+export const _localStorage = new BaseStorage('localStorage');
+export const _sessionStorage = new BaseStorage('sessionStorage');

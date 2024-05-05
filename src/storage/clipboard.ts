@@ -1,11 +1,4 @@
-/**
- * 剪贴板
- * [浏览器](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API)
- * [node](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback)
- * [小程序](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html)
- */
-
-import { _console,  BaseEnv } from '../../base';
+import { _console,  BaseEnv } from '../base';
 export const clipboard = Object.create(null);
 
 const commandMap = {

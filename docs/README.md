@@ -578,7 +578,13 @@ const { _Proxy } = require('hp-shared/base');
 
 #### 2.2.1 clipboard 剪贴板
 
-同浏览器 [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API) 使用
+同浏览器 **Clipboard API** 使用
+
+|             | 链接                                                         |
+| ----------- | ------------------------------------------------------------ |
+| **browser** | [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API) |
+| **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
+| **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html) |
 
 ::: code-tabs#import
 
@@ -610,22 +616,43 @@ const { clipboard } = require('hp-shared/storage');
 })();
 ```
 
+@tab wx
+
+```js
+import { clipboard } from 'hp-shared/storage';
+
+(async function () {
+  // copy
+  await clipboard.copy(Date.now());
+  // paste
+  const text = await clipboard.paste();
+  console.log(text);
+})();
+```
+
 :::
 
-| 属性          | 说明             | browser                                 | node                                    |
-| ------------- | ---------------- | --------------------------------------- | --------------------------------------- |
-| **copy**      | 复制             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **paste**     | 粘贴             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| copySync      | 复制（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-| pasteSync     | 粘贴（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-| writeText     | 同 copy          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| readText      | 同 paste         | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| writeTextSync | 同 copySync      | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-| readTextSync  | 同 pasteSync     | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+| 属性          | 说明             | browser                                 | node                                    | wx                                      |
+| ------------- | ---------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| **copy**      | 复制             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **paste**     | 粘贴             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| *copySync*    | 复制（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| *pasteSync*   | 粘贴（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+|               |                  |                                         |                                         |                                         |
+| writeText     | 同 copy          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| readText      | 同 paste         | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| writeTextSync | 同 copySync      | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| readTextSync  | 同 pasteSync     | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
 
 #### 2.2.2 Web Storage
 
-同浏览器 [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API) 使用，同样专注于前后端交互的 JSON， 存取方法默认做了 JSON 转换
+同浏览器 **Web Storage API** 使用，同样专注于前后端交互的 JSON， 存取方法默认做了 JSON 转换
+
+|             | 链接                                                         |
+| ----------- | ------------------------------------------------------------ |
+| **browser** | [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API) |
+| **node**    |                                                              |
+| **wx**      | [数据缓存](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html) |
 
 ::: code-tabs#import
 
@@ -644,26 +671,50 @@ console.log(a);
 @tab node
 
 ```js
+const { _sessionStorage, _localStorage } = require('hp-shared/storage');
 
+// setItem
+_sessionStorage.setItem('a', 1);
+// getItem
+const a = _sessionStorage.getItem('a');
+console.log(a);
+```
+
+@tab wx
+
+```js
+import { _sessionStorage, _localStorage } from 'hp-shared/storage';
+
+// setItem
+_sessionStorage.setItem('a', 1);
+// getItem
+const a = _sessionStorage.getItem('a');
+console.log(a);
 ```
 
 :::
 
-| 对象                 | 说明                | browser                                 | node                                   |
-| -------------------- | ------------------- | --------------------------------------- | -------------------------------------- |
-| **\_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
-| **\_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
+| 对象                 | 说明                | browser                                 | node                                    | wx                                      |
+| -------------------- | ------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| **\_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **\_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 
-| 属性                                             | 说明                                  | browser                                 | node                                   |
-| ------------------------------------------------ | ------------------------------------- | --------------------------------------- | -------------------------------------- |
-| **setItem**                                      | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
-| **getItem**                                      | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
-| toObject                                         | 转换成对象                            | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
-| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
+| 属性                                             | 说明                                  | browser                                 | node                                    | wx                                      |
+| ------------------------------------------------ | ------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| **setItem**                                      | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **getItem**                                      | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| toObject                                         | 转换成对象                            | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |                                         |                                         |                                         |
 
 #### 2.2.3 Web Cookie
 
-操作 [Web Cookie](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies)
+操作 Web Cookie
+
+|             | 链接                                                         |
+| ----------- | ------------------------------------------------------------ |
+| **browser** | [HTTP Cookie](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies) |
+| **node**    | [request.setHeader](https://nodejs.org/docs/latest/api/http.html#requestsetheadername-value) |
+| **wx**      |                                                              |
 
 ::: code-tabs#import
 
@@ -676,7 +727,7 @@ import { cookie } from 'hp-shared/storage';
 @tab node
 
 ```js
-const { NodeCookie } = require('hp-shared/storage');
+const { BaseCookie } = require('hp-shared/storage');
 
 http.createServer((req, res) => {
   const cookie = new NodeCookie(req, res);
@@ -686,20 +737,25 @@ http.createServer((req, res) => {
 @tab koa
 
 ```js
-const { NodeCookie } = require('hp-shared/storage');
+const { BaseCookie } = require('hp-shared/storage');
 
 router.get('/test', (ctx) => {
   const cookie = new NodeCookie(ctx.req, ctx.res);
 });
 ```
 
+@tab wx
+
+```js
+
+```
+
 :::
 
-| 对象           | 说明                          | browser                                 | node                                    |
-| -------------- | ----------------------------- | --------------------------------------- | --------------------------------------- |
-| **cookie**     | browser 用                    | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-| **NodeCookie** | node 用，通过 new 创建 cookie | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-| BaseCookie     | 基础 class                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| 对象           | 说明       | browser                                 | node                                    | wx                                      |
+| -------------- | ---------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| **BaseCookie** | 基础 class | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **cookie**     | browser 用 | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:#999;">✕</strong>  |
 
 ##### BaseCookie
 
@@ -716,13 +772,6 @@ router.get('/test', (ctx) => {
 | has                                   |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | remove                                |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | clear                                 |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-
-##### NodeCookie
-
-| 属性                                  | 说明 | browser                                | node                                    |
-| ------------------------------------- | ---- | -------------------------------------- | --------------------------------------- |
-| <i style="color:pink;">prototype:</i> |      |                                        |                                         |
-| **constructor**                       |      | <strong style="color:#999;">✕</strong> | <strong style="color:green;">✓</strong> |
 
 ### 2.3 dev 开发
 
@@ -1034,6 +1083,61 @@ export default defineConfig((env) => {
     },
   });
 });
+```
+
+:::
+
+### 2.4 performance 性能
+
+#### 2.4.1 monitor 稳定性监控
+
+::: code-tabs#import
+
+@tab vue
+
+```js
+// main.js
+import { Monitor } from 'hp-shared/performance';
+import { _sessionStorage } from 'hp-shared/storage';
+import pkg from '../package.json';
+window.appMonitor = new Monitor({
+  reportUrl: ``,
+  uid() {
+    return _sessionStorage.getItem('userInfo')._id;
+  },
+  aappInfo: {
+    name: pkg.name,
+    version: pkg.version,
+  },
+})
+  .watchResourceError()
+  .watchCodeError()
+  .watchPromiseError()
+  .watchRequestError()
+  .watchRouteChange()
+  .watchVueError(app)
+```
+
+@tab wx
+
+```js
+// app.js
+import { Monitor } from 'hp-shared/performance';
+import { _localStorage } from 'hp-shared/storage';
+wx.appMonitor = new Monitor({
+  reportUrl: ``,
+  uid() {
+    return _localStorage.getItem('userInfo')._id;
+  },
+  appInfo: {
+    name: '',
+    version: '',
+  },
+})
+  .watchResourceError()
+  .watchCodeError()
+  .watchRequestError()
+  .watchRouteChange()
 ```
 
 :::
