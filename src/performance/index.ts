@@ -20,6 +20,7 @@ export interface MonitorInfoData {
   env?: {
     envs: string[],
     os: string,
+    isMobile: boolean
   },
   // location 关键信息
   location?: {
@@ -65,6 +66,7 @@ export class MonitorInfo {
       env: {
         envs: BaseEnv.envs,
         os: BaseEnv.os,
+        isMobile: BaseEnv.isMobile,
       },
       location: {
         href: (() => {
@@ -114,7 +116,8 @@ export class MonitorInfo {
     // _console.log({ reportUrl, reportType });
 
     if (reportType === 'sendBeacon') {
-      navigator.sendBeacon(reportUrl,JSON.stringify(this));
+      // @ts-ignore
+      navigator.sendBeacon(reportUrl, JSON.stringify(this));
 
       return this;
     }

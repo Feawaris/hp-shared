@@ -1,4 +1,3 @@
-// @ts-nocheck
 export const BaseEnv: {
   envs: string[],
   isBrowser: boolean,
@@ -6,6 +5,7 @@ export const BaseEnv: {
   isChromeExtension: boolean,
   isServiceWorker: boolean,
   isNode: boolean,
+  isMobile: boolean,
   os: string,
   isWindows: boolean,
   isMac: boolean,
@@ -43,22 +43,40 @@ BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
 BaseEnv.isWx = BaseEnv.envs.includes('wx');
+BaseEnv.isMobile = (() => {
+  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
+    try {
+      // @ts-ignore
+      return navigator.userAgentData.mobile;
+    } catch (e) {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+  }
+  if (BaseEnv.isWx) {
+    return wx.getSystemInfoSync().platform !== 'devtools';
+  }
+  return false;
+})();
 // 操作系统: windows, mac, linux, android, ios, ...
 BaseEnv.os = ((): string => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWx) {
-    // 小程序真机环境通过 wx.getSystemInfoSync 得到，开发者工具可使用 navigator 方法，继续走下面浏览器逻辑
+    // 小程序真机：通过 wx.getSystemInfoSync 得到，开发者工具可使用 navigator 方法，继续走下面浏览器逻辑
     if (BaseEnv.isWx && !globalThis.navigator) {
-      const si = wx.getSystemInfoSync();
-      return si.platform;
+      return wx.getSystemInfoSync().platform;
     }
+
     const { navigator } = globalThis;
-    const text = (() => {
-      try {
-        return navigator.userAgentData.platform.toLowerCase() || '';
-      } catch (e) {
-        return navigator.platform.toLowerCase();
+    // 移动端
+    if (BaseEnv.isMobile) {
+      if (/android/i.test(navigator.userAgent)) {
+        return 'android';
       }
-    })();
+      if (/iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+        return 'ios';
+      }
+    }
+
+    const text = navigator.platform.toLowerCase();
     if (text.startsWith('win')) {
       return 'windows';
     }

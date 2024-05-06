@@ -1,6 +1,3 @@
-/**
- * [tsconfig](https://www.typescriptlang.org/tsconfig/)
- */
 {
   "compilerOptions": {
     "target": "esnext",
@@ -15,6 +12,7 @@
     "noEmitOnError": false,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": ["dom", "webworker"]
   }
 }
