@@ -116,7 +116,6 @@ export class MonitorInfo {
     // _console.log({ reportUrl, reportType });
 
     if (reportType === 'sendBeacon') {
-      // @ts-ignore
       navigator.sendBeacon(reportUrl, JSON.stringify(this));
 
       return this;
@@ -326,22 +325,24 @@ export class Monitor {
           detail: {
             // request 前端信息有限，借助后端返回更多信息，后端报错未返回时使用简版
             request: {
-              method,
+              method: method?.toUpperCase() || 'GET',
               url,
               headers: {},
-              body: {},
+              body: null,
             },
             // response 在 onloadend 中添加
             response: {
               status: this.status,
               statusText: this.statusText,
+              headers: {},
+              body: null,
             },
             // 起止时间
             startTime: null,
             endTime: null,
           },
         });
-        this.onloadend = function (event: ProgressEvent) {
+        this.addEventListener('loadend', function (event: ProgressEvent) {
           const monitorInfo = this._monitorInfo;
           _Object.deepAssign(monitorInfo.detail, {
             endTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
@@ -351,18 +352,24 @@ export class Monitor {
               const str = this.getAllResponseHeaders();
               const arr = str.split(/[\r\n]+/).filter(val => val);
               return Object.fromEntries(arr.map((val) => {
-                return val.split(/:\s+/);
+                const [key, value] = val.split(/:\s+/);
+                return [key.toLowerCase(), value];
               }));
             })();
+            // json 类型 body 转换，其他原样返回
             const body = (() => {
-              try {
-                return JSON.parse(this.response);
-              } catch (e) {
-                return {};
+              if (headers['content-type'].includes('application/json')) {
+                try {
+                  return JSON.parse(this.response);
+                } catch (e) {
+                  return {};
+                }
               }
+              return this.response;
             })();
-            const request = body._request || {};
-            delete body._request;
+            // 借助后端返回更多信息
+            const request = body?._request || {};
+            delete body?._request;
             _Object.deepAssign(monitorInfo.detail, {
               request,
               response: {
@@ -374,7 +381,7 @@ export class Monitor {
             });
             monitorInfo.report();
           }
-        };
+        });
         return nativeOpen.apply(this, arguments);
       };
       const nativeSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
@@ -396,12 +403,14 @@ export class Monitor {
           startTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
           request: {
             body: (() => {
-              try {
-                // @ts-ignore
-                return JSON.parse(body);
-              } catch (e) {
-                return body;
+              if (monitorInfo.detail.request.headers['content-type'].includes('application/json')) {
+                try {
+                  return JSON.parse(body);
+                } catch (e) {
+                  return {};
+                }
               }
+              return body;
             })(),
           },
         });
@@ -412,7 +421,7 @@ export class Monitor {
       const nativeFetch = fetch;
       // @ts-ignore
       fetch = async function () {
-        const [url, { method = 'GET', headers: reqHeaders = {}, body: reqBody = '{}' } = {}] = arguments;
+        const [url, { method = 'GET', headers: reqHeaders = {}, body: reqBody = null } = {}] = arguments;
         const monitorInfo = _this.createMonitorInfo({
           type: 'RequestError',
           trigger: 'fetch',
@@ -420,18 +429,26 @@ export class Monitor {
             startTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
             endTime: null,
             request: {
-              method: method.toUpperCase(),
+              method: method?.toUpperCase() || 'GET',
               url,
               headers: reqHeaders,
               body: (() => {
-                try {
-                  return JSON.parse(reqBody);
-                } catch (e) {
-                  return {};
+                if (reqHeaders['content-type'].includes('application/json')) {
+                  try {
+                    return JSON.parse(reqBody);
+                  } catch (e) {
+                    return {};
+                  }
                 }
+                return reqBody;
               })(),
             },
-            response: {},
+            response: {
+              status: 0,
+              statusText: '',
+              headers: {},
+              body: null,
+            },
           },
         });
         return nativeFetch.apply(this, arguments).then(async (res) => {
@@ -478,7 +495,7 @@ export class Monitor {
           trigger: 'wx.request',
           detail: {
             request: {
-              method: options.method || 'GET',
+              method: options.method?.toUpperCase() || 'GET',
               url: options.url,
               headers: options.header,
               body: options.data,

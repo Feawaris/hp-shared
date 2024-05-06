@@ -32,7 +32,7 @@ async function getRequest(req) {
   return {
     httpVersion: req.httpVersion,
     ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-    method: req.method,
+    method: req.method.toUpperCase(),
     url: req.method,
     socket: {
       remoteFamily: req.socket.remoteFamily,
@@ -73,7 +73,7 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', '*');
   res.setHeader('Access-Control-Allow-Headers', '*');
   res.setHeader('Access-Control-Expose-Headers', '*');
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Content-Type', 'application/json;charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache');
 
   // OPTIONS 预检请求处理

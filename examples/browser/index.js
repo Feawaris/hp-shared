@@ -105,7 +105,7 @@ window.examples = {
     xhr.open('post', `${localConfig.remoteURL}`, true, 'user1', '123456');
     const headers = {
       accept: 'application/json',
-      'content-type': 'application/json',
+      'content-type': 'application/json;charset=utf-8',
     };
     for (const [key, value] of Object.entries(headers)) {
       xhr.setRequestHeader(key, value);
@@ -117,7 +117,7 @@ window.examples = {
     xhr.open('post', `${localConfig.remoteURL}/error`);
     const headers = {
       accept: 'application/json',
-      'content-type': 'application/json',
+      'content-type': 'application/json;charset=utf-8',
     };
     for (const [key, value] of Object.entries(headers)) {
       xhr.setRequestHeader(key, value);
@@ -139,7 +139,7 @@ window.examples = {
       method: 'post',
       headers: {
         accept: 'application/json',
-        'content-type': 'application/json',
+        'content-type': 'application/json;charset=utf-8',
       },
     });
   },

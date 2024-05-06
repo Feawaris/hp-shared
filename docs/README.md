@@ -1105,7 +1105,7 @@ window.appMonitor = new Monitor({
   uid() {
     return _sessionStorage.getItem('userInfo')._id;
   },
-  aappInfo: {
+  appInfo: {
     name: pkg.name,
     version: pkg.version,
   },
