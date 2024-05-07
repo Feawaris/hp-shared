@@ -1,8 +1,17 @@
 const { _console, _Date } = require('hp-shared/base');
+const { localConfig } = require('shared');
 const http = require('node:http');
 const EventEmitter = require('node:events');
 const { MongoClient } = require('mongodb');
-const { localConfig } = require('shared');
+
+process.on('uncaughtException', (err) => {
+  _console.error(err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  _console.error(reason, promise);
+  process.exit(1);
+});
 
 const dataStore = {
   browser: null,
