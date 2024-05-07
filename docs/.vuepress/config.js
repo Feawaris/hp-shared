@@ -219,7 +219,7 @@ export default defineUserConfig({
           /**
            * 语法
            */
-          // katex: true,
+          katex: true,
           // mathjax: true,
           sub: true,
           sup: true,
