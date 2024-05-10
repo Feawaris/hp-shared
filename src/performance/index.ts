@@ -13,39 +13,39 @@ function getSearchParams(url = '') {
 
 export interface MonitorInfoData {
   // 生成 uid 以区分用户
-  uid?: string | Function;
+  uid: string | Function;
   // 生成时间
-  time?: string,
+  time: string,
   // BaseEnv 关键信息
-  env?: {
+  env: {
     envs: string[],
     os: string,
     isMobile: boolean
   },
   // location 关键信息
-  location?: {
+  location: {
     href: string,
   },
   // 项目信息
-  appInfo?: {
-    name?: string,
-    version?: string | number,
+  appInfo: {
+    name: string,
+    version: string | number,
   },
 
   // 类型
-  type?: string,
+  type: string,
   // 触发方式
-  trigger?: string,
+  trigger: string,
   // 详细数据
-  detail?: object,
+  detail: object,
 }
 export interface MonitorInfoOptions {
   // 各实例共用 uid 属性名本地存储
-  uidName?: string;
+  uidName: string;
   // 上报地址
-  reportUrl?: string,
+  reportUrl: string,
   // 上报方式
-  reportType?: 'fetch' | 'xhr' | 'img' | 'sendBeacon' | 'wxRequest',
+  reportType: 'fetch' | 'xhr' | 'img' | 'sendBeacon' | 'wxRequest',
 }
 
 export class MonitorInfo {
@@ -53,14 +53,7 @@ export class MonitorInfo {
   type: string;
   trigger: string;
   detail: object;
-  constructor(info: MonitorInfoData = {}, options: MonitorInfoOptions = {}) {
-    Object.defineProperty(this, '_options', {
-      value: _Object.deepAssign({
-        uidName: 'monitor_uid',
-        reportType: BaseEnv.isWx ? 'wxRequest' : 'sendBeacon',
-      }, options),
-      enumerable: false,
-    });
+  constructor(info: Partial<MonitorInfoData> = {}, options: Partial<MonitorInfoOptions> = {}) {
     _Object.deepAssign(this, {
       time: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
       env: {
@@ -106,6 +99,13 @@ export class MonitorInfo {
         }
         return this.getDefaultUid();
       },
+    });
+    Object.defineProperty(this, '_options', {
+      value: _Object.deepAssign({
+        uidName: 'monitor_uid',
+        reportType: BaseEnv.isWx ? 'wxRequest' : 'sendBeacon',
+      }, options),
+      enumerable: false,
     });
   }
 
@@ -185,8 +185,8 @@ export class Monitor {
     this.wxRequest = BaseEnv.isWx ? wx.request.bind(wx) : null;
   }
 
-  private monitorInfoData: MonitorInfoData;
-  private monitorInfoOptions: MonitorInfoOptions;
+  monitorInfoData: MonitorInfoData;
+  monitorInfoOptions: MonitorInfoOptions;
   constructor(options = {}) {
     _Object.deepAssign(this, options);
     // MonitorInfoData 和 MonitorInfoOptions 收集
@@ -199,7 +199,7 @@ export class Monitor {
   }
 
   // 创建 MonitorInfo 实例
-  createMonitorInfo(data: MonitorInfoData = {}) {
+  createMonitorInfo(data: Partial<MonitorInfoData> = {}) {
     data = _Object.deepAssign({}, this.monitorInfoData, data);
     return new MonitorInfo(data, this.monitorInfoOptions);
   }
@@ -286,9 +286,8 @@ export class Monitor {
   }
   // Vue 异常
   watchVueError(app) {
-    const _this = this;
     app.config.errorHandler = (err, instance, info) => {
-      const monitorInfo = _this.createMonitorInfo({
+      const monitorInfo = this.createMonitorInfo({
         type: 'VueError',
         trigger: (() => {
           if (app.version.startsWith('3')) {
@@ -300,6 +299,7 @@ export class Monitor {
           return '';
         })(),
         detail: {
+          vueVersion: app.version,
           error: {
             stack: err.stack,
             message: err.message,
@@ -309,6 +309,10 @@ export class Monitor {
       });
       monitorInfo.report();
     };
+    return this;
+  }
+  // React 异常
+  watchReactError() {
     return this;
   }
   // 请求异常
@@ -683,9 +687,9 @@ export class Monitor {
       po.observe({
         entryTypes: [
           'largest-contentful-paint', // LCP
+          'first-input', // FID
           'layout-shift', // CLS
           'paint', // FP,FCP
-          'first-input', // FID
           // 'navigation', // TTFB
         ],
         buffered: true,

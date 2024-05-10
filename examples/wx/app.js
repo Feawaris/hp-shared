@@ -15,5 +15,7 @@ wx.appMonitor = new Monitor({
   .watchRequestError()
   .watchRouteChange();
 
-App({});
+App({
+
+});
 

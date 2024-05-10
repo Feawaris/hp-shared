@@ -13,6 +13,6 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "lib": ["dom", "webworker"]
+    "lib": ["esnext", "dom", "webworker"]
   }
 }

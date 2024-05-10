@@ -1,10 +1,14 @@
-// @ts-nocheck
 import { BaseEnv } from './base';
 import { _Object } from './_Object';
 import { _Date } from './_Date';
 
 // 简易 chalk
-export const _chalk = Object.create(null);
+export const _chalk: {
+  styleMap: {
+    [key: string]: [number, number];
+  },
+  [key: string]: any
+} = Object.create(null);
 _chalk.styleMap = {
   black: [30, 39],
   red: [31, 39],
@@ -57,12 +61,26 @@ _chalk.styleMap = {
   strikethrough: [9, 29],
 };
 for (const [method, [start, end]] of Object.entries(_chalk.styleMap)) {
-  _chalk[method] = function (message) {
+  _chalk[method] = function (message: any) {
     return `\x1b[${start}m${message}\x1b[${end}m`;
   };
 }
 
-export const _console = Object.create(console);
+export const _console: {
+  getStackInfo: Function;
+  getValues: Function;
+  show: Function;
+  log: Function;
+  warn: Function;
+  error: Function;
+  success: Function;
+  end: Function;
+  dir: Function;
+  table: Function;
+  group: Function;
+  groupCollapsed: Function;
+  groupAction: Function;
+} = Object.create(console);
 
 // 根据堆栈跟踪格式提取详细信息
 _console.getStackInfo = function () {
@@ -117,8 +135,8 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
   // 时间
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   // stackInfo 需要从具体方法传进来
-  // console.log(stackInfo);
   // 前缀内容
+  // @ts-ignore
   let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fullPathShow, stackInfo.method].join(' ')}:`;
   // 样式映射
   const styleMap = {

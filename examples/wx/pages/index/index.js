@@ -55,4 +55,7 @@ Page({
   goPage1() {
     wx.navigateTo({ url: `/pages/page1/page1?date=${new _Date}` });
   },
+  onImageError(e){
+    _console.log(e);
+  }
 });

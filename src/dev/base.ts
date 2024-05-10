@@ -5,54 +5,9 @@ import fs from 'node:fs';
 import serialize from 'serialize-javascript';
 
 export class Dev {
-  static REG_EXPS = {
-    json: /^\.(json|json5|jsonc)$/,
-    js: /^\.(js|cjs|mjs)$/,
-    yaml: /^\.(yaml|yml)$/,
-    ignore: /ignore$/,
-  };
   // 当前时间转成文件名，替换无法使用的符号
   static getDateNameForFile() {
     return new _Date().toString().replaceAll(':', '_').replaceAll(' ', '__');
-  }
-  /**
-   * 原样创建文件
-   * @param inputFile 输入文件，常用 __filename
-   * @param outputFile 输出文件
-   * @returns {{success: boolean}|{}|{outputData: string, inputFile: *, outputFile: *, outputDir: string, inputData: string, success: boolean, outputFileRelative: string}}
-   */
-  static createSameFile({ inputFile, outputFile } = {}) {
-    // 参数验证
-    let need = { inputFile, outputFile };
-    for (const [key, value] of Object.entries(need)) {
-      if (![null, undefined].includes(value)) {
-        delete need[key];
-      }
-    }
-    if (Object.keys(need).length > 0) {
-      _console.error(`缺少参数: ${Object.keys(need)}`);
-      return {
-        success: false,
-      };
-    }
-
-    // 创建文件
-    const outputDir = path.dirname(outputFile);
-    const outputFileRelative = path.relative(outputDir, outputFile);
-    // 写入文件
-    const inputData = fs.readFileSync(inputFile, 'utf-8');
-    const outputData = inputData;
-    fs.writeFileSync(outputFile, outputData);
-    // 返回用于输出反馈的信息
-    return {
-      success: true,
-      inputFile,
-      inputData,
-      outputFile,
-      outputData,
-      outputDir,
-      outputFileRelative,
-    };
   }
   // 添加内容到 ignore 文件
   static appendIgnoreFile({ inputData = [], outputFile } = {}) {
@@ -93,72 +48,6 @@ export class Dev {
       inputData,
       appendData,
       outputFile,
-      outputDir,
-      outputFileRelative,
-    };
-  }
-  // 从 ignore 文件如 .gitignore 拿内容，用于传 ignores 数组
-  static getIgnoresFromFiles(files = []) {
-    // 统一成数组处理
-    if (typeof files === 'string') {
-      files = [files];
-    }
-
-    const arr = files
-      .map((file) => {
-        const text = fs.readFileSync(file, 'utf-8');
-        const arr = text.split('\n').filter((str) => str.trim() !== '' && !str.startsWith('#'));
-        return arr;
-      })
-      .flat();
-    return new _Set(arr).toArray();
-  }
-  // 创建文件
-  static createFile({ inputData, outputFile } = {}) {
-    // 参数验证
-    let need = { inputData, outputFile };
-    for (const [key, value] of Object.entries(need)) {
-      if (![null, undefined].includes(value)) {
-        delete need[key];
-      }
-    }
-    if (Object.keys(need).length > 0) {
-      _console.error(`缺少参数: ${Object.keys(need)}`);
-      return {
-        success: false,
-      };
-    }
-
-    const ext = path.extname(outputFile);
-    const outputData = (() => {
-      // 不同文件类型的处理
-      if (Dev.REG_EXPS.json.test(ext)) {
-        return JSON.stringify(inputData, null, 2);
-      }
-      // 注意这里 .xxignore 得到的 ext 值为 ''，用 outputFile 判断
-      if (Dev.REG_EXPS.ignore.test(outputFile)) {
-        if (Array.isArray(inputData)) {
-          return inputData.join('\n');
-        }
-      }
-      const serializedInput = serialize(inputData, { space: 2, unsafe: true });
-      if (Dev.REG_EXPS.js.test(ext)) {
-        return `module.exports = ${serializedInput}`;
-      }
-      // 其他原样返回
-      return inputData;
-    })();
-    // 写入文件
-    fs.writeFileSync(outputFile, outputData);
-
-    // 返回用于输出反馈的信息
-    const outputDir = path.dirname(outputFile);
-    const outputFileRelative = path.relative(outputDir, outputFile);
-    return {
-      success: true,
-      inputData,
-      outputFile,
-      outputData,
       outputDir,
       outputFileRelative,
     };
@@ -231,8 +120,12 @@ export class Lint {
     res.success && res.needChange ? _console.success(`ignores: ${new _Array(res.appendData)} 已加入到: ${res.outputFileRelative}`) : _console.end(`${res.outputFileRelative} 无需更新`);
     return this;
   }
+  // 从 ignore 文件如 .gitignore 拿内容，用于传 ignores 数组
   getIgnores(ignoreFile) {
-    return Dev.getIgnoresFromFiles(path.resolve(this.rootDir, ignoreFile));
+    const file = path.resolve(this.rootDir, ignoreFile);
+    const text = fs.readFileSync(file, 'utf-8');
+    const arr = text.split('\n').filter((str) => str.trim() !== '' && !/\s*#/.test(str));
+    return new _Set(arr).toArray();
   }
   createIgnoreFile(data = [], { includeGitignore = true } = {}) {
     if (!this.ignoreFile) {

@@ -5,6 +5,7 @@
  * [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve)
  * [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs)
  * [@rollup/plugin-json](https://www.npmjs.com/package/@rollup/plugin-json)
+ * [@rollup/plugin-terser](https://www.npmjs.com/package/@rollup/plugin-terser)
  */
 import { _Date } from './src/base/index.ts';
 import type { OutputOptions, RollupOptions } from 'rollup';

@@ -99,7 +99,16 @@ const server = http.createServer(async (req, res) => {
 
   // 数据库
   const { mongodb: { hostname, port, username, password } } = localConfig;
-  const client = new MongoClient(`mongodb://${[username, password].join(':')}@${[hostname, port].join(':')}`);
+  const dbUrl = [
+    'mongodb://',
+    ...(() => {
+      const user = [username, password].filter(val => val).join(':');
+      const host = [hostname, port].join(':');
+      return `${user}${user ? '@' : ''}${host}`;
+    })(),
+  ].join('');
+  // _console.log(dbUrl);
+  const client = new MongoClient(dbUrl);
   await client.connect();
   const db = client.db('tests');
 
