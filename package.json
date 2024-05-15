@@ -30,7 +30,7 @@
     "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m'; pnpm run refresh && pnpm run docs:build:npm"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.0.2",
+    "@inquirer/prompts": "^5.0.3",
     "commander": "^12.0.0",
     "ejs": "^3.1.10",
     "serialize-javascript": "^6.0.2",
@@ -42,12 +42,12 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/chrome": "^0.0.267",
+    "@types/chrome": "^0.0.268",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.12.12",
     "@types/wechat-miniprogram": "^3.4.7",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
     "cross-env": "^7.0.3",
     "eslint": "9.2.0",
     "eslint-plugin-prettier": "^5.1.3",
@@ -64,7 +64,7 @@
     "stylelint": "^16.5.0",
     "ts-node": "^10.9.2",
     "typescript": "5.4.5",
-    "typescript-eslint": "7.8.0",
+    "typescript-eslint": "7.9.0",
     "vue-eslint-parser": "^9.4.2"
   },
   "exports": {

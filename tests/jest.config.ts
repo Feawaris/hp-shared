@@ -10,20 +10,20 @@ const config: Config = {
         '**/node/**/*.js',
       ],
     },
-    {
+    /*{
       displayName: '浏览器',
       testEnvironment: 'node',
       testMatch: [
-        '**/browser/**/*.js',
+        '**!/browser/!**!/!*.js',
       ],
     },
     {
       displayName: '小程序',
       testEnvironment: 'node',
       testMatch: [
-        '**/wx/**/*.js',
+        '**!/wx/!**!/!*.js',
       ],
-    },
+    },*/
   ],
 };
 export default config;

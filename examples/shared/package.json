@@ -1,7 +1,7 @@
 {
   "name": "shared",
   "scripts": {
-    "build": "pnpx rimraf dist/* && rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
+    "build": "pnpx rimraf dist/* && rollup --config --bundleConfigAsCjs",
     "build:watch": "pnpm run build --watch"
   },
   "dependencies": {

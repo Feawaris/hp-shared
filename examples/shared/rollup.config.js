@@ -1,4 +1,3 @@
-import type { OutputOptions, RollupOptions } from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -15,7 +14,7 @@ const nodePlugins = [
   commonjs(),
 ];
 
-const config: RollupOptions[] = [
+const config = [
   {
     input: 'src/index.js',
     output: [

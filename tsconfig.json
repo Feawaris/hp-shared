@@ -13,6 +13,7 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "lib": ["esnext", "dom", "webworker"]
+    "lib": ["esnext", "dom", "webworker"],
+    "types": ["node", "chrome", "wechat-miniprogram", "jest"]
   }
 }
