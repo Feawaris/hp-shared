@@ -5,11 +5,16 @@ const lint = new StyleLint({
   rootDir: '../',
   __filename,
 });
-const config = lint.merge(lint.baseConfig, lint.htmlConfig, lint.vueConfig, {
-  rules: {
-    // ...
+const config = lint.merge(
+  lint.baseConfig,
+  lint.htmlConfig,
+  lint.vueConfig,
+  {
+    rules: {
+      // ...
+    },
   },
-});
+);
 
 module.exports = {
   lint,

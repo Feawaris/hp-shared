@@ -76,26 +76,26 @@ BaseEnv.os = ((): string => {
       }
     }
 
-    const text = navigator.platform.toLowerCase();
-    if (text.startsWith('win')) {
+    const os = navigator.platform.toLowerCase();
+    if (os.startsWith('win')) {
       return 'windows';
     }
-    if (text.startsWith('mac')) {
+    if (os.startsWith('mac')) {
       return 'mac';
     }
-    if (text.startsWith('linux')) {
+    if (os.startsWith('linux')) {
       return 'linux';
     }
   }
   if (BaseEnv.isNode) {
-    const text = process.platform.toLowerCase();
-    if (text.startsWith('win')) {
+    const os = process.platform.toLowerCase();
+    if (os.startsWith('win')) {
       return 'windows';
     }
-    if (text.startsWith('darwin')) {
+    if (os.startsWith('darwin')) {
       return 'mac';
     }
-    if (text.startsWith('linux')) {
+    if (os.startsWith('linux')) {
       return 'linux';
     }
   }

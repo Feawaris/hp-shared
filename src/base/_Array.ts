@@ -1,8 +1,29 @@
 // @ts-nocheck
-// 数组
 import { _Set } from './_Set';
 
 export class _Array extends Array {
+  /**
+   * 属性名统一成数组格式
+   * @param names 属性名。格式 'a,b,c' 或 ['a','b','c']
+   * @param separator names 为字符串时的拆分规则。同 split 方法的 separator，字符串无需拆分的可以传 null
+   * @returns {FlatArray<(FlatArray<*[], 1>[]|*|[*[]]|[])[], 1>[]|*[][]|*[]}
+   */
+  static namesToArray(names = [], { separator = ',' } = {}) {
+    if (Array.isArray(names)) {
+      return names.map((val) => _Array.namesToArray(val)).flat();
+    }
+    if (typeof names === 'string') {
+      return names
+        .split(separator)
+        .map((val) => val.trim())
+        .filter((val) => val);
+    }
+    if (typeof names === 'symbol') {
+      return [names];
+    }
+    return [];
+  }
+
   constructor(value = []) {
     try {
       value = Array.from(value);
@@ -22,6 +43,7 @@ export class _Array extends Array {
   }
 
   // 方法定制：同名方法+新增，部分定制成返回 this 便于链式操作
+  // 改动系列方法
   push() {
     Array.prototype.push.apply(this, arguments);
     return this;
@@ -29,7 +51,7 @@ export class _Array extends Array {
   pop(index = -1) {
     return this.splice(index, 1);
   }
-  remove(value) {
+  remove(value: any) {
     const index = this.findIndex((val) => Object.is(val, value));
     return this.splice(index, 1);
   }
@@ -43,6 +65,8 @@ export class _Array extends Array {
   clear() {
     this.splice(0);
   }
+
+  // 生成系列方法
   with() {
     const value = Array.prototype.with.apply(this, arguments);
     return new this.constructor(value);
@@ -61,7 +85,7 @@ export class _Array extends Array {
   }
 
   // 转换系列方法：转换成原始值或其他类型
-  [Symbol.toPrimitive](hint) {
+  [Symbol.toPrimitive](hint: string) {
     if (hint === 'number') {
       return this.toNumber();
     }
@@ -71,7 +95,7 @@ export class _Array extends Array {
     return null;
   }
   toNumber() {
-    return NaN;
+    return this.length;
   }
   toString() {
     try {
@@ -85,40 +109,18 @@ export class _Array extends Array {
     return this.length > 0;
   }
   toJSON() {
-    return Array.from(this);
+    return this.toArray();
   }
   toArray() {
     return Array.from(this);
   }
-  toCustomArray() {
-    return new _Array(this);
+  to_Array() {
+    return _Array.from(this);
   }
   toSet() {
     return new Set(this);
   }
-  toCustomSet() {
+  to_Set() {
     return new _Set(this);
   }
 }
-
-/**
- * 属性名统一成数组格式
- * @param names 属性名。格式 'a,b,c' 或 ['a','b','c']
- * @param separator names 为字符串时的拆分规则。同 split 方法的 separator，字符串无需拆分的可以传 null
- * @returns {FlatArray<(FlatArray<*[], 1>[]|*|[*[]]|[])[], 1>[]|*[][]|*[]}
- */
-_Array.namesToArray = function (names = [], { separator = ',' } = {}) {
-  if (Array.isArray(names)) {
-    return names.map((val) => _Array.namesToArray(val)).flat();
-  }
-  if (typeof names === 'string') {
-    return names
-      .split(separator)
-      .map((val) => val.trim())
-      .filter((val) => val);
-  }
-  if (typeof names === 'symbol') {
-    return [names];
-  }
-  return [];
-};

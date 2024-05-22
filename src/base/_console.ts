@@ -87,7 +87,7 @@ _console.getStackInfo = function () {
   try {
     throw new Error();
   } catch (e) {
-    const stackArr = e.stack.split('\n');
+    const stack = e.stack.split('\n');
 
     // 定义正则表达式以匹配不同的堆栈格式
     const chromeNodeRegex = /\s*at\s+(?:(.*?)\s+\()?(.*?):(\d+):(\d+)(?:\))?/;
@@ -95,19 +95,19 @@ _console.getStackInfo = function () {
 
     // 匹配，选择正确的对应正则和堆栈行：Chrome 和 Node 使用第 4 行，Firefox 和 Safari 使用第 3 行
     const match = e.stack.startsWith('Error')
-      ? chromeNodeRegex[Symbol.match](stackArr[3])
-      : firefoxSafariRegex[Symbol.match](stackArr[2]);
+      ? chromeNodeRegex[Symbol.match](stack[3])
+      : firefoxSafariRegex[Symbol.match](stack[2]);
 
     // 提取信息
     if (match) {
       const method = match[1] || '';
-      const filePath = BaseEnv.isWindows ? match[2].replaceAll('\\', '/') : match[2];
+      const file = BaseEnv.isWindows ? match[2].replaceAll('\\', '/') : match[2];
       const line = Number.parseInt(match[3]);
       const column = Number.parseInt(match[4]);
 
       // 完整路径和显示用处理
-      const fullPath = `${filePath}:${line}:${column}`;
-      const fullPathShow = (() => {
+      const fileShow = (() => {
+        const fullPath = `${file}:${line}:${column}`;
         if (!/^[a-zA-Z0-9-_]+:\/\//.test(fullPath)) {
           // windows 兼容 webstorm console 显示用 file:/// ，vscode 或普通命令行 file:// 可以正常跳转
           const prefix = BaseEnv.isWindows ? String.raw`file:///` : String.raw`file://`;
@@ -118,11 +118,10 @@ _console.getStackInfo = function () {
       })();
 
       return {
-        method,
-        fullPathShow,
+        fileShow,
 
-        fullPath,
-        filePath,
+        file,
+        method,
         line,
         column,
       };
@@ -137,7 +136,7 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
   // stackInfo 需要从具体方法传进来
   // 前缀内容
   // @ts-ignore
-  let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fullPathShow, stackInfo.method].join(' ')}:`;
+  let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].join(' ')}:`;
   // 样式映射
   const styleMap = {
     blue: { node: 'blue', browser: 'color:blue;' },
@@ -203,8 +202,8 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
   if (BaseEnv.isNode) {
     return [
       _chalk[styleMap[style].node](prefix),
-      // 第一层简单类型配默认颜色
-      ...values.map((value) => {
+      ...values.map(function getValue(value) {
+        // 第一层简单类型配默认颜色
         if ([null, undefined].includes(value)) {
           return _chalk.grey(value);
         }
@@ -227,55 +226,36 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
         if (typeof value === 'symbol') {
           return _chalk.magentaBright(value.toString());
         }
+        // 其他原样返回
         return value;
       }),
     ];
   }
   return values;
 };
-_console.show = function (...args) {
-  const values = _console.getValues(...args);
-  return console.log(...values);
+// 同时 show 方法也返回用于需要反馈的场景
+_console.show = function (options={}) {
+  const values = _console.getValues(options);
+  console.log(...values);
+  return {
+    input: options,
+    output: values,
+  };
 };
 _console.log = function (...args) {
-  return _console.show({
-    style: 'blue',
-    type: 'log',
-    stackInfo: _console.getStackInfo(),
-    values: args,
-  });
+  return _console.show({ style: 'blue', type: 'log', stackInfo: _console.getStackInfo(), values: args });
 };
 _console.warn = function (...args) {
-  return _console.show({
-    style: 'yellow',
-    type: 'warn',
-    stackInfo: _console.getStackInfo(),
-    values: args,
-  });
+  return _console.show({ style: 'yellow', type: 'warn', stackInfo: _console.getStackInfo(), values: args });
 };
 _console.error = function (...args) {
-  return _console.show({
-    style: 'red',
-    type: 'error',
-    stackInfo: _console.getStackInfo(),
-    values: args,
-  });
+  return _console.show({ style: 'red', type: 'error', stackInfo: _console.getStackInfo(), values: args });
 };
 _console.success = function (...args) {
-  return _console.show({
-    style: 'green',
-    type: 'success',
-    stackInfo: _console.getStackInfo(),
-    values: args,
-  });
+  return _console.show({ style: 'green', type: 'success', stackInfo: _console.getStackInfo(), values: args });
 };
 _console.end = function (...args) {
-  return _console.show({
-    style: 'grey',
-    type: 'end',
-    stackInfo: _console.getStackInfo(),
-    values: args,
-  });
+  return _console.show({ style: 'grey', type: 'end', stackInfo: _console.getStackInfo(), values: args });
 };
 _console.dir = function (value, options = {}) {
   _console.show({ style: 'blue', type: 'dir', stackInfo: _console.getStackInfo() });
@@ -283,7 +263,7 @@ _console.dir = function (value, options = {}) {
     return console.dir(value);
   }
   if (BaseEnv.isNode) {
-    options = _Object.assign({ depth: 0, showHidden: true, colors: true }, options);
+    options = _Object.deepAssign({ depth: 0, showHidden: true, colors: true }, options);
     return console.dir(value, options);
   }
 };

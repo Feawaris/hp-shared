@@ -2,6 +2,12 @@
 import { BaseEnv } from './base';
 
 export class _Date extends Date {
+  static async sleep(seconds = 0.3) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, seconds * 1000);
+    });
+  }
+
   constructor(...args) {
     if (args.length === 1) {
       // null 和显式 undefined 都视为无效值
@@ -82,6 +88,11 @@ export class _Date extends Date {
         return this.getTimezoneOffset() / 60;
       },
     });
+    Object.defineProperty(this, 'timestamp', {
+      get() {
+        return this.getTime();
+      },
+    });
   }
 
   // set 系列方法：定制成返回 this 便于链式操作
@@ -89,7 +100,6 @@ export class _Date extends Date {
     Date.prototype.setTime.apply(this, arguments);
     return this;
   }
-
   setYear() {
     Date.prototype.setYear.apply(this, arguments);
     return this;
@@ -122,7 +132,6 @@ export class _Date extends Date {
     Date.prototype.setMilliseconds.apply(this, arguments);
     return this;
   }
-
   setUTCFullYear() {
     Date.prototype.setUTCFullYear.apply(this, arguments);
     return this;
@@ -153,7 +162,7 @@ export class _Date extends Date {
   }
 
   // 转换系列方法：转换成原始值或其他类型
-  [Symbol.toPrimitive](hint) {
+  [Symbol.toPrimitive](hint: string) {
     if (hint === 'number') {
       return this.toNumber();
     }
@@ -163,7 +172,7 @@ export class _Date extends Date {
     return null;
   }
   toNumber() {
-    return this.getTime();
+    return this.timestamp;
   }
   toString(format = 'YYYY-MM-DD HH:mm:ss') {
     if (!this.toBoolean()) {
@@ -251,7 +260,7 @@ export class _Date extends Date {
     });
   }
   toBoolean() {
-    return !Number.isNaN(this.getTime());
+    return !Number.isNaN(this.timestamp);
   }
   toJSON(options = {}) {
     return this.toString();
@@ -263,15 +272,6 @@ export class _Date extends Date {
     return this.toString(format);
   }
   toDate() {
-    return new Date(this.getTime());
-  }
-  toCustomDate() {
-    return new _Date(this);
+    return new Date(this.timestamp);
   }
 }
-
-_Date.sleep = async function (seconds = 0.3) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000);
-  });
-};

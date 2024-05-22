@@ -5,10 +5,16 @@ export class _Number extends Number {
   }
   // 判断素数
   static isPrime(x): boolean {
-    if (x < 2) {
+    if (x <= 1) {
       return false;
     }
-    for (let i = 2; i <= Math.sqrt(x); i++) {
+    if (x === 2) {
+      return true;
+    }
+    if (x % 2 === 0) {
+      return false;
+    }
+    for (let i = 3; i <= Math.sqrt(x); i += 2) {
       if (x % i === 0) {
         return false;
       }
@@ -26,5 +32,33 @@ export class _Number extends Number {
     const str = Number.prototype.toFixed.call(this, fractionDigits);
     // 移除尾部多余的零和小数点
     return str.replace(/(\.\d*?[1-9])0+$|\.0*$/, '$1');
+  }
+
+  // 转换系列方法：转换成原始值或其他类型
+  [Symbol.toPrimitive](hint: string) {
+    if (hint === 'number') {
+      return this.toNumber();
+    }
+    if (hint === 'string' || hint === 'default') {
+      return this.toString();
+    }
+    return null;
+  }
+  toNumber() {
+    // @ts-ignore
+    return Number.parseFloat(this);
+  }
+  toString() {
+    return String(this);
+  }
+  toBoolean() {
+    // @ts-ignore
+    return ![0, NaN].includes(this);
+  }
+  toJSON() {
+    return this.toNumber();
+  }
+  toBigInt() {
+    return BigInt(this.toNumber());
   }
 }

@@ -5,15 +5,18 @@ const lint = new MarkdownLint({
   rootDir: '../',
   __filename,
 });
-const config = lint.merge(lint.createBaseConfig(), {
-  ignores: [
-    ...lint.getIgnores(lint.gitIgnoreFile),
-    // ...
-  ],
-  config: {
-    // ...
+const config = lint.merge(
+  lint.createBaseConfig(),
+  {
+    ignores: [
+      ...lint.getIgnores(lint.gitIgnoreFile),
+      // ...
+    ],
+    config: {
+      // ...
+    },
   },
-});
+);
 
 module.exports = {
   lint,

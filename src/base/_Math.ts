@@ -4,18 +4,10 @@ import { _Array } from './_Array';
 import { _Set } from './_Set';
 import { _Number } from './_Number';
 
-export const _Math = Object.create(null);
+export const _Math = Object.create(Math);
 // 黄金分割比 Φ
 _Math.PHI = (Math.sqrt(5) - 1) / 2;
 _Math.PHI_BIG = (Math.sqrt(5) + 1) / 2;
-
-// 三角函数
-_Math.arcsin = Math.asin;
-_Math.arccos = Math.acos;
-_Math.arctan = Math.atan;
-_Math.arsinh = Math.asinh;
-_Math.arcosh = Math.acosh;
-_Math.artanh = Math.atanh;
 
 // 对数
 _Math.log = function (a, x) {
@@ -25,26 +17,31 @@ _Math.loge = Math.log;
 _Math.ln = Math.log;
 _Math.lg = Math.log10;
 
+// 三角函数
+_Math.arcsin = Math.asin;
+_Math.arccos = Math.acos;
+_Math.arctan = Math.atan;
+_Math.arsinh = Math.asinh;
+_Math.arcosh = Math.acosh;
+_Math.artanh = Math.atanh;
+
 // 阶乘
-_Math.factorial = function (n) {
-  let result = 1n;
+_Math.factorial = function (n): bigint {
+  let result: bigint = 1n;
   for (let i = n; i >= 1; i--) {
     result *= BigInt(i);
   }
   return result;
 };
-// P/() 写法：命名同 latex
+// A/C 写法(对比 P/() 写法)
 // 排列
-_Math.permutation = function (n, k) {
+_Math.A = function (n, k) {
   return _Math.factorial(n) / _Math.factorial(n - k);
 };
 // 组合
-_Math.combination = function (n, k) {
+_Math.C = function (n, k) {
   return _Math.A(n, k) / _Math.factorial(k);
 };
-// A/C 写法
-_Math.A = _Math.permutation;
-_Math.C = _Math.combination;
 
 // 数列
 _Math.Sequence = class {
@@ -61,14 +58,8 @@ _Math.Sequence = class {
     }
     return result;
   }
-  toCustomArray() {
-    return new _Array(this.toArray(...arguments));
-  }
   toSet() {
     return new Set(this.toArray(...arguments));
-  }
-  toCustomSet() {
-    return new _Set(this.toArray(...arguments));
   }
 };
 // 等差数列

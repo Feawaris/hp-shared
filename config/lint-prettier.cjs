@@ -5,9 +5,12 @@ const lint = new Prettier({
   rootDir: '../',
   __filename,
 });
-const config = lint.merge(lint.baseConfig, {
-  // ...
-});
+const config = lint.merge(
+  lint.baseConfig,
+  {
+    // ...
+  },
+);
 
 module.exports = {
   lint,

@@ -26,7 +26,6 @@ _JSON.DataModel = class {
    * @param nullDefaultType model 传 null 时默认推导类型，默认给常用的 number
    * @param isObjectList 显式声明 [{...}] 格式为列表
    * @param enableObjectListDeep 当前和嵌套中的 [{...}] 格式是否理解为列表来处理，默认设置成 true 常用
-   * @returns {{}|*[]}
    */
   constructor(model, { type, nullDefaultType = 'number', isObjectList = null, enableObjectListDeep = true } = {}) {
     // DataModel 对象直接合并即可，不用拆解

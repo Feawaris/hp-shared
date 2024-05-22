@@ -185,8 +185,8 @@ export class Monitor {
     this.wxRequest = BaseEnv.isWx ? wx.request.bind(wx) : null;
   }
 
-  monitorInfoData: MonitorInfoData;
-  monitorInfoOptions: MonitorInfoOptions;
+  monitorInfoData: Partial<MonitorInfoData>;
+  monitorInfoOptions: Partial<MonitorInfoOptions>;
   constructor(options = {}) {
     _Object.deepAssign(this, options);
     // MonitorInfoData 和 MonitorInfoOptions 收集

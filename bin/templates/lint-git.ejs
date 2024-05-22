@@ -4,9 +4,12 @@ const lint = new CommitLint({
   __filename,
   rootDir: '../',
 });
-const config = lint.merge(lint.baseConfig, {
-  // ...
-});
+const config = lint.merge(
+  lint.baseConfig,
+  {
+    // ...
+  },
+);
 
 const gitHooks = new GitHooks({
   __filename,

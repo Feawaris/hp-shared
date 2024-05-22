@@ -211,8 +211,6 @@ const { _Object } = require('hp-shared/base');
 | **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理            |
 | **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                                       |
 | **filter**                         | 过滤对象取部分值                                                           |
-| pick                               | 根据 filter 得到，挑选方式                                                 |
-| omit                               | 根据 filter 得到，排除方式                                                 |
 | bindThis                           | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法    |
 
 #### 2.1.4 \_Function
@@ -299,8 +297,8 @@ console.log(C(4, 2));
 
 相对于 Math 对象提供更直观和符合数学约定的名称，方便解构后顺手使用
 
-| 属性                               | 说明                                           |
-| ---------------------------------- | ---------------------------------------------- |
+| 属性                                 | 说明                                           |
+|------------------------------------| ---------------------------------------------- |
 | <i style="color:pink;">static:</i> |                                                |
 | PHI                                | 黄金分割比 ${\Phi}$=$\frac{\sqrt{5} - 1}{2}$   |
 | PHI_BIG                            | $\frac{1}{\Phi}$=$\frac{\sqrt{5} + 1}{2}$      |
@@ -315,10 +313,8 @@ console.log(C(4, 2));
 | ln                                 | $\ln{x}$                                       |
 | lg                                 | $\lg{x}$                                       |
 | factorial                          | $n!$                                           |
-| permutation                        | $A_n^k=P(n,k)=\frac{n!}{(n-k)!}$               |
-| combination                        | $C_n^k=\binom{k}{n}=\frac{n!}{k!(n-k)!}$       |
-| **A**                              | $A_n^k$ 简写方式                               |
-| **C**                              | $C_n^k$ 简写方式                               |
+| **A**                              | $A_n^k=P(n,k)=\frac{n!}{(n-k)!}$               |
+| **C**                              | $C_n^k=\binom{k}{n}=\frac{n!}{k!(n-k)!}$       |
 | Sequence                           | 数列，基础方法用于继承                         |
 | ArithmeticSequence                 | 等差数列：$a_1, a_1+d, a_1+2d, \ldots$         |
 | GeometricSequence                  | 等比数列：$a_1, a_1q, a_1q^2, \ldots$          |
@@ -430,31 +426,31 @@ const { _Array } = require('hp-shared/base');
 
 :::
 
-| 属性                                             | 说明                                  |
-| ------------------------------------------------ | ------------------------------------- |
-| <i style="color:pink;">static:</i>               |                                       |
-| **namesToArray**                                 | 属性名统一成数组格式，手动传参用      |
-| <i style="color:pink;">prototype:</i>            |                                       |
-| **constructor**                                  |                                       |
-| push                                             |                                       |
-| pop                                              |                                       |
-| remove                                           |                                       |
-| unshift                                          |                                       |
-| shfit                                            |                                       |
-| clear                                            |                                       |
-| with                                             |                                       |
-| toSpliced                                        |                                       |
-| toSorted                                         |                                       |
-| toReserved                                       |                                       |
-| **Symbol.toPrimitive**                           |                                       |
-| toNumber                                         |                                       |
-| toString                                         |                                       |
-| toBoolean                                        |                                       |
-| toJSON                                           |                                       |
-| toArray                                          |                                       |
-| toCustomArray                                    |                                       |
-| toSet                                            |                                       |
-| toCustomSet                                      |                                       |
+| 属性                                         | 说明                                  |
+|--------------------------------------------| ------------------------------------- |
+| <i style="color:pink;">static:</i>         |                                       |
+| **namesToArray**                           | 属性名统一成数组格式，手动传参用      |
+| <i style="color:pink;">prototype:</i>      |                                       |
+| **constructor**                            |                                       |
+| push                                       |                                       |
+| pop                                        |                                       |
+| remove                                     |                                       |
+| unshift                                    |                                       |
+| shfit                                      |                                       |
+| clear                                      |                                       |
+| with                                       |                                       |
+| toSpliced                                  |                                       |
+| toSorted                                   |                                       |
+| toReserved                                 |                                       |
+| **Symbol.toPrimitive**                     |                                       |
+| toNumber                                   |                                       |
+| toString                                   |                                       |
+| toBoolean                                  |                                       |
+| toJSON                                     |                                       |
+| toArray                                    |                                       |
+| to_Array                                   |                                       |
+| toSet                                      |                                       |
+| to_Set                                     |                                       |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |
 
 #### 2.1.10 \_Set
@@ -475,25 +471,25 @@ const { _Set } = require('hp-shared/base');
 
 :::
 
-| 属性                                             | 说明                                  |
-| ------------------------------------------------ | ------------------------------------- |
-| <i style="color:pink;">static:</i>               |                                       |
-| **cup**                                          | $A \cup B \cup \ldots$                |
-| **cap**                                          | $A \cap B \cap \ldots$                |
-| **setminus**                                     | $A \setminus B  \setminus \ldots$     |
-| <i style="color:pink;">prototype:</i>            |                                       |
-| **constructor**                                  |                                       |
-| add                                              |                                       |
-| delete                                           |                                       |
-| **Symbol.toPrimitive**                           |                                       |
-| toNumber                                         |                                       |
-| toString                                         |                                       |
-| toBoolean                                        |                                       |
-| toJSON                                           |                                       |
-| toArray                                          |                                       |
-| toCustomArray                                    |                                       |
-| toSet                                            |                                       |
-| toCustomSet                                      |                                       |
+| 属性                                         | 说明                                  |
+|--------------------------------------------| ------------------------------------- |
+| <i style="color:pink;">static:</i>         |                                       |
+| **cup**                                    | $A \cup B \cup \ldots$                |
+| **cap**                                    | $A \cap B \cap \ldots$                |
+| **setminus**                               | $A \setminus B  \setminus \ldots$     |
+| <i style="color:pink;">prototype:</i>      |                                       |
+| **constructor**                            |                                       |
+| add                                        |                                       |
+| delete                                     |                                       |
+| **Symbol.toPrimitive**                     |                                       |
+| toNumber                                   |                                       |
+| toString                                   |                                       |
+| toBoolean                                  |                                       |
+| toJSON                                     |                                       |
+| toArray                                    |                                       |
+| to_Array                                   |                                       |
+| toSet                                      |                                       |
+| to_Set                                     |                                       |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |
 
 #### 2.1.11 \_JSON
@@ -802,16 +798,33 @@ npm i -D markdownlint-cli2
 :::
 
 ::: code-tabs#lint
+
+@tab 直接使用
+
+```js
+const { MarkdownLint } = require('hp-shared/dev');
+
+const lint = new MarkdownLint();
+const config = lint.merge(
+  lint.createBaseConfig(),
+  {
+    ignores: [
+      ...lint.getIgnores(lint.gitIgnoreFile),
+      // ...
+    ],
+    config: {
+      // ...
+    },
+  },
+);
+
+module.exports = config;
+```
+
 @tab 生成 .cjs
 
 ```js
 // config/lint-md.cjs 通过 cli 初始化
-```
-
-@tab 直接引用
-
-```js
-
 ```
 
 :::
@@ -844,16 +857,30 @@ npm i -D stylelint postcss-html
 
 ::: code-tabs#lint
 
+@tab 直接使用
+
+```js
+const { StyleLint } = require('hp-shared/dev');
+
+const lint = new StyleLint();
+const config = lint.merge(
+  lint.baseConfig,
+  lint.htmlConfig,
+  lint.vueConfig,
+  {
+    rules: {
+      // ...
+    },
+  },
+);
+
+module.exports = config;
+```
+
 @tab 生成 .cjs
 
 ```js
 // config/lint-css.cjs 通过 cli 初始化
-```
-
-@tab 直接引用
-
-```js
-
 ```
 
 :::
@@ -888,16 +915,39 @@ npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 
 ::: code-tabs#lint
 
+@tab 直接使用
+
+```js
+const { EsLint } = require('hp-shared/dev');
+
+const lint = new EsLint({ eslintVersion: 9 });
+const config = [
+  {
+    ignores: [
+      // ...
+    ],
+  },
+  lint.merge(lint.baseConfig, {
+    files: ['**/*.{js,cjs}'],
+    rules: {},
+  }),
+  lint.merge(lint.baseConfig, lint.tsConfig, {
+    files: ['**/*.{ts,cts}'],
+    rules: {},
+  }),
+  lint.merge(lint.baseConfig, lint.vue3Config, lint.tsInVueConfig, {
+    files: ['**/*.vue'],
+    rules: {},
+  }),
+];
+
+module.exports = config;
+```
+
 @tab 生成 .cjs
 
 ```js
 // config/lint-js.cjs 通过 cli 初始化
-```
-
-@tab 直接引用
-
-```js
-
 ```
 
 :::
@@ -928,16 +978,30 @@ npm i -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-esl
 
 ::: code-tabs#lint
 
+@tab 直接使用
+
+```js
+const { EsLint } = require('hp-shared/dev')
+
+const lint = new EsLint({ eslintVersion: 8 });
+const config = lint.merge(
+  lint.baseConfig,
+  lint.vue3Config,
+  lint.tsInVueConfig,
+  {
+    rules: {
+      // ...
+    },
+  }
+);
+
+module.exports = config;
+```
+
 @tab 生成 .cjs
 
 ```js
 // config/lint-js.cjs 通过 cli 初始化
-```
-
-@tab 直接引用
-
-```js
-
 ```
 
 :::
@@ -970,16 +1034,26 @@ npm i -D prettier
 
 ::: code-tabs#lint
 
+@tab 直接使用
+
+```js
+const { Prettier } = require('hp-shared/dev');
+
+const lint = new Prettier();
+const config = lint.merge(
+  lint.baseConfig,
+  {
+    // ...
+  },
+);
+
+module.exports = config;
+```
+
 @tab 生成 .cjs
 
 ```js
 // config/lint-prettier.cjs 通过 cli 初始化
-```
-
-@tab 直接引用
-
-```js
-
 ```
 
 :::
@@ -1012,16 +1086,26 @@ npm i -D @commitlint/cli husky
 
 ::: code-tabs#lint
 
+@tab 直接使用
+
+```js
+const { CommitLint } = require('hp-shared/dev');
+
+const lint = new CommitLint();
+const config = lint.merge(
+  lint.baseConfig,
+  {
+    // ...
+  },
+);
+
+module.exports = config;
+```
+
 @tab 生成 .cjs
 
 ```js
 // config/lint-git.js 通过 cli 初始化
-```
-
-@tab 直接引用
-
-```js
-
 ```
 
 :::
