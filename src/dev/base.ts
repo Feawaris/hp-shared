@@ -250,18 +250,20 @@ export class IgnoreLint {
     }
     return this;
   }
-  updateFile({ data = [], exclude = [] } = {}) {
-    let result = Array.isArray(data) ? data.join('\n') : data;
+  updateFile({ data = [], exclude = [], } = {}) {
+    const oldText = this.getText();
+    // 来源数据
+    data = Array.isArray(data) ? data.join('\n') : data;
+    // 无需 ignore 的移除
     for (const item of exclude) {
-      result = result.replace(IgnoreLint.getReg(item.group, item.tag), '');
+      data = data.replace(IgnoreLint.getReg(item.group, item.tag), '');
     }
-    result = this.getFormatText(result);
-
-    const text = this.getText();
-    if (result === text) {
+    // 格式化文本
+    const newText = this.getFormatText(data);
+    if (newText === oldText) {
       _console.end(`${this.basename}: 无需更新`);
     } else {
-      this.setText(result);
+      this.setText(newText);
       _console.success(`${this.basename}: 内容已更新`);
     }
     return this;

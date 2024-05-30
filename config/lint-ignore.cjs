@@ -29,7 +29,12 @@ if (require.main === module) {
     .formatFile();
   npmignoreLint
     .updateFile({
-      data: gitignoreLint.getText(),
+      data: [
+        gitignoreLint.getText(),
+        '# ---[manual] start---',
+        'python' ,
+        '# ---[manual] end---',
+      ],
       exclude: [{ tag: 'manual', group: 'npm:reserve' }],
     })
     .formatFile();

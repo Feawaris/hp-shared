@@ -13,7 +13,14 @@ examples/wx/miniprogram_npm
   # tsc 生成的 .d.ts 和 .js 文件仅本地调试用
 src/**/*.d.ts
 src/**/*.js
-
+  # python
+python/venv
+python/build
+python/dist
+python/out
+python/**/*.egg-info
+python/**/__pycache__
+  # 本地配置文件，保存数据库等私密配置信息
 local.config.cjs
 # ---[manual] default end---
 

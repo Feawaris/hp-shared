@@ -1,0 +1,8 @@
+{
+  "name": "tests",
+  "private": true,
+  "scripts": {
+    "refresh": "ln -s ../src hp_shared",
+    "test": "python base.py -v"
+  }
+}

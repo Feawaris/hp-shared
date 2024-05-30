@@ -1,7 +1,7 @@
 ---
 name: hp-shared
 category: 文档
-tag: 1.8.1
+tag: 1.9.0
 ---
 
 基础库
@@ -30,6 +30,12 @@ yarn add hp-shared
 
 ```shell
 npm i hp-shared
+```
+
+@tab pip
+
+```shell
+pip install hp-shared
 ```
 
 :::
@@ -109,6 +115,13 @@ import { _console } from 'hp-shared/base';
 hp-shared
 ```
 
+@tab python
+
+```python
+# from hp_shared.模块名 import xx
+from hp_shared.base import _console
+```
+
 :::
 
 ## 2.各模块示例
@@ -133,17 +146,30 @@ import { BaseEnv } from 'hp-shared/base';
 const { BaseEnv } = require('hp-shared/base');
 ```
 
+@tab python
+
+```python
+from hp_shared.base import BaseEnv
+```
+
 :::
 
-| 属性          | 说明                                                       |
-| ------------- | ---------------------------------------------------------- |
-| envs          | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] |
-| **isBrowser** | 根据 envs 得到                                             |
-| **isNode**    | 根据 envs 得到                                             |
-| os            | 操作系统: windows, mac, linux, ...                         |
-| **isWindows** | 根据 os 得到                                               |
-| **isMac**     | 根据 os 得到                                               |
-| **isLinux**   | 根据 os 得到                                               |
+| 属性    | 说明                                                 | js                                               | python                                           |
+|-------|----------------------------------------------------|----------------------------------------------------|----------------------------------------------------|
+| envs  | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **isBrowser** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
+| isWebWorker | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
+| isChromeExtension | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
+| isServiceWorker | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
+| **isNode** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
+| **isWx** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
+| **isMobile** | 判断移动端                                              | <strong style="color:green;">✓</strong>       | <strong style="color:#999;">✕</strong>        |
+| os    | 操作系统: windows, mac, linux, ...                     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **isWindows** | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:green;">✓</strong>    |
+| **isMac** | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:green;">✓</strong>    |
+| **isLinux** | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:green;">✓</strong>    |
+| isAndroid | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:#999;">✕</strong>     |
+| isIOS | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:#999;">✕</strong>     |
 
 #### 2.1.2 \_console 控制台
 
@@ -163,23 +189,32 @@ import { _console } from 'hp-shared/base';
 const { _console } = require('hp-shared/base');
 ```
 
+@tab python
+
+```python
+from hp_shared.base import _console
+```
+
+
+
 :::
 
-| 属性                                             | 说明                                        |
-| ------------------------------------------------ | ------------------------------------------- |
-| **log**                                          | <strong style="color:blue">常规</strong>    |
-| **warn**                                         | <strong style="color:orange;">警告</strong> |
-| **error**                                        | <strong style="color:red">报错</strong>     |
-| **success**                                      | <strong style="color:green">成功</strong>   |
-| **end**                                          | <strong style="color:grey">结束</strong>    |
-| dir                                              |                                             |
-| table                                            |                                             |
-| group                                            |                                             |
-| groupCollapsed                                   |                                             |
-| groupAction                                      |                                             |
-| getStackInfo                                     | 基础方法                                    |
-| show                                             | 基础方法                                    |
-| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       |
+| 属性                                             | 说明                                        | js                                      | python                                  |
+| ------------------------------------------------ | ------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| getStackInfo                                     | 基础方法                                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| getValues                                        | 基础方法                                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| show                                             | 基础方法                                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **log**                                          | <strong style="color:blue">常规</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **warn**                                         | <strong style="color:orange;">警告</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **error**                                        | <strong style="color:red">报错</strong>     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **success**                                      | <strong style="color:green">成功</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **end**                                          | <strong style="color:grey">结束</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| dir                                              |                                             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| table                                            |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| group                                            |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| groupCollapsed                                   |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| groupAction                                      |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
 
 #### 2.1.3 \_Object
 
@@ -581,6 +616,7 @@ const { _Proxy } = require('hp-shared/base');
 | **browser** | [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API) |
 | **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
 | **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html) |
+| **python**  | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html) |
 
 ::: code-tabs#import
 
@@ -591,7 +627,7 @@ import { clipboard } from 'hp-shared/storage';
 
 (async function () {
   // copy
-  await clipboard.copy(Date.now());
+  await clipboard.copy('test');
   // paste
   const text = await clipboard.paste();
   console.log(text);
@@ -605,7 +641,7 @@ const { clipboard } = require('hp-shared/storage');
 
 (async function () {
   // copy
-  await clipboard.copy(Date.now());
+  await clipboard.copy('test');
   // paste
   const text = await clipboard.paste();
   console.log(text);
@@ -619,26 +655,43 @@ import { clipboard } from 'hp-shared/storage';
 
 (async function () {
   // copy
-  await clipboard.copy(Date.now());
+  await clipboard.copy('test');
   // paste
   const text = await clipboard.paste();
   console.log(text);
 })();
 ```
 
+@tab python
+
+```python
+from hp_shared.storage import clipboard
+import asyncio
+
+async def test():
+  # copy
+  await clipboard.copy('test')
+  # paste
+  text = await clipboard.paste()
+  print(text)
+asyncio.run(test())
+```
+
+
+
 :::
 
-| 属性          | 说明             | browser                                 | node                                    | wx                                      |
-| ------------- | ---------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| **copy**      | 复制             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **paste**     | 粘贴             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| *copySync*    | 复制（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-| *pasteSync*   | 粘贴（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-|               |                  |                                         |                                         |                                         |
-| writeText     | 同 copy          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| readText      | 同 paste         | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| writeTextSync | 同 copySync      | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-| readTextSync  | 同 pasteSync     | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| 属性          | 说明             | browser                                 | node                                    | wx                                      | python                                  |
+| ------------- | ---------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| **copy**      | 复制             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **paste**     | 粘贴             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| *copySync*    | 复制（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+| *pasteSync*   | 粘贴（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+|               |                  |                                         |                                         |                                         |                                         |
+| writeText     | 同 copy          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| readText      | 同 paste         | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| writeTextSync | 同 copySync      | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+| readTextSync  | 同 pasteSync     | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
 
 #### 2.2.2 Web Storage
 

@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "license": "MIT",
   "bin": "./bin/index.cjs",
   "scripts": {
@@ -27,7 +27,9 @@
     "docs:build:github": "pnpm -C docs run build:github",
     "docs:build:npm": "pnpm -C docs run build:npm",
     "docs:preview": "pnpm -C docs run preview",
-    "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m'; pnpm run refresh && pnpm run docs:build:npm"
+    "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m'; pnpm run refresh && pnpm run docs:build:npm",
+    "publish:js": "npm publish",
+    "publish:python": "pnpm -C python run pypi"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.0.4",
