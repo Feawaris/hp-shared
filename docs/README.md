@@ -65,16 +65,16 @@ CDN 方式
 import { _console } from 'hp-shared/base';
 ```
 
-@tab 完整路径 src
-
-```ts
-import { _console } from 'hp-shared/src/base/index.ts';
-```
-
 @tab 完整路径 dist
 
 ```js
 import { _console } from 'hp-shared/dist/browser/base.js';
+```
+
+@tab 完整路径 src
+
+```ts
+import { _console } from 'hp-shared/src/base/index.ts';
 ```
 
 :::
