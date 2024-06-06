@@ -84,14 +84,12 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Expose-Headers', '*');
   res.setHeader('Content-Type', 'application/json;charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache');
-
   // OPTIONS 预检请求处理
   if (req.method.toLowerCase() === 'options') {
     res.writeHead(200)
       .end();
     return;
   }
-
   // 显示简易请求信息
   const { httpVersion, method, url } = req;
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;

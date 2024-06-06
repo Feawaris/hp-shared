@@ -1,4 +1,4 @@
-from hp_shared.base import NaN, Infinity, isNaN, isFinite, parseInt, parseFloat, decodeURI, decodeURIComponent, encodeURI, encodeURIComponent, Object, _Object, Number, _Number, BaseEnv, _console
+from hp_shared.base import NaN, Infinity, isNaN, isFinite, parseInt, parseFloat, decodeURI, decodeURIComponent, encodeURI, encodeURIComponent, Object, _Object, Number, _Number, BaseEnv, _console, Date, _Date
 import unittest
 import platform
 import math
@@ -31,13 +31,6 @@ class DescribeEcmaScript(unittest.TestCase):
     self.assertEqual(uri_component_encoded, encodeURIComponent(uri))
     self.assertEqual(uri, decodeURI(uri_encoded))
     self.assertEqual(uri, decodeURIComponent(uri_component_encoded))
-  def test_Object(self):
-    obj = Object({'a': 1, 'b': 2})
-    # create
-    self.assertEqual(Object.create(None), Object({}))
-    # assign
-    Object.assign(obj, {'c': 3}, {'d': 4})
-    self.assertEqual(obj, Object({'a': 1, 'b': 2, 'c': 3, 'd': 4}))
 
 class DescribeBase(unittest.TestCase):
   def test_BaseEnv(self):
@@ -66,6 +59,13 @@ class Describe_console(unittest.TestCase):
     self.assertEqual(output[1:], outputValues)
 
 class Describe_Object(unittest.TestCase):
+  def test_Object(self):
+    obj = Object({'a': 1, 'b': 2})
+    # create
+    self.assertEqual(Object.create(None), Object({}))
+    # assign
+    Object.assign(obj, {'c': 3}, {'d': 4})
+    self.assertEqual(obj, Object({'a': 1, 'b': 2, 'c': 3, 'd': 4}))
   def test__Object(self):
     obj = _Object({'a': 1, 'b': 2, 'userInfo': {'name': 'user1', 'age': 1, 'gender': 'male'}})
     # length
@@ -82,7 +82,7 @@ class Describe_Object(unittest.TestCase):
     obj3 = _Object.filter(obj, pick=['a', 'b'])
     _console.log(obj3)
 
-class Dwscribe_Number(unittest.TestCase):
+class Describe_Number(unittest.TestCase):
   def test_Number(self):
     # convertBase
     self.assertEqual(_Number.convertBase(10, {'to': 2}), '1010')
@@ -92,6 +92,12 @@ class Dwscribe_Number(unittest.TestCase):
     # isPrime
     for i in range(10 + 1):
       _console.log(i, _Number.isPrime(i))
+
+class Describe_Date(unittest.IsolatedAsyncioTestCase):
+  async def test__Date(self):
+    _console.log(1)
+    await _Date.sleep()
+    _console.log(2)
 
 if __name__ == '__main__':
   unittest.main()
