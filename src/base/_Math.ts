@@ -1,7 +1,5 @@
 // @ts-nocheck
 // 数学运算。相对于 Math 对象提供更直观和符合数学约定的名称，方便解构后顺手使用
-import { _Array } from './_Array';
-import { _Set } from './_Set';
 import { _Number } from './_Number';
 
 export const _Math = Object.create(Math);

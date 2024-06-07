@@ -6,11 +6,11 @@ tag: 1.9.0
 
 基础库
 
-## 1.快速上手
+## 1. 快速上手
 
-### 1.安装
+### 1.1. 安装
 
-NPM 方式
+- **npm**
 
 ::: code-tabs#install
 
@@ -32,15 +32,9 @@ yarn add hp-shared
 npm i hp-shared
 ```
 
-@tab pip
-
-```shell
-pip install hp-shared
-```
-
 :::
 
-CDN 方式
+- **cdn**
 
 ::: code-tabs#install
 
@@ -58,7 +52,17 @@ CDN 方式
 
 :::
 
-### 2.使用
+-  **tampermonkey**
+
+[hp-shared (greasyfork.org)](https://greasyfork.org/zh-CN/scripts/497270-hp-shared)
+
+- **pip**
+
+```shell
+pip install hp-shared
+```
+
+### 1.2.使用
 
 - 简洁路径：已在 package.json 的 `exports` 和 `miniprogram` 字段配置，或根据环境配置 [paths](https://www.typescriptlang.org/tsconfig/#paths)、[alias](https://cn.vitejs.dev/config/shared-options.html#resolve-alias)、[Import maps](https://cn.vuejs.org/guide/quick-start.html#enabling-import-maps) 等使用简洁路径，常用于 vue、node、小程序环境。
 - 完整路径：可自行选用 src 或 dist 目录，无法使用简洁路径的环境可使用完整路径，或根据上面配置简洁路径。
@@ -106,6 +110,13 @@ const { _console } = require('hp-shared/base');
 ```js
 // import { xx } from 'hp-shared/模块名';
 import { _console } from 'hp-shared/base';
+```
+
+@tab tampermonkey
+
+```js
+// 常用对象已全局挂载，直接使用即可
+_console.log('test');
 ```
 
 @tab shell
@@ -1300,6 +1311,11 @@ pnpm run docs:dev
 ### 3.3 发布
 
 ```shell
-# 已配置 prepublishOnly
-npm publish
+# 已配置 prepublishOnly，直接运行 npm publish 或 pnpm run publish:js
+pnpm run publish:js
 ```
+
+```shell
+pnpm run publish:python
+```
+

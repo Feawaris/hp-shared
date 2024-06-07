@@ -14,29 +14,35 @@ import { dts } from 'rollup-plugin-dts';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import { name, version } from './package.json';
+import pkg from './package.json';
+import path from 'node:path';
 
-const license = [
-  `/*!`,
-  ` * ${name} v${version}`,
-  ` * (c) 2022 hp`,
-  ` * Released under the MIT License.`,
-  ` */`,
-].join('\n');
 // 生成输出选项
-function getOutputItem(options = {}): OutputOptions {
+interface Options extends OutputOptions {
+  extraBanner?: string | string[];
+}
+function getOutputItem(options: Options = {}): OutputOptions {
+  const { extraBanner = [], ...restOptions } = options;
   return {
     get banner() {
       return [
-        `${license}`,
+        // license
+        `/*!`,
+        ` * ${pkg.name} v${pkg.version}`,
+        ` * (c) 2022 ${pkg.author}`,
+        ` * Released under the ${pkg.license} License.`,
+        ` */`,
+        // 打包配置
         `/*`,
         ` * 打包时间：${new _Date()}`,
         ` * rollup 打包配置：${JSON.stringify(this, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}`,
         ` */`,
+        // 合并选项
+        ...(Array.isArray(extraBanner) ? extraBanner : [extraBanner]),
       ].join('\n');
     },
     sourcemap: 'inline',
-    ...options,
+    ...restOptions,
   };
 }
 // 共用插件
@@ -67,6 +73,29 @@ const config: RollupOptions[] = [
     output: [
       getOutputItem({ file: 'dist/browser/index.umd.js', format: 'umd', name: 'hpShared', noConflict: true }),
       getOutputItem({ file: 'dist/browser/index.js', format: 'es' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
+    input: 'src/index-browser-tampermonkey.ts',
+    output: [
+      getOutputItem({
+        file: 'dist/browser-tampermonkey/index.js',
+        format: 'iife',
+        extraBanner: [
+          `// ==UserScript==`,
+          `// @name         ${pkg.name}`,
+          `// @version      ${pkg.version}`,
+          `// @description  ${pkg.description}`,
+          `// @license      ${pkg.license}`,
+          `// @author       ${pkg.author}`,
+          `// @namespace    ${pkg.homepage}`,
+          `// @match        *://*/*`,
+          `// @require      ${path.join(`https://unpkg.com`, pkg.name, pkg.unpkg)}`,
+          `// @grant        none`,
+          `// ==/UserScript==`,
+        ],
+      }),
     ],
     plugins: browserPlugins,
   },
