@@ -15,7 +15,6 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import pkg from './package.json';
-import path from 'node:path';
 
 // 生成输出选项
 interface Options extends OutputOptions {
@@ -91,7 +90,7 @@ const config: RollupOptions[] = [
           `// @author       ${pkg.author}`,
           `// @namespace    ${pkg.homepage}`,
           `// @match        *://*/*`,
-          `// @require      ${path.join(`https://unpkg.com`, pkg.name, pkg.unpkg)}`,
+          `// @require      ${new URL(`https://unpkg.com/${pkg.name}/${pkg.unpkg}`)}`,
           `// @grant        none`,
           `// ==/UserScript==`,
         ],

@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "基础库",
   "license": "MIT",
   "author": "hp",
@@ -120,7 +120,7 @@
     },
     "./*": "./*"
   },
-  "miniprogram": "dist/wx",
+  "miniprogram": "./dist/wx",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Feawaris/hp-shared.git"
