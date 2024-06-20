@@ -159,4 +159,8 @@ _console.success = success
 _console.end = end
 _console.dir = dir
 
-__all__ = ['_chalk', '_console']
+_print = _console.log
+def _input(title = ''):
+  return input(title)
+
+__all__ = ['_chalk', '_console', '_print', '_input']

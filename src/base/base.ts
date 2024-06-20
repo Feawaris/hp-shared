@@ -53,7 +53,8 @@ BaseEnv.isMobile = (() => {
     }
   }
   if (BaseEnv.isWx) {
-    return wx.getSystemInfoSync().platform !== 'devtools';
+    // @ts-ignore
+    return wx.getDeviceInfo().platform !== 'devtools';
   }
   return false;
 })();
@@ -62,7 +63,8 @@ BaseEnv.os = ((): string => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWx) {
     // 小程序真机：通过 wx.getSystemInfoSync 得到，开发者工具可使用 navigator 方法，继续走下面浏览器逻辑
     if (BaseEnv.isWx && !globalThis.navigator) {
-      return wx.getSystemInfoSync().platform;
+      // @ts-ignore
+      return wx.getDeviceInfo().platform;
     }
 
     const { navigator } = globalThis;

@@ -143,6 +143,14 @@ from hp_shared.base import _console
 
 ##### BaseEnv 环境判断
 
+|             | envs                                                         | os                                                           |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **browser** | [Window](https://developer.mozilla.org/zh-CN/docs/Web/API/Window) | [navigator.userAgent](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/userAgent) |
+| **node**    | [global](https://nodejs.cn/api/globals.html#global)          | [process.platform](https://nodejs.cn/api/process.html#processplatform) |
+| **wx**      | [wx](https://developers.weixin.qq.com/miniprogram/dev/api/)  | [wx.getDeviceInfo().platform](https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getDeviceInfo.html) |
+| **python**  |                                                              | [platform.system()](https://docs.python.org/zh-cn/3/library/platform.html#platform.system) |
+| 统一定制    | [globalThis](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/globalThis)<br />**BaseEnv.envs** | **BaseEnv.os**                                               |
+
 ::: code-tabs#import
 
 @tab browser
@@ -165,9 +173,11 @@ from hp_shared.base import BaseEnv
 
 :::
 
+###### BaseEnv
+
 | 属性    | 说明                                                 | js                                               | python                                           |
 |-------|----------------------------------------------------|----------------------------------------------------|----------------------------------------------------|
-| envs  | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| envs  | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
 | **isBrowser** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
 | isWebWorker | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
 | isChromeExtension | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
@@ -182,33 +192,50 @@ from hp_shared.base import BaseEnv
 | isAndroid | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:#999;">✕</strong>     |
 | isIOS | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:#999;">✕</strong>     |
 
-#### 2.1.2 \_console 控制台
+#### 2.1.2 _console 控制台
 
-写法对应：浏览器 [Console API](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API), node [console](https://nodejs.cn/api/console.html)
+|             | 输出                                                         | 输入                                                         |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **browser** | [Console API](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API) | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt) |
+| **node**    | [console](https://nodejs.cn/api/console.html)                | [readline](https://nodejs.cn/api/readline.html)              |
+| **wx**      | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) |                                                              |
+| **python**  | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) |
+| 统一定制    | **_console**, _print                                         | **_input**                                                   |
 
 ::: code-tabs#import
 
 @tab browser
 
 ```js
-import { _console } from 'hp-shared/base';
+import { _console, _input } from 'hp-shared/base';
+
+const text = _input('输入内容：');
+_console.log(text);
 ```
 
 @tab node
 
 ```js
-const { _console } = require('hp-shared/base');
+const { _console, _input } = require('hp-shared/base');
+
+(async function () {
+  const text = await _input('输入内容：');
+  _console.log(text);
+})();
 ```
 
 @tab python
 
 ```python
-from hp_shared.base import _console
+from hp_shared.base import _console, _input
+
+text = _input('输入内容：')
+_console.log(text)
 ```
 
-
-
 :::
+
+##### _console
 
 | 属性                                             | 说明                                        | js                                      | python                                  |
 | ------------------------------------------------ | ------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -227,6 +254,17 @@ from hp_shared.base import _console
 | groupAction                                      |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
 
+##### _print
+
+同 _console.log，倾向于使用 python 风格时选用
+
+##### _input
+
+| 说明 | browser                                 | node                                    | wx                                     | python                                  |
+| ---- | --------------------------------------- | --------------------------------------- | -------------------------------------- | --------------------------------------- |
+| 支持 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> | <strong style="color:green;">✓</strong> |
+| 方式 | 同步                                    | 异步                                    | <strong style="color:#999;">✕</strong> | 同步                                    |
+
 #### 2.1.3 \_Object
 
 ::: code-tabs#import
@@ -243,21 +281,29 @@ import { _Object } from 'hp-shared/base';
 const { _Object } = require('hp-shared/base');
 ```
 
+@tab python
+
+```python
+from hp_shared.base import _Object
+```
+
 :::
 
-| 属性                               | 说明                                                                       |
-| ---------------------------------- | -------------------------------------------------------------------------- |
-| <i style="color:pink;">static:</i> |                                                                            |
-| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况                  |
-| values                             | 对应 keys 配套                                                             |
-| entries                            | 对应 keys 配套                                                             |
+##### _Object
+
+| 属性                               | 说明                                                         |
+| ---------------------------------- | ------------------------------------------------------------ |
+| <i style="color:pink;">static:</i> |                                                              |
+| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况    |
+| values                             | 对应 keys 配套                                               |
+| entries                            | 对应 keys 配套                                               |
 | getOwner                           | 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作 |
-| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展                                |
-| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展                                  |
-| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理            |
-| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                                       |
-| **filter**                         | 过滤对象取部分值                                                           |
-| bindThis                           | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法    |
+| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展                  |
+| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展                    |
+| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理 |
+| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                         |
+| **filter**                         | 过滤对象取部分值                                             |
+| **bindThis**                       | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法 |
 
 #### 2.1.4 \_Function
 
@@ -628,6 +674,7 @@ const { _Proxy } = require('hp-shared/base');
 | **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
 | **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html) |
 | **python**  | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html) |
+| 统一定制    | **clipboard**                                                |
 
 ::: code-tabs#import
 
@@ -688,7 +735,7 @@ async def test():
 asyncio.run(test())
 ```
 
-
+##### clipboard
 
 :::
 

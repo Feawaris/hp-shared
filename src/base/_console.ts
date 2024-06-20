@@ -234,7 +234,7 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
   return values;
 };
 // 同时 show 方法也返回用于需要反馈的场景
-_console.show = function (options={}) {
+_console.show = function (options = {}) {
   const values = _console.getValues(options);
   console.log(...values);
   return {
@@ -293,3 +293,22 @@ _console.groupAction = function (action = () => {}, label = null, collapse = fal
   action();
   console.groupEnd();
 };
+
+export const _print = _console.log;
+export function _input(title = '') {
+  if (BaseEnv.isBrowser) {
+    return prompt(title) || '';
+  }
+  if (BaseEnv.isNode) {
+    const readline = require('readline').createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    return new Promise((resolve) => {
+      readline.question(title, (text) => {
+        resolve(text || '');
+        readline.close();
+      });
+    });
+  }
+}

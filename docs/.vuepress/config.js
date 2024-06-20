@@ -52,6 +52,7 @@ export default defineUserConfig({
       locales: {},
       extraLocales: {},
       hotReload: true,
+      iconAssets: 'fontawesome',
 
       /**
        * 主题功能选项
@@ -69,7 +70,36 @@ export default defineUserConfig({
       /**
        * 导航栏
        */
-      navbar: [{ text: 'README', link: '/' }],
+      navbar: [
+        {
+          text: '链接',
+          icon: 'link',
+          children: [
+            {
+              text: '安装包',
+              children: [
+                { text: 'npm 包', link: 'https://www.npmjs.com/package/hp-shared' },
+                { text: 'tampermonkey 包', link: 'https://greasyfork.org/zh-CN/scripts/497270-hp-shared' },
+                { text: 'pip 包', link: 'https://pypi.org/project/hp-shared/' },
+              ],
+            },
+            {
+              text: 'CDN',
+              children: [
+                { text: 'unpkg', link: 'https://unpkg.com/hp-shared' },
+                { text: 'jsdelivr', link: 'https://cdn.jsdelivr.net/npm/hp-shared' },
+              ],
+            },
+            {
+              text: '仓库',
+              children: [
+                { text: 'github 仓库', link: 'https://github.com/Feawaris/hp-shared' },
+                { text: 'gitee 仓库', link: 'https://gitee.com/Feawaris/hp-shared' },
+              ],
+            },
+          ],
+        },
+      ],
       navbarIcon: true,
       navbarLayout: {
         start: ['Brand'],
@@ -183,7 +213,7 @@ export default defineUserConfig({
         // @vuepress/plugin-active-header-links
         activeHeaderLinks: {},
         // @vuepress/external-link-icon
-        externalLinkIcon: {},
+        // externalLinkIcon: {},
         // @vuepress/plugin-catalog
         /* catalog: {
           title: '',
