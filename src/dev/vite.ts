@@ -3,6 +3,7 @@
  * [vite 配置](https://cn.vitejs.dev/config/)
  */
 import { _Object } from '../base';
+import { Dev } from './base';
 
 export const vite = Object.create(null);
 vite.createBaseConfig = function (env) {
@@ -97,13 +98,13 @@ vite.createBaseConfig = function (env) {
       rollupOptions: {
         output: {
           entryFileNames(chunkInfo) {
-            return `entryFileNames-${chunkInfo.type}-[name]-[hash]-${dev.getDateNameForFile()}.[format].js`;
+            return `entryFileNames-${chunkInfo.type}-[name]-[hash]-${Dev.getDateNameForFile()}.[format].js`;
           },
           chunkFileNames(chunkInfo) {
-            return `chunkFileNames-${chunkInfo.type}-[name]-[hash]-${dev.getDateNameForFile()}.[format].js`;
+            return `chunkFileNames-${chunkInfo.type}-[name]-[hash]-${Dev.getDateNameForFile()}.[format].js`;
           },
           assetFileNames(chunkInfo) {
-            return `assetFileNames-${chunkInfo.type}-[name]-[hash]-${dev.getDateNameForFile()}.[ext]`;
+            return `assetFileNames-${chunkInfo.type}-[name]-[hash]-${Dev.getDateNameForFile()}.[ext]`;
           },
         },
       },
