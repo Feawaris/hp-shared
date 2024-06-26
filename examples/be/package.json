@@ -2,7 +2,7 @@
   "name": "be",
   "private": true,
   "scripts": {
-    "dev": "pm2 start pm2.config.cjs && pm2 save && pm2 monit"
+    "dev": "pm2 start pm2.config.js && pm2 save && pm2 monit"
   },
   "dependencies": {
     "hp-shared": "workspace:^",

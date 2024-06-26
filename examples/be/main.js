@@ -4,6 +4,7 @@ const http = require('node:http');
 const EventEmitter = require('node:events');
 const { MongoClient } = require('mongodb');
 
+// 错误捕获
 process.on('uncaughtException', (err) => {
   _console.error(err);
   process.exit(1);
@@ -20,7 +21,7 @@ const dataStore = {
 const eventBus = new EventEmitter();
 
 async function getRequestBody(req) {
-  // console.log('getRequestBody', req.body);
+  // _console.log('getRequestBody', req.body);
   if (req.body) {
     return req.body;
   }
