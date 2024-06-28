@@ -158,6 +158,13 @@ const config: RollupOptions[] = [
     plugins: browserPlugins,
   },
   {
+    input: 'src/base/index-target-es2015.ts',
+    output: [
+      getOutputItem({ file: 'dist/browser/base-target-es2015.js', format: 'es' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
     input: 'src/base/index.ts',
     output: [
       getOutputItem({ file: 'dist/node/base.js', format: 'cjs' }),

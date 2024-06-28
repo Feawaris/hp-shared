@@ -7,6 +7,6 @@
   "dependencies": {
     "hp-shared": "workspace:^",
     "shared": "workspace:^",
-    "mongodb": "^6.7.0"
+    "mongodb": "^6.8.0"
   }
 }
