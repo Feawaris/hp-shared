@@ -4,9 +4,7 @@ import { _Date } from './_Date';
 
 // 简易 chalk
 export const _chalk: {
-  styleMap: {
-    [key: string]: [number, number];
-  },
+  styleMap: Record<string, [number, number]>,
   [key: string]: any
 } = Object.create(null);
 _chalk.styleMap = {
@@ -295,7 +293,7 @@ _console.groupAction = function (action = () => {}, label = null, collapse = fal
 };
 
 export const _print = _console.log;
-export function _input(title = '') {
+export async function _input(title = '') {
   if (BaseEnv.isBrowser) {
     return prompt(title) || '';
   }

@@ -20,7 +20,6 @@ describe('base', () => {
       isMobile: false,
     });
   });
-
 });
 describe('_console', () => {
   const inputValues = [null, undefined, 10, '12px', true, false, 10n, Symbol('test')];

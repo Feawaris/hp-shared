@@ -5,18 +5,18 @@ Page({
     // _console.log(query);
   },
   goHome() {
-    wx.navigateTo({ url: `/pages/index/index?date=${new _Date}` });
+    wx.navigateTo({ url: `/pages/index/index?date=${new _Date()}` });
   },
   reLaunch() {
-    wx.reLaunch({ url: `/pages/index/index?date=${new _Date}` });
+    wx.reLaunch({ url: `/pages/index/index?date=${new _Date()}` });
   },
   redirectTo() {
-    wx.redirectTo({ url: `/pages/index/index?date=${new _Date}` });
+    wx.redirectTo({ url: `/pages/index/index?date=${new _Date()}` });
   },
   navigateTo() {
-    wx.navigateTo({ url: `/pages/index/index?date=${new _Date}` });
+    wx.navigateTo({ url: `/pages/index/index?date=${new _Date()}` });
   },
   navigateBack() {
-    wx.navigateBack({ url: `/pages/index/index?date=${new _Date}` });
+    wx.navigateBack({ url: `/pages/index/index?date=${new _Date()}` });
   },
 });

@@ -32,7 +32,7 @@ if (require.main === module) {
       data: [
         gitignoreLint.getText(),
         '# ---[manual] start---',
-        'python' ,
+        'python',
         '# ---[manual] end---',
       ],
       exclude: [{ tag: 'manual', group: 'npm:reserve' }],

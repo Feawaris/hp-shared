@@ -50,12 +50,12 @@ Page({
     a = 2;
   },
   goHome() {
-    wx.navigateTo({ url: `/pages/index/index?date=${new _Date}` });
+    wx.navigateTo({ url: `/pages/index/index?date=${new _Date()}` });
   },
   goPage1() {
-    wx.navigateTo({ url: `/pages/page1/page1?date=${new _Date}` });
+    wx.navigateTo({ url: `/pages/page1/page1?date=${new _Date()}` });
   },
-  onImageError(e){
+  onImageError(e) {
     _console.log(e);
-  }
+  },
 });

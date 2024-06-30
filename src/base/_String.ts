@@ -87,7 +87,7 @@ export class _String extends String {
     return this.trim() !== '';
   }
   toJSON() {
-    return this.toString()
+    return this.toString();
   }
   toBigInt() {
     return BigInt(this);

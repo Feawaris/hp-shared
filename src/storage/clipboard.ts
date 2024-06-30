@@ -1,4 +1,4 @@
-import { _console,  BaseEnv } from '../base';
+import { _console, BaseEnv } from '../base';
 export const clipboard = Object.create(null);
 
 const commandMap = {
@@ -85,7 +85,7 @@ clipboard.copySync = function (text: string) {
 
     return text;
   }
-  return ''
+  return '';
 };
 // 粘贴
 clipboard.paste = async function () {
@@ -123,7 +123,7 @@ clipboard.pasteSync = function () {
   if (BaseEnv.isBrowser || BaseEnv.isWx) {
     throw new Error('clipboard 在当前环境无同步写法');
   }
-  if(BaseEnv.isNode) {
+  if (BaseEnv.isNode) {
     const { execSync } = require('node:child_process');
 
     const command = commandMap[BaseEnv.os].paste;
@@ -131,9 +131,9 @@ clipboard.pasteSync = function () {
     // 移除末尾的换行符
     stdout = stdout.replace(/\r?\n$/, '');
 
-    return stdout
+    return stdout;
   }
-  return ''
+  return '';
 };
 
 // Clipboard API 同名定制

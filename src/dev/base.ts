@@ -250,7 +250,7 @@ export class IgnoreLint {
     }
     return this;
   }
-  updateFile({ data = [], exclude = [], } = {}) {
+  updateFile({ data = [], exclude = [] } = {}) {
     const oldText = this.getText();
     // 来源数据
     data = Array.isArray(data) ? data.join('\n') : data;

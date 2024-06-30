@@ -36,11 +36,9 @@ const localConfig = (function getLocalConfig() {
         password: '',
       },
       // 远程接口地址
-      remoteURL:'http://localhost:9001',
+      remoteURL: 'http://localhost:9001',
     };
   }
 })();
 
 module.exports = { TestData, timeout, localConfig };
-
-

@@ -19,15 +19,15 @@ export class BaseCookie {
       set value(text) {
         if (BaseEnv.isBrowser) {
           document.cookie = text;
-          return
+          return;
         }
         if (BaseEnv.isWx) {
-          return
+          return;
         }
         if (BaseEnv.isNode) {
           const arr = res.getHeader('Set-Cookie') || [];
           res.setHeader('Set-Cookie', [...arr, text]);
-          return
+          return;
         }
       },
 
@@ -65,7 +65,7 @@ export class BaseCookie {
   }
   get(key, { default: defaultValue = '' } = {}) {
     const findItem = this.toArray().find((entry) => entry[0] === key);
-    return findItem?.[1] ?? defaultValue;
+    return findItem[1] ?? defaultValue;
   }
   set(key, value, options = {}) {
     options = _Object.assign(

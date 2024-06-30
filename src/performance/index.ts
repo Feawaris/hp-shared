@@ -155,7 +155,7 @@ export class MonitorInfo {
         } catch (e) {
           // 小程序没有 Web Crypto API，使用 uuidv4 报错处理
           return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
           });
         }

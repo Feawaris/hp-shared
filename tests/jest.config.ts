@@ -10,7 +10,7 @@ const config: Config = {
         '**/node/**/*.js',
       ],
     },
-    /*{
+    /* {
       displayName: '浏览器',
       testEnvironment: 'node',
       testMatch: [
@@ -23,7 +23,7 @@ const config: Config = {
       testMatch: [
         '**!/wx/!**!/!*.js',
       ],
-    },*/
+    }, */
   ],
 };
 export default config;

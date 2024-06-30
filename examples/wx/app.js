@@ -18,4 +18,3 @@ wx.appMonitor = new Monitor({
 App({
 
 });
-

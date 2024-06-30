@@ -30,7 +30,7 @@ export class _BigInt {
   toJSON() {
     return this.toString();
   }
-  toBigInt(){
-    return this.value
+  toBigInt() {
+    return this.value;
   }
 }

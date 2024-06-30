@@ -1,3 +1,3 @@
-export * from './clipboard'
-export * from './cookie'
-export * from './storage'
+export * from './clipboard';
+export * from './cookie';
+export * from './storage';

@@ -11,11 +11,11 @@ const {
     Monitor,
   },
 } = window.hpShared;
-Object.assign(window,{
+Object.assign(window, {
   ...window.hpShared.base,
   ...window.hpShared.storage,
   ...window.hpShared.performance,
-})
+});
 const { localConfig } = window.testsShared;
 
 window.appMonitor = new Monitor({

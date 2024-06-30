@@ -8,7 +8,7 @@ describe('performance', () => {
   test('MonitorInfo', () => {
     const monitorInfo = new MonitorInfo();
     expect(monitorInfo).toEqual(expect.objectContaining({
-      env: { envs: ['node'], os: BaseEnv.os, 'isMobile': false },
+      env: { envs: ['node'], os: BaseEnv.os, isMobile: false },
       location: { href: '' },
     }));
   });
