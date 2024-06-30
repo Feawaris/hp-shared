@@ -494,15 +494,16 @@ export class Monitor {
       // wx.request
       const nativeRequest = wx.request;
       wx.request = function (options: WechatMiniprogram.RequestOption = { url: '' }) {
+        const { method = '', url, headers, data } = options;
         const monitorInfo = _this.createMonitorInfo({
           type: 'RequestError',
           trigger: 'wx.request',
           detail: {
             request: {
-              method: options.method?.toUpperCase() || 'GET',
-              url: options.url,
-              headers: options.header,
-              body: options.data,
+              method: method.toUpperCase() || 'GET',
+              url,
+              headers,
+              body: data,
             },
             response: {},
             startTime: `${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}`,
