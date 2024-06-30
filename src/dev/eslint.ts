@@ -1,8 +1,9 @@
 // @ts-nocheck
 /**
- * [eslint 配置](https://eslint.org/docs/latest/rules/)
- * [eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)
- * [typescript-eslint 配置](https://typescript-eslint.io/rules/)
+ * [eslint](https://eslint.org/docs/latest/rules/)
+ * [eslint stylistic](https://eslint.style/)
+ * [eslint-plugin-vue](https://eslint.vuejs.org/rules/)
+ * [typescript-eslint](https://typescript-eslint.io/rules/)
  */
 import { _Object, _console } from '../base';
 import { Lint } from './base';
@@ -19,7 +20,6 @@ export class EsLint extends Lint {
    */
   constructor({
     eslintVersion,
-
     configFile = eslintVersion === 9 ? 'eslint.config.cjs' : '.eslintrc.cjs',
     ignoreFile = '',
     ...restOptions
@@ -83,6 +83,7 @@ export class EsLint extends Lint {
           {
             allowImplicit: false,
             checkForEach: true,
+            allowVoid: true,
           },
         ],
         'constructor-super': ['error'],
@@ -133,6 +134,7 @@ export class EsLint extends Lint {
           {
             commentPattern: 'falls?\\s*through',
             allowEmptyCase: true,
+            reportUnusedFallthroughComment: true,
           },
         ],
         'no-func-assign': ['error'],
@@ -151,14 +153,25 @@ export class EsLint extends Lint {
             skipComments: true,
             skipRegExps: true,
             skipTemplates: true,
+            skipJSXText: true,
           },
         ],
         'no-loss-of-precision': ['error'],
-        'no-misleading-character-class': ['error'],
+        'no-misleading-character-class': [
+          'error',
+          {
+            allowEscape: true,
+          },
+        ],
         'no-new-native-nonconstructor': ['error'],
         'no-new-symbol': ['error'],
         'no-obj-calls': ['error'],
-        'no-promise-executor-return': ['error'],
+        'no-promise-executor-return': [
+          'error',
+          {
+            allowVoid: true,
+          },
+        ],
         'no-prototype-builtins': ['error'],
         'no-self-assign': [
           'error',
@@ -211,6 +224,8 @@ export class EsLint extends Lint {
             caughtErrorsIgnorePattern: '',
             destructuredArrayIgnorePattern: '',
             ignoreRestSiblings: false,
+            ignoreClassWithStaticInitBlock: false,
+            reportUsedIgnorePattern: false,
           },
         ],
         'no-use-before-define': [
@@ -222,6 +237,7 @@ export class EsLint extends Lint {
             allowNamedExports: false,
           },
         ],
+        'no-useless-assignment': ['warn'],
         'no-useless-backreference': ['off'],
         'require-atomic-updates': [
           'off',
@@ -306,7 +322,7 @@ export class EsLint extends Lint {
         'default-case': [
           'off',
           {
-            commentPattern: '^no\\sdefault',
+            commentPattern: /^no default$/i,
           },
         ],
         'default-case-last': ['error'],
@@ -345,6 +361,7 @@ export class EsLint extends Lint {
           'expression',
           {
             allowArrowFunctions: true,
+            overrides: {},
           },
         ],
         'grouped-accessor-pairs': ['error', 'getBeforeSet'],
@@ -370,8 +387,20 @@ export class EsLint extends Lint {
             ignoreDestructuring: false,
           },
         ],
-        'init-declarations': ['off', 'always'],
-        'logical-assignment-operators': ['off', 'never'],
+        'init-declarations': [
+          'off',
+          'always',
+          {
+            ignoreForLoopInit: true,
+          },
+        ],
+        'logical-assignment-operators': [
+          'off',
+          'never',
+          {
+            enforceForIfStatements: true,
+          },
+        ],
         'max-classes-per-file': [
           'off',
           {
@@ -421,7 +450,6 @@ export class EsLint extends Lint {
             ignoreTopLevelFunctions: true,
           },
         ],
-        'multiline-comment-style': ['off', 'starred-block'],
         'new-cap': [
           'off',
           {
@@ -445,13 +473,6 @@ export class EsLint extends Lint {
         ],
         'no-caller': ['error'],
         'no-case-declarations': ['error'],
-        'no-confusing-arrow': [
-          'off',
-          {
-            allowParens: true,
-            onlyOneSimpleParam: true,
-          },
-        ],
         'no-console': [
           'off',
           {
@@ -501,8 +522,6 @@ export class EsLint extends Lint {
           },
         ],
         'no-extra-label': ['off'],
-        'no-extra-semi': ['warn'],
-        'no-floating-decimal': ['warn'],
         'no-global-assign': [
           'error',
           {
@@ -561,13 +580,6 @@ export class EsLint extends Lint {
             detectObjects: false,
           },
         ],
-        'no-mixed-operators': [
-          'off',
-          {
-            groups: [...[]],
-            allowSamePrecedence: true,
-          },
-        ],
         'no-multi-assign': [
           'off',
           {
@@ -579,9 +591,9 @@ export class EsLint extends Lint {
         'no-nested-ternary': ['off'],
         'no-new': ['off'],
         'no-new-func': ['off'],
-        'no-new-object': ['error'],
         'no-new-wrappers': ['error'],
         'no-nonoctal-decimal-escape': ['error'],
+        'no-object-constructor': ['error'],
         'no-octal': ['error'],
         'no-octal-escape': ['error'],
         'no-param-reassign': [
@@ -736,7 +748,6 @@ export class EsLint extends Lint {
             separateRequires: true,
           },
         ],
-        'one-var-declaration-per-line': ['off', 'always'],
         'operator-assignment': ['off', 'never'],
         'prefer-arrow-callback': [
           'off',
@@ -788,15 +799,6 @@ export class EsLint extends Lint {
         'prefer-rest-params': ['off'],
         'prefer-spread': ['off'],
         'prefer-template': ['warn'],
-        'quote-props': [
-          'warn',
-          'as-needed',
-          {
-            keywords: false,
-            unnecessary: true,
-            numbers: false,
-          },
-        ],
         radix: ['off', 'always'],
         'require-await': ['off'],
         'require-unicode-regexp': ['off'],
@@ -827,21 +829,6 @@ export class EsLint extends Lint {
             ignoreCase: true,
           },
         ],
-        'spaced-comment': [
-          'warn',
-          'always',
-          {
-            line: {
-              markers: ['/'],
-              exceptions: ['-', '+'],
-            },
-            block: {
-              markers: ['!'],
-              exceptions: ['*'],
-              balanced: true,
-            },
-          },
-        ],
         strict: ['off', 'safe'],
         'symbol-description': ['off'],
         'vars-on-top': ['off'],
@@ -858,8 +845,35 @@ export class EsLint extends Lint {
          * Layout & Formatting
          * 布局和格式
          */
-        'array-bracket-newline': ['warn', 'consistent'],
-        'array-bracket-spacing': [
+        'unicode-bom': ['warn', 'never'],
+      },
+    };
+    this.stylisticConfig = {
+      ...(() => {
+        if (this.eslintVersion === 8) {
+          return {
+            plugins: ['@stylistic'],
+          };
+        }
+        if (this.eslintVersion === 9) {
+          return {
+            plugins: {
+              ...(this.requireResolve === 'string' ? {
+                '@stylistic': `require('@stylistic/eslint-plugin')`,
+              } : {}),
+              ...(this.requireResolve === 'getter' ? {
+                get '@stylistic'() {
+                  return $this.require('@stylistic/eslint-plugin');
+                },
+              } : {}),
+            },
+          };
+        }
+        return {};
+      })(),
+      rules: {
+        '@stylistic/array-bracket-newline': ['warn', 'consistent'],
+        '@stylistic/array-bracket-spacing': [
           'warn',
           'never',
           {
@@ -868,36 +882,36 @@ export class EsLint extends Lint {
             arraysInArrays: false,
           },
         ],
-        'array-element-newline': [
+        '@stylistic/array-element-newline': [
           'off',
           {
             ArrayExpression: 'consistent',
             ArrayPattern: 'consistent',
           },
         ],
-        'arrow-parens': [
+        '@stylistic/arrow-parens': [
           'off',
           'as-needed',
           {
             requireForBlockBody: true,
           },
         ],
-        'arrow-spacing': [
+        '@stylistic/arrow-spacing': [
           'warn',
           {
             before: true,
             after: true,
           },
         ],
-        'block-spacing': ['warn', 'always'],
-        'brace-style': [
+        '@stylistic/block-spacing': ['warn', 'always'],
+        '@stylistic/brace-style': [
           'warn',
           '1tbs',
           {
             allowSingleLine: true,
           },
         ],
-        'comma-dangle': [
+        '@stylistic/comma-dangle': [
           'warn',
           {
             arrays: 'always-multiline',
@@ -907,33 +921,36 @@ export class EsLint extends Lint {
             functions: 'always-multiline',
           },
         ],
-        'comma-spacing': [
+        '@stylistic/comma-spacing': [
           'warn',
           {
             before: false,
             after: true,
           },
         ],
-        'comma-style': [
+        '@stylistic/comma-style': [
           'warn',
           'last',
           {
             exceptions: {},
           },
         ],
-        'computed-property-spacing': [
+        '@stylistic/computed-property-spacing': [
           'warn',
           'never',
           {
             enforceForClassMembers: true,
           },
         ],
-        'dot-location': ['warn', 'property'],
-        'eol-last': ['warn', 'always'],
-        'func-call-spacing': ['warn', 'never'],
-        'function-call-argument-newline': ['warn', 'consistent'],
-        'function-paren-newline': ['warn', 'consistent'],
-        'generator-star-spacing': [
+        '@stylistic/dot-location': ['warn', 'property'],
+        '@stylistic/eol-last': ['warn', 'always'],
+        get '@stylistic/func-call-spacing'() {
+          return this['@stylistic/function-call-spacing'];
+        },
+        '@stylistic/function-call-argument-newline': ['warn', 'consistent'],
+        '@stylistic/function-call-spacing': ['warn', 'never'],
+        '@stylistic/function-paren-newline': ['warn', 'consistent'],
+        '@stylistic/generator-star-spacing': [
           'warn',
           {
             before: false,
@@ -942,8 +959,8 @@ export class EsLint extends Lint {
             method: { before: false, after: true },
           },
         ],
-        'implicit-arrow-linebreak': ['warn', 'beside'],
-        indent: [
+        '@stylistic/implicit-arrow-linebreak': ['warn', 'beside'],
+        '@stylistic/indent': [
           'warn',
           2,
           {
@@ -964,8 +981,29 @@ export class EsLint extends Lint {
             ignoreComments: false,
           },
         ],
-        'jsx-quotes': ['warn', 'prefer-double'],
-        'key-spacing': [
+        '@stylistic/indent-binary-ops': ['warn', 2],
+        '@stylistic/jsx-child-element-spacing': ['off'],
+        '@stylistic/jsx-closing-bracket-location': ['off'],
+        '@stylistic/jsx-closing-tag-location': ['off'],
+        '@stylistic/jsx-curly-brace-presence': ['off'],
+        '@stylistic/jsx-curly-newline': ['off'],
+        '@stylistic/jsx-curly-spacing': ['off'],
+        '@stylistic/jsx-equals-spacing': ['off'],
+        '@stylistic/jsx-first-prop-new-line': ['off'],
+        '@stylistic/jsx-function-call-newline': ['off'],
+        '@stylistic/jsx-indent': ['off'],
+        '@stylistic/jsx-indent-props': ['off'],
+        '@stylistic/jsx-max-props-per-line': ['off'],
+        '@stylistic/jsx-newline': ['off'],
+        '@stylistic/jsx-one-expression-per-line': ['off'],
+        '@stylistic/jsx-pascal-case': ['off'],
+        '@stylistic/jsx-props-no-multi-spaces': ['off'],
+        '@stylistic/jsx-quotes': ['warn', 'prefer-double'],
+        '@stylistic/jsx-self-closing-comp': ['off'],
+        '@stylistic/jsx-sort-props': ['off'],
+        '@stylistic/jsx-tag-spacing': ['off'],
+        '@stylistic/jsx-wrap-multilines': ['off'],
+        '@stylistic/key-spacing': [
           'warn',
           {
             beforeColon: false,
@@ -973,7 +1011,7 @@ export class EsLint extends Lint {
             mode: 'strict',
           },
         ],
-        'keyword-spacing': [
+        '@stylistic/keyword-spacing': [
           'warn',
           {
             before: true,
@@ -981,7 +1019,7 @@ export class EsLint extends Lint {
             overrides: {},
           },
         ],
-        'line-comment-position': [
+        '@stylistic/line-comment-position': [
           'off',
           {
             position: 'above',
@@ -989,8 +1027,8 @@ export class EsLint extends Lint {
             applyDefaultIgnorePatterns: true,
           },
         ],
-        'linebreak-style': ['off', 'unix'],
-        'lines-around-comment': [
+        '@stylistic/linebreak-style': ['off', 'unix'],
+        '@stylistic/lines-around-comment': [
           'off',
           {
             beforeBlockComment: false,
@@ -1010,14 +1048,14 @@ export class EsLint extends Lint {
             afterHashbangComment: false,
           },
         ],
-        'lines-between-class-members': [
+        '@stylistic/lines-between-class-members': [
           'off',
           'always',
           {
             exceptAfterSingleLine: false,
           },
         ],
-        'max-len': [
+        '@stylistic/max-len': [
           'off',
           {
             code: 80,
@@ -1032,21 +1070,43 @@ export class EsLint extends Lint {
             ignoreRegExpLiterals: true,
           },
         ],
-        'max-statements-per-line': [
+        '@stylistic/max-statements-per-line': [
           'off',
           {
             max: 1,
           },
         ],
-        'multiline-ternary': ['off', 'always-multiline'],
-        'new-parens': ['warn', 'always'],
-        'newline-per-chained-call': [
+        '@stylistic/member-delimiter-style': [
+          'off',
+          {
+            multiline: {
+              delimiter: 'semi',
+              requireLast: true,
+            },
+            singleline: {
+              delimiter: 'semi',
+              requireLast: false,
+            },
+            multilineDetection: 'brackets',
+          },
+        ],
+        '@stylistic/multiline-comment-style': ['off', 'starred-block'],
+        '@stylistic/multiline-ternary': ['off', 'always-multiline'],
+        '@stylistic/new-parens': ['warn', 'always'],
+        '@stylistic/newline-per-chained-call': [
           'off',
           {
             ignoreChainWithDepth: 1,
           },
         ],
-        'no-extra-parens': [
+        '@stylistic/no-confusing-arrow': [
+          'off',
+          {
+            allowParens: true,
+            onlyOneSimpleParam: false,
+          },
+        ],
+        '@stylistic/no-extra-parens': [
           'off',
           'all',
           {
@@ -1062,15 +1122,24 @@ export class EsLint extends Lint {
             allowParensAfterCommentPattern: '',
           },
         ],
-        'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
-        'no-multi-spaces': [
+        '@stylistic/no-extra-semi': ['warn'],
+        '@stylistic/no-floating-decimal': ['warn'],
+        '@stylistic/no-mixed-operators': [
+          'off',
+          {
+            groups: [...[]],
+            allowSamePrecedence: true,
+          },
+        ],
+        '@stylistic/no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
+        '@stylistic/no-multi-spaces': [
           'warn',
           {
             ignoreEOLComments: false,
             exceptions: {},
           },
         ],
-        'no-multiple-empty-lines': [
+        '@stylistic/no-multiple-empty-lines': [
           'warn',
           {
             max: 1,
@@ -1078,28 +1147,28 @@ export class EsLint extends Lint {
             maxEOF: 0,
           },
         ],
-        'no-tabs': [
+        '@stylistic/no-tabs': [
           'off',
           {
             allowIndentationTabs: false,
           },
         ],
-        'no-trailing-spaces': [
+        '@stylistic/no-trailing-spaces': [
           'warn',
           {
             skipBlankLines: false,
             ignoreComments: false,
           },
         ],
-        'no-whitespace-before-property': ['warn'],
-        'nonblock-statement-body-position': [
+        '@stylistic/no-whitespace-before-property': ['warn'],
+        '@stylistic/nonblock-statement-body-position': [
           'off',
           'beside',
           {
             overrides: {},
           },
         ],
-        'object-curly-newline': [
+        '@stylistic/object-curly-newline': [
           'off',
           {
             ObjectExpression: { multiline: true },
@@ -1108,7 +1177,7 @@ export class EsLint extends Lint {
             ExportDeclaration: { multiline: true },
           },
         ],
-        'object-curly-spacing': [
+        '@stylistic/object-curly-spacing': [
           'warn',
           'always',
           {
@@ -1116,20 +1185,21 @@ export class EsLint extends Lint {
             objectsInObjects: true,
           },
         ],
-        'object-property-newline': [
+        '@stylistic/object-property-newline': [
           'off',
           {
             allowAllPropertiesOnSameLine: true,
           },
         ],
-        'operator-linebreak': [
+        '@stylistic/one-var-declaration-per-line': ['off', 'always'],
+        '@stylistic/operator-linebreak': [
           'off',
           'before',
           {
             overrides: {},
           },
         ],
-        'padded-blocks': [
+        '@stylistic/padded-blocks': [
           'warn',
           {
             blocks: 'never',
@@ -1140,8 +1210,17 @@ export class EsLint extends Lint {
             allowSingleLineBlocks: true,
           },
         ],
-        'padding-line-between-statements': ['off', ...[]],
-        quotes: [
+        '@stylistic/padding-line-between-statements': ['off', ...[]],
+        '@stylistic/quote-props': [
+          'warn',
+          'as-needed',
+          {
+            keywords: false,
+            unnecessary: true,
+            numbers: false,
+          },
+        ],
+        '@stylistic/quotes': [
           'warn',
           'single',
           {
@@ -1149,23 +1228,23 @@ export class EsLint extends Lint {
             allowTemplateLiterals: true,
           },
         ],
-        'rest-spread-spacing': ['warn', 'never'],
-        semi: [
+        '@stylistic/rest-spread-spacing': ['warn', 'never'],
+        '@stylistic/semi': [
           'warn',
           'always',
           {
             omitLastInOneLineBlock: false,
           },
         ],
-        'semi-spacing': [
+        '@stylistic/semi-spacing': [
           'warn',
           {
             before: false,
             after: true,
           },
         ],
-        'semi-style': ['warn', 'last'],
-        'space-before-blocks': [
+        '@stylistic/semi-style': ['warn', 'last'],
+        '@stylistic/space-before-blocks': [
           'warn',
           {
             functions: 'always',
@@ -1173,7 +1252,7 @@ export class EsLint extends Lint {
             classes: 'always',
           },
         ],
-        'space-before-function-paren': [
+        '@stylistic/space-before-function-paren': [
           'off',
           {
             anonymous: 'always',
@@ -1181,20 +1260,20 @@ export class EsLint extends Lint {
             asyncArrow: 'always',
           },
         ],
-        'space-in-parens': [
+        '@stylistic/space-in-parens': [
           'warn',
           'never',
           {
             exceptions: [],
           },
         ],
-        'space-infix-ops': [
+        '@stylistic/space-infix-ops': [
           'warn',
           {
             int32Hint: false,
           },
         ],
-        'space-unary-ops': [
+        '@stylistic/space-unary-ops': [
           'warn',
           {
             words: true,
@@ -1202,25 +1281,48 @@ export class EsLint extends Lint {
             overrides: {},
           },
         ],
-        'switch-colon-spacing': [
+        '@stylistic/spaced-comment': [
+          'warn',
+          'always',
+          {
+            line: {
+              markers: ['/'],
+              exceptions: ['-', '+'],
+            },
+            block: {
+              markers: ['!'],
+              exceptions: ['*'],
+              balanced: true,
+            },
+          },
+        ],
+        '@stylistic/switch-colon-spacing': [
           'warn',
           {
             before: false,
             after: true,
           },
         ],
-        'template-curly-spacing': ['warn', 'never'],
-        'template-tag-spacing': ['warn', 'never'],
-        'unicode-bom': ['warn', 'never'],
-        'wrap-iife': [
+        '@stylistic/template-curly-spacing': ['warn', 'never'],
+        '@stylistic/template-tag-spacing': ['warn', 'never'],
+        '@stylistic/type-annotation-spacing': [
+          'warn',
+          {
+            before: false,
+            after: true,
+          },
+        ],
+        '@stylistic/type-generic-spacing': ['warn'],
+        '@stylistic/type-named-tuple-spacing': ['warn'],
+        '@stylistic/wrap-iife': [
           'warn',
           'inside',
           {
             functionPrototypeMethods: true,
           },
         ],
-        'wrap-regex': ['off'],
-        'yield-star-spacing': [
+        '@stylistic/wrap-regex': ['off'],
+        '@stylistic/yield-star-spacing': [
           'warn',
           {
             before: false,
@@ -1240,39 +1342,31 @@ export class EsLint extends Lint {
         if (this.eslintVersion === 9) {
           return {
             languageOptions: {
-              ...(this.requireResolve === 'string'
-                ? {
-                    parser: `require('vue-eslint-parser')`,
-                  }
-                : {}),
-              ...(this.requireResolve === 'getter'
-                ? {
-                    get parser() {
-                      return $this.require('vue-eslint-parser');
-                    },
-                  }
-                : {}),
+              ...(this.requireResolve === 'string' ? {
+                parser: `require('vue-eslint-parser')`,
+              } : {}),
+              ...(this.requireResolve === 'getter' ? {
+                get parser() {
+                  return $this.require('vue-eslint-parser');
+                },
+              } : {}),
             },
             plugins: {
-              ...(this.requireResolve === 'string'
-                ? {
-                    vue: `require('eslint-plugin-vue')`,
-                  }
-                : {}),
-              ...(this.requireResolve === 'getter'
-                ? {
-                    get vue() {
-                      return $this.require('eslint-plugin-vue');
-                    },
-                  }
-                : {}),
+              ...(this.requireResolve === 'string' ? {
+                vue: `require('eslint-plugin-vue')`,
+              } : {}),
+              ...(this.requireResolve === 'getter' ? {
+                get vue() {
+                  return $this.require('eslint-plugin-vue');
+                },
+              } : {}),
             },
           };
         }
         return {};
       })(),
       rules: {
-        // 'Base Rules',
+        // Base Rules (Enabling Correct ESLint Parsing)
         'vue/comment-directive': [
           'off',
           {
@@ -1281,7 +1375,7 @@ export class EsLint extends Lint {
         ],
         'vue/jsx-uses-vars': ['off'],
 
-        // 'Priority A: Essential',
+        // Priority A: Essential (Error Prevention)
         'vue/multi-word-component-names': [
           'off',
           {
@@ -1290,7 +1384,12 @@ export class EsLint extends Lint {
         ],
         'vue/no-arrow-functions-in-watch': ['error'],
         'vue/no-async-in-computed-properties': ['error'],
-        'vue/no-child-content': ['error', ...[]],
+        'vue/no-child-content': [
+          'error',
+          {
+            additionalDirectives: [],
+          },
+        ],
         'vue/no-computed-properties-in-data': ['error'],
         'vue/no-dupe-keys': [
           'error',
@@ -1307,7 +1406,12 @@ export class EsLint extends Lint {
           },
         ],
         'vue/no-export-in-script-setup': ['error'],
-        'vue/no-mutating-props': ['error'],
+        'vue/no-mutating-props': [
+          'error',
+          {
+            shallowOnly: false,
+          },
+        ],
         'vue/no-parsing-error': [
           'error',
           {
@@ -1364,12 +1468,8 @@ export class EsLint extends Lint {
             groups: [],
           },
         ],
-        'vue/no-reserved-props': [
-          'error',
-          {
-            vueVersion: 3,
-          },
-        ],
+        // 'vue/no-reserved-props' 选项在 vue3Config 和 vue2Config 分别设置
+        'vue/no-reserved-props': ['error', ...[]],
         'vue/no-shared-component-data': ['error'],
         'vue/no-side-effects-in-computed-properties': ['error'],
         'vue/no-template-key': ['error'],
@@ -1383,14 +1483,7 @@ export class EsLint extends Lint {
         'vue/no-unused-vars': [
           'off',
           {
-            vars: 'all',
             ignorePattern: '^_',
-            args: 'all',
-            argsIgnorePattern: '^_',
-            caughtErrors: 'all',
-            caughtErrorsIgnorePattern: '^_',
-            destructuredArrayIgnorePattern: '^_',
-            ignoreRestSiblings: true,
           },
         ],
         'vue/no-use-computed-property-like-method': ['error'],
@@ -1450,7 +1543,7 @@ export class EsLint extends Lint {
         ],
         'vue/valid-v-text': ['error'],
 
-        // 'Priority B: Strongly Recommended',
+        // Priority B: Strongly Recommended (Improving Readability)
         'vue/attribute-hyphenation': [
           'warn',
           'always',
@@ -1579,11 +1672,23 @@ export class EsLint extends Lint {
           },
         ],
 
-        // 'Priority C: Recommended',
+        // Priority C: Recommended (Potentially Dangerous Patterns)
         'vue/attributes-order': [
           'warn',
           {
-            order: ['DEFINITION', 'LIST_RENDERING', 'CONDITIONALS', 'RENDER_MODIFIERS', 'GLOBAL', ['UNIQUE', 'SLOT'], 'TWO_WAY_BINDING', 'OTHER_DIRECTIVES', 'OTHER_ATTR', 'EVENTS', 'CONTENT'],
+            order: [
+              'DEFINITION',
+              'LIST_RENDERING',
+              'CONDITIONALS',
+              'RENDER_MODIFIERS',
+              'GLOBAL',
+              ['UNIQUE', 'SLOT'],
+              'TWO_WAY_BINDING',
+              'OTHER_DIRECTIVES',
+              'OTHER_ATTR',
+              'EVENTS',
+              'CONTENT',
+            ],
             alphabetical: false,
           },
         ],
@@ -1598,17 +1703,57 @@ export class EsLint extends Lint {
         'vue/order-in-components': [
           'warn',
           {
-            order: ['el', 'name', 'key', 'parent', 'functional', ['delimiters', 'comments'], ['components', 'directives', 'filters'], 'extends', 'mixins', ['provide', 'inject'], 'ROUTER_GUARDS', 'layout', 'middleware', 'validate', 'scrollToTop', 'transition', 'loading', 'inheritAttrs', 'model', ['props', 'propsData'], 'emits', 'setup', 'asyncData', 'data', 'fetch', 'head', 'computed', 'watch', 'watchQuery', 'LIFECYCLE_HOOKS', 'methods', ['template', 'render'], 'renderError'],
+            order: [
+              'el',
+              'name',
+              'key',
+              'parent',
+              'functional',
+              ['delimiters', 'comments'],
+              ['components', 'directives', 'filters'],
+              'extends',
+              'mixins',
+              ['provide', 'inject'],
+              'ROUTER_GUARDS',
+              'layout',
+              'middleware',
+              'validate',
+              'scrollToTop',
+              'transition',
+              'loading',
+              'inheritAttrs',
+              'model',
+              ['props', 'propsData'],
+              'emits',
+              'setup',
+              'asyncData',
+              'data',
+              'fetch',
+              'head',
+              'computed',
+              'watch',
+              'watchQuery',
+              'LIFECYCLE_HOOKS',
+              'methods',
+              ['template', 'render'],
+              'renderError',
+            ],
           },
         ],
         'vue/this-in-template': ['off', 'never'],
 
-        // 'Uncategorized',
+        // Uncategorized
         'vue/block-lang': ['off', ...[]],
         'vue/block-order': [
-          'off',
+          'warn',
           {
-            order: ['template', 'script:not([setup])', 'script[setup]', 'style:not([scoped])', 'style[scoped]'],
+            order: [
+              'template',
+              'script:not([setup])',
+              'script[setup]',
+              'style:not([scoped])',
+              'style[scoped]',
+            ],
           },
         ],
         'vue/block-tag-newline': [
@@ -1620,7 +1765,10 @@ export class EsLint extends Lint {
             blocks: {},
           },
         ],
-        'vue/component-api-style': ['off', ['script-setup', 'composition']],
+        'vue/component-api-style': [
+          'off',
+          ['script-setup', 'composition', 'composition-vue2', 'options'],
+        ],
         'vue/component-name-in-template-casing': [
           'off',
           'PascalCase',
@@ -1641,7 +1789,13 @@ export class EsLint extends Lint {
         'vue/define-macros-order': [
           'warn',
           {
-            order: ['defineOptions', 'defineModel', 'defineProps', 'defineEmits', 'defineSlots'],
+            order: [
+              'defineOptions',
+              'defineModel',
+              'defineProps',
+              'defineEmits',
+              'defineSlots',
+            ],
             defineExposeLast: true,
           },
         ],
@@ -1705,7 +1859,9 @@ export class EsLint extends Lint {
         'vue/no-bare-strings-in-template': [
           'off',
           {
-            allowlist: ['(', ')', ',', '.', '&', '+', '-', '=', '*', '/', '#', '%', '!', '?', ':', '[', ']', '{', '}', '<', '>', '\u00b7', '\u2022', '\u2010', '\u2013', '\u2014', '\u2212', '|'],
+            allowlist: [
+              '(', ')', ',', '.', '&', '+', '-', '=', '*', '/', '#', '%', '!', '?', ':', '[', ']', '{', '}', '<', '>', '\u00b7', '\u2022', '\u2010', '\u2013', '\u2014', '\u2212', '|',
+            ],
             attributes: {
               '/.+/': ['title', 'aria-label', 'aria-placeholder', 'aria-roledescription', 'aria-valuetext'],
               input: ['placeholder'],
@@ -1716,18 +1872,18 @@ export class EsLint extends Lint {
         ],
         'vue/no-boolean-default': ['off', 'no-default'],
         'vue/no-deprecated-model-definition': [
-          'error',
+          'off',
           {
             allowVue3Compat: true,
           },
         ],
-        'vue/no-duplicate-attr-inheritance': ['warn'],
+        'vue/no-duplicate-attr-inheritance': ['off'],
         'vue/no-empty-component-block': ['off'],
         'vue/no-multiple-objects-in-class': ['off'],
         'vue/no-potential-component-option-typo': [
           'off',
           {
-            presets: ['all'],
+            presets: ['vue', 'vue-router', 'nuxt'],
             custom: [],
             threshold: 1,
           },
@@ -1751,17 +1907,17 @@ export class EsLint extends Lint {
         'vue/no-restricted-v-bind': ['off', ...[]],
         'vue/no-restricted-v-on': ['off', ...[]],
         'vue/no-root-v-if': ['off'],
-        'vue/no-setup-props-reactivity-loss': ['off'],
+        'vue/no-setup-props-reactivity-loss': ['warn'],
         'vue/no-static-inline-styles': [
           'off',
           {
-            allowBinding: false,
+            allowBinding: true,
           },
         ],
         'vue/no-template-target-blank': [
           'warn',
           {
-            allowReferrer: false,
+            allowReferrer: true,
             enforceDynamicLinks: 'always',
           },
         ],
@@ -1772,10 +1928,23 @@ export class EsLint extends Lint {
             ignorePatterns: [],
           },
         ],
-        'vue/no-undef-properties': ['off'],
+        'vue/no-undef-properties': [
+          'off',
+          {
+            ignores: [],
+          },
+        ],
         'vue/no-unsupported-features': ['off', ...[]],
         'vue/no-unused-emit-declarations': ['off'],
-        'vue/no-unused-properties': ['off'],
+        'vue/no-unused-properties': [
+          'off',
+          {
+            groups: ['props'],
+            deepData: false,
+            ignorePublicMembers: false,
+            unreferencedOptions: [],
+          },
+        ],
         'vue/no-unused-refs': ['off'],
         'vue/no-use-v-else-with-v-for': ['warn'],
         'vue/no-useless-mustaches': [
@@ -1794,7 +1963,12 @@ export class EsLint extends Lint {
         ],
         'vue/no-v-text': ['off'],
         'vue/padding-line-between-blocks': ['off', 'always'],
-        'vue/padding-line-between-tags': ['off', [{ blankLine: 'always', prev: '*', next: '*' }]],
+        'vue/padding-line-between-tags': [
+          'off',
+          [
+            { blankLine: 'always', prev: '*', next: '*' },
+          ],
+        ],
         'vue/padding-lines-in-component-definition': ['off', ...[]],
         'vue/prefer-define-options': ['warn'],
         'vue/prefer-prop-type-boolean-first': ['off'],
@@ -1838,7 +2012,17 @@ export class EsLint extends Lint {
             ignores: [],
           },
         ],
-        'vue/sort-keys': ['off'],
+        'vue/sort-keys': [
+          'off',
+          'asc',
+          {
+            caseSensitive: true,
+            ignoreChildrenOf: ['model'],
+            ignoreGrandchildrenOf: ['computed', 'directives', 'inject', 'props', 'watch'],
+            minKeys: 2,
+            natural: false,
+          },
+        ],
         'vue/static-class-names-order': ['off'],
         'vue/v-for-delimiter-style': ['off', 'in'],
         'vue/v-if-else-key': ['off'],
@@ -1851,38 +2035,37 @@ export class EsLint extends Lint {
         ],
         'vue/valid-define-options': ['warn'],
 
-        // 'Extension Rules',
-        'vue/array-bracket-newline': this.baseConfig.rules['array-bracket-newline'],
-        'vue/array-bracket-spacing': this.baseConfig.rules['array-bracket-spacing'],
-        'vue/array-element-newline': this.baseConfig.rules['array-element-newline'],
-        'vue/arrow-spacing': this.baseConfig.rules['arrow-spacing'],
-        'vue/block-spacing': this.baseConfig.rules['block-spacing'],
-        'vue/brace-style': this.baseConfig.rules['brace-style'],
+        // Extension Rules
+        'vue/array-bracket-newline': this.stylisticConfig.rules['@stylistic/array-bracket-newline'],
+        'vue/array-bracket-spacing': this.stylisticConfig.rules['@stylistic/array-bracket-spacing'],
+        'vue/array-element-newline': this.stylisticConfig.rules['@stylistic/array-element-newline'],
+        'vue/arrow-spacing': this.stylisticConfig.rules['@stylistic/arrow-spacing'],
+        'vue/block-spacing': this.stylisticConfig.rules['@stylistic/block-spacing'],
+        'vue/brace-style': this.stylisticConfig.rules['@stylistic/brace-style'],
         'vue/camelcase': this.baseConfig.rules['camelcase'],
-        'vue/comma-dangle': this.baseConfig.rules['comma-dangle'],
-        'vue/comma-spacing': this.baseConfig.rules['comma-spacing'],
-        'vue/comma-style': this.baseConfig.rules['comma-style'],
-        'vue/dot-location': this.baseConfig.rules['dot-location'],
+        'vue/comma-dangle': this.stylisticConfig.rules['@stylistic/comma-dangle'],
+        'vue/comma-spacing': this.stylisticConfig.rules['@stylistic/comma-spacing'],
+        'vue/comma-style': this.stylisticConfig.rules['@stylistic/comma-style'],
+        'vue/dot-location': this.stylisticConfig.rules['@stylistic/dot-location'],
         'vue/dot-notation': this.baseConfig.rules['dot-notation'],
         'vue/eqeqeq': this.baseConfig.rules['eqeqeq'],
-        'vue/func-call-spacing': this.baseConfig.rules['func-call-spacing'],
-        'vue/key-spacing': this.baseConfig.rules['key-spacing'],
-        'vue/keyword-spacing': this.baseConfig.rules['keyword-spacing'],
+        'vue/func-call-spacing': this.stylisticConfig.rules['@stylistic/function-call-spacing'],
+        'vue/key-spacing': this.stylisticConfig.rules['@stylistic/key-spacing'],
+        'vue/keyword-spacing': this.stylisticConfig.rules['@stylistic/keyword-spacing'],
         'vue/max-len': [
-          this.baseConfig.rules['max-len'][0],
+          this.stylisticConfig.rules['@stylistic/max-len'][0],
           {
-            ...this.baseConfig.rules['max-len'][1],
+            ...this.stylisticConfig.rules['@stylistic/max-len'][1],
             template: 80,
             ignoreHTMLAttributeValues: false,
             ignoreHTMLTextContents: false,
           },
-          ...this.baseConfig.rules['max-len'].slice(2),
         ],
-        'vue/multiline-ternary': this.baseConfig.rules['multiline-ternary'],
+        'vue/multiline-ternary': this.stylisticConfig.rules['@stylistic/multiline-ternary'],
         'vue/no-console': this.baseConfig.rules['no-console'],
         'vue/no-constant-condition': this.baseConfig.rules['no-constant-condition'],
         'vue/no-empty-pattern': this.baseConfig.rules['no-empty-pattern'],
-        'vue/no-extra-parens': this.baseConfig.rules['no-extra-parens'],
+        'vue/no-extra-parens': this.stylisticConfig.rules['@stylistic/no-extra-parens'],
         'vue/no-irregular-whitespace': [
           this.baseConfig.rules['no-irregular-whitespace'][0],
           {
@@ -1890,28 +2073,33 @@ export class EsLint extends Lint {
             skipHTMLAttributeValues: false,
             skipHTMLTextContents: false,
           },
-          ...this.baseConfig.rules['no-irregular-whitespace'].slice(2),
         ],
         'vue/no-loss-of-precision': this.baseConfig.rules['no-loss-of-precision'],
         'vue/no-restricted-syntax': this.baseConfig.rules['no-restricted-syntax'],
         'vue/no-sparse-arrays': this.baseConfig.rules['no-sparse-arrays'],
         'vue/no-useless-concat': this.baseConfig.rules['no-useless-concat'],
-        'vue/object-curly-newline': this.baseConfig.rules['object-curly-newline'],
-        'vue/object-curly-spacing': this.baseConfig.rules['object-curly-spacing'],
-        'vue/object-property-newline': this.baseConfig.rules['object-property-newline'],
+        'vue/object-curly-newline': this.stylisticConfig.rules['@stylistic/object-curly-newline'],
+        'vue/object-curly-spacing': this.stylisticConfig.rules['@stylistic/object-curly-spacing'],
+        'vue/object-property-newline': this.stylisticConfig.rules['@stylistic/object-property-newline'],
         'vue/object-shorthand': this.baseConfig.rules['object-shorthand'],
-        'vue/operator-linebreak': this.baseConfig.rules['operator-linebreak'],
+        'vue/operator-linebreak': this.stylisticConfig.rules['@stylistic/operator-linebreak'],
         'vue/prefer-template': this.baseConfig.rules['prefer-template'],
-        'vue/quote-props': this.baseConfig.rules['quote-props'],
-        'vue/space-in-parens': this.baseConfig.rules['space-in-parens'],
-        'vue/space-infix-ops': this.baseConfig.rules['space-infix-ops'],
-        'vue/space-unary-ops': this.baseConfig.rules['space-unary-ops'],
-        'vue/template-curly-spacing': this.baseConfig.rules['template-curly-spacing'],
+        'vue/quote-props': this.stylisticConfig.rules['@stylistic/quote-props'],
+        'vue/space-in-parens': this.stylisticConfig.rules['@stylistic/space-in-parens'],
+        'vue/space-infix-ops': this.stylisticConfig.rules['@stylistic/space-infix-ops'],
+        'vue/space-unary-ops': this.stylisticConfig.rules['@stylistic/space-unary-ops'],
+        'vue/template-curly-spacing': this.stylisticConfig.rules['@stylistic/template-curly-spacing'],
       },
     };
     this.vue2Config = this.merge(this.vueBaseConfig, {
       rules: {
-        // 'Priority A: Essential for Vue.js 2.x',
+        // Priority A: Essential (Error Prevention)
+        'vue/no-reserved-props': [
+          'error',
+          {
+            vueVersion: 2,
+          },
+        ],
         'vue/no-custom-modifiers-on-v-model': ['error'],
         'vue/no-multiple-template-root': ['error'],
         'vue/no-v-for-template-key': ['error'],
@@ -1922,7 +2110,13 @@ export class EsLint extends Lint {
     });
     this.vue3Config = this.merge(this.vueBaseConfig, {
       rules: {
-        // 'Priority A: Essential for Vue.js 3.x',
+        // Priority A: Essential (Error Prevention)
+        'vue/no-reserved-props': [
+          'error',
+          {
+            vueVersion: 3,
+          },
+        ],
         'vue/no-deprecated-data-object-declaration': ['error'],
         'vue/no-deprecated-destroyed-lifecycle': ['error'],
         'vue/no-deprecated-dollar-listeners-api': ['error'],
@@ -1936,7 +2130,7 @@ export class EsLint extends Lint {
         'vue/no-deprecated-router-link-tag-prop': [
           'error',
           {
-            components: ['RouterLink'],
+            components: ['RouterLink', 'NuxtLink'],
           },
         ],
         'vue/no-deprecated-scope-attribute': ['error'],
@@ -1962,7 +2156,7 @@ export class EsLint extends Lint {
         'vue/valid-v-is': ['error'],
         'vue/valid-v-memo': ['error'],
 
-        // 'Priority B: Strongly Recommended for Vue.js 3.x',
+        // Priority B: Strongly Recommended (Improving Readability)
         'vue/require-explicit-emits': [
           'warn',
           {
@@ -2027,17 +2221,38 @@ export class EsLint extends Lint {
               },
 
               Function: {
-                message: ['The `Function` type accepts any function-like value.', 'It provides no type safety when calling the function, which can be a common source of bugs.', 'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.', 'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.'].join('\n'),
+                message: [
+                  'The `Function` type accepts any function-like value.',
+                  'It provides no type safety when calling the function, which can be a common source of bugs.',
+                  'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
+                  'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
+                ].join('\n'),
               },
 
               // object typing
               Object: {
-                message: ['The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.', '- If you want a type meaning "any object", you probably want `object` instead.', '- If you want a type meaning "any value", you probably want `unknown` instead.', '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.'].join('\n'),
+                message: [
+                  'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
+                  '- If you want a type meaning "any object", you probably want `object` instead.',
+                  '- If you want a type meaning "any value", you probably want `unknown` instead.',
+                  '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
+                ].join('\n'),
                 suggest: ['object', 'unknown', 'NonNullable<unknown>'],
               },
               '{}': {
-                message: ['`{}` actually means "any non-nullish value".', '- If you want a type meaning "any object", you probably want `object` instead.', '- If you want a type meaning "any value", you probably want `unknown` instead.', '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.', '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.'].join('\n'),
-                suggest: ['object', 'unknown', 'Record<string, never>', 'NonNullable<unknown>'],
+                message: [
+                  '`{}` actually means "any non-nullish value".',
+                  '- If you want a type meaning "any object", you probably want `object` instead.',
+                  '- If you want a type meaning "any value", you probably want `unknown` instead.',
+                  '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
+                  '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
+                ].join('\n'),
+                suggest: [
+                  'object',
+                  'unknown',
+                  'Record<string, never>',
+                  'NonNullable<unknown>',
+                ],
               },
             },
             extendDefaults: true,
@@ -2046,7 +2261,7 @@ export class EsLint extends Lint {
         '@typescript-eslint/class-literal-property-style': ['off', 'fields'],
         'class-methods-use-this': ['off'],
         '@typescript-eslint/class-methods-use-this': [
-          'off',
+          this.baseConfig.rules['class-methods-use-this'][0],
           {
             ...this.baseConfig.rules['class-methods-use-this'][1],
             ignoreOverrideMethods: false,
@@ -2056,12 +2271,7 @@ export class EsLint extends Lint {
         '@typescript-eslint/consistent-generic-constructors': ['warn', 'constructor'],
         '@typescript-eslint/consistent-indexed-object-style': ['warn', 'record'],
         'consistent-return': ['off'],
-        '@typescript-eslint/consistent-return': [
-          'error',
-          {
-            ...this.baseConfig.rules['consistent-return'][1],
-          },
-        ],
+        '@typescript-eslint/consistent-return': this.baseConfig.rules['consistent-return'],
         '@typescript-eslint/consistent-type-assertions': [
           'warn',
           {
@@ -2079,16 +2289,16 @@ export class EsLint extends Lint {
         '@typescript-eslint/consistent-type-imports': [
           'off',
           {
+            prefer: 'type-imports',
             disallowTypeAnnotations: true,
             fixStyle: 'separate-type-imports',
-            prefer: 'type-imports',
           },
         ],
         'default-param-last': ['off'],
         '@typescript-eslint/default-param-last': ['off'],
         'dot-notation': ['off'],
         '@typescript-eslint/dot-notation': [
-          'off',
+          this.baseConfig.rules['dot-notation'][0],
           {
             ...this.baseConfig.rules['dot-notation'][1],
             allowPrivateClassPropertyAccess: false,
@@ -2128,19 +2338,14 @@ export class EsLint extends Lint {
           },
         ],
         'init-declarations': ['off'],
-        '@typescript-eslint/init-declarations': ['off', 'always'],
+        '@typescript-eslint/init-declarations': this.baseConfig.rules['init-declarations'],
         'max-params': ['off'],
-        '@typescript-eslint/max-params': [
-          'off',
-          {
-            ...this.baseConfig.rules['max-params'][1],
-          },
-        ],
+        '@typescript-eslint/max-params': this.baseConfig.rules['max-params'],
         '@typescript-eslint/member-ordering': ['off', ...[]],
         '@typescript-eslint/method-signature-style': ['off', 'property'],
         '@typescript-eslint/naming-convention': ['off', ...[]],
         'no-array-constructor': ['off'],
-        '@typescript-eslint/no-array-constructor': ['error'],
+        '@typescript-eslint/no-array-constructor': this.baseConfig.rules['no-array-constructor'],
         '@typescript-eslint/no-array-delete': ['error'],
         '@typescript-eslint/no-base-to-string': [
           'off',
@@ -2157,7 +2362,7 @@ export class EsLint extends Lint {
           },
         ],
         'no-dupe-class-members': ['off'],
-        '@typescript-eslint/no-dupe-class-members': ['error'],
+        '@typescript-eslint/no-dupe-class-members': this.baseConfig.rules['no-dupe-class-members'],
         '@typescript-eslint/no-duplicate-enum-values': ['error'],
         '@typescript-eslint/no-duplicate-type-constituents': [
           'error',
@@ -2168,12 +2373,7 @@ export class EsLint extends Lint {
         ],
         '@typescript-eslint/no-dynamic-delete': ['off'],
         'no-empty-function': ['off'],
-        '@typescript-eslint/no-empty-function': [
-          'off',
-          {
-            allow: [...this.baseConfig.rules['no-empty-function'][1].allow],
-          },
-        ],
+        '@typescript-eslint/no-empty-function': this.baseConfig.rules['no-empty-function'],
         '@typescript-eslint/no-empty-interface': [
           'off',
           {
@@ -2202,11 +2402,12 @@ export class EsLint extends Lint {
           {
             ignoreVoid: true,
             ignoreIIFE: false,
+            allowForKnownSafePromises: [],
           },
         ],
         '@typescript-eslint/no-for-in-array': ['error'],
         'no-implied-eval': ['off'],
-        '@typescript-eslint/no-implied-eval': ['error'],
+        '@typescript-eslint/no-implied-eval': this.baseConfig.rules['no-implied-eval'],
         '@typescript-eslint/no-import-type-side-effects': ['off'],
         '@typescript-eslint/no-inferrable-types': [
           'off',
@@ -2216,12 +2417,7 @@ export class EsLint extends Lint {
           },
         ],
         'no-invalid-this': ['off'],
-        '@typescript-eslint/no-invalid-this': [
-          'off',
-          {
-            ...this.baseConfig.rules['no-invalid-this'][1],
-          },
-        ],
+        '@typescript-eslint/no-invalid-this': this.baseConfig.rules['no-invalid-this'],
         '@typescript-eslint/no-invalid-void-type': [
           'off',
           {
@@ -2230,12 +2426,12 @@ export class EsLint extends Lint {
           },
         ],
         'no-loop-func': ['off'],
-        '@typescript-eslint/no-loop-func': ['off'],
+        '@typescript-eslint/no-loop-func': this.baseConfig.rules['no-loop-func'],
         'no-loss-of-precision': ['off'],
-        '@typescript-eslint/no-loss-of-precision': ['error'],
+        '@typescript-eslint/no-loss-of-precision': this.baseConfig.rules['no-loss-of-precision'],
         'no-magic-numbers': ['off'],
         '@typescript-eslint/no-magic-numbers': [
-          'off',
+          this.baseConfig.rules['no-magic-numbers'][0],
           {
             ...this.baseConfig.rules['no-magic-numbers'][1],
             ignoreEnums: false,
@@ -2272,7 +2468,7 @@ export class EsLint extends Lint {
         '@typescript-eslint/no-non-null-assertion': ['off'],
         'no-redeclare': ['off'],
         '@typescript-eslint/no-redeclare': [
-          'error',
+          this.baseConfig.rules['no-redeclare'][0],
           {
             ...this.baseConfig.rules['no-redeclare'][1],
             ignoreDeclarationMerge: true,
@@ -2286,30 +2482,25 @@ export class EsLint extends Lint {
           },
         ],
         'no-restricted-imports': ['off'],
-        '@typescript-eslint/no-restricted-imports': [
-          'off',
-          {
-            ...this.baseConfig.rules['no-restricted-imports'][1],
-          },
-        ],
+        '@typescript-eslint/no-restricted-imports': this.baseConfig.rules['no-restricted-imports'],
         'no-shadow': ['off'],
         '@typescript-eslint/no-shadow': [
-          'off',
+          this.baseConfig.rules['no-shadow'][0],
           {
             ...this.baseConfig.rules['no-shadow'][1],
             ignoreTypeValueShadow: true,
             ignoreFunctionTypeParameterNameValueShadow: true,
           },
         ],
-        '@typescript-eslint/no-this-alias': ['off'],
-        'no-throw-literal': ['off'],
-        '@typescript-eslint/no-throw-literal': [
+        '@typescript-eslint/no-this-alias': [
           'off',
           {
-            allowThrowingAny: false,
-            allowThrowingUnknown: false,
+            allowDestructuring: true,
+            allowedNames: [],
           },
         ],
+        'no-throw-literal': ['off'],
+        '@typescript-eslint/no-throw-literal': this.baseConfig.rules['no-throw-literal'],
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': [
           'warn',
           {
@@ -2325,6 +2516,7 @@ export class EsLint extends Lint {
           },
         ],
         '@typescript-eslint/no-unnecessary-qualifier': ['warn'],
+        '@typescript-eslint/no-unnecessary-template-expression': ['off'],
         '@typescript-eslint/no-unnecessary-type-arguments': ['off'],
         '@typescript-eslint/no-unnecessary-type-assertion': [
           'off',
@@ -2342,22 +2534,12 @@ export class EsLint extends Lint {
         '@typescript-eslint/no-unsafe-return': ['off'],
         '@typescript-eslint/no-unsafe-unary-minus': ['off'],
         'no-unused-expressions': ['off'],
-        '@typescript-eslint/no-unused-expressions': [
-          'off',
-          {
-            ...this.baseConfig.rules['no-unused-expressions'][1],
-          },
-        ],
+        '@typescript-eslint/no-unused-expressions': this.baseConfig.rules['no-unused-expressions'],
         'no-unused-vars': ['off'],
-        '@typescript-eslint/no-unused-vars': [
-          'off',
-          {
-            ...this.baseConfig.rules['no-unused-vars'][1],
-          },
-        ],
+        '@typescript-eslint/no-unused-vars': this.baseConfig.rules['no-unused-vars'],
         'no-use-before-define': ['off'],
         '@typescript-eslint/no-use-before-define': [
-          'error',
+          this.baseConfig.rules['no-use-before-define'][0],
           {
             ...this.baseConfig.rules['no-use-before-define'][1],
             enums: true,
@@ -2366,7 +2548,7 @@ export class EsLint extends Lint {
           },
         ],
         'no-useless-constructor': ['off'],
-        '@typescript-eslint/no-useless-constructor': ['off'],
+        '@typescript-eslint/no-useless-constructor': this.baseConfig.rules['no-useless-constructor'],
         '@typescript-eslint/no-useless-empty-export': ['off'],
         '@typescript-eslint/no-useless-template-literals': ['off'],
         '@typescript-eslint/no-var-requires': [
@@ -2376,6 +2558,7 @@ export class EsLint extends Lint {
           },
         ],
         '@typescript-eslint/non-nullable-type-assertion-style': ['warn'],
+        '@typescript-eslint/only-throw-error': ['off'],
         '@typescript-eslint/parameter-properties': [
           'off',
           {
@@ -2386,7 +2569,7 @@ export class EsLint extends Lint {
         '@typescript-eslint/prefer-as-const': ['off'],
         'prefer-destructuring': ['off'],
         '@typescript-eslint/prefer-destructuring': [
-          'off',
+          this.baseConfig.rules['prefer-destructuring'][0],
           {
             ...this.baseConfig.rules['prefer-destructuring'][1],
           },
@@ -2436,12 +2619,7 @@ export class EsLint extends Lint {
           },
         ],
         'prefer-promise-reject-errors': ['off'],
-        '@typescript-eslint/prefer-promise-reject-errors': [
-          'off',
-          {
-            ...this.baseConfig.rules['prefer-promise-reject-errors'][1],
-          },
-        ],
+        '@typescript-eslint/prefer-promise-reject-errors': this.baseConfig.rules['prefer-promise-reject-errors'],
         '@typescript-eslint/prefer-readonly': [
           'off',
           {
@@ -2466,7 +2644,6 @@ export class EsLint extends Lint {
             allowSingleElementEquality: 'never',
           },
         ],
-        '@typescript-eslint/prefer-ts-expect-error': ['off'],
         '@typescript-eslint/promise-function-async': [
           'warn',
           {
@@ -2485,7 +2662,7 @@ export class EsLint extends Lint {
           },
         ],
         'require-await': ['off'],
-        '@typescript-eslint/require-await': ['off'],
+        '@typescript-eslint/require-await': this.baseConfig.rules['require-await'],
         '@typescript-eslint/restrict-plus-operands': [
           'off',
           {
@@ -2501,20 +2678,15 @@ export class EsLint extends Lint {
           'off',
           {
             allowAny: true,
+            allowArray: true,
             allowBoolean: true,
+            allowNever: true,
             allowNullish: true,
             allowNumber: true,
             allowRegExp: true,
           },
         ],
-        '@typescript-eslint/sort-type-constituents': [
-          'off',
-          {
-            checkIntersections: true,
-            checkUnions: true,
-            groupOrder: ['named', 'keyword', 'operator', 'literal', 'function', 'import', 'conditional', 'object', 'tuple', 'intersection', 'union', 'nullish'],
-          },
-        ],
+        '@typescript-eslint/return-await': ['off', 'in-try-catch'],
         '@typescript-eslint/strict-boolean-expressions': [
           'off',
           {
@@ -2569,6 +2741,7 @@ export class EsLint extends Lint {
             ignoreDifferentlyNamedParameters: false,
           },
         ],
+        '@typescript-eslint/use-unknown-in-catch-callback-variable': ['off'],
       },
     };
     this.tsConfig = this.merge(this.tsBaseConfig, {
@@ -2585,35 +2758,27 @@ export class EsLint extends Lint {
         if (this.eslintVersion === 9) {
           return {
             languageOptions: {
-              ...(this.requireResolve === 'string'
-                ? {
-                    parser: `require('typescript-eslint').parser`,
-                  }
-                : {}),
-              ...(this.requireResolve === 'getter'
-                ? {
-                    get parser() {
-                      return $this.require('typescript-eslint').parser;
-                    },
-                  }
-                : {}),
+              ...(this.requireResolve === 'string' ? {
+                parser: `require('typescript-eslint').parser`,
+              } : {}),
+              ...(this.requireResolve === 'getter' ? {
+                get parser() {
+                  return $this.require('typescript-eslint').parser;
+                },
+              } : {}),
               parserOptions: {
                 project: './tsconfig.json',
               },
             },
             plugins: {
-              ...(this.requireResolve === 'string'
-                ? {
-                    '@typescript-eslint': `require('typescript-eslint').plugin`,
-                  }
-                : {}),
-              ...(this.requireResolve === 'getter'
-                ? {
-                    get '@typescript-eslint'() {
-                      return $this.require('typescript-eslint').plugin;
-                    },
-                  }
-                : {}),
+              ...(this.requireResolve === 'string' ? {
+                '@typescript-eslint': `require('typescript-eslint').plugin`,
+              } : {}),
+              ...(this.requireResolve === 'getter' ? {
+                get '@typescript-eslint'() {
+                  return $this.require('typescript-eslint').plugin;
+                },
+              } : {}),
             },
           };
         }
@@ -2636,35 +2801,27 @@ export class EsLint extends Lint {
           return {
             languageOptions: {
               parserOptions: {
-                ...(this.requireResolve === 'string'
-                  ? {
-                      parser: `require('typescript-eslint').parser`,
-                    }
-                  : {}),
-                ...(this.requireResolve === 'getter'
-                  ? {
-                      get parser() {
-                        return $this.require('typescript-eslint').parser;
-                      },
-                    }
-                  : {}),
+                ...(this.requireResolve === 'string' ? {
+                  parser: `require('typescript-eslint').parser`,
+                } : {}),
+                ...(this.requireResolve === 'getter' ? {
+                  get parser() {
+                    return $this.require('typescript-eslint').parser;
+                  },
+                } : {}),
                 project: './tsconfig.json',
                 extraFileExtensions: ['.vue'],
               },
             },
             plugins: {
-              ...(this.requireResolve === 'string'
-                ? {
-                    '@typescript-eslint': `require('typescript-eslint').plugin`,
-                  }
-                : {}),
-              ...(this.requireResolve === 'getter'
-                ? {
-                    get '@typescript-eslint'() {
-                      return $this.require('typescript-eslint').plugin;
-                    },
-                  }
-                : {}),
+              ...(this.requireResolve === 'string' ? {
+                '@typescript-eslint': `require('typescript-eslint').plugin`,
+              } : {}),
+              ...(this.requireResolve === 'getter' ? {
+                get '@typescript-eslint'() {
+                  return $this.require('typescript-eslint').plugin;
+                },
+              } : {}),
             },
           };
         }
@@ -2758,7 +2915,7 @@ export class EsLint extends Lint {
       // 正则表达式匹配 "require('xx')" 或 "require('xx').prop" 形式的字符串，并去除外部双引号
       const regex = /"require\('([^']+)'\)(\.\w+)?"/g;
       // 替换时去除双引号，只保留require调用部分
-      newText = newText.replace(regex, "require('$1')$2");
+      newText = newText.replace(regex, 'require(\'$1\')$2');
     }
     return super.createConfigFile(newText);
   }
