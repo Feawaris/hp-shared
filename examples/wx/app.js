@@ -7,7 +7,7 @@ wx.appMonitor = new Monitor({
   reportUrl: `${localConfig.remoteURL}/performance`,
   appInfo: {
     name: 'wx',
-    version: '1.10.2',
+    version: '1.10.3',
   },
 })
   .watchResourceError()

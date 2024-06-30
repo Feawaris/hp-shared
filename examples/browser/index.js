@@ -22,7 +22,7 @@ window.appMonitor = new Monitor({
   reportUrl: `${localConfig.remoteURL}/performance`,
   appInfo: {
     name: 'browser',
-    version: '1.10.2',
+    version: '1.10.3',
   },
 })
   .watchResourceError()
