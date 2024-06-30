@@ -1304,6 +1304,12 @@ export class EsLint extends Lint {
           {
             before: false,
             after: true,
+            overrides: {
+              arrow: {
+                before: true,
+                after: true,
+              },
+            },
           },
         ],
         '@stylistic/type-generic-spacing': ['warn'],
