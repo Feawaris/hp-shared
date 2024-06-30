@@ -1,7 +1,4 @@
 // @ts-nocheck
-/**
- * [prettier 配置](https://prettier.io/docs/en/options)
- */
 import { _Object, _console } from '../base';
 import { Lint } from './base';
 import path from 'node:path';

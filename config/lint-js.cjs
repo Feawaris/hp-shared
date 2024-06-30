@@ -17,14 +17,14 @@ const config = [
     ],
   },
   lint.merge(lint.baseConfig, lint.stylisticConfig, {
-    files: ['**/*.{js,cjs}'],
+    files: ['**/*.{js,cjs,mjs}'],
     rules: {},
   }),
   lint.merge(lint.baseConfig, lint.stylisticConfig, lint.tsConfig, {
-    files: ['**/*.{ts,cts}'],
+    files: ['**/*.{ts,cts,mts}'],
     rules: {},
   }),
-  lint.merge(lint.baseConfig, lint.stylisticConfig, lint.vue3Config, {
+  lint.merge(lint.baseConfig, lint.stylisticConfig, lint.vue3Config, lint.tsInVueConfig, {
     files: ['**/*.vue'],
     rules: {},
   }),

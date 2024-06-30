@@ -1,7 +1,4 @@
 // @ts-nocheck
-/**
- * [vite 配置](https://cn.vitejs.dev/config/)
- */
 import { _Object } from '../base';
 import { Dev } from './base';
 

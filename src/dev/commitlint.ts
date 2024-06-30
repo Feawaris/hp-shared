@@ -1,6 +1,7 @@
 // @ts-nocheck
 /**
- * [commitlint 配置](https://commitlint.js.org/reference/rules.html)
+ * [commitlint](https://commitlint.js.org/reference/rules.html)
+ * [husky](https://typicode.github.io/husky/get-started.html)
  */
 import { _Object, _console, _chalk } from '../base';
 import { Lint } from './base';

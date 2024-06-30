@@ -1,18 +1,18 @@
 const { _console } = require('hp-shared/base');
 const { clipboard } = require('hp-shared/storage');
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawn } = require('node:child_process');
 const { Command } = require('commander');
 const program = new Command();
 const { input, select, checkbox, confirm } = require('@inquirer/prompts');
-const { version } = require('../package.json');
 const ejs = require('ejs');
-const fs = require('fs');
-const path = require('path');
-const { spawn } = require('child_process');
+const pkg = require('../package.json');
 
 program
   .name('hp-shared')
   .description('cli 工具')
-  .version(version, '-v, --version', '版本号')
+  .version(pkg.version, '-v, --version', '版本号')
   .helpOption('-h, --help', '帮助')
   .action(function (options) {
     // _console.log('action', options);
@@ -131,7 +131,7 @@ program
         const map = {
           markdownlint: 'markdownlint-cli2',
           stylelint: 'stylelint postcss-html',
-          eslint: 'eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier',
+          eslint: 'eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint',
           prettier: 'prettier',
           git: '@commitlint/cli husky',
         };

@@ -884,7 +884,11 @@ router.get('/test', (ctx) => {
 
 #### 2.3.1 markdownlint
 
-[markdownlint 配置](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md)
+| 链接                                                         |
+| ------------------------------------------------------------ |
+| [markdownlint](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md) |
+| [markdownlint schema](https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json) |
+| [markdownlint-cli2 schema](https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json) |
 
 ::: code-tabs#install
 
@@ -942,7 +946,9 @@ module.exports = config;
 
 #### 2.3.2 stylelint
 
-[stylelint 配置](https://stylelint.io/user-guide/rules)
+| 链接                                               |
+| -------------------------------------------------- |
+| [stylelint](https://stylelint.io/user-guide/rules) |
 
 ::: code-tabs#install
 
@@ -998,7 +1004,14 @@ module.exports = config;
 
 #### 2.3.3 eslint
 
-[eslint 配置](https://eslint.org/docs/latest/rules/)，[eslint-plugin-vue 配置](https://eslint.vuejs.org/rules/)，[typescript-eslint 配置](https://typescript-eslint.io/rules/)
+| 包                  | 链接                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| eslint              | [eslint](https://eslint.org/docs/latest/rules/)              |
+| eslint 样式规则抽离 | [@stylistic/eslint-plugin](https://eslint.style/packages/default) |
+| vue 用              | [eslint-plugin-vue](https://eslint.vuejs.org/rules/)         |
+| ts 用               | [typescript-eslint](https://typescript-eslint.io/rules/)     |
+
+
 
 ##### eslint 9.x
 
@@ -1007,19 +1020,19 @@ module.exports = config;
 @tab pnpm
 
 ```shell
-pnpm i -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
+pnpm i -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
 @tab yarn
 
 ```shell
-yarn add -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
+yarn add -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
 @tab npm
 
 ```shell
-npm i -D eslint eslint-plugin-vue vue-eslint-parser typescript typescript-eslint prettier eslint-plugin-prettier
+npm i -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
 :::
@@ -1038,15 +1051,15 @@ const config = [
       // ...
     ],
   },
-  lint.merge(lint.baseConfig, {
-    files: ['**/*.{js,cjs}'],
+  lint.merge(lint.baseConfig, lint.stylisticConfig, {
+    files: ['**/*.{js,cjs,mjs}'],
     rules: {},
   }),
-  lint.merge(lint.baseConfig, lint.tsConfig, {
-    files: ['**/*.{ts,cts}'],
+  lint.merge(lint.baseConfig, lint.stylisticConfig, lint.tsConfig, {
+    files: ['**/*.{ts,cts,mts}'],
     rules: {},
   }),
-  lint.merge(lint.baseConfig, lint.vue3Config, lint.tsInVueConfig, {
+  lint.merge(lint.baseConfig, lint.stylisticConfig, lint.vue3Config, lint.tsInVueConfig, {
     files: ['**/*.vue'],
     rules: {},
   }),
@@ -1070,19 +1083,19 @@ module.exports = config;
 @tab pnpm
 
 ```shell
-pnpm i -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+pnpm i -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 @tab yarn
 
 ```shell
-yarn add -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+yarn add -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 @tab npm
 
 ```shell
-npm i -D eslint@8 eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-plugin-prettier
+npm i -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 :::
@@ -1097,6 +1110,7 @@ const { EsLint } = require('hp-shared/dev')
 const lint = new EsLint({ eslintVersion: 8 });
 const config = lint.merge(
   lint.baseConfig,
+  lint.stylisticConfig,
   lint.vue3Config,
   lint.tsInVueConfig,
   {
@@ -1119,7 +1133,9 @@ module.exports = config;
 
 #### 2.3.4 prettier
 
-[prettier 配置](https://prettier.io/docs/en/options)
+| 链接                                            |
+| ----------------------------------------------- |
+| [prettier](https://prettier.io/docs/en/options) |
 
 ::: code-tabs#install
 
@@ -1171,7 +1187,10 @@ module.exports = config;
 
 #### 2.3.5 commitlint
 
-[commitlint 配置](https://commitlint.js.org/reference/rules.html)，[husky](https://typicode.github.io/husky/get-started.html)
+| 链接                                                         |
+| ------------------------------------------------------------ |
+| [commitlint](https://commitlint.js.org/reference/rules.html) |
+| [husky](https://typicode.github.io/husky/get-started.html)   |
 
 ::: code-tabs#install
 
@@ -1223,7 +1242,10 @@ module.exports = config;
 
 #### 2.3.6 vite
 
-[vite 配置](https://cn.vitejs.dev/config/)
+| 链接                                                     |
+| -------------------------------------------------------- |
+| [vite](https://cn.vitejs.dev/config/)                    |
+| [rollup](https://cn.rollupjs.org/configuration-options/) |
 
 ::: code-tabs#install
 

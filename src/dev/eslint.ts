@@ -1,10 +1,4 @@
 // @ts-nocheck
-/**
- * [eslint](https://eslint.org/docs/latest/rules/)
- * [eslint stylistic](https://eslint.style/)
- * [eslint-plugin-vue](https://eslint.vuejs.org/rules/)
- * [typescript-eslint](https://typescript-eslint.io/rules/)
- */
 import { _Object, _console } from '../base';
 import { Lint } from './base';
 import path from 'node:path';

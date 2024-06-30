@@ -1,9 +1,4 @@
 // @ts-nocheck
-/**
- * [markdownlint 配置](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md)
- * [markdownlint schema](https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json)
- * [markdownlint-cli2 schema](https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json)
- */
 import { _Object } from '../base';
 import { Lint } from './base';
 import path from 'node:path';

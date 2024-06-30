@@ -1,7 +1,4 @@
 // @ts-nocheck
-/**
- * [stylelint 配置](https://stylelint.io/user-guide/rules)
- */
 import { _Object } from '../base';
 import { Lint } from './base';
 import path from 'node:path';
