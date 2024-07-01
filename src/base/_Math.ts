@@ -25,7 +25,7 @@ _Math.artanh = Math.atanh;
 
 // 阶乘
 _Math.factorial = function (n): bigint {
-  let result: bigint = 1n;
+  let result: bigint = BigInt(1);
   for (let i = n; i >= 1; i--) {
     result *= BigInt(i);
   }

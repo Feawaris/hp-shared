@@ -25,7 +25,7 @@ export class _BigInt {
     return String(this.value);
   }
   toBoolean() {
-    return this.value !== 0n;
+    return this.value !== BigInt(0);
   }
   toJSON() {
     return this.toString();

@@ -1,12 +1,3 @@
-/**
- * [rollup](https://www.npmjs.com/package/rollup)
- * [@rollup/plugin-typescript](https://www.npmjs.com/package/@rollup/plugin-typescript)
- * [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
- * [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve)
- * [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs)
- * [@rollup/plugin-json](https://www.npmjs.com/package/@rollup/plugin-json)
- * [@rollup/plugin-terser](https://www.npmjs.com/package/@rollup/plugin-terser)
- */
 import { _Date } from './src/base/index.ts';
 import type { OutputOptions, RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
@@ -154,13 +145,6 @@ const config: RollupOptions[] = [
       getOutputItem({ file: 'dist/browser/base.js', format: 'es' }),
       getOutputItem({ file: 'dist/node/base.mjs', format: 'es' }),
       getOutputItem({ file: 'dist/wx/base.js', format: 'es' }),
-    ],
-    plugins: browserPlugins,
-  },
-  {
-    input: 'src/base/index-target-es2015.ts',
-    output: [
-      getOutputItem({ file: 'dist/browser/base-target-es2015.js', format: 'es' }),
     ],
     plugins: browserPlugins,
   },
