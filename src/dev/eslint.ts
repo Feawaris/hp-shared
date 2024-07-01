@@ -1386,9 +1386,9 @@ export class EsLint extends Lint {
         'vue/no-async-in-computed-properties': ['error'],
         'vue/no-child-content': [
           'error',
-          {
-            additionalDirectives: [],
-          },
+          // {
+          //   additionalDirectives: [], // Key "vue/no-child-content": Value [] should NOT have fewer than 1 items.
+          // },
         ],
         'vue/no-computed-properties-in-data': ['error'],
         'vue/no-dupe-keys': [
@@ -2069,7 +2069,15 @@ export class EsLint extends Lint {
         'vue/no-irregular-whitespace': [
           this.baseConfig.rules['no-irregular-whitespace'][0],
           {
-            ...this.baseConfig.rules['no-irregular-whitespace'][1],
+            // ...this.baseConfig.rules['no-irregular-whitespace'][1], // Unexpected property "skipJSXText".
+            ..._Object.filter(this.baseConfig.rules['no-irregular-whitespace'][1], {
+              pick: [
+                'skipStrings',
+                'skipComments',
+                'skipRegExps',
+                'skipTemplates',
+              ],
+            }),
             skipHTMLAttributeValues: false,
             skipHTMLTextContents: false,
           },
@@ -2926,7 +2934,7 @@ export class EsLint extends Lint {
         return `node ${filenameRelative} && eslint${fix ? ' --fix' : ''}`;
       }
       if (this.eslintVersion === 8) {
-        return `node ${filenameRelative} && eslint '**/*.{js,cjs,ts,cts,vue}'${fix ? ' --fix' : ''}`;
+        return `node ${filenameRelative} && eslint '**/*.{js,cjs,mjs,ts,cts,mts,vue}'${fix ? ' --fix' : ''}`;
       }
       return '';
     })();

@@ -190,6 +190,7 @@ export class StyleLint extends Lint {
       fix: false,
     };
     this.scssConfig = {
+      plugins: ['stylelint-scss'],
       rules: {
         'scss/at-each-key-value-single-line': [null],
         'scss/at-else-closing-brace-newline-after': [null],
@@ -264,12 +265,6 @@ export class StyleLint extends Lint {
         'scss/no-global-function-names': [null],
         'scss/no-unused-private-members': [null],
       },
-      plugins: ['stylelint-scss'],
-      overrides: [
-        {
-          files: ['**/*.scss'],
-        },
-      ],
     };
     this.htmlConfig = {
       overrides: [
@@ -280,6 +275,12 @@ export class StyleLint extends Lint {
       ],
     };
     this.vueConfig = {
+      overrides: [
+        {
+          files: ['**/*.vue'],
+          customSyntax: 'postcss-html',
+        },
+      ],
       rules: {
         'selector-pseudo-class-no-unknown': [
           true,
@@ -295,12 +296,6 @@ export class StyleLint extends Lint {
         ],
         'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
       },
-      overrides: [
-        {
-          files: ['**/*.vue'],
-          customSyntax: 'postcss-html',
-        },
-      ],
     };
   }
 
@@ -362,7 +357,7 @@ export class StyleLint extends Lint {
   }
   insertPackageJsonScripts({ name = '', fix = false, getValue = () => '' } = {}) {
     const filenameRelative = path.relative(this.rootDir, this.__filename);
-    const defaultValue = `node ${filenameRelative} && stylelint '**/*.{css,vue}'${fix ? ' --fix' : ''}`;
+    const defaultValue = `node ${filenameRelative} && stylelint '**/*.{css,scss,vue}'${fix ? ' --fix' : ''}`;
     const value = getValue({ filenameRelative, defaultValue }) || defaultValue;
     super.insertPackageJsonScripts(name, value);
     return this;

@@ -7,6 +7,7 @@ const lint = new StyleLint({
 });
 const config = lint.merge(
   lint.baseConfig,
+  lint.scssConfig,
   lint.htmlConfig,
   lint.vueConfig,
   {

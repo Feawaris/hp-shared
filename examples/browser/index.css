@@ -1,4 +1,4 @@
 *{margin: 0;box-sizing: border-box;}
-.app-root{padding: 20px;height: 100vh;display: flex;flex-direction: column;gap:10px;
+.app-root{padding: 20px;height: 100vh;display: flex;flex-direction: column;gap: 10px;
   .test-button{width: 120px;height: 60px;font-size: 30px;}
 }

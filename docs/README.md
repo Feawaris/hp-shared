@@ -52,7 +52,7 @@ npm i hp-shared
 
 :::
 
--  **tampermonkey**
+- **tampermonkey**
 
 [hp-shared (greasyfork.org)](https://greasyfork.org/zh-CN/scripts/497270-hp-shared)
 
@@ -1011,8 +1011,6 @@ module.exports = config;
 | vue 用              | [eslint-plugin-vue](https://eslint.vuejs.org/rules/)         |
 | ts 用               | [typescript-eslint](https://typescript-eslint.io/rules/)     |
 
-
-
 ##### eslint 9.x
 
 ::: code-tabs#install
@@ -1387,4 +1385,3 @@ pnpm run publish:js
 ```shell
 pnpm run publish:python
 ```
-
