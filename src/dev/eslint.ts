@@ -2002,7 +2002,7 @@ export class EsLint extends Lint {
         ],
         'vue/require-typed-object-prop': ['off'],
         'vue/require-typed-ref': ['off'],
-        indent: ['off'],
+        '@stylistic/indent': ['off'],
         'vue/script-indent': [
           'warn',
           2,
@@ -2315,7 +2315,7 @@ export class EsLint extends Lint {
           },
         ],
         '@typescript-eslint/explicit-function-return-type': [
-          'warn',
+          'off',
           {
             allowExpressions: false,
             allowTypedFunctionExpressions: true,

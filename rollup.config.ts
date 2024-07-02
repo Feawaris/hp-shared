@@ -186,9 +186,9 @@ const config: RollupOptions[] = [
   {
     input: 'src/storage/index.ts',
     output: [
-      getOutputItem({ file: 'dist/browser/dev.d.ts' }),
-      getOutputItem({ file: 'dist/node/dev.d.ts' }),
-      getOutputItem({ file: 'dist/wx/dev.d.ts' }),
+      getOutputItem({ file: 'dist/browser/storage.d.ts' }),
+      getOutputItem({ file: 'dist/node/storage.d.ts' }),
+      getOutputItem({ file: 'dist/wx/storage.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
