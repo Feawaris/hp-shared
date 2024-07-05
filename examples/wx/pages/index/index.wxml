@@ -5,6 +5,8 @@
     <button bindtap="codeError">codeError</button>
     <button bindtap="requestError">requestError</button>
     <button bindtap="goPage1">page1</button>
+    <button bindtap="restart">restart</button>
+    <button bindtap="exit">exit</button>
     <!--<image src="./favicon.ico" binderror="onImageError"></image>-->
   </view>
 </scroll-view>

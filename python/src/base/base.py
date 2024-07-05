@@ -5,6 +5,9 @@ import math
 import random
 import re
 from datetime import datetime, timezone
+import os
+import sys
+
 
 NaN: float = float('nan')
 Infinity: float = float('inf')
@@ -469,6 +472,12 @@ BaseEnv.isWindows: bool = BaseEnv.os == 'windows'
 BaseEnv.isMac: bool = BaseEnv.os == 'mac'
 BaseEnv.isLinux: bool = BaseEnv.os == 'linux'
 
+# 退出和重启
+# py 已有 exit/quit
+def restart():
+  python = sys.executable
+  os.execl(python, python, *sys.argv)
+
 __all__ = [
   'NaN', 'Infinity',
   'typeof',
@@ -484,4 +493,6 @@ __all__ = [
   'String',
 
   'BaseEnv',
+
+  'restart'
 ]

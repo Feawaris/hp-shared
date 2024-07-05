@@ -1,4 +1,4 @@
-import { BaseEnv, _console, _Date } from 'hp-shared/base';
+import { BaseEnv, _console, _Date, exit, restart } from 'hp-shared/base';
 import { clipboard } from 'hp-shared/storage';
 const { default: { localConfig } } = require('shared');
 
@@ -57,5 +57,11 @@ Page({
   },
   onImageError(e) {
     _console.log(e);
+  },
+  exit() {
+    exit();
+  },
+  restart() {
+    restart();
   },
 });

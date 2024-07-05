@@ -1,7 +1,8 @@
 const {
   base: {
-    BaseEnv, _console,
+    BaseEnv, _console, _input,
     _Object, _Date,
+    exit, restart,
   },
   storage: {
     clipboard,
@@ -158,5 +159,12 @@ window.examples = {
   },
   replaceState() {
     history.replaceState({ time: `${new _Date()}` }, '', '#id4');
+  },
+
+  exit() {
+    exit()
+  },
+  restart() {
+    restart()
   },
 };

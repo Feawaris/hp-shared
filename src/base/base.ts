@@ -1,3 +1,4 @@
+// 环境判断
 export const BaseEnv: {
   envs: string[],
   isBrowser: boolean,
@@ -43,7 +44,7 @@ BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
 BaseEnv.isWx = BaseEnv.envs.includes('wx');
-BaseEnv.isMobile = (() => {
+BaseEnv.isMobile = ((): boolean => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
     try {
       // @ts-ignore
@@ -108,3 +109,49 @@ BaseEnv.isMac = BaseEnv.os === 'mac';
 BaseEnv.isLinux = BaseEnv.os === 'linux';
 BaseEnv.isAndroid = BaseEnv.os === 'android';
 BaseEnv.isIOS = BaseEnv.os === 'ios';
+
+// 参考 py 添加 pass 写法以显式在以后可能会添加代码的地方占位替代注释占位
+export function pass(): void {}
+
+// 退出和重启
+export function exit(): void {
+  if (BaseEnv.isBrowser) {
+    window.close();
+    return;
+  }
+  if (BaseEnv.isWx) {
+    wx.exitMiniProgram();
+    return;
+  }
+  if (BaseEnv.isNode) {
+    process.exit();
+    return;
+  }
+}
+export const quit = exit;
+export function restart() {
+  if (BaseEnv.isBrowser) {
+    location.href = location.href;
+    return;
+  }
+  if (BaseEnv.isWx) {
+    const pages = getCurrentPages();
+    const page = pages[pages.length - 1];
+    const route = page.route.startsWith('/') ? page.route : `/${page.route}`; // 处理成绝对路径防止嵌套拼接
+    const search = (() => {
+      const str = Object.entries(page.options).map(([key, value]) => `${key}=${value}`).join('&');
+      return str ? `?${str}` : str;
+    })();
+    wx.reLaunch({
+      url: `${route}${search}`,
+    });
+    return;
+  }
+  if (BaseEnv.isNode) {
+    const child_process = require('node:child_process');
+    child_process.spawn(process.argv[0], process.argv.slice(1), {
+      stdio: 'inherit',
+    });
+    return;
+  }
+}
