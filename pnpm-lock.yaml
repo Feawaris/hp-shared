@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@inquirer/prompts':
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.1.2
+        version: 5.1.2
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -130,8 +130,8 @@ importers:
         specifier: workspace:^
         version: link:..
       katex:
-        specifier: ^0.16.10
-        version: 0.16.10
+        specifier: ^0.16.11
+        version: 0.16.11
       vue:
         specifier: ^3.5.0-alpha.2
         version: 3.5.0-alpha.2(typescript@5.5.3)
@@ -140,7 +140,7 @@ importers:
         version: 2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))
       vuepress-theme-hope:
         specifier: 2.0.0-rc.43
-        version: 2.0.0-rc.43(@vuepress/plugin-docsearch@2.0.0-rc.36(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))))(katex@0.16.10)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
+        version: 2.0.0-rc.43(@vuepress/plugin-docsearch@2.0.0-rc.36(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))))(katex@0.16.11)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
 
   examples/be:
     dependencies:
@@ -733,52 +733,52 @@ packages:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
 
-  '@inquirer/checkbox@2.3.8':
-    resolution: {integrity: sha512-r6q3ViCa80EjBBCduaaiAlNwYtVX3MfFSqwvLOvBBVzGRve7jgghXnP8o+iAcTA564YGRyXDpcAKTIRRZj9m8g==}
+  '@inquirer/checkbox@2.3.10':
+    resolution: {integrity: sha512-CTc864M2/523rKc9AglIzAcUCuPXDZENgc5S2KZFVRbnMzpXcYTsUWmbqSeL0XLvtlvEtNevkkVbfVhJpruOyQ==}
     engines: {node: '>=18'}
 
-  '@inquirer/confirm@3.1.12':
-    resolution: {integrity: sha512-s5Sod79QsBBi5Qm7zxCq9DcAD0i7WRcjd/LzsiIAWqWZKW4+OJTGrCgVSLGIHTulwbZgdxM4AAxpCXe86hv4/Q==}
+  '@inquirer/confirm@3.1.14':
+    resolution: {integrity: sha512-nbLSX37b2dGPtKWL3rPuR/5hOuD30S+pqJ/MuFiUEgN6GiMs8UMxiurKAMDzKt6C95ltjupa8zH6+3csXNHWpA==}
     engines: {node: '>=18'}
 
-  '@inquirer/core@9.0.0':
-    resolution: {integrity: sha512-y3q+fkCTGmvwk9Wf6yZlI3QGlLXbEm5M7Y7Eh8abaUbv+ffvmw2aB4FxSUrWaoaozwvEJSG60raHbCaUorXEzA==}
+  '@inquirer/core@9.0.2':
+    resolution: {integrity: sha512-nguvH3TZar3ACwbytZrraRTzGqyxJfYJwv+ZwqZNatAosdWQMP1GV8zvmkNlBe2JeZSaw0WYBHZk52pDpWC9qA==}
     engines: {node: '>=18'}
 
-  '@inquirer/editor@2.1.12':
-    resolution: {integrity: sha512-rKd/mOkLlqVqQqQihgD6KM8FqRYRcgF1Y0oiYI8BYUk/KJOit7noWxsydJFQoHfrSU6mrpDtc6a+6wcVYH/V6A==}
+  '@inquirer/editor@2.1.14':
+    resolution: {integrity: sha512-6nWpoJyVAKwAcv67bkbBmmi3f32xua79fP7TRmNUoR4K+B1GiOBsHO1YdvET/jvC+nTlBZL7puKAKyM7G+Lkzw==}
     engines: {node: '>=18'}
 
-  '@inquirer/expand@2.1.12':
-    resolution: {integrity: sha512-Q3pG0TD0Ra4hhlKcgXEJf8FACp70F2mW6NXXIbsIEDLKDdiihlAc4Y98RnsME9b0zwqbBMYlUrGJ/bYgXt3cIw==}
+  '@inquirer/expand@2.1.14':
+    resolution: {integrity: sha512-JcxsLajwPykF2kq6biIUdoOzTQ3LXqb8XMVrWkCprG/pFeU1SsxcSSFbF1T5jJGvvlTVcsE+JdGjbQ8ZRZ82RA==}
     engines: {node: '>=18'}
 
   '@inquirer/figures@1.0.3':
     resolution: {integrity: sha512-ErXXzENMH5pJt5/ssXV0DfWUZqly8nGzf0UcBV9xTnP+KyffE2mqyxIMBrZ8ijQck2nU0TQm40EQB53YreyWHw==}
     engines: {node: '>=18'}
 
-  '@inquirer/input@2.1.12':
-    resolution: {integrity: sha512-buCMz8eVevE+TGEriC4hG6w1jaf4jDHUb7qcIVAgUG8BydtHw8YRkgwtcbxVaKBd9CvMLzF607fyZnMtEteDPg==}
+  '@inquirer/input@2.2.1':
+    resolution: {integrity: sha512-Yl1G6h7qWydzrJwqN777geeJVaAFL5Ly83aZlw4xHf8Z/BoTMfKRheyuMaQwOG7LQ4e5nQP7PxXdEg4SzQ+OKw==}
     engines: {node: '>=18'}
 
-  '@inquirer/number@1.0.0':
-    resolution: {integrity: sha512-CFQVgqXDi5Yd+BZMLPZN8wO85t0THoK1eDLlBY1wkRuUdxb87Umz4BkVcK9LVM9rTa9bzUSVgJ91waeo6ACp3Q==}
+  '@inquirer/number@1.0.2':
+    resolution: {integrity: sha512-GcoK+Phxcln0Qw9e73S5a8B2Ejg3HgSTvNfDegIcS5/BKwUm8t5rejja1l09WXjZM9vrVbRDf9RzWtSUiWVYRQ==}
     engines: {node: '>=18'}
 
-  '@inquirer/password@2.1.12':
-    resolution: {integrity: sha512-nXGVXOlEAqDXqggy5Vk1eQuSya7HOffQTFzBpCUg9PT5vhIsgApRp6jRqAn7creWkkn9on+mZfezGLVolCOerw==}
+  '@inquirer/password@2.1.14':
+    resolution: {integrity: sha512-sPzOkXLhWJQ96K6nPZFnF8XB8tsDrcCRobd1d3EDz81F+4hp8BbdmsnsQcqZ7oYDIOVM/mWJyIUtJ35TrssJxQ==}
     engines: {node: '>=18'}
 
-  '@inquirer/prompts@5.1.0':
-    resolution: {integrity: sha512-3rEwrBnGT9opMCiA3Lij98kH5E+JuXAVLYKlXnlK1qIWDvx7tIfypF+z1oK6m61HZ5NHGPF3HtjhVga80DR1PA==}
+  '@inquirer/prompts@5.1.2':
+    resolution: {integrity: sha512-E+ndnfwtVQtcmPt888Hc/HAxJUHSaA6OIvyvLAQ5BLQv+t20GbYdFSjXeLgb47OpMU+aRsKA/ys+Zoylw3kTVg==}
     engines: {node: '>=18'}
 
-  '@inquirer/rawlist@2.1.12':
-    resolution: {integrity: sha512-avwuYZp4R69BtDTpb93hAR+Zk5QKBhZYEf59IhVlW6oYTAztA80vW5m9heh+D4tv58Xy41qbVKbCF7tVl/WNpA==}
+  '@inquirer/rawlist@2.1.14':
+    resolution: {integrity: sha512-pLpEzhKNQ/ugFAFfgCNaXljB+dcCwmXwR1jOxAbVeFIdB3l02E5gjI+h1rb136tq0T8JO6P5KFR1oTeld/wdrA==}
     engines: {node: '>=18'}
 
-  '@inquirer/select@2.3.8':
-    resolution: {integrity: sha512-x4gJq9OVw8i0K03V3tJwTt2svz4J7ghqEhXaFBprRTnmbYJwQZRnnLf3PFBg+fWOti7b7fD0Oc4SLXqGeQLByg==}
+  '@inquirer/select@2.3.10':
+    resolution: {integrity: sha512-rr7iR0Zj1YFfgM8IUGimPD9Yukd+n/U63CnYT9kdum6DbRXtMxR45rrreP+EA9ixCnShr+W4xj7suRxC1+8t9g==}
     engines: {node: '>=18'}
 
   '@inquirer/type@1.4.0':
@@ -3320,8 +3320,8 @@ packages:
     resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
     engines: {'0': node >= 0.2.0}
 
-  katex@0.16.10:
-    resolution: {integrity: sha512-ZiqaC04tp2O5utMsl2TEZTXxa6WSC4yo0fv5ML++D3QZv/vx2Mct0mTlRx3O+uUkjfuAgOkzsCmq5MiUEsDDdA==}
+  katex@0.16.11:
+    resolution: {integrity: sha512-RQrI8rlHY92OLf3rho/Ts8i/XvjgguEjOkO1BEXcU3N8BqPpSzBNwV/G0Ukr+P/l3ivvJUE/Fa/CwbS6HesGNQ==}
     hasBin: true
 
   keyv@4.5.4:
@@ -4898,8 +4898,8 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
 
-  yoctocolors-cjs@2.1.1:
-    resolution: {integrity: sha512-c6T13b6qYcJZvck7QbEFXrFX/Mu2KOjvAGiKHmYMUg96jxNpfP6i+psGW72BOPxOIDUJrORG+Kyu7quMX9CQBQ==}
+  yoctocolors-cjs@2.1.2:
+    resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
   yoctocolors@2.0.0:
@@ -5480,20 +5480,20 @@ snapshots:
 
   '@humanwhocodes/retry@0.3.0': {}
 
-  '@inquirer/checkbox@2.3.8':
+  '@inquirer/checkbox@2.3.10':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/figures': 1.0.3
       '@inquirer/type': 1.4.0
       ansi-escapes: 4.3.2
-      yoctocolors-cjs: 2.1.1
+      yoctocolors-cjs: 2.1.2
 
-  '@inquirer/confirm@3.1.12':
+  '@inquirer/confirm@3.1.14':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
 
-  '@inquirer/core@9.0.0':
+  '@inquirer/core@9.0.2':
     dependencies:
       '@inquirer/figures': 1.0.3
       '@inquirer/type': 1.4.0
@@ -5507,63 +5507,63 @@ snapshots:
       signal-exit: 4.1.0
       strip-ansi: 6.0.1
       wrap-ansi: 6.2.0
-      yoctocolors-cjs: 2.1.1
+      yoctocolors-cjs: 2.1.2
 
-  '@inquirer/editor@2.1.12':
+  '@inquirer/editor@2.1.14':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
       external-editor: 3.1.0
 
-  '@inquirer/expand@2.1.12':
+  '@inquirer/expand@2.1.14':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
-      yoctocolors-cjs: 2.1.1
+      yoctocolors-cjs: 2.1.2
 
   '@inquirer/figures@1.0.3': {}
 
-  '@inquirer/input@2.1.12':
+  '@inquirer/input@2.2.1':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
 
-  '@inquirer/number@1.0.0':
+  '@inquirer/number@1.0.2':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
 
-  '@inquirer/password@2.1.12':
+  '@inquirer/password@2.1.14':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
       ansi-escapes: 4.3.2
 
-  '@inquirer/prompts@5.1.0':
+  '@inquirer/prompts@5.1.2':
     dependencies:
-      '@inquirer/checkbox': 2.3.8
-      '@inquirer/confirm': 3.1.12
-      '@inquirer/editor': 2.1.12
-      '@inquirer/expand': 2.1.12
-      '@inquirer/input': 2.1.12
-      '@inquirer/number': 1.0.0
-      '@inquirer/password': 2.1.12
-      '@inquirer/rawlist': 2.1.12
-      '@inquirer/select': 2.3.8
+      '@inquirer/checkbox': 2.3.10
+      '@inquirer/confirm': 3.1.14
+      '@inquirer/editor': 2.1.14
+      '@inquirer/expand': 2.1.14
+      '@inquirer/input': 2.2.1
+      '@inquirer/number': 1.0.2
+      '@inquirer/password': 2.1.14
+      '@inquirer/rawlist': 2.1.14
+      '@inquirer/select': 2.3.10
 
-  '@inquirer/rawlist@2.1.12':
+  '@inquirer/rawlist@2.1.14':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/type': 1.4.0
-      yoctocolors-cjs: 2.1.1
+      yoctocolors-cjs: 2.1.2
 
-  '@inquirer/select@2.3.8':
+  '@inquirer/select@2.3.10':
     dependencies:
-      '@inquirer/core': 9.0.0
+      '@inquirer/core': 9.0.2
       '@inquirer/figures': 1.0.3
       '@inquirer/type': 1.4.0
       ansi-escapes: 4.3.2
-      yoctocolors-cjs: 2.1.1
+      yoctocolors-cjs: 2.1.2
 
   '@inquirer/type@1.4.0':
     dependencies:
@@ -5898,13 +5898,13 @@ snapshots:
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-katex-slim@0.10.1(katex@0.16.10)(markdown-it@14.1.0)':
+  '@mdit/plugin-katex-slim@0.10.1(katex@0.16.11)(markdown-it@14.1.0)':
     dependencies:
       '@mdit/plugin-tex': 0.10.1(markdown-it@14.1.0)
       '@types/katex': 0.16.7
       '@types/markdown-it': 14.1.1
     optionalDependencies:
-      katex: 0.16.10
+      katex: 0.16.11
       markdown-it: 14.1.0
 
   '@mdit/plugin-mark@0.10.1(markdown-it@14.1.0)':
@@ -8728,7 +8728,7 @@ snapshots:
 
   jsonparse@1.3.1: {}
 
-  katex@0.16.10:
+  katex@0.16.11:
     dependencies:
       commander: 8.3.0
 
@@ -10115,7 +10115,7 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  vuepress-plugin-md-enhance@2.0.0-rc.43(katex@0.16.10)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))):
+  vuepress-plugin-md-enhance@2.0.0-rc.43(katex@0.16.11)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))):
     dependencies:
       '@mdit/plugin-alert': 0.10.1(markdown-it@14.1.0)
       '@mdit/plugin-align': 0.10.1(markdown-it@14.1.0)
@@ -10128,7 +10128,7 @@ snapshots:
       '@mdit/plugin-img-mark': 0.10.1(markdown-it@14.1.0)
       '@mdit/plugin-img-size': 0.10.1(markdown-it@14.1.0)
       '@mdit/plugin-include': 0.10.1(markdown-it@14.1.0)
-      '@mdit/plugin-katex-slim': 0.10.1(katex@0.16.10)(markdown-it@14.1.0)
+      '@mdit/plugin-katex-slim': 0.10.1(katex@0.16.11)(markdown-it@14.1.0)
       '@mdit/plugin-mark': 0.10.1(markdown-it@14.1.0)
       '@mdit/plugin-mathjax-slim': 0.10.1(markdown-it@14.1.0)
       '@mdit/plugin-plantuml': 0.10.1(markdown-it@14.1.0)
@@ -10150,7 +10150,7 @@ snapshots:
       vuepress: 2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))
       vuepress-shared: 2.0.0-rc.43(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
     optionalDependencies:
-      katex: 0.16.10
+      katex: 0.16.11
     transitivePeerDependencies:
       - '@vue/composition-api'
       - markdown-it
@@ -10172,7 +10172,7 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  vuepress-theme-hope@2.0.0-rc.43(@vuepress/plugin-docsearch@2.0.0-rc.36(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))))(katex@0.16.10)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))):
+  vuepress-theme-hope@2.0.0-rc.43(@vuepress/plugin-docsearch@2.0.0-rc.36(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))))(katex@0.16.11)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))):
     dependencies:
       '@vuepress/helper': 2.0.0-rc.28(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
       '@vuepress/plugin-active-header-links': 2.0.0-rc.28(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
@@ -10204,7 +10204,7 @@ snapshots:
       vue: 3.4.29(typescript@5.5.3)
       vuepress: 2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3))
       vuepress-plugin-components: 2.0.0-rc.43(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
-      vuepress-plugin-md-enhance: 2.0.0-rc.43(katex@0.16.10)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
+      vuepress-plugin-md-enhance: 2.0.0-rc.43(katex@0.16.11)(markdown-it@14.1.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
       vuepress-shared: 2.0.0-rc.43(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
     optionalDependencies:
       '@vuepress/plugin-docsearch': 2.0.0-rc.36(@algolia/client-search@4.23.3)(search-insights@2.13.0)(typescript@5.5.3)(vuepress@2.0.0-rc.11(@vuepress/bundler-vite@2.0.0-rc.11(@types/node@20.14.9)(jiti@1.21.0)(less@3.13.1)(sass@1.77.6)(terser@5.31.0)(typescript@5.5.3))(typescript@5.5.3)(vue@3.5.0-alpha.2(typescript@5.5.3)))
@@ -10372,6 +10372,6 @@ snapshots:
 
   yocto-queue@1.0.0: {}
 
-  yoctocolors-cjs@2.1.1: {}
+  yoctocolors-cjs@2.1.2: {}
 
   yoctocolors@2.0.0: {}

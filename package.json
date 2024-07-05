@@ -33,7 +33,7 @@
     "publish:python": "pnpm -C python run pypi"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.1.0",
+    "@inquirer/prompts": "^5.1.2",
     "commander": "^12.1.0",
     "ejs": "^3.1.10",
     "serialize-javascript": "^6.0.2",
