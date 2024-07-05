@@ -1,5 +1,8 @@
 // 用于 CSS 变量写入
+
+// 设置默认主题色
 $theme-color: #25a55b;
+
 $text-color: (
   light: #2c3e50,
   dark: #9e9e9e,
@@ -75,13 +78,13 @@ $content-width: 780px;
 $home-page-width: 1160px;
 
 // font
-$font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", STHeiti, "Microsoft YaHei", SimSun, sans-serif';
-$font-family-heading: 'Georgia Pro, Crimson, Georgia, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", STHeiti, "Microsoft YaHei", SimSun, sans-serif';
+$font-family: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", STHeiti, \"Microsoft YaHei\", SimSun, sans-serif";
+$font-family-heading: "Georgia Pro, Crimson, Georgia, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", STHeiti, \"Microsoft YaHei\", SimSun, sans-serif";
 
 // code
-$font-family-mono: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace';
+$font-family-mono: "Consolas, Monaco, \"Andale Mono\", \"Ubuntu Mono\", monospace";
 $line-numbers-width: 2.5rem;
 
 // transition
-$color-transition: '0.3s ease';
-$transform-transition: '0.3s ease';
+$color-transition: "0.3s ease";
+$transform-transition: "0.3s ease";

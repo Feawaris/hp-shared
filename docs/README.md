@@ -41,12 +41,14 @@ npm i hp-shared
 @tab unpkg
 
 ```html
+
 <script src="https://unpkg.com/hp-shared"></script>
 ```
 
 @tab jsdelivr
 
 ```html
+
 <script src="https://cdn.jsdelivr.net/npm/hp-shared"></script>
 ```
 
@@ -141,15 +143,34 @@ from hp_shared.base import _console
 
 #### 2.1.1 base/base
 
+##### 总览
+
+|             | 说明     | browser                                                                                                                                                               | wx                                                                                                          | node                                                                            | python                                                                               | js                                      | python                                  |
+|-------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
+| **BaseEnv** | 环境判断   | 见下文                                                                                                                                                                   | 见下文                                                                                                         | 见下文                                                                             | 见下文                                                                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **pass**    | 占位     |                                                                                                                                                                       |                                                                                                             |                                                                                 | [pass 语句](https://docs.python.org/zh-cn/3/tutorial/controlflow.html#pass-statements) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| exit        | 退出     | [window.close](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/close)                                                                                         | [wx.exitMiniProgram](https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.exitMiniProgram.html) | [process.exit](https://nodejs.org/docs/latest/api/process.html#processexitcode) | [exit](https://docs.python.org/zh-cn/3/library/constants.html#exit)                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| quit        | 同 exit |                                                                                                                                                                       |                                                                                                             |                                                                                 |                                                                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| restart     | 重启     | [locatinon.reload](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload), [location.href](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href) | [wx.reLaunch](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html)                  | [child_process](https://nodejs.org/docs/latest/api/child_process.html)          | [os.execl](https://docs.python.org/zh-cn/3/library/os.html#os.execl)                 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+
 ##### BaseEnv 环境判断
 
-|             | envs                                                         | os                                                           |
-| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **browser** | [Window](https://developer.mozilla.org/zh-CN/docs/Web/API/Window) | [navigator.userAgent](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/userAgent) |
-| **node**    | [global](https://nodejs.cn/api/globals.html#global)          | [process.platform](https://nodejs.cn/api/process.html#processplatform) |
-| **wx**      | [wx](https://developers.weixin.qq.com/miniprogram/dev/api/)  | [wx.getDeviceInfo().platform](https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getDeviceInfo.html) |
-| **python**  |                                                              | [platform.system()](https://docs.python.org/zh-cn/3/library/platform.html#platform.system) |
-| 统一定制    | [globalThis](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/globalThis)<br />**BaseEnv.envs** | **BaseEnv.os**                                               |
+|                   | 说明                                                 | browser                                                                                     | wx                                                                                                                    | node                                                                   | python                                                                                     | js                                                                                                                                                     | python                                  |
+|-------------------|----------------------------------------------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| envs              | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] | [Window](https://developer.mozilla.org/zh-CN/docs/Web/API/Window)                           | [wx](https://developers.weixin.qq.com/miniprogram/dev/api/)                                                           | [global](https://nodejs.cn/api/globals.html#global)                    |                                                                                            | <strong style="color:green;">✓</strong><br />[globalThis](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/globalThis) | <strong style="color:#999;">✕</strong>  |
+| **isBrowser**     | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| isWebWorker       | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| isChromeExtension | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| isServiceWorker   | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| **isWx**          | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| **isNode**        | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| **isMobile**      | 判断移动端                                              |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| os                | 操作系统: windows, mac, linux, ...                     | [navigator.userAgent](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/userAgent) | [wx.getDeviceInfo().platform](https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getDeviceInfo.html) | [process.platform](https://nodejs.cn/api/process.html#processplatform) | [platform.system()](https://docs.python.org/zh-cn/3/library/platform.html#platform.system) | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
+| **isWindows**     | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
+| **isMac**         | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
+| **isLinux**       | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
+| isAndroid         | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
+| isIOS             | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:#999;">✕</strong>  |
 
 ::: code-tabs#import
 
@@ -173,34 +194,13 @@ from hp_shared.base import BaseEnv
 
 :::
 
-###### BaseEnv
-
-| 属性    | 说明                                                 | js                                               | python                                           |
-|-------|----------------------------------------------------|----------------------------------------------------|----------------------------------------------------|
-| envs  | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> |
-| **isBrowser** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
-| isWebWorker | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
-| isChromeExtension | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
-| isServiceWorker | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
-| **isNode** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
-| **isWx** | 根据 envs 得到                                         | <strong style="color:green;">✓</strong>  | <strong style="color:#999;">✕</strong>   |
-| **isMobile** | 判断移动端                                              | <strong style="color:green;">✓</strong>       | <strong style="color:#999;">✕</strong>        |
-| os    | 操作系统: windows, mac, linux, ...                     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **isWindows** | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:green;">✓</strong>    |
-| **isMac** | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:green;">✓</strong>    |
-| **isLinux** | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:green;">✓</strong>    |
-| isAndroid | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:#999;">✕</strong>     |
-| isIOS | 根据 os 得到                                           | <strong style="color:green;">✓</strong>    | <strong style="color:#999;">✕</strong>     |
-
 #### 2.1.2 _console 控制台
 
-|             | 输出                                                         | 输入                                                         |
-| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **browser** | [Console API](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API) | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt) |
-| **node**    | [console](https://nodejs.cn/api/console.html)                | [readline](https://nodejs.cn/api/readline.html)              |
-| **wx**      | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) |                                                              |
-| **python**  | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) |
-| 统一定制    | **_console**, _print                                         | **_input**                                                   |
+|          | 说明             | **browser**                                                                 | **wx**                                                                                  | **node**                                        | **python**                                                            | js                                      | python                                  |
+|----------|----------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
+| _console | 输出             | [Console API](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API) | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) | [console](https://nodejs.cn/api/console.html)   | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| _print   | 同 _console.log |                                                                             |                                                                                         |                                                 |                                                                       | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| _input   | 输入             | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt)    |                                                                                         | [readline](https://nodejs.cn/api/readline.html) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 
 ::: code-tabs#import
 
@@ -237,21 +237,21 @@ _console.log(text)
 
 ##### _console
 
-| 属性                                             | 说明                                        | js                                      | python                                  |
-| ------------------------------------------------ | ------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| getStackInfo                                     | 基础方法                                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| getValues                                        | 基础方法                                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| show                                             | 基础方法                                    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **log**                                          | <strong style="color:blue">常规</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **warn**                                         | <strong style="color:orange;">警告</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **error**                                        | <strong style="color:red">报错</strong>     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **success**                                      | <strong style="color:green">成功</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **end**                                          | <strong style="color:grey">结束</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| dir                                              |                                             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| table                                            |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-| group                                            |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-| groupCollapsed                                   |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
-| groupAction                                      |                                             | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| 属性                                         | 说明                                        | js                                      | python                                  |
+|--------------------------------------------|-------------------------------------------|-----------------------------------------|-----------------------------------------|
+| getStackInfo                               | 基础方法                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| getValues                                  | 基础方法                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| show                                       | 基础方法                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **log**                                    | <strong style="color:blue">常规</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **warn**                                   | <strong style="color:orange;">警告</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **error**                                  | <strong style="color:red">报错</strong>     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **success**                                | <strong style="color:green">成功</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **end**                                    | <strong style="color:grey">结束</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| dir                                        |                                           | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| table                                      |                                           | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| group                                      |                                           | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| groupCollapsed                             |                                           | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
+| groupAction                                |                                           | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  |
 
 ##### _print
@@ -261,9 +261,9 @@ _console.log(text)
 ##### _input
 
 | 说明 | browser                                 | node                                    | wx                                     | python                                  |
-| ---- | --------------------------------------- | --------------------------------------- | -------------------------------------- | --------------------------------------- |
+|----|-----------------------------------------|-----------------------------------------|----------------------------------------|-----------------------------------------|
 | 支持 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong> | <strong style="color:green;">✓</strong> |
-| 方式 | 同步                                    | 异步                                    | <strong style="color:#999;">✕</strong> | 同步                                    |
+| 方式 | 同步                                      | 异步                                      | <strong style="color:#999;">✕</strong> | 同步                                      |
 
 #### 2.1.3 \_Object
 
@@ -291,18 +291,18 @@ from hp_shared.base import _Object
 
 ##### _Object
 
-| 属性                               | 说明                                                         |
-| ---------------------------------- | ------------------------------------------------------------ |
-| <i style="color:pink;">static:</i> |                                                              |
-| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况    |
-| values                             | 对应 keys 配套                                               |
-| entries                            | 对应 keys 配套                                               |
-| getOwner                           | 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作 |
-| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展                  |
-| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展                    |
-| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理 |
-| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                         |
-| **filter**                         | 过滤对象取部分值                                             |
+| 属性                                 | 说明                                                    |
+|------------------------------------|-------------------------------------------------------|
+| <i style="color:pink;">static:</i> |                                                       |
+| keys                               | 相对于 Object.keys 扩展，增加了选项处理需要不同属性的情况                   |
+| values                             | 对应 keys 配套                                            |
+| entries                            | 对应 keys 配套                                            |
+| getOwner                           | 属性定义所在的最近对象(来自自身或继承)，便于后续方法获取 descriptor 等操作          |
+| getPropertyDescriptor              | 相对于 Object.getOwnPropertyDescriptor 扩展                |
+| getPropertyDescriptors             | 相对于 Object.getPropertyDescriptors 扩展                  |
+| **assign**                         | 浅合并对象，通过重定义方式合并以对 get/set 惰性求值的属性的处理                  |
+| **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                                |
+| **filter**                         | 过滤对象取部分值                                              |
 | **bindThis**                       | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法 |
 
 #### 2.1.4 \_Function
@@ -323,14 +323,14 @@ const { _Function } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明                               |
-| ---------------------------------- | ---------------------------------- |
-| <i style="color:pink;">static:</i> |                                    |
+| 属性                                 | 说明                            |
+|------------------------------------|-------------------------------|
+| <i style="color:pink;">static:</i> |                               |
 | **pipe**                           | 管道操作， x \|> f1 \|> f2 \|> ... |
-| **NOOP**                           | 空函数                             |
-| **RAW**                            | 原样返回                           |
-| FALSE                              | 返回 false                         |
-| TRUE                               | 返回 true                          |
+| **NOOP**                           | 空函数                           |
+| **RAW**                            | 原样返回                          |
+| FALSE                              | 返回 false                      |
+| TRUE                               | 返回 true                       |
 
 #### 2.1.5 \_Number
 
@@ -350,12 +350,12 @@ const { _Number } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明                                                                   |
-| ---------------------------------- | ---------------------------------------------------------------------- |
-| <i style="color:pink;">static:</i> |                                                                        |
+| 属性                                 | 说明                                               |
+|------------------------------------|--------------------------------------------------|
+| <i style="color:pink;">static:</i> |                                                  |
 | **toMaxFixed**                     | 相对于 Number.prototype.toFixed 会移除尾部多余的零和小数点，以精简显示 |
-| convertBase                        | 进制转换                                                               |
-| isPrime                            | 素数判断                                                               |
+| convertBase                        | 进制转换                                             |
+| isPrime                            | 素数判断                                             |
 
 #### 2.1.6 \_Math
 
@@ -389,28 +389,28 @@ console.log(C(4, 2));
 
 相对于 Math 对象提供更直观和符合数学约定的名称，方便解构后顺手使用
 
-| 属性                                 | 说明                                           |
-|------------------------------------| ---------------------------------------------- |
-| <i style="color:pink;">static:</i> |                                                |
+| 属性                                 | 说明                                        |
+|------------------------------------|-------------------------------------------|
+| <i style="color:pink;">static:</i> |                                           |
 | PHI                                | 黄金分割比 ${\Phi}$=$\frac{\sqrt{5} - 1}{2}$   |
-| PHI_BIG                            | $\frac{1}{\Phi}$=$\frac{\sqrt{5} + 1}{2}$      |
-| arcsin                             | $\arcsin{x}$                                   |
-| arccos                             | $\arccos{x}$                                   |
-| arctan                             | $\arctan{x}$                                   |
-| arsinh                             | ${arsinh} {x}$                                 |
-| arcosh                             | ${arcosh} {x}$                                 |
-| artanh                             | ${artanh} {x}$                                 |
-| **log**                            | $\log_a{x}$                                    |
-| loge                               | $\log_e{x}$                                    |
-| ln                                 | $\ln{x}$                                       |
-| lg                                 | $\lg{x}$                                       |
-| factorial                          | $n!$                                           |
-| **A**                              | $A_n^k=P(n,k)=\frac{n!}{(n-k)!}$               |
-| **C**                              | $C_n^k=\binom{k}{n}=\frac{n!}{k!(n-k)!}$       |
-| Sequence                           | 数列，基础方法用于继承                         |
+| PHI_BIG                            | $\frac{1}{\Phi}$=$\frac{\sqrt{5} + 1}{2}$ |
+| arcsin                             | $\arcsin{x}$                              |
+| arccos                             | $\arccos{x}$                              |
+| arctan                             | $\arctan{x}$                              |
+| arsinh                             | ${arsinh} {x}$                            |
+| arcosh                             | ${arcosh} {x}$                            |
+| artanh                             | ${artanh} {x}$                            |
+| **log**                            | $\log_a{x}$                               |
+| loge                               | $\log_e{x}$                               |
+| ln                                 | $\ln{x}$                                  |
+| lg                                 | $\lg{x}$                                  |
+| factorial                          | $n!$                                      |
+| **A**                              | $A_n^k=P(n,k)=\frac{n!}{(n-k)!}$          |
+| **C**                              | $C_n^k=\binom{k}{n}=\frac{n!}{k!(n-k)!}$  |
+| Sequence                           | 数列，基础方法用于继承                               |
 | ArithmeticSequence                 | 等差数列：$a_1, a_1+d, a_1+2d, \ldots$         |
 | GeometricSequence                  | 等比数列：$a_1, a_1q, a_1q^2, \ldots$          |
-| FibonacciSequence                  | 斐波那契数列：$1, 1, 2, 3, 5, 8, 13, \ldots$   |
+| FibonacciSequence                  | 斐波那契数列：$1, 1, 2, 3, 5, 8, 13, \ldots$     |
 | PrimeSequence                      | 素数数列：$2, 3, 5, 7, 11, 13, 17, 19, \ldots$ |
 
 #### 2.1.7 \_Date
@@ -431,47 +431,47 @@ const { _Date } = require('hp-shared/base');
 
 :::
 
-| 属性                                  | 说明     |
-| ------------------------------------- | -------- |
-| <i style="color:pink;">static:</i>    |          |
+| 属性                                    | 说明   |
+|---------------------------------------|------|
+| <i style="color:pink;">static:</i>    |      |
 | **sleep**                             | 延迟操作 |
-| <i style="color:pink;">prototype:</i> |          |
-| **constructor**                       |          |
-| **year**                              |          |
-| isLeapYear                            |          |
-| **month**                             |          |
-| **day**                               |          |
-| week                                  |          |
-| **hour**                              |          |
-| shortHour                             |          |
-| **minute**                            |          |
-| **second**                            |          |
-| millisecond                           |          |
-| microsecond                           |          |
-| timeZoneOffsetHour                    |          |
-| setTime                               |          |
-| setYear                               |          |
-| setFullYear                           |          |
-| setMonth                              |          |
-| setDate                               |          |
-| setHours                              |          |
-| setMinutes                            |          |
-| setSeconds                            |          |
-| setMilliseconds                       |          |
-| setUTCFullYear                        |          |
-| setUTCMonth                           |          |
-| setUTCDate                            |          |
-| setUTCHours                           |          |
-| setUTCMinutes                         |          |
-| setUTCSeconds                         |          |
-| setUTCMilliseconds                    |          |
-| **Symbol.toPrimitive**                |          |
-| toNumber                              |          |
-| toString                              |          |
-| toBoolean                             |          |
-| toJSON                                |          |
-| toDateString                          |          |
-| toTimeString                          |          |
+| <i style="color:pink;">prototype:</i> |      |
+| **constructor**                       |      |
+| **year**                              |      |
+| isLeapYear                            |      |
+| **month**                             |      |
+| **day**                               |      |
+| week                                  |      |
+| **hour**                              |      |
+| shortHour                             |      |
+| **minute**                            |      |
+| **second**                            |      |
+| millisecond                           |      |
+| microsecond                           |      |
+| timeZoneOffsetHour                    |      |
+| setTime                               |      |
+| setYear                               |      |
+| setFullYear                           |      |
+| setMonth                              |      |
+| setDate                               |      |
+| setHours                              |      |
+| setMinutes                            |      |
+| setSeconds                            |      |
+| setMilliseconds                       |      |
+| setUTCFullYear                        |      |
+| setUTCMonth                           |      |
+| setUTCDate                            |      |
+| setUTCHours                           |      |
+| setUTCMinutes                         |      |
+| setUTCSeconds                         |      |
+| setUTCMilliseconds                    |      |
+| **Symbol.toPrimitive**                |      |
+| toNumber                              |      |
+| toString                              |      |
+| toBoolean                             |      |
+| toJSON                                |      |
+| toDateString                          |      |
+| toTimeString                          |      |
 
 #### 2.1.8 \_String
 
@@ -491,12 +491,12 @@ const { _String } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明         |
-| ---------------------------------- | ------------ |
-| <i style="color:pink;">static:</i> |              |
-| toFirstUpperCase                   | 首字母大写   |
-| toFirstLowerCase                   | 首字母小写   |
-| **toCamelCase**                    | 转驼峰命名   |
+| 属性                                 | 说明     |
+|------------------------------------|--------|
+| <i style="color:pink;">static:</i> |        |
+| toFirstUpperCase                   | 首字母大写  |
+| toFirstLowerCase                   | 首字母小写  |
+| **toCamelCase**                    | 转驼峰命名  |
 | **toLineCase**                     | 转连接符命名 |
 | **getUnitString**                  | 带单位字符串 |
 
@@ -519,30 +519,30 @@ const { _Array } = require('hp-shared/base');
 :::
 
 | 属性                                         | 说明                                  |
-|--------------------------------------------| ------------------------------------- |
-| <i style="color:pink;">static:</i>         |                                       |
-| **namesToArray**                           | 属性名统一成数组格式，手动传参用      |
-| <i style="color:pink;">prototype:</i>      |                                       |
-| **constructor**                            |                                       |
-| push                                       |                                       |
-| pop                                        |                                       |
-| remove                                     |                                       |
-| unshift                                    |                                       |
-| shfit                                      |                                       |
-| clear                                      |                                       |
-| with                                       |                                       |
-| toSpliced                                  |                                       |
-| toSorted                                   |                                       |
-| toReserved                                 |                                       |
-| **Symbol.toPrimitive**                     |                                       |
-| toNumber                                   |                                       |
-| toString                                   |                                       |
-| toBoolean                                  |                                       |
-| toJSON                                     |                                       |
-| toArray                                    |                                       |
-| to_Array                                   |                                       |
-| toSet                                      |                                       |
-| to_Set                                     |                                       |
+|--------------------------------------------|-------------------------------------|
+| <i style="color:pink;">static:</i>         |                                     |
+| **namesToArray**                           | 属性名统一成数组格式，手动传参用                    |
+| <i style="color:pink;">prototype:</i>      |                                     |
+| **constructor**                            |                                     |
+| push                                       |                                     |
+| pop                                        |                                     |
+| remove                                     |                                     |
+| unshift                                    |                                     |
+| shfit                                      |                                     |
+| clear                                      |                                     |
+| with                                       |                                     |
+| toSpliced                                  |                                     |
+| toSorted                                   |                                     |
+| toReserved                                 |                                     |
+| **Symbol.toPrimitive**                     |                                     |
+| toNumber                                   |                                     |
+| toString                                   |                                     |
+| toBoolean                                  |                                     |
+| toJSON                                     |                                     |
+| toArray                                    |                                     |
+| to_Array                                   |                                     |
+| toSet                                      |                                     |
+| to_Set                                     |                                     |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |
 
 #### 2.1.10 \_Set
@@ -564,24 +564,24 @@ const { _Set } = require('hp-shared/base');
 :::
 
 | 属性                                         | 说明                                  |
-|--------------------------------------------| ------------------------------------- |
-| <i style="color:pink;">static:</i>         |                                       |
-| **cup**                                    | $A \cup B \cup \ldots$                |
-| **cap**                                    | $A \cap B \cap \ldots$                |
-| **setminus**                               | $A \setminus B  \setminus \ldots$     |
-| <i style="color:pink;">prototype:</i>      |                                       |
-| **constructor**                            |                                       |
-| add                                        |                                       |
-| delete                                     |                                       |
-| **Symbol.toPrimitive**                     |                                       |
-| toNumber                                   |                                       |
-| toString                                   |                                       |
-| toBoolean                                  |                                       |
-| toJSON                                     |                                       |
-| toArray                                    |                                       |
-| to_Array                                   |                                       |
-| toSet                                      |                                       |
-| to_Set                                     |                                       |
+|--------------------------------------------|-------------------------------------|
+| <i style="color:pink;">static:</i>         |                                     |
+| **cup**                                    | $A \cup B \cup \ldots$              |
+| **cap**                                    | $A \cap B \cap \ldots$              |
+| **setminus**                               | $A \setminus B  \setminus \ldots$   |
+| <i style="color:pink;">prototype:</i>      |                                     |
+| **constructor**                            |                                     |
+| add                                        |                                     |
+| delete                                     |                                     |
+| **Symbol.toPrimitive**                     |                                     |
+| toNumber                                   |                                     |
+| toString                                   |                                     |
+| toBoolean                                  |                                     |
+| toJSON                                     |                                     |
+| toArray                                    |                                     |
+| to_Array                                   |                                     |
+| toSet                                      |                                     |
+| to_Set                                     |                                     |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |
 
 #### 2.1.11 \_JSON
@@ -604,11 +604,11 @@ const { _JSON } = require('hp-shared/base');
 
 专注于 JSON 支持的类型：`null`,`number`,`string`,`boolean`,`array`,`object`，前后端数据交互用
 
-| 属性                               | 说明                        |
-| ---------------------------------- | --------------------------- |
-| <i style="color:pink;">static:</i> |                             |
-| **typeof**                         | 判断类型                    |
-| **DataModel**                      | 数据模型                    |
+| 属性                                 | 说明                  |
+|------------------------------------|---------------------|
+| <i style="color:pink;">static:</i> |                     |
+| **typeof**                         | 判断类型                |
+| **DataModel**                      | 数据模型                |
 | model                              | 创建 DataModel 实例简写方式 |
 | number                             | 创建 DataModel 实例简写方式 |
 | string                             | 创建 DataModel 实例简写方式 |
@@ -634,9 +634,9 @@ const { _Reflect } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明                        |
-| ---------------------------------- | --------------------------- |
-| <i style="color:pink;">static:</i> |                             |
+| 属性                                 | 说明                     |
+|------------------------------------|------------------------|
+| <i style="color:pink;">static:</i> |                        |
 | ownValues                          | 对应 Reflect.ownKeys 的配套 |
 | ownEntries                         | 对应 Reflect.ownKeys 的配套 |
 
@@ -658,9 +658,9 @@ const { _Proxy } = require('hp-shared/base');
 
 :::
 
-| 属性                               | 说明 |
-| ---------------------------------- | ---- |
-| <i style="color:pink;">static:</i> |      |
+| 属性                                 | 说明 |
+|------------------------------------|----|
+| <i style="color:pink;">static:</i> |    |
 
 ### 2.2 storage 存储
 
@@ -668,13 +668,13 @@ const { _Proxy } = require('hp-shared/base');
 
 同浏览器 **Clipboard API** 使用
 
-|             | 链接                                                         |
-| ----------- | ------------------------------------------------------------ |
-| **browser** | [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API) |
+|             | 链接                                                                                                               |
+|-------------|------------------------------------------------------------------------------------------------------------------|
+| **browser** | [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API)                                  |
 | **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
-| **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html) |
-| **python**  | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html) |
-| 统一定制    | **clipboard**                                                |
+| **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html)            |
+| **python**  | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html)                                            |
+| 统一定制        | **clipboard**                                                                                                    |
 
 ::: code-tabs#import
 
@@ -739,26 +739,26 @@ asyncio.run(test())
 
 :::
 
-| 属性          | 说明             | browser                                 | node                                    | wx                                      | python                                  |
-| ------------- | ---------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| **copy**      | 复制             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **paste**     | 粘贴             | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| *copySync*    | 复制（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-| *pasteSync*   | 粘贴（同步方式） | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-|               |                  |                                         |                                         |                                         |                                         |
-| writeText     | 同 copy          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| readText      | 同 paste         | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| writeTextSync | 同 copySync      | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
-| readTextSync  | 同 pasteSync     | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+| 属性            | 说明          | browser                                 | node                                    | wx                                      | python                                  |
+|---------------|-------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| **copy**      | 复制          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **paste**     | 粘贴          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| *copySync*    | 复制（同步方式）    | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+| *pasteSync*   | 粘贴（同步方式）    | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+|               |             |                                         |                                         |                                         |                                         |
+| writeText     | 同 copy      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| readText      | 同 paste     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| writeTextSync | 同 copySync  | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
+| readTextSync  | 同 pasteSync | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:green;">✓</strong> |
 
 #### 2.2.2 Web Storage
 
 同浏览器 **Web Storage API** 使用，同样专注于前后端交互的 JSON， 存取方法默认做了 JSON 转换
 
-|             | 链接                                                         |
-| ----------- | ------------------------------------------------------------ |
-| **browser** | [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API) |
-| **node**    |                                                              |
+|             | 链接                                                                                          |
+|-------------|---------------------------------------------------------------------------------------------|
+| **browser** | [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API)         |
+| **node**    |                                                                                             |
 | **wx**      | [数据缓存](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html) |
 
 ::: code-tabs#import
@@ -801,27 +801,27 @@ console.log(a);
 
 :::
 
-| 对象                 | 说明                | browser                                 | node                                    | wx                                      |
-| -------------------- | ------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| 对象                   | 说明                | browser                                 | node                                    | wx                                      |
+|----------------------|-------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
 | **\_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | **\_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 
-| 属性                                             | 说明                                  | browser                                 | node                                    | wx                                      |
-| ------------------------------------------------ | ------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| **setItem**                                      | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **getItem**                                      | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toObject                                         | 转换成对象                            | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| 属性                                         | 说明                                  | browser                                 | node                                    | wx                                      |
+|--------------------------------------------|-------------------------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| **setItem**                                | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **getItem**                                | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| toObject                                   | 转换成对象                               | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |                                         |                                         |                                         |
 
 #### 2.2.3 Web Cookie
 
 操作 Web Cookie
 
-|             | 链接                                                         |
-| ----------- | ------------------------------------------------------------ |
-| **browser** | [HTTP Cookie](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies) |
+|             | 链接                                                                                           |
+|-------------|----------------------------------------------------------------------------------------------|
+| **browser** | [HTTP Cookie](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies)                     |
 | **node**    | [request.setHeader](https://nodejs.org/docs/latest/api/http.html#requestsetheadername-value) |
-| **wx**      |                                                              |
+| **wx**      |                                                                                              |
 
 ::: code-tabs#import
 
@@ -859,35 +859,35 @@ router.get('/test', (ctx) => {
 
 :::
 
-| 对象           | 说明       | browser                                 | node                                    | wx                                      |
-| -------------- | ---------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| **BaseCookie** | 基础 class | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| 对象             | 说明        | browser                                 | node                                    | wx                                      |
+|----------------|-----------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| **BaseCookie** | 基础 class  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | **cookie**     | browser 用 | <strong style="color:green;">✓</strong> | <strong style="color:#999;">✕</strong>  | <strong style="color:#999;">✕</strong>  |
 
 ##### BaseCookie
 
-| 属性                                  | 说明 | browser                                 | node                                    |
-| ------------------------------------- | ---- | --------------------------------------- | --------------------------------------- |
-| <i style="color:pink;">prototype:</i> |      |                                         |                                         |
-| **constructor**                       |      |                                         |                                         |
+| 属性                                    | 说明 | browser                                 | node                                    |
+|---------------------------------------|----|-----------------------------------------|-----------------------------------------|
+| <i style="color:pink;">prototype:</i> |    |                                         |                                         |
+| **constructor**                       |    |                                         |                                         |
 | **get**                               | 存值 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | **set**                               | 取值 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| value                                 |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| length                                |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toArray                               |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toObject                              |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| has                                   |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| remove                                |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| clear                                 |      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| value                                 |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| length                                |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| toArray                               |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| toObject                              |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| has                                   |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| remove                                |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| clear                                 |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 
 ### 2.3 dev 开发
 
 #### 2.3.1 markdownlint
 
-| 链接                                                         |
-| ------------------------------------------------------------ |
-| [markdownlint](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md) |
-| [markdownlint schema](https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json) |
+| 链接                                                                                                                                          |
+|---------------------------------------------------------------------------------------------------------------------------------------------|
+| [markdownlint](https://github.com/DavidAnson/markdownlint/blob/b2305efafb034b1f328845aec9928b5363ffd646/doc/Rules.md)                       |
+| [markdownlint schema](https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json)                |
 | [markdownlint-cli2 schema](https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json) |
 
 ::: code-tabs#install
@@ -946,8 +946,8 @@ module.exports = config;
 
 #### 2.3.2 stylelint
 
-| 链接                                               |
-| -------------------------------------------------- |
+| 链接                                                 |
+|----------------------------------------------------|
 | [stylelint](https://stylelint.io/user-guide/rules) |
 
 ::: code-tabs#install
@@ -1004,12 +1004,12 @@ module.exports = config;
 
 #### 2.3.3 eslint
 
-| 包                  | 链接                                                         |
-| ------------------- | ------------------------------------------------------------ |
-| eslint              | [eslint](https://eslint.org/docs/latest/rules/)              |
+| 包             | 链接                                                                |
+|---------------|-------------------------------------------------------------------|
+| eslint        | [eslint](https://eslint.org/docs/latest/rules/)                   |
 | eslint 样式规则抽离 | [@stylistic/eslint-plugin](https://eslint.style/packages/default) |
-| vue 用              | [eslint-plugin-vue](https://eslint.vuejs.org/rules/)         |
-| ts 用               | [typescript-eslint](https://typescript-eslint.io/rules/)     |
+| vue 用         | [eslint-plugin-vue](https://eslint.vuejs.org/rules/)              |
+| ts 用          | [typescript-eslint](https://typescript-eslint.io/rules/)          |
 
 ##### eslint 9.x
 
@@ -1131,8 +1131,8 @@ module.exports = config;
 
 #### 2.3.4 prettier
 
-| 链接                                            |
-| ----------------------------------------------- |
+| 链接                                              |
+|-------------------------------------------------|
 | [prettier](https://prettier.io/docs/en/options) |
 
 ::: code-tabs#install
@@ -1185,8 +1185,8 @@ module.exports = config;
 
 #### 2.3.5 commitlint
 
-| 链接                                                         |
-| ------------------------------------------------------------ |
+| 链接                                                           |
+|--------------------------------------------------------------|
 | [commitlint](https://commitlint.js.org/reference/rules.html) |
 | [husky](https://typicode.github.io/husky/get-started.html)   |
 
@@ -1240,8 +1240,8 @@ module.exports = config;
 
 #### 2.3.6 vite
 
-| 链接                                                     |
-| -------------------------------------------------------- |
+| 链接                                                       |
+|----------------------------------------------------------|
 | [vite](https://cn.vitejs.dev/config/)                    |
 | [rollup](https://cn.rollupjs.org/configuration-options/) |
 

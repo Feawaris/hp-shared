@@ -2196,10 +2196,10 @@ export class EsLint extends Lint {
           'warn',
           {
             'ts-expect-error': 'allow-with-description',
-            'ts-ignore': true,
-            'ts-nocheck': true,
+            'ts-ignore': false,
+            'ts-nocheck': false,
             'ts-check': false,
-            minimumDescriptionLength: 3,
+            minimumDescriptionLength: 0,
           },
         ],
         '@typescript-eslint/ban-tslint-comment': ['warn'],

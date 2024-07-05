@@ -3,12 +3,12 @@
  * [vuepress-theme-hope](https://theme-hope.vuejs.press/zh/)
  */
 import { _console } from 'hp-shared/base';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import { defineUserConfig } from 'vuepress';
 import { hopeTheme } from 'vuepress-theme-hope';
 import { viteBundler } from '@vuepress/bundler-vite';
-import { fileURLToPath } from 'url';
-import path from 'path';
-const { version } = require('../../package.json');
+const pkg = require('../../package.json');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,13 +22,15 @@ export default defineUserConfig({
    */
   base: {
     local: '/',
-    github: '/hp-shared/',
-    npm: `/hp-shared@${version}/docs/.vuepress/dist/`,
+    github: `/${pkg.name}/`,
+    npm: `/${pkg.name}@${pkg.version}/docs/.vuepress/dist/`,
   }[process.env.vuepress_to || 'local'],
   lang: 'zh-CN',
-  title: 'hp-shared',
+  title: pkg.name,
   description: '基础库',
-  head: [['link', { rel: 'icon', href: '/static/logo.jpg' }]],
+  head: [
+    ['link', { rel: 'icon', href: '/static/logo.jpg' }],
+  ],
   locales: {},
 
   /**
@@ -41,13 +43,9 @@ export default defineUserConfig({
        */
       // hostname:'',
       author: [
-        {
-          name: 'hp',
-          url: '',
-          email: '',
-        },
+        { name: 'hp', url: '', email: '' },
       ],
-      license: 'MIT',
+      license: pkg.license,
       favicon: '/static/logo.jpg',
       locales: {},
       extraLocales: {},
