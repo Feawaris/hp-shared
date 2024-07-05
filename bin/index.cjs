@@ -176,6 +176,24 @@ program
       _console.success('init 完成');
     }
   });
+program
+  .command('copyright')
+  .action(async function () {
+    const license = fs.readFileSync(path.resolve(__dirname, '../LICENSE'), 'utf-8');
+    const copyright = license.split('\n').find(val => val.startsWith('Copyright (c)')) || '';
+    _console.log('\n' + copyright);
+  });
+program
+  .command('credits')
+  .action(async function () {
+    _console.log('\n' + pkg.author);
+  });
+program
+  .command('license')
+  .action(async function () {
+    const license = fs.readFileSync(path.resolve(__dirname, '../LICENSE'), 'utf-8');
+    _console.log('\n' + license);
+  });
 program.parse(process.argv);
 
 async function createLintFile({ configDir, lintFile, templateFile } = {}) {
