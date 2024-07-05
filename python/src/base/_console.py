@@ -1,6 +1,7 @@
 from .base import typeof, Object, BaseEnv
 import inspect
 import datetime
+import re
 
 # 简易 chalk
 _chalk = Object({})
@@ -59,6 +60,7 @@ for method, (start, end) in Object.entries(_chalk.styleMap):
   _chalk[method] = lambda message, start=start, end=end: f'\x1b[{start}m{message}\x1b[{end}m'
 
 _console = Object({})
+# 根据堆栈跟踪格式提取详细信息
 def getStackInfo():
   stack = inspect.stack()
   match = stack[2]
@@ -70,20 +72,22 @@ def getStackInfo():
   column = match.positions.end_col_offset
 
   # 完整路径和显示用处理
-  fullPath = f'{file}:{line}:{column}'
-  prefix = 'file:///' if BaseEnv.isWindows else 'file://'
-  fullPathShow = f'{"" if file.startswith(prefix) else prefix}{fullPath}'
+  fileShow = f'{file}:{line}:{column}'
+  windowsPathReg = r'^[A-Za-z]:/.*$'
+  macPathReg = r'^/.*$'
+  if re.match(windowsPathReg, file) or re.match(macPathReg, file):
+    prefix = 'file:///' if BaseEnv.isWindows else 'file://'
+    fileShow = f'{prefix}{fileShow}'
 
   return Object({
-    'fullPathShow': fullPathShow,
-    'fullPath': fullPath,
+    'fileShow': fileShow,
 
     'file': file,
     'method': method,
     'line': line,
     'column': column,
   })
-def getValues(options:dict={}, **kwargs):
+def getValues(options: dict = {}, **kwargs):
   # 参数处理，同时支持字典传参和关键字传参
   options.update(kwargs)
 
@@ -96,7 +100,7 @@ def getValues(options:dict={}, **kwargs):
   date = datetime.datetime.now()
   # stackInfo 需要从具体方法传进来
   # 前缀内容
-  prefix = f'[{date}] [{type}] {stackInfo.fullPathShow} {stackInfo.method} :'
+  prefix = ' '.join(filter(None, [f'[{date}]', f'[{type}]', stackInfo.fileShow, stackInfo.method])) + ' :'
   # 样式映射
   styleMap = Object({
     'blue': {'node': 'blue', 'browser': 'color:blue;'},
@@ -126,7 +130,7 @@ def getValues(options:dict={}, **kwargs):
     _chalk[styleMap[style].node](prefix),
     *map(getValue, values)
   ]
-def show(options:dict={}, **kwargs):
+def show(options: dict = {}, **kwargs):
   # 参数处理，同时支持字典传参和关键字传参
   options.update(kwargs)
 

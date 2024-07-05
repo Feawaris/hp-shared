@@ -79,7 +79,6 @@ export const _console: {
   groupCollapsed: Function;
   groupAction: Function;
 } = Object.create(console);
-
 // 根据堆栈跟踪格式提取详细信息
 _console.getStackInfo = function () {
   try {
@@ -103,16 +102,19 @@ _console.getStackInfo = function () {
       const line = Number.parseInt(match[3]);
       const column = Number.parseInt(match[4]);
 
-      // 完整路径和显示用处理
+      // 完整路径显示处理
       const fileShow = (() => {
-        const fullPath = `${file}:${line}:${column}`;
-        if (!/^[a-zA-Z0-9-_]+:\/\//.test(fullPath)) {
+        let result = `${file}:${line}:${column}`;
+
+        const windowsPathReg = /^[A-Za-z]:\/.*$/;
+        const macPathReg = /^\/.*$/;
+        if (windowsPathReg.test(file) || macPathReg.test(file)) {
           // windows 兼容 webstorm console 显示用 file:/// ，vscode 或普通命令行 file:// 可以正常跳转
-          const prefix = BaseEnv.isWindows ? String.raw`file:///` : String.raw`file://`;
-          // node: import 方式带了前缀，require 方式拼前缀上去
-          return fullPath.startsWith(prefix) ? fullPath : `${prefix}${fullPath}`;
+          const prefix = BaseEnv.isWindows ? 'file:///' : 'file://';
+          result = `${prefix}${result}`;
         }
-        return fullPath;
+
+        return result;
       })();
 
       return {
@@ -134,7 +136,7 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
   // stackInfo 需要从具体方法传进来
   // 前缀内容
   // @ts-ignore
-  let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].join(' ')}:`;
+  let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
   // 样式映射
   const styleMap = {
     blue: { node: 'blue', browser: 'color:blue;' },
@@ -282,7 +284,6 @@ _console.groupCollapsed = function (label) {
   label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
   console.groupCollapsed(label);
 };
-
 _console.groupAction = function (action = () => {}, label = null, collapse = false) {
   _console.show({ style: 'bold', type: 'groupAction', stackInfo: _console.getStackInfo() });
 
@@ -293,7 +294,8 @@ _console.groupAction = function (action = () => {}, label = null, collapse = fal
 };
 
 export const _print = _console.log;
-export async function _input(title = '') {
+// eslint-disable-next-line
+export function _input(title = '') {
   if (BaseEnv.isBrowser) {
     return prompt(title) || '';
   }
