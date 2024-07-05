@@ -162,9 +162,9 @@ window.examples = {
   },
 
   exit() {
-    exit()
+    exit();
   },
   restart() {
-    restart()
+    restart();
   },
 };
