@@ -6,7 +6,7 @@
     "build:local": "cross-env vuepress_to=local vuepress build ./",
     "build:github": "cross-env vuepress_to=github vuepress build ./",
     "build:npm": "cross-env vuepress_to=npm vuepress build ./",
-    "preview": "pnpx serve .vuepress/dist"
+    "preview": "npx serve .vuepress/dist"
   },
   "devDependencies": {
     "@vuepress/bundler-vite": "2.0.0-rc.11",

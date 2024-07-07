@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "npm-run-all -p preview open",
-    "preview": "pnpx serve ./",
+    "preview": "npx serve ./",
     "open": "open http://localhost:3000"
   },
   "dependencies": {

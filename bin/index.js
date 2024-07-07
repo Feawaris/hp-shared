@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const { _console } = require('hp-shared/base');
 const { clipboard } = require('hp-shared/storage');
 const fs = require('node:fs');
