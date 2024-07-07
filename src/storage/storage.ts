@@ -2,7 +2,7 @@ import { BaseEnv } from '../base';
 
 export class BaseStorage {
   // 存储仓库
-  value: object;
+  value: Storage | object;
   get keys(): string[] {
     if (BaseEnv.isWx) {
       return wx.getStorageInfoSync().keys;
@@ -21,7 +21,7 @@ export class BaseStorage {
   // 取值
   getItem(key: string, { default: defaultValue = null, json = true } = {}): any {
     if (BaseEnv.isBrowser) {
-      const text = this.value.getItem(key);
+      const text = (this.value as Storage).getItem(key);
       return json
         ? (() => {
           try {
@@ -47,7 +47,7 @@ export class BaseStorage {
         value = null;
       }
       value = json ? JSON.stringify(value) : value;
-      this.value.setItem(key, value);
+      (this.value as Storage).setItem(key, value);
       return;
     }
     if (BaseEnv.isWx) {
@@ -65,7 +65,7 @@ export class BaseStorage {
   // 移除
   removeItem(key: string): void {
     if (BaseEnv.isBrowser) {
-      return this.value.removeItem(key);
+      return (this.value as Storage).removeItem(key);
     }
     if (BaseEnv.isWx) {
       return wx.removeStorageSync(key);
@@ -78,7 +78,7 @@ export class BaseStorage {
   // 清空
   clear(): void {
     if (BaseEnv.isBrowser) {
-      return this.value.clear();
+      return (this.value as Storage).clear();
     }
     if (BaseEnv.isWx) {
       return wx.clearStorageSync();
