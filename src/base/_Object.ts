@@ -199,14 +199,11 @@ export class _Object {
     return target;
   }
 
+  get length() {
+    return Object.keys(this).length;
+  }
   constructor(obj = {}) {
     _Object.assign(this, obj);
-
-    Object.defineProperty(this, 'length', {
-      get() {
-        return Object.keys(this).length;
-      },
-    });
   }
   * keys() {
     for (const key of Object.keys(this)) {
@@ -228,36 +225,29 @@ export class _Object {
   }
 
   // 转换系列方法：转换成原始值或其他类型
-  [Symbol.toPrimitive](hint: string) {
+  [Symbol.toPrimitive](hint: string): number | string {
     if (hint === 'number') {
       return this.toNumber();
     }
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
-    return null;
   }
-  toNumber() {
+  toNumber(): number {
     return this.length;
   }
-  toString() {
+  toString(): string {
     try {
       return JSON.stringify(this);
     } catch (e) {
       console.warn(`toString 转换报错，将生成 {}`, e);
-      return JSON.stringify([]);
+      return '{}';
     }
   }
-  toBoolean() {
+  toBoolean(): boolean {
     return this.length > 0;
   }
-  toJSON() {
+  toJSON(): object {
     return this;
-  }
-  toArray() {
-    return Array.from(this);
-  }
-  toSet() {
-    return new Set(this.values());
   }
 }

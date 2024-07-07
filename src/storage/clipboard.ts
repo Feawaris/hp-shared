@@ -1,5 +1,16 @@
 import { _console, BaseEnv } from '../base';
-export const clipboard = Object.create(null);
+
+interface BaseClipboard {
+  copy: (text: string) => Promise<string>;
+  copySync: (text: string) => string;
+  paste: () => Promise<string>;
+  pasteSync: () => string;
+  writeText: (text: string) => Promise<string>;
+  writeTextSync: (text: string) => string;
+  readText: () => Promise<string>;
+  readTextSync: () => string;
+}
+export const clipboard: BaseClipboard = Object.create(null);
 
 const commandMap = {
   windows: {
@@ -16,7 +27,7 @@ const commandMap = {
   },
 };
 // 复制
-clipboard.copy = async function (text: string) {
+clipboard.copy = async function (text: string = ''): Promise<string> {
   text = String(text);
   if (BaseEnv.isBrowser) {
     try {
@@ -60,11 +71,10 @@ clipboard.copy = async function (text: string) {
     });
   }
   if (BaseEnv.isNode) {
-    const { exec } = require('node:child_process');
-
+    const child_process = require('node:child_process');
     const command = commandMap[BaseEnv.os].copy;
     return new Promise((resolve, reject) => {
-      const child = exec(command, (err, stdout) => {
+      const child = child_process.exec(command, (err, stdout) => {
         !err ? resolve(text) : reject();
       });
       child.stdin.write(text, 'utf8');
@@ -73,22 +83,20 @@ clipboard.copy = async function (text: string) {
   }
   return text;
 };
-clipboard.copySync = function (text: string) {
+clipboard.copySync = function (text: string = ''): string {
   if (BaseEnv.isBrowser || BaseEnv.isWx) {
     throw new Error('clipboard 在当前环境无同步写法');
   }
   if (BaseEnv.isNode) {
-    const { execSync } = require('node:child_process');
-
+    const child_process = require('node:child_process');
     const command = commandMap[BaseEnv.os].copy;
-    execSync(command, { input: text, encoding: 'utf8' });
-
+    child_process.execSync(command, { input: text, encoding: 'utf8' });
     return text;
   }
   return '';
 };
 // 粘贴
-clipboard.paste = async function () {
+clipboard.paste = async function (): Promise<string> {
   if (BaseEnv.isBrowser) {
     return await navigator.clipboard.readText();
   }
@@ -105,21 +113,19 @@ clipboard.paste = async function () {
     });
   }
   if (BaseEnv.isNode) {
-    const { exec } = require('node:child_process');
-
+    const child_process = require('node:child_process');
     const command = commandMap[BaseEnv.os].paste;
     return new Promise((resolve, reject) => {
-      exec(command, (err, stdout) => {
+      child_process.exec(command, (err, stdout) => {
         // 移除末尾的换行符
         stdout = stdout.replace(/\r?\n$/, '');
-
         !err ? resolve(stdout) : reject(err);
       });
     });
   }
   return '';
 };
-clipboard.pasteSync = function () {
+clipboard.pasteSync = function (): string {
   if (BaseEnv.isBrowser || BaseEnv.isWx) {
     throw new Error('clipboard 在当前环境无同步写法');
   }
