@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', function () {
   (function () {
     const Vue = window.Vue2;
     window.appMonitor.watchVueError(Vue);
-    new Vue({
+    const app = new Vue({
       data(vm) {
         return {
           message: 'hello vue2',
@@ -45,7 +45,9 @@ window.addEventListener('DOMContentLoaded', function () {
           },
         };
       },
-    }).$mount('#vue2');
+    });
+    app.$mount('#vue2');
+    window.vue2App = app;
   })();
   // vue3
   (function () {
@@ -62,6 +64,7 @@ window.addEventListener('DOMContentLoaded', function () {
     });
     window.appMonitor.watchVueError(app);
     app.mount('#vue3');
+    window.vue3App = app;
   })();
 
   // 反馈给 jest 测试用
