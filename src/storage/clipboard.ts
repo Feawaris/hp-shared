@@ -14,7 +14,7 @@ export const clipboard: BaseClipboard = Object.create(null);
 
 const commandMap = {
   windows: {
-    copy: 'chcp 65001>nul && clip', // Windows 系统先设置编码
+    copy: 'chcp 65001>nul && clip', // Windows 系统防止复制中文乱码
     paste: 'powershell get-clipboard',
   },
   mac: {
