@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "npm-run-all -p preview open",
     "preview": "npx serve ./",
-    "open": "open http://localhost:3000"
+    "open": "open http://localhost:3000?runTest=true"
   },
   "dependencies": {
     "hp-shared": "workspace:^",

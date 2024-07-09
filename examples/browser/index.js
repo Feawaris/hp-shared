@@ -68,16 +68,16 @@ window.addEventListener('DOMContentLoaded', function () {
   })();
 
   // 反馈给 jest 测试用
-  // window.examples.test();
+  if(location.search.includes('runTest=true')){
+    window.examples.test();
+  }
 });
 window.examples = {
   // 反馈给 jest 测试用
   async test() {
-    const copyText = `browser:copy:${new _Date()}`;
-    const copyTextRes = await clipboard.copy(copyText);
-    const pasteText = `browser:paste:${new _Date()}`;
-    await clipboard.copy(pasteText);
-    const pasteTextRes = await clipboard.paste();
+    const text = `你好，js:browser:copy,paste`;
+    const textWrite = await clipboard.copy(text);
+    const textRead = await clipboard.paste();
 
     const res = await fetch(`${localConfig.remoteURL}/set-data`, {
       method: 'post',
@@ -89,8 +89,7 @@ window.examples = {
           },
           storage: {
             clipboard: {
-              copyText, copyTextRes,
-              pasteText, pasteTextRes,
+              text, textWrite, textRead,
             },
           },
         },

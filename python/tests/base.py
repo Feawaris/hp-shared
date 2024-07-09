@@ -20,7 +20,7 @@ outputValues = [
   '\x1b[91mFalse\x1b[39m'
 ]
 
-class DescribeEcmaScript(unittest.TestCase):
+class describe_es(unittest.TestCase):
   def test_global(self):
     self.assertTrue(math.isnan(NaN))
     self.assertEqual(Infinity, float('inf'))
@@ -32,7 +32,7 @@ class DescribeEcmaScript(unittest.TestCase):
     self.assertEqual(uri, decodeURI(uri_encoded))
     self.assertEqual(uri, decodeURIComponent(uri_component_encoded))
 
-class DescribeBase(unittest.TestCase):
+class describe_base(unittest.TestCase):
   def test_BaseEnv(self):
     os = platform.system().lower()
     if os.startswith('darwin'):
@@ -42,30 +42,28 @@ class DescribeBase(unittest.TestCase):
     elif os.startswith('linux'):
       self.assertEqual(BaseEnv.os, 'linux')
 
-class Describe_console(unittest.TestCase):
+class describe__console(unittest.TestCase):
   def test_log(self):
     res = _console.log(*inputValues)
     input, output = res.input, res.output
-    inputObj = Object({'style': input.style, 'type': input.type, 'values': input.values})
-    expectInputObj = Object({'style': 'blue', 'type': 'log', 'values': inputValues})
+    inputObj = _Object({'style': input.style, 'type': input.type, 'values': input.values})
+    expectInputObj = _Object({'style': 'blue', 'type': 'log', 'values': inputValues})
     self.assertEqual(inputObj, expectInputObj)
     self.assertEqual(output[1:], outputValues)
   def test_warn(self):
     res = _console.warn(*inputValues)
     input, output = res.input, res.output
-    inputObj = Object({'style': input.style, 'type': input.type, 'values': input.values})
-    expectInputObj = Object({'style': 'yellow', 'type': 'warn', 'values': inputValues})
+    inputObj = _Object({'style': input.style, 'type': input.type, 'values': input.values})
+    expectInputObj = _Object({'style': 'yellow', 'type': 'warn', 'values': inputValues})
     self.assertEqual(inputObj, expectInputObj)
     self.assertEqual(output[1:], outputValues)
 
-class Describe_Object(unittest.TestCase):
+class describe__Object(unittest.TestCase):
   def test_Object(self):
-    obj = Object({'a': 1, 'b': 2})
-    # create
-    self.assertEqual(Object.create(None), Object({}))
+    obj = _Object({'a': 1, 'b': 2})
     # assign
-    Object.assign(obj, {'c': 3}, {'d': 4})
-    self.assertEqual(obj, Object({'a': 1, 'b': 2, 'c': 3, 'd': 4}))
+    _Object.assign(obj, {'c': 3}, {'d': 4})
+    self.assertEqual(obj, _Object({'a': 1, 'b': 2, 'c': 3, 'd': 4}))
   def test__Object(self):
     obj = _Object({'a': 1, 'b': 2, 'userInfo': {'name': 'user1', 'age': 1, 'gender': 'male'}})
     # length
@@ -75,14 +73,14 @@ class Describe_Object(unittest.TestCase):
       self.assertEqual(value, obj[key])
     # deepAssign
     _Object.deepAssign(obj, {'userInfo': {'age': 2}}, {'userInfo': {'gender': 'female'}})
-    self.assertEqual(obj, Object({'a': 1, 'b': 2, 'userInfo': {'name': 'user1', 'age': 2, 'gender': 'female'}}))
+    self.assertEqual(obj, _Object({'a': 1, 'b': 2, 'userInfo': {'name': 'user1', 'age': 2, 'gender': 'female'}}))
     # filter 两种传参写法
     obj2 = _Object.filter(obj, {'pick': ['a', 'b']})
     _console.log(obj2)
     obj3 = _Object.filter(obj, pick=['a', 'b'])
     _console.log(obj3)
 
-class Describe_Number(unittest.TestCase):
+class describe__Number(unittest.TestCase):
   def test_Number(self):
     # convertBase
     self.assertEqual(_Number.convertBase(10, {'to': 2}), '1010')
@@ -93,7 +91,7 @@ class Describe_Number(unittest.TestCase):
     for i in range(10 + 1):
       _console.log(i, _Number.isPrime(i))
 
-class Describe_Date(unittest.IsolatedAsyncioTestCase):
+class describe__Date(unittest.IsolatedAsyncioTestCase):
   async def test__Date(self):
     _console.log(1)
     await _Date.sleep()

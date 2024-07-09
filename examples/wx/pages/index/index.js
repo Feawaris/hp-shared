@@ -10,11 +10,9 @@ Page({
   },
   // 反馈给 jest 测试用
   async test() {
-    const copyText = `wx:copy`;
-    const copyTextRes = await clipboard.copy(copyText);
-    const pasteText = `wx:paste`;
-    await clipboard.copy(pasteText);
-    const pasteTextRes = await clipboard.paste();
+    const text = `你好，js:wx:copy,paste`;
+    const textWrite = await clipboard.copy(text);
+    const textRead = await clipboard.paste();
     wx.request({
       url: `${localConfig.remoteURL}/set-data`,
       method: 'post',
@@ -26,8 +24,7 @@ Page({
           },
           storage: {
             clipboard: {
-              copyText, copyTextRes,
-              pasteText, pasteTextRes,
+              text, textWrite, textRead,
             },
           },
         },

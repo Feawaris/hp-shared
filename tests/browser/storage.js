@@ -2,24 +2,15 @@ const { TestData, timeout } = require('shared');
 
 const testInfo = new TestData('browser');
 describe('clipboard', () => {
-  test('copy', async () => {
+  test('test_copy_paste', async () => {
     const {
       storage: {
         clipboard: {
-          copyText, copyTextRes,
+          text, textWrite, textRead,
         },
       },
     } = await testInfo.getData();
-    expect(copyTextRes).toBe(copyText);
-  }, timeout);
-  test('paste', async () => {
-    const {
-      storage: {
-        clipboard: {
-          pasteText, pasteTextRes,
-        },
-      },
-    } = await testInfo.getData();
-    expect(pasteTextRes).toBe(pasteText);
+    expect(textWrite).toBe(text);
+    expect(textRead).toBe(text);
   }, timeout);
 });
