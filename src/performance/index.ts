@@ -437,7 +437,7 @@ export class Monitor {
               url,
               headers: reqHeaders,
               body: (() => {
-                if (reqHeaders['content-type'].includes('application/json')) {
+                if (reqHeaders['content-type']?.includes('application/json')) {
                   try {
                     return JSON.parse(reqBody);
                   } catch (e) {
