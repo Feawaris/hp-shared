@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', function () {
   })();
 
   // 反馈给 jest 测试用
-  if(location.search.includes('runTest=true')){
+  if (location.search.includes('runTest=true')) {
     window.examples.test();
   }
 });

@@ -294,7 +294,6 @@ _console.groupAction = function (action = () => {}, label = null, collapse = fal
 };
 
 export const _print = _console.log;
-// eslint-disable-next-line
 export function _input(title = '', _default = ''): string | Promise<string> {
   if (BaseEnv.isBrowser) {
     return prompt(title, _default) || '';
