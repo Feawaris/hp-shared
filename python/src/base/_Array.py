@@ -1,4 +1,4 @@
-from .base import Array
+from .es import Array
 
 class _Array(Array):
   def push(self, *args):
@@ -11,7 +11,7 @@ class _Array(Array):
     for n in args:
       self.insert(0, args[len(args) - n])
     return self
-  def shift(self, index=0):
+  def shift(self, index = 0):
     return self.pop(index)
   def sort(self, *args, **kwargs):
     super().sort(*args, **kwargs)

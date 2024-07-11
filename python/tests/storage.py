@@ -7,14 +7,14 @@ class describe_clipboard(unittest.IsolatedAsyncioTestCase):
     text = '你好，py:copy,paste'
     textWrite = await clipboard.copy(text)
     textRead = await clipboard.paste()
-    self.assertEqual(textWrite,text)
-    self.assertEqual(textRead,text)
+    self.assertEqual(textWrite, text)
+    self.assertEqual(textRead, text)
 
     await _Date.sleep()
 
     text = '你好，py:copySync,pasteSync'
     textWrite = clipboard.copySync(text)
-    textRead =  clipboard.pasteSync()
+    textRead = clipboard.pasteSync()
     self.assertTrue(textRead == textWrite == text)
 
 if __name__ == '__main__':

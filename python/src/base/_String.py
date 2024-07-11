@@ -1,4 +1,4 @@
-from .base import String
+from .es import String
 
 class _String(String):
   pass

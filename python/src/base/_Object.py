@@ -1,4 +1,4 @@
-from .base import Object
+from .es import Object
 
 class _Object(Object):
   @staticmethod
@@ -11,7 +11,7 @@ class _Object(Object):
           target[key] = value
     return target
   @staticmethod
-  def filter(target: dict, options: dict = {}, pick=[], omit=[], emptyPick='all') -> dict:
+  def filter(target: dict, options: dict = { }, pick = [], omit = [], emptyPick = 'all') -> dict:
     pick = pick + options.get('pick', [])
     omit = omit + options.get('omit', [])
     emptyPick = emptyPick or options.get('emptyPick', '')
@@ -21,7 +21,7 @@ class _Object(Object):
     # omit 筛选
     keys = [key for key in keys if key not in omit]
 
-    return _Object({key: target[key] for key in keys})
+    return _Object({ key: target[key] for key in keys })
 
   @property
   def length(self):

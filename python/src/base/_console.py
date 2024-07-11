@@ -1,11 +1,13 @@
-from .base import typeof, Object, BaseEnv
+from .es import typeof, Object
+from .base import BaseEnv
+from ._Object import _Object
 import inspect
 import datetime
 import re
 
 # 简易 chalk
-_chalk = Object({})
-_chalk.styleMap = Object({
+_chalk = _Object({ })
+_chalk.styleMap = _Object({
   'black': [30, 39],
   'red': [31, 39],
   'green': [32, 39],
@@ -57,9 +59,9 @@ _chalk.styleMap = Object({
   'strikethrough': [9, 29],
 })
 for method, (start, end) in Object.entries(_chalk.styleMap):
-  _chalk[method] = lambda message, start=start, end=end: f'\x1b[{start}m{message}\x1b[{end}m'
+  _chalk[method] = lambda message, start = start, end = end: f'\x1b[{start}m{message}\x1b[{end}m'
 
-_console = Object({})
+_console = _Object({ })
 # 根据堆栈跟踪格式提取详细信息
 def getStackInfo():
   stack = inspect.stack()
@@ -79,7 +81,7 @@ def getStackInfo():
     prefix = 'file:///' if BaseEnv.isWindows else 'file://'
     fileShow = f'{prefix}{fileShow}'
 
-  return Object({
+  return _Object({
     'fileShow': fileShow,
 
     'file': file,
@@ -87,12 +89,12 @@ def getStackInfo():
     'line': line,
     'column': column,
   })
-def getValues(options: dict = {}, **kwargs):
+def getValues(options: dict = { }, **kwargs):
   # 参数处理，同时支持字典传参和关键字传参
   options.update(kwargs)
 
   style = options.get('style')
-  type = options.get('type') or style
+  type = options.get('type')
   stackInfo = options.get('stackInfo')
   values = options.get('values')
 
@@ -102,13 +104,13 @@ def getValues(options: dict = {}, **kwargs):
   # 前缀内容
   prefix = ' '.join(filter(None, [f'[{date}]', f'[{type}]', stackInfo.fileShow, stackInfo.method])) + ' :'
   # 样式映射
-  styleMap = Object({
-    'blue': {'node': 'blue', 'browser': 'color:blue;'},
-    'yellow': {'node': 'yellow', 'browser': 'color:orange;'},
-    'red': {'node': 'red', 'browser': 'color:red;'},
-    'green': {'node': 'green', 'browser': 'color:green;'},
-    'grey': {'node': 'grey', 'browser': 'color:grey;'},
-    'bold': {'node': 'bold', 'browser': 'font-weight:bold;'},
+  styleMap = _Object({
+    'blue': { 'node': 'blue', 'browser': 'color:blue;' },
+    'yellow': { 'node': 'yellow', 'browser': 'color:orange;' },
+    'red': { 'node': 'red', 'browser': 'color:red;' },
+    'green': { 'node': 'green', 'browser': 'color:green;' },
+    'grey': { 'node': 'grey', 'browser': 'color:grey;' },
+    'bold': { 'node': 'bold', 'browser': 'font-weight:bold;' },
   })
 
   def getValue(value):
@@ -130,29 +132,29 @@ def getValues(options: dict = {}, **kwargs):
     _chalk[styleMap[style].node](prefix),
     *map(getValue, values)
   ]
-def show(options: dict = {}, **kwargs):
+def show(options: dict = { }, **kwargs):
   # 参数处理，同时支持字典传参和关键字传参
   options.update(kwargs)
 
   values = _console.getValues(**options)
 
   print(*values)
-  return Object({
-    'input': {k: list(v) if isinstance(v, (list, tuple)) else v for k, v in options.items()},
+  return _Object({
+    'input': { k: list(v) if isinstance(v, (list, tuple)) else v for k, v in options.items() },
     'output': values
   })
 def log(*args):
-  return _console.show({'style': 'blue', 'type': 'log', 'stackInfo': _console.getStackInfo(), 'values': args})
+  return _console.show({ 'style': 'blue', 'type': 'log', 'stackInfo': _console.getStackInfo(), 'values': args })
 def warn(*args):
-  return _console.show({'style': 'yellow', 'type': 'warn', 'stackInfo': _console.getStackInfo(), 'values': args})
+  return _console.show({ 'style': 'yellow', 'type': 'warn', 'stackInfo': _console.getStackInfo(), 'values': args })
 def error(*args):
-  return _console.show({'style': 'red', 'type': 'error', 'stackInfo': _console.getStackInfo(), 'values': args})
+  return _console.show({ 'style': 'red', 'type': 'error', 'stackInfo': _console.getStackInfo(), 'values': args })
 def success(*args):
-  return _console.show({'style': 'green', 'type': 'success', 'stackInfo': _console.getStackInfo(), 'values': args})
+  return _console.show({ 'style': 'green', 'type': 'success', 'stackInfo': _console.getStackInfo(), 'values': args })
 def end(*args):
-  return _console.show({'style': 'grey', 'type': 'end', 'stackInfo': _console.getStackInfo(), 'values': args})
+  return _console.show({ 'style': 'grey', 'type': 'end', 'stackInfo': _console.getStackInfo(), 'values': args })
 def dir(*args):
-  return _console.show({'style': 'blue', 'type': 'dir', 'stackInfo': _console.getStackInfo(), 'values': args})
+  return _console.show({ 'style': 'blue', 'type': 'dir', 'stackInfo': _console.getStackInfo(), 'values': args })
 _console.getStackInfo = getStackInfo
 _console.getValues = getValues
 _console.show = show

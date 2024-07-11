@@ -1,14 +1,14 @@
-from .base import Number, Math, parseInt
+from .es import Number, Math, parseInt
 from ._Object import _Object
 
 class _Number(Number):
   @staticmethod
-  def convertBase(x, options={}, _from=10, to=10) -> str:
+  def convertBase(x, options = { }, _from = 10, to = 10) -> str:
     options = _Object(options)
     _from = options['from'] or _from
     to = options['to'] or to
 
-    x = Number.parseInt(x, _from)
+    x = parseInt(x, _from)
     if to == 2:
       return format(x, 'b')
     elif to == 8:
@@ -36,7 +36,7 @@ class _Number(Number):
         return False
     return True
 
-  def toMaxFixed(x, fractionDigits=0) -> str:
+  def toMaxFixed(x, fractionDigits = 0) -> str:
     # 创建格式化字符串
     format_str = f"{{:.{fractionDigits}f}}"
     # 格式化数字

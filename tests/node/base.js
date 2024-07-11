@@ -1,4 +1,4 @@
-const { BaseEnv, _console, _Date, _Math, _Number, _Object, _BigInt } = require('hp-shared/base');
+const { BaseEnv, _console, _print, _input, _Date, _Math, _Number, _Object, _BigInt } = require('hp-shared/base');
 
 describe('base', () => {
   test('BaseEnv', () => {
@@ -22,26 +22,50 @@ describe('base', () => {
   });
 });
 describe('_console', () => {
-  const inputValues = [null, undefined, 10, '12px', true, false, 10n, Symbol('test')];
-  const outputValues = [
-    '\x1b[90mnull\x1b[39m',
-    '\x1b[90mundefined\x1b[39m',
-    '\x1b[94m10\x1b[39m',
-    '\x1b[93m12px\x1b[39m',
-    '\x1b[92mtrue\x1b[39m',
-    '\x1b[91mfalse\x1b[39m',
-    '\x1b[96m10n\x1b[39m',
-    '\x1b[95mSymbol(test)\x1b[39m',
-  ];
-  test('log', () => {
-    const { input, output } = _console.log(...inputValues);
-    expect(input).toMatchObject({ style: 'blue', type: 'log', stackInfo: {}, values: inputValues });
-    expect(output.slice(1)).toEqual(outputValues);
+  test('test_log_warn_error_success_end', () => {
+    const inputValues = [null, undefined, 10, '12px', true, false, 10n, Symbol('test')];
+    const outputValues = [
+      '\x1b[90mnull\x1b[39m',
+      '\x1b[90mundefined\x1b[39m',
+      '\x1b[94m10\x1b[39m',
+      '\x1b[93m12px\x1b[39m',
+      '\x1b[92mtrue\x1b[39m',
+      '\x1b[91mfalse\x1b[39m',
+      '\x1b[96m10n\x1b[39m',
+      '\x1b[95mSymbol(test)\x1b[39m',
+    ];
+    function fn({ type, style } = {}) {
+      const res = _console[type](...inputValues);
+      // res.input: stackInfo 先不加入测试，先不用整个 res.input
+      expect(res.input).toMatchObject({ style, type, values: inputValues });
+      // res.output
+      expect(res.output.slice(1)).toEqual(outputValues);
+    }
+    fn({ type: 'log', style: 'blue' });
+    fn({ type: 'warn', style: 'yellow' });
+    fn({ type: 'error', style: 'red' });
+    fn({ type: 'success', style: 'green' });
+    fn({ type: 'end', style: 'grey' });
   });
-  test('warn', () => {
-    const { input, output } = _console.warn(...inputValues);
-    expect(input).toMatchObject({ style: 'yellow', type: 'warn', stackInfo: {}, values: inputValues });
-    expect(output.slice(1)).toEqual(outputValues);
+  test('test__print', () => {
+    expect(_print).toEqual(_console.log);
+  });
+  test('test__input', async () => {
+    // 使用模拟的 readline 接口替换真实的 readline.createInterface
+    jest.spyOn(require('node:readline'), 'createInterface').mockReturnValue({
+      question: jest.fn().mockImplementation((query, callback) => {
+        // 模拟用户输入
+        callback('123');
+      }),
+      close: jest.fn(),
+    });
+
+    const text = await _input('输入内容：');
+    expect(text).toBe('123');
+
+    // 清除模拟
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 });
 describe('_Object', () => {

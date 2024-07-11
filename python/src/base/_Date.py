@@ -1,11 +1,10 @@
-from .base import Number
 from datetime import datetime, timezone
 import re
 import asyncio
 
 class _Date:
   @staticmethod
-  async def sleep(seconds=0.3):
+  async def sleep(seconds = 0.3):
     return await asyncio.sleep(seconds)
 
   def __init__(self, *args, **kwargs):
@@ -33,7 +32,7 @@ class _Date:
     else:
       self.value = datetime(*args, **kwargs)
   # toString
-  def __str__(self, format='YYYY-MM-DD HH:mm:ss'):
+  def __str__(self, format = 'YYYY-MM-DD HH:mm:ss'):
     def formatFunc(result):
       # 定义格式化模式和对应的替换函数
       patterns = {
