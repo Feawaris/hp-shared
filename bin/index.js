@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 const { _console } = require('hp-shared/base');
 const { clipboard } = require('hp-shared/storage');
+const pkg = require('../package.json');
 const fs = require('node:fs');
 const path = require('node:path');
-const { spawn } = require('node:child_process');
+const child_process = require('node:child_process');
 const { Command } = require('commander');
 const program = new Command();
 const { input, select, checkbox, confirm } = require('@inquirer/prompts');
 const ejs = require('ejs');
-const pkg = require('../package.json');
 
 program
   .name('hp-shared')
@@ -158,7 +158,7 @@ program
       })(),
     ].join(' ');
     if (install === 'run') {
-      const child = spawn(command, { shell: true });
+      const child = child_process.spawn(command, { shell: true });
       child.stdout.on('data', (data) => {
         console.log(`${data}`);
       });

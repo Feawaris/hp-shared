@@ -13,12 +13,18 @@ with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'README.md'),
 setup(
   name=py_name,
   version=pkg['version'],
-  license=pkg['license'],
-  packages=[py_name] + [py_name + '.' + pkg for pkg in find_packages(where='src')],
-  package_dir={py_name: 'src'},
-  # 指定长描述内容和类型
+  description=pkg['description'],
+  # 详细的描述，通常从 README 文件读取
   long_description=long_description,
   long_description_content_type="text/markdown",
+  license=pkg['license'],
+  author=pkg['author'],
+  # bin
+  entry_points={
+    'console_scripts': [
+      'hp_shared = bin.index:main',
+    ],
+  },
   # dependencies
   install_requires=[
 
@@ -27,6 +33,12 @@ setup(
   extras_require={
     'dev': [
       'watchdog>=4.0.1',
+      'mypy>=1.10.1',
     ],
   },
+  # exports
+  packages=[py_name] + [py_name + '.' + pkg for pkg in find_packages(where='src')],
+  package_dir={py_name: 'src'},
+  # homepage
+  url=pkg['homepage'],
 )

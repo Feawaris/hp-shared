@@ -295,20 +295,22 @@ _console.groupAction = function (action = () => {}, label = null, collapse = fal
 
 export const _print = _console.log;
 // eslint-disable-next-line
-export function _input(title = '') {
+export function _input(title = '', _default = ''): string | Promise<string> {
   if (BaseEnv.isBrowser) {
-    return prompt(title) || '';
+    return prompt(title, _default) || '';
   }
   if (BaseEnv.isNode) {
-    const readline = require('readline').createInterface({
+    const readline = require('node:readline');
+    const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
     return new Promise((resolve) => {
-      readline.question(title, (text) => {
+      rl.question(title, (text) => {
         resolve(text || '');
-        readline.close();
+        rl.close();
       });
     });
   }
+  return '';
 }

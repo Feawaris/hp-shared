@@ -4,7 +4,7 @@ import asyncio
 
 commandMap = _Object({
   'windows': {
-    'copy': 'chcp 65001>nul && clip', # Windows 系统防止复制中文乱码
+    'copy': 'chcp 65001>nul && clip',  # Windows 系统防止复制中文乱码
     'paste': 'powershell get-clipboard',
   },
   'mac': {
@@ -23,28 +23,28 @@ class clipboard:
   async def copy(cls, text):
     text = str(text)
     command = commandMap[BaseEnv.os].copy
-    process = await asyncio.create_subprocess_shell(command, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-    await process.communicate(input=text.encode('utf-8'))
+    process = await asyncio.create_subprocess_shell(command, stdin = asyncio.subprocess.PIPE, stdout = asyncio.subprocess.PIPE, stderr = asyncio.subprocess.PIPE)
+    await process.communicate(input = text.encode('utf-8'))
     return text
   @classmethod
   def copySync(cls, text):
     text = str(text)
     command = commandMap[BaseEnv.os].copy
-    subprocess.run(command, input=text.encode('utf-8'), check=True, shell=True, text=False)
+    subprocess.run(command, input = text.encode('utf-8'), check = True, shell = True, text = False)
     return text
 
   # 粘贴
   @classmethod
   async def paste(cls):
     command = commandMap[BaseEnv.os].paste
-    process = await asyncio.create_subprocess_shell(command, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    process = await asyncio.create_subprocess_shell(command, stdin = asyncio.subprocess.PIPE, stdout = asyncio.subprocess.PIPE, stderr = asyncio.subprocess.PIPE)
     stdout, *_ = await process.communicate()
     stdout = stdout.decode('utf-8').strip()
     return stdout
   @classmethod
   def pasteSync(cls):
     command = commandMap[BaseEnv.os].paste
-    stdout = subprocess.run(command, capture_output=True, check=True, shell=True, text=True).stdout
+    stdout = subprocess.run(command, capture_output = True, check = True, shell = True, text = True).stdout
     stdout = stdout.strip()
     return stdout
 
@@ -62,4 +62,4 @@ class clipboard:
   def readTextSync(cls):
     return cls.pasteSync()
 
-__all__ = ["clipboard"]
+__all__ = ['clipboard']
