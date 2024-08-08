@@ -1,22 +1,3 @@
-const {
-  base: {
-    BaseEnv, _console, _input,
-    _Object, _Date,
-    exit, restart,
-  },
-  storage: {
-    clipboard,
-  },
-  performance: {
-    MonitorInfo,
-    Monitor,
-  },
-} = window.hpShared;
-Object.assign(window, {
-  ...window.hpShared.base,
-  ...window.hpShared.storage,
-  ...window.hpShared.performance,
-});
 const { localConfig } = window.testsShared;
 
 window.appMonitor = new Monitor({
@@ -78,6 +59,8 @@ window.examples = {
     const text = `你好，js:browser:copy,paste`;
     const textWrite = await clipboard.copy(text);
     const textRead = await clipboard.paste();
+    const { __filename, __dirname } = useNodeGlobals();
+    _console.log({ __filename, __dirname });
 
     const res = await fetch(`${localConfig.remoteURL}/set-data`, {
       method: 'post',
@@ -86,6 +69,7 @@ window.examples = {
         data: {
           base: {
             BaseEnv,
+            node: { __filename, __dirname },
           },
           storage: {
             clipboard: {

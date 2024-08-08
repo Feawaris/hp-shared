@@ -1,4 +1,5 @@
 // 基础模块。有同名原生对象的加 _ 区分
+export * from './node'; // node 概念增加 import { xx } from 'hp-shared/base.node' 方式使用
 export * from './base';
 
 export * from './_Array';

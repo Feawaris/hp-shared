@@ -6,6 +6,7 @@ import { dts } from 'rollup-plugin-dts';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
 
 // 生成输出选项
 interface Options extends OutputOptions {
@@ -36,6 +37,12 @@ function getOutputItem(options: Options = {}): OutputOptions {
   };
 }
 // 共用插件
+function useReplace() {
+  return replace({
+    '__VERSION__': `'${pkg.version}'`,
+    preventAssignment: true
+  })
+}
 const browserPlugins = [
   typescript(),
   nodeResolve({
@@ -43,6 +50,7 @@ const browserPlugins = [
   }),
   commonjs(),
   json(),
+  useReplace()
 ];
 const nodePlugins = [
   typescript(),
@@ -51,6 +59,7 @@ const nodePlugins = [
   }),
   commonjs(),
   json(),
+  useReplace()
 ];
 const dtsPlugins = [
   dts(),
@@ -81,6 +90,32 @@ const config: RollupOptions[] = [
       getOutputItem({ file: 'dist/browser/base.d.ts' }),
       getOutputItem({ file: 'dist/node/base.d.ts' }),
       getOutputItem({ file: 'dist/wx/base.d.ts' }),
+    ],
+    plugins: dtsPlugins,
+  },
+  {
+    input: 'src/base/node/index.ts',
+    output: [
+      getOutputItem({ file: 'dist/browser/base.node.js', format: 'es' }),
+      getOutputItem({ file: 'dist/node/base.node.mjs', format: 'es' }),
+      getOutputItem({ file: 'dist/wx/base.node.js', format: 'es' }),
+    ],
+    plugins: browserPlugins,
+  },
+  {
+    input: 'src/base/node/index.ts',
+    output: [
+      getOutputItem({ file: 'dist/node/base.node.js', format: 'cjs' }),
+      getOutputItem({ file: 'dist/wx/base.node.cjs', format: 'cjs' }),
+    ],
+    plugins: nodePlugins,
+  },
+  {
+    input: 'src/base/node/index.ts',
+    output: [
+      getOutputItem({ file: 'dist/browser/base.node.d.ts' }),
+      getOutputItem({ file: 'dist/node/base.node.d.ts' }),
+      getOutputItem({ file: 'dist/wx/base.node.d.ts' }),
     ],
     plugins: dtsPlugins,
   },

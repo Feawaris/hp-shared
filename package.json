@@ -47,6 +47,7 @@
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
     "@stylistic/eslint-plugin": "^2.3.0",
     "@types/chrome": "^0.0.268",
@@ -93,6 +94,15 @@
       "node": {
         "import": "./dist/node/base.mjs",
         "require": "./dist/node/base.js"
+      }
+    },
+    "./base.node": {
+      "browser": {
+        "import": "./dist/browser/base.node.js"
+      },
+      "node": {
+        "import": "./dist/node/base.node.mjs",
+        "require": "./dist/node/base.node.js"
       }
     },
     "./base-target-es2015": {
