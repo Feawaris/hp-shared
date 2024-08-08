@@ -77,6 +77,7 @@ export const _console: {
   table: Function;
   group: Function;
   groupCollapsed: Function;
+  groupEnd: Function;
   groupAction: Function;
 } = Object.create(console);
 // 根据堆栈跟踪格式提取详细信息
@@ -147,7 +148,7 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
     bold: { node: 'bold', browser: 'font-weight:bold;' },
   };
   // browser 和 node 显示，注意判断顺序(uniapp 环境 isWx 和 isNode 都为 true)
-  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker || BaseEnv.isWx) {
+  if (BaseEnv.isBrowser || BaseEnv.isWx || BaseEnv.isChromeExtension || BaseEnv.isWebWorker) {
     // 使用浏览器控制台 API 提供的样式化输出
     // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
     if (values.some((val) => val !== null && ['object', 'function'].includes(typeof val))) {
@@ -272,25 +273,26 @@ _console.table = function (...args) {
 
   console.table(...args);
 };
-_console.group = function (label) {
-  _console.show({ style: 'bold', type: 'group', stackInfo: _console.getStackInfo() });
-
-  label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
+_console.group = function (label, { type = 'group', stackInfo } = {}) {
+  stackInfo = stackInfo || _console.getStackInfo();
+  const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
+  label = `${[`${label ? `${label} :` : ''}`, `[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
   console.group(label);
 };
-_console.groupCollapsed = function (label) {
-  _console.show({ style: 'bold', type: 'group', stackInfo: _console.getStackInfo() });
-
-  label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
+_console.groupCollapsed = function (label, { type = 'groupCollapsed', stackInfo } = {}) {
+  stackInfo = stackInfo || _console.getStackInfo();
+  const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
+  label = `${[`${label ? `${label} :` : ''}`, `[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
   console.groupCollapsed(label);
 };
-_console.groupAction = function (action = () => {}, label = null, collapse = false) {
-  _console.show({ style: 'bold', type: 'groupAction', stackInfo: _console.getStackInfo() });
-
-  label = label ?? `console.group [${new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS')}]`;
-  console[collapse ? 'groupCollapsed' : 'group'](label);
-  action();
+_console.groupEnd = function () {
   console.groupEnd();
+};
+_console.groupAction = function (action = () => {}, label = null, collapse = false) {
+  const stackInfo = _console.getStackInfo();
+  (collapse ? _console.groupCollapsed : _console.group)(label, { type: 'groupAction', stackInfo });
+  action();
+  _console.groupEnd();
 };
 
 export const _print = _console.log;

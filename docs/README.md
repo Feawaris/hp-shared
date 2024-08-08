@@ -149,7 +149,7 @@ from hp_shared.base import _console
 |-------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
 | **BaseEnv** | 环境判断   | 见下文                                                                                                                                                                   | 见下文                                                                                                         | 见下文                                                                             | 见下文                                                                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | **pass**    | 占位     |                                                                                                                                                                       |                                                                                                             |                                                                                 | [pass 语句](https://docs.python.org/zh-cn/3/tutorial/controlflow.html#pass-statements) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| exit        | 退出     | [window.close](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/close)                                                                                         | [wx.exitMiniProgram](https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.exitMiniProgram.html) | [process.exit](https://nodejs.org/docs/latest/api/process.html#processexitcode) | [exit](https://docs.python.org/zh-cn/3/library/constants.html#exit)                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **exit**    | 退出     | [window.close](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/close)                                                                                         | [wx.exitMiniProgram](https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.exitMiniProgram.html) | [process.exit](https://nodejs.org/docs/latest/api/process.html#processexitcode) | [exit](https://docs.python.org/zh-cn/3/library/constants.html#exit)                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | quit        | 同 exit |                                                                                                                                                                       |                                                                                                             |                                                                                 |                                                                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | restart     | 重启     | [locatinon.reload](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload), [location.href](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href) | [wx.reLaunch](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html)                  | [child_process](https://nodejs.org/docs/latest/api/child_process.html)          | [os.execl](https://docs.python.org/zh-cn/3/library/os.html#os.execl)                 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 
@@ -671,8 +671,8 @@ const { _Proxy } = require('hp-shared/base');
 |             | 链接                                                                                                               |
 |-------------|------------------------------------------------------------------------------------------------------------------|
 | **browser** | [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API)                                  |
-| **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
 | **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html)            |
+| **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
 | **python**  | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html)                                            |
 | 统一定制        | **clipboard**                                                                                                    |
 
@@ -751,77 +751,15 @@ asyncio.run(test())
 | writeTextSync | 同 copySync  | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> |
 | readTextSync  | 同 pasteSync | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> |
 
-#### 2.2.2 Web Storage
-
-同浏览器 **Web Storage API** 使用，同样专注于前后端交互的 JSON， 存取方法默认做了 JSON 转换
-
-|             | 链接                                                                                          |
-|-------------|---------------------------------------------------------------------------------------------|
-| **browser** | [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API)         |
-| **node**    |                                                                                             |
-| **wx**      | [数据缓存](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html) |
-
-::: code-tabs#import
-
-@tab browser
-
-```js
-import { _sessionStorage, _localStorage } from 'hp-shared/storage';
-
-// setItem
-_sessionStorage.setItem('a', 1);
-// getItem
-const a = _sessionStorage.getItem('a');
-console.log(a);
-```
-
-@tab node
-
-```js
-const { _sessionStorage, _localStorage } = require('hp-shared/storage');
-
-// setItem
-_sessionStorage.setItem('a', 1);
-// getItem
-const a = _sessionStorage.getItem('a');
-console.log(a);
-```
-
-@tab wx
-
-```js
-import { _sessionStorage, _localStorage } from 'hp-shared/storage';
-
-// setItem
-_sessionStorage.setItem('a', 1);
-// getItem
-const a = _sessionStorage.getItem('a');
-console.log(a);
-```
-
-:::
-
-| 对象                   | 说明                | browser                                 | node                                    | wx                                      |
-|----------------------|-------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
-| **\_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **\_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-
-| 属性                                         | 说明                                  | browser                                 | node                                    | wx                                      |
-|--------------------------------------------|-------------------------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
-| **setItem**                                | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **getItem**                                | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toObject                                   | 转换成对象                               | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |                                         |                                         |                                         |
-
-#### 2.2.3 Web Cookie
+#### 2.2.2 Web Cookie
 
 操作 Web Cookie
 
 |             | 链接                                                                                           |
 |-------------|----------------------------------------------------------------------------------------------|
 | **browser** | [HTTP Cookie](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies)                     |
-| **node**    | [request.setHeader](https://nodejs.org/docs/latest/api/http.html#requestsetheadername-value) |
 | **wx**      |                                                                                              |
+| **node**    | [request.setHeader](https://nodejs.org/docs/latest/api/http.html#requestsetheadername-value) |
 
 ::: code-tabs#import
 
@@ -879,6 +817,68 @@ router.get('/test', (ctx) => {
 | has                                   |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | remove                                |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
 | clear                                 |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+
+#### 2.2.3 Web Storage
+
+同浏览器 **Web Storage API** 使用，同样专注于前后端交互的 JSON， 存取方法默认做了 JSON 转换
+
+|             | 链接                                                                                          |
+|-------------|---------------------------------------------------------------------------------------------|
+| **browser** | [Web Storage API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API)         |
+| **wx**      | [数据缓存](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html) |
+| **node**    |                                                                                             |
+
+::: code-tabs#import
+
+@tab browser
+
+```js
+import { _sessionStorage, _localStorage } from 'hp-shared/storage';
+
+// setItem
+_sessionStorage.setItem('a', 1);
+// getItem
+const a = _sessionStorage.getItem('a');
+console.log(a);
+```
+
+@tab node
+
+```js
+const { _sessionStorage, _localStorage } = require('hp-shared/storage');
+
+// setItem
+_sessionStorage.setItem('a', 1);
+// getItem
+const a = _sessionStorage.getItem('a');
+console.log(a);
+```
+
+@tab wx
+
+```js
+import { _sessionStorage, _localStorage } from 'hp-shared/storage';
+
+// setItem
+_sessionStorage.setItem('a', 1);
+// getItem
+const a = _sessionStorage.getItem('a');
+console.log(a);
+```
+
+:::
+
+| 对象                   | 说明                | browser                                 | node                                    | wx                                      |
+|----------------------|-------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| **\_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **\_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+
+| 属性                                         | 说明                                  | browser                                 | node                                    | wx                                      |
+|--------------------------------------------|-------------------------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| **setItem**                                | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| **getItem**                                | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| toObject                                   | 转换成对象                               | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |                                         |                                         |                                         |
 
 ### 2.3 dev 开发
 

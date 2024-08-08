@@ -17,6 +17,7 @@ export class _Object {
    * @returns {any[]}
    */
   static keys(target, { includeSymbol = false, includeNotEnumerable = false, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
+    // console.log('keys', target);
     // 选项收集
     const options = {
       includeSymbol,

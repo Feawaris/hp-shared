@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { _Set } from './_Set';
 
-export class _Array extends Array {
+export class _Array<T> extends Array<T> {
   /**
    * 属性名统一成数组格式
    * @param names 属性名。格式 'a,b,c' 或 ['a','b','c']
@@ -24,7 +24,7 @@ export class _Array extends Array {
     return [];
   }
 
-  constructor(value = []) {
+  constructor(value: any[] | Iterable<T> = []) {
     try {
       value = Array.from(value);
     } catch (e) {
@@ -85,42 +85,42 @@ export class _Array extends Array {
   }
 
   // 转换系列方法：转换成原始值或其他类型
-  [Symbol.toPrimitive](hint: string) {
+  [Symbol.toPrimitive](hint: string): number | string {
     if (hint === 'number') {
       return this.toNumber();
     }
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
-    return null;
   }
-  toNumber() {
+  toNumber(): number {
     return this.length;
   }
-  toString() {
+  toString(): string {
     try {
       return JSON.stringify(this);
     } catch (e) {
       console.warn(`toString 转换报错，将生成 []`, e);
-      return JSON.stringify([]);
+      return '[]';
     }
   }
-  toBoolean() {
+  toBoolean(): boolean {
     return this.length > 0;
   }
-  toJSON() {
+  toJSON(): any[] {
     return this.toArray();
   }
-  toArray() {
+  toArray(): any[] {
     return Array.from(this);
   }
-  to_Array() {
+  to_Array(): _Array<any> {
+    // @ts-ignore
     return _Array.from(this);
   }
-  toSet() {
+  toSet(): Set<any> {
     return new Set(this);
   }
-  to_Set() {
+  to_Set(): _Set<any> {
     return new _Set(this);
   }
 }

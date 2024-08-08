@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { _Array } from './_Array';
 
-export class _Set extends Set {
+export class _Set<T> extends Set<T> {
   /**
    * 交集
    * @param sets
    * @returns {*}
    */
-  static cap(...sets) {
+  static cap(...sets):_Set<any> {
     // 传参数量
     if (sets.length < 2) {
       sets[0] = sets[0] || [];
@@ -60,7 +60,11 @@ export class _Set extends Set {
       .to_Set();
   }
 
-  constructor(value = []) {
+  // 选用数组 length 习惯
+  get length(): number {
+    return this.size
+  }
+  constructor(value: any[] | Iterable<T> = []) {
     try {
       value = new Set(value);
     } catch (e) {
@@ -68,12 +72,6 @@ export class _Set extends Set {
       value = new Set([]);
     }
     super(value);
-
-    Object.defineProperty(this, 'length', {
-      get() {
-        return this.size;
-      },
-    });
   }
 
   // 方法定制：同名方法+新增，部分定制成返回 this 便于链式操作
@@ -91,41 +89,41 @@ export class _Set extends Set {
   }
 
   // 转换系列方法：转换成原始值或其他类型
-  [Symbol.toPrimitive](hint) {
+  [Symbol.toPrimitive](hint: string): number | string {
     if (hint === 'number') {
       return this.toNumber();
     }
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
-    return null;
   }
-  toNumber() {
+  toNumber(): number {
     return this.size;
   }
-  toString() {
+  toString(): string {
     try {
       return `{${this.toArray().join(',')}}`;
     } catch (e) {
       return '{}';
     }
   }
-  toBoolean(options = {}) {
+  toBoolean(): boolean {
     return this.size > 0;
   }
-  toJSON() {
+  toJSON(): any[] {
     return this.toArray();
   }
-  toArray() {
+  toArray(): any[] {
     return Array.from(this);
   }
-  to_Array() {
+  to_Array(): _Array<any> {
+    // @ts-ignore
     return _Array.from(this);
   }
-  toSet() {
+  toSet(): Set<any> {
     return new Set(this);
   }
-  to_Set() {
+  to_Set(): _Set<any> {
     return new _Set(this);
   }
 }
