@@ -267,6 +267,8 @@ _console.log(text)
 
 #### 2.1.3 \_Object
 
+##### 总览
+
 ::: code-tabs#import
 
 @tab browser
@@ -289,8 +291,6 @@ from hp_shared.base import _Object
 
 :::
 
-##### _Object
-
 | 属性                                 | 说明                                                    |
 |------------------------------------|-------------------------------------------------------|
 | <i style="color:pink;">static:</i> |                                                       |
@@ -304,6 +304,84 @@ from hp_shared.base import _Object
 | **deepAssign**                     | 深合并对象，同 assign 使用重定义方式                                |
 | **filter**                         | 过滤对象取部分值                                              |
 | **bindThis**                       | 对象的函数属性绑定 this，方便 vue 中如 @click="formInfo.click" 简便写法 |
+
+##### _Object.filter
+
+###### 起源
+
+**很多情况下都希望有 `const obj = const { a, b, c } = data` 简化写法**
+
+经常需要对一个对象取部分属性的写法：
+
+```js
+const data = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+
+// 解构
+const { a, b, c } = data;
+// 收集
+const obj = { a, b, c };
+```
+
+上面写法 `{ a, b, c } ` 部分重复了，在属性较多如有时十几个甚至更多时会很繁琐，便产生了一种简写想法：
+
+```
+const data = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+
+const obj = const { a, b, c } = data; // [!code focus] // [!code error]
+```
+
+然而这样写语法不支持，便有了设计简化方法以接近这种写法
+
+###### 设计
+
+`_Object.filter(target, options)`
+
+```js
+// [!code word:pick]
+// [!code word:omit]
+const data = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+
+// pick 做加法：挑选属性
+const obj1 = _Object.filter(data, { pick: ['a', 'b', 'c'] }); // [!code focus]
+// omit 做减法：-忽略属性
+const obj2 = _Object.filter(data, { omit: ['d', 'e'] }); // [!code focus]
+```
+
+###### 场景示例
+
+- 表单 form model 传参处理
+
+```js
+// [!code word:pick]
+// [!code word:omit]
+const model = { username: 'xx', password: '123456', temp1: 1, temp2: 2 };
+const params = _Object.filter(model, { pick: ['uername', 'password'] }); // [!code focus]
+```
+
+- 数据库查询处理返回
+
+```js
+// [!code word:pick]
+// [!code word:omit]
+const row = { username: 'xx', password: '123456', name: '小明', age: 18 };
+const data = _Object.filter(row, { omit: ['password'] }); // [!code focus]
+```
+
+- 函数 options 选项收集
+
+```js
+// [!code word:pick]
+// [!code word:omit]
+// 对某个方法定制，保留原选项，增加自定义选项
+function fn(value, options = {}) {
+  // 分离选项
+  // 原 options 选项
+  const primeOptions = _Object.filter(options, { omit: Object.keys(options).fliter(key => key.startsWith('_')) }); // [!code focus]
+  // 自定义选项
+  const customOptions = _Object.filter(options, { pick: Object.keys(options).fliter(key => key.startsWith('_')) }); // [!code focus]
+  // ...
+}
+```
 
 #### 2.1.4 \_Function
 

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { _Array } from './_Array';
+import { _String } from './_String';
 
 export class _Object {
   // 是否纯对象
@@ -149,11 +149,10 @@ export class _Object {
   }
 
   /**
-   * 过滤对象
+   * 过滤对象取部分值
    * @param target 目标对象
-   * @param pick 挑选属性
-   * @param omit 忽略属性
-   * @param emptyPick pick 为空时的取值。all: 全部 key, empty: 空
+   * @param pick 做加法：挑选属性
+   * @param omit 做减法：-忽略属性
    * @param separator 同 namesToArray 的 separator 参数
    * @param includeSymbol 同 keys 的 symbol 参数
    * @param includeNotEnumerable 同 keys 的同名参数
@@ -161,22 +160,21 @@ export class _Object {
    * @param includeExtendFromObjectPrototype 同 keys 的同名参数
    * @returns {{}}
    */
-  static filter(target, { pick = [], omit = [], emptyPick = 'all', separator = ',', includeSymbol = true, includeNotEnumerable = true, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
+  static filter(target: object, { pick = [], omit = [], separator = ',', includeSymbol = true, includeNotEnumerable = true, includeExtend = false, includeExtendFromObjectPrototype = false } = {}) {
     // pick、omit 统一成数组格式
-    pick = _Array.namesToArray(pick, { separator });
-    omit = _Array.namesToArray(omit, { separator });
+    pick = _String.namesToArray(pick, { separator });
+    omit = _String.namesToArray(omit, { separator });
 
     let keys = [];
     // pick 和 emptyPick 筛选：pick 有值直接拿，为空时根据 emptyPick 默认拿空或全部 key
-    keys =
-      pick.length > 0 || emptyPick === 'empty'
-        ? pick
-        : this.keys(target, {
-          includeSymbol,
-          includeNotEnumerable,
-          includeExtend,
-          includeExtendFromObjectPrototype,
-        });
+    keys = pick.length > 0
+      ? pick
+      : this.keys(target, {
+        includeSymbol,
+        includeNotEnumerable,
+        includeExtend,
+        includeExtendFromObjectPrototype,
+      });
     // omit 筛选
     keys = keys.filter((key) => !omit.includes(key));
 
