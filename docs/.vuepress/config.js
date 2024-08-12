@@ -230,9 +230,21 @@ export default defineUserConfig({
         photoSwipe: {},
         // @vuepress/plugin-prismjs
         prismjs: {
+          theme:'nord',
+          themes: {
+            light: 'one-light',
+            dark: '',
+          },
+          lineNumbers:true,
+          highlightLines:true,
+          notationDiff:true,
+          notationFocus:true,
+          notationHighlight:true,
+          notationErrorLevel:true,
+          notationWordHighlight:true,
+          whitespace:false,
           preloadLanguages: ['markdown', 'jsdoc', 'yaml', 'js', 'vue'],
-          light: 'one-light',
-          dark: '',
+          preWrapper:true
         },
         // @vuepress/plugin-reading-time
         readingTime: {
