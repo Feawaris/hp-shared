@@ -33,7 +33,7 @@
     "docs:preview": "pnpm -C docs run preview",
     "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m' ; pnpm run refresh && pnpm run docs:build:npm",
     "publish:js": "npm publish",
-    "publish:python": "pnpm -C python run pypi"
+    "publish:py": "pnpm -C python run pypi"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.3.8",

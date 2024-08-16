@@ -1461,5 +1461,5 @@ pnpm run publish:js
 ```
 
 ```shell
-pnpm run publish:python
+pnpm run publish:py
 ```
