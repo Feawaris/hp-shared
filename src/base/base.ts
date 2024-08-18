@@ -3,6 +3,8 @@ export const BaseEnv: {
   envs: string[],
   isBrowser: boolean,
   isWebWorker: boolean,
+  isDedicatedWebWorker: boolean,
+  isSharedWebWorker: boolean,
   isChromeExtension: boolean,
   isServiceWorker: boolean,
   isNode: boolean,
@@ -21,14 +23,17 @@ BaseEnv.envs = ((): string[] => {
   if (typeof window !== 'undefined' && globalThis === window) {
     result.push('browser');
   }
-  if (typeof Worker !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' && globalThis instanceof WorkerGlobalScope) {
-    result.push('web-worker');
+  if (typeof DedicatedWorkerGlobalScope !== 'undefined' && globalThis instanceof DedicatedWorkerGlobalScope) {
+    result.push('web-worker', 'delicated-web-worker');
   }
-  if (typeof chrome !== 'undefined' && chrome.extension) {
-    result.push('chrome-extension');
+  if (typeof SharedWorkerGlobalScope !== 'undefined' && globalThis instanceof SharedWorkerGlobalScope) {
+    result.push('web-worker', 'shared-web-worker');
   }
   if (typeof ServiceWorkerGlobalScope !== 'undefined' && globalThis instanceof ServiceWorkerGlobalScope) {
     result.push('service-worker');
+  }
+  if (typeof chrome !== 'undefined' && chrome.extension) {
+    result.push('chrome-extension');
   }
   if (typeof global !== 'undefined' && globalThis === global) {
     result.push('node');
@@ -40,6 +45,8 @@ BaseEnv.envs = ((): string[] => {
 })();
 BaseEnv.isBrowser = BaseEnv.envs.includes('browser');
 BaseEnv.isWebWorker = BaseEnv.envs.includes('web-worker');
+BaseEnv.isDedicatedWebWorker = BaseEnv.envs.includes('dedicated-web-worker');
+BaseEnv.isSharedWebWorker = BaseEnv.envs.includes('shared-web-worker');
 BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');

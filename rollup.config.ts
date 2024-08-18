@@ -213,7 +213,7 @@ const config: RollupOptions[] = [
     input: 'src/index-browser-tampermonkey.ts',
     output: [
       getOutputItem({
-        file: 'dist/browser-tampermonkey/index.js',
+        file: 'dist/browser/index-tampermonkey.js',
         format: 'iife',
         extraBanner: [
           `// ==UserScript==`,

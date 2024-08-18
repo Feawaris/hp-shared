@@ -100,6 +100,12 @@ import { _console } from 'hp-shared/src/base/index.ts';
 import { _console } from 'hp-shared/base';
 ```
 
+@tab wx
+
+```js
+// import { xx } from 'hp-shared/模块名';
+import { _console } from 'hp-shared/base';
+```
 @tab node
 
 ```js
@@ -107,11 +113,11 @@ import { _console } from 'hp-shared/base';
 const { _console } = require('hp-shared/base');
 ```
 
-@tab uniapp/小程序
+@tab python
 
-```js
-// import { xx } from 'hp-shared/模块名';
-import { _console } from 'hp-shared/base';
+```python
+# from hp_shared.模块名 import xx
+from hp_shared.base import _console
 ```
 
 @tab tampermonkey
@@ -121,18 +127,21 @@ import { _console } from 'hp-shared/base';
 _console.log('test');
 ```
 
+@tab web worker
+
+```js
+// 先共用 tampermonkey 的全局挂载，注意相对路径的调整
+importScripts('../node_modules/hp-shared/dist/browser/index.umd.js');
+importScripts('../node_modules/hp-shared/dist/browser/index-tampermonkey.js');
+
+_console.log('test');
+```
+
 @tab shell
 
 ```shell
 # 已配置同名 cli，按指引操作即可
 hp-shared
-```
-
-@tab python
-
-```python
-# from hp_shared.模块名 import xx
-from hp_shared.base import _console
 ```
 
 :::

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 // 1.UserScript 在 rollup.config 中配置
 // 2.对象全局挂载
 const { hpShared } = globalThis;
