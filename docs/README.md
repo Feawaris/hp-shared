@@ -106,6 +106,7 @@ import { _console } from 'hp-shared/base';
 // import { xx } from 'hp-shared/模块名';
 import { _console } from 'hp-shared/base';
 ```
+
 @tab node
 
 ```js
@@ -331,7 +332,7 @@ const { a, b, c } = data;
 const obj = { a, b, c };
 ```
 
-上面写法 `{ a, b, c } ` 部分重复了，在属性较多如有时十几个甚至更多时会很繁琐，便产生了一种简写想法：
+上面写法 `{ a, b, c }` 部分重复了，在属性较多如有时十几个甚至更多时会很繁琐，便产生了一种简写想法：
 
 ```
 const data = { a: 1, b: 2, c: 3, d: 4, e: 5 };
