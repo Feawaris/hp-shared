@@ -28,11 +28,9 @@ def encodeURIComponent(uri: str) -> str:
 def decodeURIComponent(uri: str) -> str:
   return unquote(uri, )
 
-_xx = 1
 __all__ = [
   'typeof',
   'NaN', 'Infinity',
   'isNaN', 'isFinite', 'parseInt', 'parseFloat',
   'encodeURI', 'decodeURI', 'encodeURIComponent', 'decodeURIComponent',
-  '_xx'
 ]
