@@ -16,6 +16,11 @@ export const BaseEnv: {
   isWx: boolean,
   isAndroid: boolean,
   isIOS: boolean,
+  browsers: string[],
+  isChrome: boolean,
+  isEdge: boolean,
+  isFirefox: boolean,
+  isSafari: boolean,
 } = Object.create(null);
 // 代码运行环境: browser, node, wx, ...
 BaseEnv.envs = ((): string[] => {
@@ -116,6 +121,28 @@ BaseEnv.isMac = BaseEnv.os === 'mac';
 BaseEnv.isLinux = BaseEnv.os === 'linux';
 BaseEnv.isAndroid = BaseEnv.os === 'android';
 BaseEnv.isIOS = BaseEnv.os === 'ios';
+// 浏览器
+BaseEnv.browsers = ((): string[] => {
+  let result: string[] = [];
+  const ua = globalThis.navigator?.userAgent;
+  if (ua) {
+    if (ua.includes('Chrome')) {
+      result.push('chrome');
+      if (ua.includes('Edg')) {
+        result.push('edge');
+      }
+    } else if (ua.includes('Firefox')) {
+      result.push('firefox');
+    } else if (ua.includes('Safari')) {
+      result.push('safari');
+    }
+  }
+  return result;
+})();
+BaseEnv.isChrome = BaseEnv.browsers.includes('chrome');
+BaseEnv.isEdge = BaseEnv.browsers.includes('edge');
+BaseEnv.isFirefox = BaseEnv.browsers.includes('firefox');
+BaseEnv.isSafari = BaseEnv.browsers.includes('safari');
 
 // 参考 py 添加 pass 写法以显式在以后可能会添加代码的地方占位替代注释占位
 export function pass(): void {}

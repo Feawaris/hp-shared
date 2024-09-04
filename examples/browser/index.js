@@ -154,3 +154,4 @@ window.examples = {
     restart();
   },
 };
+_console.log(hpShared);
