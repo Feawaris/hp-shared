@@ -105,11 +105,6 @@
         "require": "./dist/node/base.node.js"
       }
     },
-    "./base-target-es2015": {
-      "browser": {
-        "import": "./dist/browser/base-target-es2015.js"
-      }
-    },
     "./dev": {
       "browser": {
         "import": "./dist/browser/dev.js"

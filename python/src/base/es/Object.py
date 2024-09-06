@@ -27,6 +27,9 @@ class Object:
       target.update(source)
     return target
 
+  @property
+  def constructor(self):
+    return type(self)
   def __init__(self, data: dict = { }):
     if data is None:
       data = { }

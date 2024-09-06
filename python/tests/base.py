@@ -16,11 +16,11 @@ class describe_es_globals(unittest.TestCase):
     self.assertEqual('string', typeof('1'))
     self.assertEqual('number', typeof(1))
     self.assertEqual('boolean', typeof(True))
-    self.assertEqual('object', typeof({}))
+    self.assertEqual('object', typeof({ }))
   def test_NaN_Infinity(self):
     self.assertTrue(math.isnan(NaN))
     self.assertEqual(Infinity, float('inf'))
-  def test_isNaN_isFinite_parseInt_parseFlaot(self):
+  def test_isNaN_isFinite_parseInt_parseFloat(self):
     self.assertTrue(isNaN(NaN))
     self.assertTrue(isFinite(1))
     self.assertEqual(10, parseInt('10'))
@@ -45,7 +45,9 @@ class describe_es_Math(unittest.TestCase):
 class describe_es_Number(unittest.TestCase):
   pass
 class describe_es_Object(unittest.TestCase):
-  pass
+  def test_constructor(self):
+    obj = Object({ "a": 1, "b": 2, "c": 3 })
+    self.assertEqual(obj.constructor, Object)
 class describe_es_Set(unittest.TestCase):
   pass
 class describe_es_String(unittest.TestCase):
@@ -85,20 +87,20 @@ class describe__console(unittest.TestCase):
       res = _console[type](*inputValues)
       # res.input: stackInfo 先不加入测试，先不用整个 res.input
       self.assertEqual(
-        {'style': res.input.style, 'type': res.input.type, 'values': res.input.values},
-        {'style': style, 'type': type, 'values': inputValues},
+        { 'style': res.input.style, 'type': res.input.type, 'values': res.input.values },
+        { 'style': style, 'type': type, 'values': inputValues },
       )
       # res.output
       self.assertEqual(res.output[1:], outputValues)
-    fn(type='log', style='blue')
-    fn(type='warn', style='yellow')
-    fn(type='error', style='red')
-    fn(type='success', style='green')
-    fn(type='end', style='grey')
+    fn(type = 'log', style = 'blue')
+    fn(type = 'warn', style = 'yellow')
+    fn(type = 'error', style = 'red')
+    fn(type = 'success', style = 'green')
+    fn(type = 'end', style = 'grey')
   def test__print(self):
     self.assertEqual(_print, _console.log)
   def test__input(self):
-    with patch('builtins.input', return_value='123'):
+    with patch('builtins.input', return_value = '123'):
       text = _input('输入内容：')
       self.assertEqual(text, '123')
 class describe__Date(unittest.IsolatedAsyncioTestCase):
@@ -112,32 +114,32 @@ class describe__Math(unittest.TestCase):
   pass
 class describe__Number(unittest.TestCase):
   def test_Number_convertBase(self):
-    self.assertEqual(_Number.convertBase(10, {'to': 2}), '1010')
-    self.assertEqual(_Number.convertBase(10, {'to': 8}), '12')
-    self.assertEqual(_Number.convertBase('f', {'from': 16}), '15')
-    self.assertEqual(_Number.convertBase('f', {'from': 16, 'to': 8}), '17')
+    self.assertEqual(_Number.convertBase(10, { 'to': 2 }), '1010')
+    self.assertEqual(_Number.convertBase(10, { 'to': 8 }), '12')
+    self.assertEqual(_Number.convertBase('f', { 'from': 16 }), '15')
+    self.assertEqual(_Number.convertBase('f', { 'from': 16, 'to': 8 }), '17')
   def test_Number_isPrime(self):
     for i in range(10 + 1):
       _console.log(i, _Number.isPrime(i))
 class describe__Object(unittest.TestCase):
   def test__Object_assign(self):
-    obj = _Object({'a': 1, 'b': 2})
-    _Object.assign(obj, {'c': 3}, {'d': 4})
-    self.assertEqual(obj, _Object({'a': 1, 'b': 2, 'c': 3, 'd': 4}))
+    obj = _Object({ 'a': 1, 'b': 2 })
+    _Object.assign(obj, { 'c': 3 }, { 'd': 4 })
+    self.assertEqual(obj, _Object({ 'a': 1, 'b': 2, 'c': 3, 'd': 4 }))
   def test__Object_tests(self):
-    obj = _Object({'a': 1, 'b': 2, 'userInfo': {'name': 'user1', 'age': 1, 'gender': 'male'}})
+    obj = _Object({ 'a': 1, 'b': 2, 'userInfo': { 'name': 'user1', 'age': 1, 'gender': 'male' } })
     # length
     self.assertEqual(obj.length, len(obj.__dict__))
     # __iter__
     for key, value in obj:
       self.assertEqual(value, obj[key])
     # deepAssign
-    _Object.deepAssign(obj, {'userInfo': {'age': 2}}, {'userInfo': {'gender': 'female'}})
-    self.assertEqual(obj, _Object({'a': 1, 'b': 2, 'userInfo': {'name': 'user1', 'age': 2, 'gender': 'female'}}))
+    _Object.deepAssign(obj, { 'userInfo': { 'age': 2 } }, { 'userInfo': { 'gender': 'female' } })
+    self.assertEqual(obj, _Object({ 'a': 1, 'b': 2, 'userInfo': { 'name': 'user1', 'age': 2, 'gender': 'female' } }))
     # filter 两种传参写法
-    obj2 = _Object.filter(obj, {'pick': ['a', 'b']})
+    obj2 = _Object.filter(obj, { 'pick': ['a', 'b'] })
     _console.log(obj2)
-    obj3 = _Object.filter(obj, pick=['a', 'b'])
+    obj3 = _Object.filter(obj, pick = ['a', 'b'])
     _console.log(obj3)
 class describe__Set(unittest.TestCase):
   pass
