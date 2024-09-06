@@ -20,6 +20,18 @@ python/dist
 python/out
 python/**/*.egg-info
 python/**/__pycache__
+# harmony
+harmony/**/oh_modules
+harmony/**/local.properties
+harmony/**/build
+harmony/**/.hvigor
+harmony/**/.preview
+harmony/**/.cxx
+harmony/**/.test
+harmony/**/.clangd
+harmony/**/.clang-format
+harmony/**/.clang-tidy
+harmony/**/.appanalyzer
 # 本地配置文件，保存数据库等私密配置信息
 local.config.cjs
 # ---[manual] default end---

@@ -1,0 +1,6 @@
+{
+  "name": "hp_shared",
+  "scripts": {
+    "publish:hm": "source ~/.zshrc && ohpm publish build/default/outputs/default/hp_shared.har"
+  }
+}

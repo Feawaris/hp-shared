@@ -281,5 +281,15 @@ const config: RollupOptions[] = [
     ],
     plugins: dtsPlugins,
   },
+
+  // harmony
+  {
+    input: 'harmony/hp_shared/src/index.ts',
+    output: [
+      getOutputItem({ file: 'harmony/hp_shared/dist/index.js', format: 'es' }),
+    ],
+    plugins: browserPlugins,
+  },
+
 ];
 export default config;

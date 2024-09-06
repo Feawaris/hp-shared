@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.12.0",
+  "version": "1.13.0-rc.0",
   "description": "基础库",
   "license": "MIT",
   "author": "hp",
@@ -33,7 +33,8 @@
     "docs:preview": "pnpm -C docs run preview",
     "prepublishOnly": "echo '\\x1b[34mprepublishOnly\\x1b[39m' ; pnpm run refresh && pnpm run docs:build:npm",
     "publish:js": "npm publish",
-    "publish:py": "pnpm -C python run pypi"
+    "publish:py": "pnpm -C python run publish:py",
+    "publish:hm": "pnpm -C harmony/hp_shared run publish:hm"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.4.0",

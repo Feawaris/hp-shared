@@ -16,6 +16,7 @@ export const BaseEnv: {
   isWx: boolean,
   isAndroid: boolean,
   isIOS: boolean,
+  isHarmony: boolean,
   browsers: string[],
   isChrome: boolean,
   isEdge: boolean,
@@ -114,6 +115,9 @@ BaseEnv.os = ((): string => {
       return 'linux';
     }
   }
+  if (globalThis.Row) {
+    return 'harmony';
+  }
   return '';
 })();
 BaseEnv.isWindows = BaseEnv.os === 'windows';
@@ -121,6 +125,7 @@ BaseEnv.isMac = BaseEnv.os === 'mac';
 BaseEnv.isLinux = BaseEnv.os === 'linux';
 BaseEnv.isAndroid = BaseEnv.os === 'android';
 BaseEnv.isIOS = BaseEnv.os === 'ios';
+BaseEnv.isHarmony = BaseEnv.os === 'harmony';
 // 浏览器
 BaseEnv.browsers = ((): string[] => {
   let result: string[] = [];

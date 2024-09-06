@@ -187,6 +187,8 @@ importers:
         specifier: workspace:^
         version: link:../shared
 
+  harmony/hp_shared: {}
+
   python:
     dependencies:
       hp-shared:
