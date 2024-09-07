@@ -81,20 +81,34 @@ export const _console: {
   groupAction: Function;
 } = Object.create(console);
 // 根据堆栈跟踪格式提取详细信息
-_console.getStackInfo = function () {
+interface StackInfo {
+  fileShow?: string,
+
+  file?: string
+  method?: string
+  line?: number
+  column?: number
+}
+_console.getStackInfo = function (): StackInfo {
   try {
     throw new Error();
   } catch (e) {
     const stack = e.stack.split('\n');
 
     // 定义正则表达式以匹配不同的堆栈格式
-    const chromeNodeRegex = /\s*at\s+(?:(.*?)\s+\()?(.*?):(\d+):(\d+)(?:\))?/;
+    const chromeNodeRegex = /\s*at\s+(?:(.*?)\s+\()?(.*?):(\d+):(\d+)\)?/;
     const firefoxSafariRegex = /(.*?)@(.*?):(\d+):(\d+)/;
+    const harmonyRegex = /\s*at\s+(?:(.*?)\s+\()?\s*(?:[^|]+ *\| *)*(.*?):(\d+):(\d+)/;
 
-    // 匹配，选择正确的对应正则和堆栈行：Chrome 和 Node 使用第 4 行，Firefox 和 Safari 使用第 3 行
-    const match = e.stack.startsWith('Error')
-      ? chromeNodeRegex[Symbol.match](stack[3])
-      : firefoxSafariRegex[Symbol.match](stack[2]);
+    // 匹配，选择正确的对应正则和堆栈行：Chrome 和 Node 使用第 4 行，Firefox 和 Safari 使用第 3 行，HarmonyOS 使用第 3 行
+    const match = (() => {
+      if (BaseEnv.isHarmony) {
+        return harmonyRegex.exec(stack[2]);
+      }
+      return e.stack.startsWith('Error')
+        ? chromeNodeRegex.exec(stack[3])
+        : firefoxSafariRegex.exec(stack[2]);
+    })();
 
     // 提取信息
     if (match) {
@@ -106,6 +120,9 @@ _console.getStackInfo = function () {
       // 完整路径显示处理
       const fileShow = (() => {
         let result = `${file}:${line}:${column}`;
+        if (BaseEnv.isHarmony) {
+          return result;
+        }
 
         const windowsPathReg = /^[A-Za-z]:\/.*$/;
         const macPathReg = /^\/.*$/;
@@ -232,12 +249,50 @@ _console.getValues = function ({ style = '', type = '', stackInfo = {}, values =
       }),
     ];
   }
+  if (BaseEnv.isHarmony) {
+    return [
+      prefix,
+      ...values.map(function getValue(value) {
+        // 字符串、bi 增加区分显示
+        if (typeof value === 'string') {
+          return `'${value}'`;
+        }
+        if (typeof value === 'bigint') {
+          return `${value}n`;
+        }
+        if (value instanceof Set) {
+          // 原生 Set
+          if (value.constructor === Set) {
+            return `{${Array.from(value)}}`;
+          }
+          // 定制的 Set 对象已配置 Symbol.toPrimitive 或 toString 转换方法
+          return `${value}`;
+        }
+        // 数组、对象：序列化显示
+        if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
+          return JSON.stringify(value);
+        }
+        // 其他原样输出
+        return value;
+      }),
+    ];
+  }
   return values;
 };
+interface ShowOptions {
+  style?: string,
+  type?: string,
+  stackInfo?: StackInfo,
+  values?: Array<any>
+}
 // 同时 show 方法也返回用于需要反馈的场景
-_console.show = function (options = {}) {
+_console.show = function (options: ShowOptions = {}) {
   const values = _console.getValues(options);
-  console.log(...values);
+  if (BaseEnv.isHarmony && ['log', 'warn', 'error'].includes(options.type)) {
+    console[options.type](...values);
+  } else {
+    console.log(...values);
+  }
   return {
     input: options,
     output: values,
@@ -260,7 +315,7 @@ _console.end = function (...args) {
 };
 _console.dir = function (value, options = {}) {
   _console.show({ style: 'blue', type: 'dir', stackInfo: _console.getStackInfo() });
-  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker || BaseEnv.isWx) {
+  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker || BaseEnv.isWx || BaseEnv.isHarmony) {
     return console.dir(value);
   }
   if (BaseEnv.isNode) {
@@ -273,13 +328,13 @@ _console.table = function (...args) {
 
   console.table(...args);
 };
-_console.group = function (label, { type = 'group', stackInfo } = {}) {
+_console.group = function (label, { type = 'group', stackInfo = null } = {}) {
   stackInfo = stackInfo || _console.getStackInfo();
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   label = `${[`${label ? `${label} :` : ''}`, `[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
   console.group(label);
 };
-_console.groupCollapsed = function (label, { type = 'groupCollapsed', stackInfo } = {}) {
+_console.groupCollapsed = function (label, { type = 'groupCollapsed', stackInfo = null } = {}) {
   stackInfo = stackInfo || _console.getStackInfo();
   const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
   label = `${[`${label ? `${label} :` : ''}`, `[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;

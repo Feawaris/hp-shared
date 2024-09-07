@@ -40,8 +40,8 @@ function getOutputItem(options: Options = {}): OutputOptions {
 function useReplace() {
   return replace({
     '__VERSION__': `'${pkg.version}'`,
-    preventAssignment: true
-  })
+    preventAssignment: true,
+  });
 }
 const browserPlugins = [
   typescript(),
@@ -50,7 +50,7 @@ const browserPlugins = [
   }),
   commonjs(),
   json(),
-  useReplace()
+  useReplace(),
 ];
 const nodePlugins = [
   typescript(),
@@ -59,7 +59,7 @@ const nodePlugins = [
   }),
   commonjs(),
   json(),
-  useReplace()
+  useReplace(),
 ];
 const dtsPlugins = [
   dts(),

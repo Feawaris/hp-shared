@@ -41,7 +41,8 @@ BaseEnv.envs = ((): string[] => {
   if (typeof chrome !== 'undefined' && chrome.extension) {
     result.push('chrome-extension');
   }
-  if (typeof global !== 'undefined' && globalThis === global) {
+  // harmony ets 环境也有 global，加 process 判断以区分 node
+  if (typeof global !== 'undefined' && globalThis === global && typeof process !== 'undefined') {
     result.push('node');
   }
   if (typeof wx !== 'undefined') {
@@ -57,21 +58,6 @@ BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
 BaseEnv.isWx = BaseEnv.envs.includes('wx');
-BaseEnv.isMobile = ((): boolean => {
-  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
-    try {
-      // @ts-ignore
-      return navigator.userAgentData.mobile;
-    } catch (e) {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-  }
-  if (BaseEnv.isWx) {
-    // @ts-ignore
-    return wx.getDeviceInfo().platform !== 'devtools';
-  }
-  return false;
-})();
 // 操作系统: windows, mac, linux, android, ios, ...
 BaseEnv.os = ((): string => {
   if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWx) {
@@ -115,7 +101,7 @@ BaseEnv.os = ((): string => {
       return 'linux';
     }
   }
-  if (globalThis.Row) {
+  if (globalThis.Row && globalThis.Column) {
     return 'harmony';
   }
   return '';
@@ -126,6 +112,25 @@ BaseEnv.isLinux = BaseEnv.os === 'linux';
 BaseEnv.isAndroid = BaseEnv.os === 'android';
 BaseEnv.isIOS = BaseEnv.os === 'ios';
 BaseEnv.isHarmony = BaseEnv.os === 'harmony';
+// 设备
+BaseEnv.isMobile = ((): boolean => {
+  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension) {
+    try {
+      // @ts-ignore
+      return navigator.userAgentData.mobile;
+    } catch (e) {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+  }
+  if (BaseEnv.isWx) {
+    // @ts-ignore
+    return wx.getDeviceInfo().platform !== 'devtools';
+  }
+  if (BaseEnv.isHarmony) {
+    return true;
+  }
+  return false;
+})();
 // 浏览器
 BaseEnv.browsers = ((): string[] => {
   let result: string[] = [];
@@ -144,8 +149,8 @@ BaseEnv.browsers = ((): string[] => {
   }
   return result;
 })();
-BaseEnv.isChrome = BaseEnv.browsers.includes('chrome');
 BaseEnv.isEdge = BaseEnv.browsers.includes('edge');
+BaseEnv.isChrome = BaseEnv.browsers.includes('chrome');
 BaseEnv.isFirefox = BaseEnv.browsers.includes('firefox');
 BaseEnv.isSafari = BaseEnv.browsers.includes('safari');
 

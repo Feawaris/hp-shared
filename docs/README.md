@@ -34,6 +34,12 @@ npm i hp-shared
 
 :::
 
+- **ohpm**
+
+```shell
+ohpm i hp-shared
+```
+
 - **cdn**
 
 ::: code-tabs#install
@@ -100,6 +106,14 @@ import { _console } from 'hp-shared/src/base/index.ts';
 import { _console } from 'hp-shared/base';
 ```
 
+@tab hm
+
+```js
+// xx/xx.ets
+// import { xx } from 'hp-shared';
+import { _console } from 'hp-shared';
+```
+
 @tab wx
 
 ```js
@@ -114,7 +128,7 @@ import { _console } from 'hp-shared/base';
 const { _console } = require('hp-shared/base');
 ```
 
-@tab python
+@tab py
 
 ```python
 # from hp_shared.模块名 import xx
@@ -155,32 +169,38 @@ hp-shared
 
 ##### 总览
 
-|             | 说明     | browser                                                                                                                                                               | wx                                                                                                          | node                                                                            | python                                                                               | js                                      | python                                  |
-|-------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
-| **BaseEnv** | 环境判断   | 见下文                                                                                                                                                                   | 见下文                                                                                                         | 见下文                                                                             | 见下文                                                                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **pass**    | 占位     |                                                                                                                                                                       |                                                                                                             |                                                                                 | [pass 语句](https://docs.python.org/zh-cn/3/tutorial/controlflow.html#pass-statements) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **exit**    | 退出     | [window.close](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/close)                                                                                         | [wx.exitMiniProgram](https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.exitMiniProgram.html) | [process.exit](https://nodejs.org/docs/latest/api/process.html#processexitcode) | [exit](https://docs.python.org/zh-cn/3/library/constants.html#exit)                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| quit        | 同 exit |                                                                                                                                                                       |                                                                                                             |                                                                                 |                                                                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| restart     | 重启     | [locatinon.reload](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload), [location.href](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href) | [wx.reLaunch](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html)                  | [child_process](https://nodejs.org/docs/latest/api/child_process.html)          | [os.execl](https://docs.python.org/zh-cn/3/library/os.html#os.execl)                 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+|             | 说明     | browser                                                                                                                                                               | hm | wx                                                                                                          | node                                                                            | py                                                                                |
+|-------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| **BaseEnv** | 环境判断   | 详细见下文                                                                                                                                                                 |    |                                                                                                             |                                                                                 |                                                                                   |
+| **pass**    | 占位     |                                                                                                                                                                       |    |                                                                                                             |                                                                                 | [pass](https://docs.python.org/zh-cn/3/tutorial/controlflow.html#pass-statements) |
+| **exit**    | 退出     | [window.close](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/close)                                                                                         |    | [wx.exitMiniProgram](https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.exitMiniProgram.html) | [process.exit](https://nodejs.org/docs/latest/api/process.html#processexitcode) | [exit](https://docs.python.org/zh-cn/3/library/constants.html#exit)               |
+| quit        | 同 exit |                                                                                                                                                                       |    |                                                                                                             |                                                                                 |                                                                                   |
+| restart     | 重启     | [locatinon.reload](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload), [location.href](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href) |    | [wx.reLaunch](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html)                  | [child_process](https://nodejs.org/docs/latest/api/child_process.html)          | [os.execl](https://docs.python.org/zh-cn/3/library/os.html#os.execl)              |
 
 ##### BaseEnv 环境判断
 
-|                   | 说明                                                 | browser                                                                                     | wx                                                                                                                    | node                                                                   | python                                                                                     | js                                                                                                                                                     | python                                  |
-|-------------------|----------------------------------------------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
-| envs              | 代码运行环境，如 ['browser', 'chrome-extension'], ['node'] | [Window](https://developer.mozilla.org/zh-CN/docs/Web/API/Window)                           | [wx](https://developers.weixin.qq.com/miniprogram/dev/api/)                                                           | [global](https://nodejs.cn/api/globals.html#global)                    |                                                                                            | <strong style="color:green;">✓</strong><br />[globalThis](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/globalThis) | <strong style="color:red;">✕</strong>   |
-| **isBrowser**     | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| isWebWorker       | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| isChromeExtension | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| isServiceWorker   | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| **isWx**          | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| **isNode**        | 根据 envs 得到                                         |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| **isMobile**      | 判断移动端                                              |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| os                | 操作系统: windows, mac, linux, ...                     | [navigator.userAgent](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/userAgent) | [wx.getDeviceInfo().platform](https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getDeviceInfo.html) | [process.platform](https://nodejs.cn/api/process.html#processplatform) | [platform.system()](https://docs.python.org/zh-cn/3/library/platform.html#platform.system) | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
-| **isWindows**     | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
-| **isMac**         | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
-| **isLinux**       | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:green;">✓</strong> |
-| isAndroid         | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
-| isIOS             | 根据 os 得到                                           |                                                                                             |                                                                                                                       |                                                                        |                                                                                            | <strong style="color:green;">✓</strong>                                                                                                                | <strong style="color:red;">✕</strong>   |
+|                   | 说明             | browser                                                                                                                                                                          | wx                                                                                                                    | node                                                                   | py                                                                                         |
+|-------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| envs              | 代码运行环境         | [globalThis](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/globalThis)<br />[Window](https://developer.mozilla.org/zh-CN/docs/Web/API/Window) | [wx](https://developers.weixin.qq.com/miniprogram/dev/api/)                                                           | [global](https://nodejs.cn/api/globals.html#global)                    |                                                                                            |
+| **isBrowser**     | 根据 envs 得到     |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isWebWorker       | 根据 envs 得到     |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isChromeExtension | 根据 envs 得到     |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isServiceWorker   | 根据 envs 得到     |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| **isWx**          | 根据 envs 得到     |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| **isNode**        | 根据 envs 得到     |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| os                | 操作系统           | [navigator.userAgent](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/userAgent)                                                                                      | [wx.getDeviceInfo().platform](https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getDeviceInfo.html) | [process.platform](https://nodejs.cn/api/process.html#processplatform) | [platform.system()](https://docs.python.org/zh-cn/3/library/platform.html#platform.system) |
+| **isWindows**     | 根据 os 得到       |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| **isMac**         | 根据 os 得到       |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| **isLinux**       | 根据 os 得到       |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isAndroid         | 根据 os 得到       |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isIOS             | 根据 os 得到       |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| **isHarmony**     | 根据 os 得到       |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| **isMobile**      | 判断移动端          |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| browsers          | 浏览器            |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isEdge            | 根据 browsers 得到 |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isChrome          | 根据 browsers 得到 |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isFirefox         | 根据 browsers 得到 |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
+| isSafari          | 根据 browsers 得到 |                                                                                                                                                                                  |                                                                                                                       |                                                                        |                                                                                            |
 
 ::: code-tabs#import
 
@@ -196,7 +216,7 @@ import { BaseEnv } from 'hp-shared/base';
 const { BaseEnv } = require('hp-shared/base');
 ```
 
-@tab python
+@tab py
 
 ```python
 from hp_shared.base import BaseEnv
@@ -206,11 +226,11 @@ from hp_shared.base import BaseEnv
 
 #### 2.1.2 _console 控制台
 
-|          | 说明             | **browser**                                                                 | **wx**                                                                                  | **node**                                        | **python**                                                            | js                                      | python                                  |
-|----------|----------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------------------|-----------------------------------------|-----------------------------------------|
-| _console | 输出             | [Console API](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API) | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) | [console](https://nodejs.cn/api/console.html)   | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| _print   | 同 _console.log |                                                                             |                                                                                         |                                                 |                                                                       | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| _input   | 输入             | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt)    |                                                                                         | [readline](https://nodejs.cn/api/readline.html) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+|          | 说明             | **browser**                                                              | **wx**                                                                                  | **node**                                        | **py**                                                                | hm                                                                                              |
+|----------|----------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| _console | 输出             | [Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API)  | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) | [console](https://nodejs.cn/api/console.html)   | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | [Console](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-logs-V5) |
+| _print   | 同 _console.log |                                                                          |                                                                                         |                                                 |                                                                       |                                                                                                 |
+| _input   | 输入             | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt) |                                                                                         | [readline](https://nodejs.cn/api/readline.html) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) |                                                                                                 |
 
 ::: code-tabs#import
 
@@ -234,7 +254,7 @@ const { _console, _input } = require('hp-shared/base');
 })();
 ```
 
-@tab python
+@tab py
 
 ```python
 from hp_shared.base import _console, _input
@@ -247,33 +267,32 @@ _console.log(text)
 
 ##### _console
 
-| 属性                                         | 说明                                        | js                                      | python                                  |
-|--------------------------------------------|-------------------------------------------|-----------------------------------------|-----------------------------------------|
-| getStackInfo                               | 基础方法                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| getValues                                  | 基础方法                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| show                                       | 基础方法                                      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **log**                                    | <strong style="color:blue">常规</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **warn**                                   | <strong style="color:orange;">警告</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **error**                                  | <strong style="color:red">报错</strong>     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **success**                                | <strong style="color:green">成功</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **end**                                    | <strong style="color:grey">结束</strong>    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| dir                                        |                                           | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| table                                      |                                           | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   |
-| group                                      |                                           | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   |
-| groupCollapsed                             |                                           | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   |
-| groupAction                                |                                           | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   |
-| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   |
+| 属性                                         | 说明                                        | js | hm | py |
+|--------------------------------------------|-------------------------------------------|----|----|----|
+| getStackInfo                               | 基础方法                                      | ✅  | ✅  | ✅  |
+| getValues                                  | 基础方法                                      | ✅  | ✅  | ✅  |
+| show                                       | 基础方法                                      | ✅  | ✅  | ✅  |
+| **log**                                    | <strong style="color:blue">常规</strong>    | ✅  | ✅  | ✅  |
+| **warn**                                   | <strong style="color:orange;">警告</strong> | ✅  | ✅  | ✅  |
+| **error**                                  | <strong style="color:red">报错</strong>     | ✅  | ✅  | ✅  |
+| **success**                                | <strong style="color:green">成功</strong>   | ✅  | ❌  | ✅  |
+| **end**                                    | <strong style="color:grey">结束</strong>    | ✅  | ❌  | ✅  |
+| dir                                        |                                           | ✅  | ✅  | ✅  |
+| table                                      |                                           | ✅  | ✅  | ❌  |
+| group                                      |                                           | ✅  | ✅  | ❌  |
+| groupCollapsed                             |                                           | ✅  | ✅  | ❌  |
+| groupAction                                |                                           | ✅  | ✅  | ❌  |
+| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       | ✅  | ✅  | ❌  |
 
 ##### _print
 
-同 _console.log，倾向于使用 python 风格时选用
+同 _console.log，倾向于使用 py 风格时选用
 
 ##### _input
 
-| 说明 | browser                                 | node                                    | wx                                    | python                                  |
-|----|-----------------------------------------|-----------------------------------------|---------------------------------------|-----------------------------------------|
-| 支持 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong> | <strong style="color:green;">✓</strong> |
-| 方式 | 同步                                      | 异步                                      | <strong style="color:red;">✕</strong> | 同步                                      |
+| 说明 | browser | hm | wx | node | py |
+|----|---------|----|----|------|----|
+| 支持 | ✅       | ❌  | ❌  | ✅    | ✅  |
 
 #### 2.1.3 \_Object
 
@@ -293,7 +312,7 @@ import { _Object } from 'hp-shared/base';
 const { _Object } = require('hp-shared/base');
 ```
 
-@tab python
+@tab py
 
 ```python
 from hp_shared.base import _Object
@@ -365,7 +384,7 @@ const obj2 = _Object.filter(data, { omit: ['d', 'e'] }); // [!code focus]
 // [!code word:pick]
 // [!code word:omit]
 const model = { username: 'xx', password: '123456', temp1: 1, temp2: 2 };
-const params = _Object.filter(model, { pick: ['uername', 'password'] }); // [!code focus]
+const params = _Object.filter(model, { pick: ['username', 'password'] }); // [!code focus]
 ```
 
 - 数据库查询处理返回
@@ -759,9 +778,10 @@ const { _Proxy } = require('hp-shared/base');
 |             | 链接                                                                                                               |
 |-------------|------------------------------------------------------------------------------------------------------------------|
 | **browser** | [Clipboard API](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard_API)                                  |
+| **hm**      | [@ohos.pasteboard](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-pasteboard-V5)   |
 | **wx**      | [剪贴板](https://developers.weixin.qq.com/miniprogram/dev/api/device/clipboard/wx.setClipboardData.html)            |
 | **node**    | [child_process](https://nodejs.org/docs/latest/api/child_process.html#child_processexeccommand-options-callback) |
-| **python**  | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html)                                            |
+| **py**      | [subprocess](https://docs.python.org/zh-cn/3/library/subprocess.html)                                            |
 | 统一定制        | **clipboard**                                                                                                    |
 
 ::: code-tabs#import
@@ -808,7 +828,7 @@ import { clipboard } from 'hp-shared/storage';
 })();
 ```
 
-@tab python
+@tab py
 
 ```python
 from hp_shared.storage import clipboard
@@ -827,17 +847,16 @@ asyncio.run(test())
 
 :::
 
-| 属性            | 说明          | browser                                 | node                                    | wx                                      | python                                  |
-|---------------|-------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
-| **copy**      | 复制          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **paste**     | 粘贴          | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| *copySync*    | 复制（同步方式）    | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> |
-| *pasteSync*   | 粘贴（同步方式）    | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> |
-|               |             |                                         |                                         |                                         |                                         |
-| writeText     | 同 copy      | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| readText      | 同 paste     | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| writeTextSync | 同 copySync  | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> |
-| readTextSync  | 同 pasteSync | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:green;">✓</strong> |
+| 属性            | 说明          | browser | hm | wx | node | py |
+|---------------|-------------|---------|----|----|------|----|
+| **copy**      | 复制          | ✅       |    | ✅  | ✅    | ✅  |
+| **paste**     | 粘贴          | ✅       |    | ✅  | ✅    | ✅  |
+| *copySync*    | 复制（同步方式）    | ❌       |    | ❌  | ✅    | ✅  |
+| *pasteSync*   | 粘贴（同步方式）    | ❌       |    | ❌  | ✅    | ✅  |
+| writeText     | 同 copy      | ✅       |    | ✅  | ✅    | ✅  |
+| readText      | 同 paste     | ✅       |    | ✅  | ✅    | ✅  |
+| writeTextSync | 同 copySync  | ❌       |    | ❌  | ✅    | ✅  |
+| readTextSync  | 同 pasteSync | ❌       |    | ❌  | ✅    | ✅  |
 
 #### 2.2.2 Web Cookie
 
@@ -885,26 +904,26 @@ router.get('/test', (ctx) => {
 
 :::
 
-| 对象             | 说明        | browser                                 | node                                    | wx                                      |
-|----------------|-----------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
-| **BaseCookie** | 基础 class  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **cookie**     | browser 用 | <strong style="color:green;">✓</strong> | <strong style="color:red;">✕</strong>   | <strong style="color:red;">✕</strong>   |
+| 对象             | 说明        | browser | wx | node |
+|----------------|-----------|---------|----|------|
+| **BaseCookie** | 基础 class  | ✅       | ✅  | ✅    |
+| **cookie**     | browser 用 | ✅       | ❌  | ❌    |
 
 ##### BaseCookie
 
-| 属性                                    | 说明 | browser                                 | node                                    |
-|---------------------------------------|----|-----------------------------------------|-----------------------------------------|
-| <i style="color:pink;">prototype:</i> |    |                                         |                                         |
-| **constructor**                       |    |                                         |                                         |
-| **get**                               | 存值 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **set**                               | 取值 | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| value                                 |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| length                                |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toArray                               |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toObject                              |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| has                                   |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| remove                                |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| clear                                 |    | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| 属性                                    | 说明 | browser | node |
+|---------------------------------------|----|---------|------|
+| <i style="color:pink;">prototype:</i> |    |         |      |
+| **constructor**                       |    |         |      |
+| **get**                               | 存值 | ✅       | ✅    |
+| **set**                               | 取值 | ✅       | ✅    |
+| value                                 |    | ✅       | ✅    |
+| length                                |    | ✅       | ✅    |
+| toArray                               |    | ✅       | ✅    |
+| toObject                              |    | ✅       | ✅    |
+| has                                   |    | ✅       | ✅    |
+| remove                                |    | ✅       | ✅    |
+| clear                                 |    | ✅       | ✅    |
 
 #### 2.2.3 Web Storage
 
@@ -956,17 +975,17 @@ console.log(a);
 
 :::
 
-| 对象                   | 说明                | browser                                 | node                                    | wx                                      |
-|----------------------|-------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
-| **\_sessionStorage** | 对应 sessionStorage | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **\_localStorage**   | 对应 localStorage   | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
+| 对象                   | 说明                | browser | wx | node |
+|----------------------|-------------------|---------|----|------|
+| **\_sessionStorage** | 对应 sessionStorage | ✅       | ✅  | ✅    |
+| **\_localStorage**   | 对应 localStorage   | ✅       | ✅  | ✅    |
 
-| 属性                                         | 说明                                  | browser                                 | node                                    | wx                                      |
-|--------------------------------------------|-------------------------------------|-----------------------------------------|-----------------------------------------|-----------------------------------------|
-| **setItem**                                | 存值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| **getItem**                                | 取值                                  | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| toObject                                   | 转换成对象                               | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> | <strong style="color:green;">✓</strong> |
-| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |                                         |                                         |                                         |
+| 属性                                         | 说明                                  | browser | wx | node |
+|--------------------------------------------|-------------------------------------|---------|----|------|
+| **setItem**                                | 存值                                  | ✅       | ✅  | ✅    |
+| **getItem**                                | 取值                                  | ✅       | ✅  | ✅    |
+| toObject                                   | 转换成对象                               | ✅       | ✅  | ✅    |
+| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span> |         |    |      |
 
 ### 2.3 dev 开发
 
@@ -1468,6 +1487,10 @@ pnpm run docs:dev
 ```shell
 # 已配置 prepublishOnly，直接运行 npm publish 或 pnpm run publish:js
 pnpm run publish:js
+```
+
+```shell
+pnpm run publish:hm
 ```
 
 ```shell

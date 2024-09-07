@@ -77,8 +77,9 @@ export default defineUserConfig({
               text: '安装包',
               children: [
                 { text: 'npm 包', link: 'https://www.npmjs.com/package/hp-shared' },
-                { text: 'tampermonkey 包', link: 'https://greasyfork.org/zh-CN/scripts/497270-hp-shared' },
+                { text: 'ohpm 包', link: 'https://ohpm.openharmony.cn/#/cn/detail/hp-shared' },
                 { text: 'pip 包', link: 'https://pypi.org/project/hp-shared/' },
+                { text: 'tampermonkey 包', link: 'https://greasyfork.org/zh-CN/scripts/497270-hp-shared' },
               ],
             },
             {

@@ -4,19 +4,18 @@ import pkg from 'hp-shared/package.json';
 
 export default defineClientConfig({
   enhance({ app, router, siteData }) {
-    const appMonitor = new Monitor({
+    /* const appMonitor = new Monitor({
       reportUrl: `https://tests.vip.cpolar.cn/performance`,
       appInfo: {
         name: 'docs',
         version: pkg.version,
       },
-    })
-      .watchResourceError()
+    }).watchResourceError()
       .watchCodeError()
       .watchPromiseError()
       .watchRequestError()
       .watchRouteChange()
-      .watchVueError(app);
+      .watchVueError(app); */
   },
   setup() {},
   rootComponents: [],
