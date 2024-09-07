@@ -14,15 +14,16 @@ examples/wx/miniprogram_npm
 src/**/*.d.ts
 src/**/*.js
 # python
-python/venv
-python/build
-python/dist
-python/out
+python/**/venv
+python/**/dist
+python/**/build
+python/**/out
 python/**/*.egg-info
 python/**/__pycache__
 # harmony
 harmony/**/oh_modules
 harmony/**/local.properties
+harmony/**/dist
 harmony/**/build
 harmony/**/.hvigor
 harmony/**/.preview

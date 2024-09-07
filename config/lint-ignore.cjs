@@ -33,6 +33,7 @@ if (require.main === module) {
         gitignoreLint.getText(),
         '# ---[manual] start---',
         'python',
+        'harmony',
         '# ---[manual] end---',
       ],
       exclude: [{ tag: 'manual', group: 'npm:reserve' }],
