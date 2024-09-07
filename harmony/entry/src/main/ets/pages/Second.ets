@@ -1,4 +1,4 @@
-import { _console, } from '../../js/index.js'
+import { _console, } from 'hp-shared/dist/index.js'
 import { router } from '@kit.ArkUI'
 
 @Entry

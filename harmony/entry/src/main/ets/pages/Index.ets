@@ -13,10 +13,10 @@ function test_base() {
   _console.dir(BaseEnv)
 
   interface GeneratedObjectLiteralInterface_1 {
-    username: string;
-    password: string;
-    temp1: number;
-    temp2: number;
+    username?: string;
+    password?: string;
+    temp1?: number;
+    temp2?: number;
   }
   const model: GeneratedObjectLiteralInterface_1 = {
     username: 'xx',
@@ -24,7 +24,7 @@ function test_base() {
     temp1: 1,
     temp2: 2
   };
-  const params = _Object.filter(model, { pick: ['username', 'password'] }); // [!code focus]
+  const params:GeneratedObjectLiteralInterface_1 = _Object.filter(model, { pick: ['username', 'password'] }); // [!code focus]
   _console.warn(params)
 
   _console.log(_Math.C(4, 2))
