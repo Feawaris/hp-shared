@@ -1,20 +1,17 @@
 /**
- * [vuepress](https://v2.vuepress.vuejs.org/zh/)
- * [vuepress-theme-hope](https://theme-hope.vuejs.press/zh/)
+ * [VuePress 配置](https://v2.vuepress.vuejs.org/zh/reference/config.html)
+ * [VuePress Theme Hope 配置](https://theme-hope.vuejs.press/zh/config/intro.html)
  */
-import { _console } from 'hp-shared/base';
-import { fileURLToPath } from 'node:url';
+import { _console } from 'hp-shared';
+import pkg from 'hp-shared/package.json' assert { type: 'json' };
 import path from 'node:path';
 import { defineUserConfig } from 'vuepress';
 import { hopeTheme } from 'vuepress-theme-hope';
 import { viteBundler } from '@vuepress/bundler-vite';
-const pkg = require('../../package.json');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const sourceDir = path.resolve(__dirname, '..');
-const rootDir = path.resolve(sourceDir, '..');
-_console.log({ rootDir, sourceDir });
+const docsDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(docsDir, '..');
+_console.log({ rootDir, docsDir });
 // _console.log('process.env: ', process.env, process.env.vuepress_to);
 export default defineUserConfig({
   /**
@@ -27,9 +24,11 @@ export default defineUserConfig({
   }[process.env.vuepress_to || 'local'],
   lang: 'zh-CN',
   title: pkg.name,
-  description: '基础库',
+  description: pkg.description,
   head: [
     ['link', { rel: 'icon', href: '/static/logo.jpg' }],
+    ['script', { src: 'https://unpkg.com/hp-shared/dist/browser/index.umd.js', async: true }],
+    ['script', { src: 'https://unpkg.com/hp-shared/dist/browser/index-tampermonkey.js', async: true }],
   ],
   locales: {},
 
@@ -99,75 +98,78 @@ export default defineUserConfig({
           ],
         },
       ],
-      navbarIcon: true,
       navbarLayout: {
         start: ['Brand'],
         center: ['Links'],
         end: ['Language', 'Repo', 'Outlook', 'Search'],
       },
       logo: '/static/logo.jpg',
-      get logoDark() {
+      /*get logoDark() {
         return this.logo;
-      },
-      // navTitle: $siteLocale.title,
+      },*/
+      // navbarTitle: $siteLocale.title,
       repo: 'https://github.com/Feawaris/hp-shared',
-      repoDisplay: true,
-      repoLabel: true,
+      // repoDisplay: true,
+      // repoLabel: '',
       navbarAutoHide: 'none',
       hideSiteNameOnMobile: false,
       /**
        * 侧边栏
        */
-      sidebar: [{ text: 'README', link: '/' }],
-      sidebarIcon: true,
-      sidebarSorter: ['readme', 'order', 'title', 'filename'],
+      // sidebar: "structure",
+      // sidebarSorter: ['readme', 'order', 'title', 'filename'],
       headerDepth: 6,
       /**
        * 路径导航
        */
-      breadcrumb: true,
-      breadcrumbIcon: true,
-      prevLink: true,
-      nextLink: true,
+      // breadcrumb: true,
+      // breadcrumbIcon: true,
+      // prevLink: true,
+      // nextLink: true,
       /**
        * 标题
        */
-      titleIcon: true,
-      pageInfo: ['Word', 'ReadingTime', 'Category', 'Tag'],
+      // titleIcon: true,
+      pageInfo: ['Word', 'ReadingTime', 'Tag'],
       /**
        * Meta
        */
-      lastUpdated: true,
-      contributors: true,
+      // lastUpdated: true,
+      // contributors: true,
       editLink: false,
       // editLinkPattern: '',
-      get docsRepo() {
+      /*get docsRepo() {
         return this.repo;
-      },
+      },*/
       docsBranch: 'main',
-      docsDir: '',
+      // docsDir: '',
       /**
        * 页脚
        */
-      footer: '结束',
+      footer: '',
       copyright: 'Copyright © hp',
       displayFooter: true,
       /**
        * 杂项
        */
-      rtl: false,
       // home: '',
-      toc: true,
+      // rtl: false,
+      // toc: true,
 
       /**
        * 主题外观选项
        */
       // iconAssets: [],
       darkmode: 'toggle',
+      // externalLinkIcon: true,
       fullscreen: true,
-      pure: false,
-      print: true,
+      // pure: false,
+      // print: true,
       // iconPrefix: '',
+
+      /**
+       * 主题多语言选项
+       */
 
       /**
        * 插件配置
@@ -177,11 +179,13 @@ export default defineUserConfig({
          * 内置插件
          * 下列插件被内部调用，不可禁用:
          */
+        // @vuepress/plugin-sass-palette
+        sassPalette: {},
         // @vuepress/plugin-theme-data
-        // themeData: {},
+        themeData: {},
         // vuepress-plugin-components
-        /* components: {
-          components: [
+        components: {
+          /*components: [
             // 代码组件
             'CodePen',
             // 内容组件
@@ -200,10 +204,8 @@ export default defineUserConfig({
           componentsOptions: {},
           rootComponents: {
             notice: [],
-          },
-        }, */
-        // vuepress-plugin-sass-palette
-        // sassPalette: {},
+          },*/
+        },
 
         /**
          * 自动启用的插件
@@ -211,48 +213,50 @@ export default defineUserConfig({
          */
         // @vuepress/plugin-active-header-links
         activeHeaderLinks: {},
-        // @vuepress/external-link-icon
-        // externalLinkIcon: {},
+        // @vuepress/plugin-back-to-top
+        backToTop: {
+          // threshold: 100,
+          // progress: true,
+        },
         // @vuepress/plugin-catalog
-        /* catalog: {
-          title: '',
-          level: 3,
+        catalog: {
           index: true,
-        }, */
+        },
         // @vuepress/plugin-copy-code
         copyCode: {
           showInMobile: true,
         },
         // @vuepress/plugin-git
         git: {},
+        // @vuepress/plugin-links-check
+        linksCheck: {},
         // @vuepress/plugin-nprogress
         nprogress: {},
         // @vuepress/plugin-photo-swipe
         photoSwipe: {},
-        // @vuepress/plugin-prismjs
-        prismjs: {
-          theme:'nord',
-          themes: {
-            light: 'one-light',
-            dark: '',
-          },
-          lineNumbers:true,
-          highlightLines:true,
-          notationDiff:true,
-          notationFocus:true,
-          notationHighlight:true,
-          notationErrorLevel:true,
-          notationWordHighlight:true,
-          whitespace:false,
-          preloadLanguages: ['markdown', 'jsdoc', 'yaml', 'js', 'vue'],
-          preWrapper:true
-        },
         // @vuepress/plugin-reading-time
         readingTime: {
           wordPerMinute: 300,
         },
         // @vuepress/plugin-seo
         seo: {},
+        // @vuepress/plugin-shiki
+        shiki: {
+          langs: ['md','html','css','scss', 'js', 'ts', 'py', 'sh'],
+          theme: 'nord',
+          themes: {
+            light: 'everforest-light',
+            dark: 'nord',
+          },
+          lineNumbers: true,
+          highlightLines: true,
+          notationDiff: true,
+          notationFocus: true,
+          notationHighlight: true,
+          notationErrorLevel: true,
+          notationWordHighlight: true,
+          whitespace: false,
+        },
         // @vuepress/plugin-sitemap
         sitemap: {},
         // vuepress-plugin-md-enhance
@@ -264,23 +268,16 @@ export default defineUserConfig({
           // mathjax: true,
           sub: true,
           sup: true,
-          tasklist: {
-            disabled: true,
-            label: true,
-          },
+          tasklist: true,
           figure: true,
           imgLazyload: true,
           imgMark: true,
           imgSize: true,
-          obsidianImgSize: false,
 
           /**
            * 内容
            */
-          include: {
-            // resolvePath: (path) => path,
-            deep: true,
-          },
+          include: true,
           revealJs: false,
           component: true,
           footnote: true,
@@ -290,6 +287,7 @@ export default defineUserConfig({
            * 样式化
            */
           alert: true,
+          spoiler: true,
           attrs: true,
           hint: true,
           mark: true,
@@ -303,6 +301,7 @@ export default defineUserConfig({
           // echarts: true,
           // markmap: true,
           // mermaid: true,
+          // plantuml: true,
           // flowchart: true,
 
           /**
@@ -313,33 +312,13 @@ export default defineUserConfig({
           // vuePlayground: true,
           playground: {},
           codetabs: true,
-          demo: {
-            jsLib: [],
-            cssLib: [],
-            jsfiddle: true,
-            codepen: true,
-            codepenLayout: 'left',
-            codepenEditors: '101',
-            editors: '101',
-            // babel: 'https://unpkg.com/@babel/standalone/babel.min.js',
-            // vue: 'https://unpkg.com/vue/dist/vue.global.prod.js',
-            // react: 'https://unpkg.com/react/umd/react.production.min.js',
-            // reactDOM: 'https://unpkg.com/react-dom/umd/react-dom.production.min.js',
-          },
+          // demo: true,
 
           /**
            * 其他
            */
           gfm: true,
-          breaks: false,
           vPre: true,
-          delay: 800,
-          locales: {},
-        },
-        // @vuepress/plugin-back-to-top
-        backToTop: {
-          threshold: 100,
-          progress: true,
         },
 
         /**
@@ -349,6 +328,9 @@ export default defineUserConfig({
         // @vuepress/plugin-blog
         // @vuepress/plugin-copyright
         // @vuepress/plugin-comment
+        // @vuepress/plugin-notice
+        // @vuepress/plugin-rtl
+        // @vuepress/plugin-watermark
 
         /**
          * 内置支持的插件
@@ -362,16 +344,21 @@ export default defineUserConfig({
         },
         // @vuepress/plugin-search
         // @vuepress/plugin-feed
+        // @vuepress/plugin-prismjs
         // @vuepress/plugin-redirect
         // @vuepress/plugin-pwa
         // vuepress-plugin-search-pro
       },
     },
+
+    /**
+     * 主题行为选项
+     */
     {
-      check: true,
-      compact: true,
-      custom: false,
-      debug: false,
+      // check: true,
+      // compact: true,
+      // custom: false,
+      // debug: false,
     },
   ),
 
@@ -379,17 +366,19 @@ export default defineUserConfig({
    * 打包工具配置
    */
   bundler: viteBundler({
-    viteOptions: {},
+    viteOptions: {
+      cacheDir: `${docsDir}/node_modules/.vite`,
+    },
     vuePluginOptions: {},
   }),
 
   /**
    * 通用配置项
    */
-  dest: `${sourceDir}/.vuepress/dist`,
-  temp: `${sourceDir}/.vuepress/.temp`,
-  cache: `${sourceDir}/.vuepress/.cache`,
-  public: `${sourceDir}/.vuepress/public`,
+  dest: `${docsDir}/.vuepress/dist`,
+  temp: `${docsDir}/.vuepress/.temp`,
+  cache: `${docsDir}/.vuepress/.cache`,
+  public: `${docsDir}/.vuepress/public`,
   debug: false,
   pagePatterns: ['**/*.md', '!.vuepress', '!node_modules'],
   permalinkPattern: null,

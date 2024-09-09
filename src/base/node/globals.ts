@@ -1,4 +1,5 @@
 import { BaseEnv } from '../base';
+import {_console} from '../_console'
 
 interface ImportMeta {
   url: string;
@@ -9,6 +10,7 @@ interface NodeGlobals {
   __dirname: string;
 }
 export function useNodeGlobals(importMeta?: ImportMeta): NodeGlobals {
+  // _console.log(BaseEnv);
   if (BaseEnv.isBrowser) {
     try {
       return {

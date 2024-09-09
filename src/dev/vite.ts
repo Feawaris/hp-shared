@@ -1,20 +1,24 @@
-// @ts-nocheck
-import { _Object } from '../base';
+import { _Object, _console, BaseEnv } from '../base';
 import { Dev } from './base';
 
-export const vite = Object.create(null);
+export const vite: {
+  createBaseConfig: Function,
+  merge: Function
+} = Object.create(null);
 vite.createBaseConfig = function (env) {
   const result = {
     /**
      * 共享选项
      */
-    root: process.cwd(),
+    // root: process.cwd(),
     base: './',
     ...(env ? { mode: env.mode } : {}),
     define: {},
     plugins: [],
-    publicDir: 'public',
-    cacheDir: 'node_modules/.vite',
+    // publicDir: 'public',
+    // get cacheDir() {
+    //   return path.resolve(this.root, 'node_modules/.vite');
+    // },
     resolve: {
       alias: {},
       dedupe: [],
@@ -26,8 +30,10 @@ vite.createBaseConfig = function (env) {
     css: {
       modules: {},
       postcss: {},
-      preprocessorOptions: {},
-      preprocessorMaxWorkers: true,
+      preprocessorOptions: {
+        scss: {},
+      },
+      preprocessorMaxWorkers: 0,
       devSourcemap: true,
       transformer: 'postcss',
       lightningcss: {},
@@ -41,9 +47,9 @@ vite.createBaseConfig = function (env) {
     logLevel: 'info',
     // customLogger: {},
     clearScreen: true,
-    get envDir() {
-      return this.root;
-    },
+    // get envDir() {
+    //   return this.root;
+    // },
     envPrefix: 'VITE_',
     appType: 'spa',
 
@@ -52,7 +58,7 @@ vite.createBaseConfig = function (env) {
      */
     server: {
       host: '0.0.0.0',
-      port: 5173,
+      // port: 5173,
       strictPort: false,
       https: false,
       open: false,
@@ -80,18 +86,19 @@ vite.createBaseConfig = function (env) {
      */
     build: {
       target: 'esnext',
-      modulePreload: {},
-      outDir: 'dist',
-      assetsDir: 'assets',
+      // modulePreload: { polyfill: true },
+      // polyfillModulePreload: true,
+      // outDir: 'dist',
+      // assetsDir: 'assets',
       assetsInlineLimit: 4 * 2 ** 10,
-      cssCodeSplit: true,
-      get cssTarget() {
+      // cssCodeSplit: true,
+      /*get cssTarget() {
         return this.target;
       },
       get cssMinify() {
         return this.minify;
-      },
-      sourcemap: false,
+      },*/
+      // sourcemap: false,
       rollupOptions: {
         output: {
           entryFileNames(chunkInfo) {
@@ -105,23 +112,23 @@ vite.createBaseConfig = function (env) {
           },
         },
       },
-      commonjsOptions: {},
-      dynamicImportVarsOptions: {},
+      // commonjsOptions: {},
+      // dynamicImportVarsOptions: {},
       // lib: {},
-      manifest: false,
-      ssrManifest: false,
-      ssr: false,
-      ssrEmitAssets: false,
-      get minify() {
+      // manifest: false,
+      // ssrManifest: false,
+      // ssr: false,
+      // ssrEmitAssets: false,
+      /*get minify() {
         return this.ssr ? false : 'esbuild';
-      },
-      terserOptions: {},
-      write: true,
-      emptyOutDir: true,
-      copyPublicDir: true,
-      reportCompressedSize: true,
+      },*/
+      // terserOptions: {},
+      // write: true,
+      // emptyOutDir: true,
+      // copyPublicDir: true,
+      // reportCompressedSize: true,
       chunkSizeWarningLimit: 10 * 2 ** 10,
-      watch: null,
+      // watch: null,
     },
 
     /**
@@ -166,7 +173,7 @@ vite.createBaseConfig = function (env) {
     /**
      * SSR 选项
      */
-    ssr: {
+    /*ssr: {
       external: [],
       noExternal: [],
       target: 'node',
@@ -174,16 +181,16 @@ vite.createBaseConfig = function (env) {
         conditions: [],
         externalConditions: [],
       },
-    },
+    },*/
 
     /**
      * Worker 选项
      */
-    worker: {
+    /*worker: {
       format: 'iife',
       plugins: () => [],
       rollupOptions: {},
-    },
+    },*/
   };
   return result;
 };
@@ -197,7 +204,8 @@ vite.merge = function (...sources) {
     for (let [key, value] of Object.entries(source)) {
       // 视为指定类型的属性
       if (simpleKeys.includes(key)) {
-        result[key] = value;
+        // 保留联动属性，下面 return 前再统一处理
+        Object.defineProperty(result, key, Object.getOwnPropertyDescriptor(source, key));
         continue;
       }
       if (objectKeys.includes(key)) {
@@ -210,6 +218,7 @@ vite.merge = function (...sources) {
         if (!Array.isArray(value)) {
           value = [value];
         }
+        // @ts-ignore
         result[key].push(...value);
         continue;
       }
@@ -217,5 +226,7 @@ vite.merge = function (...sources) {
       result[key] = value;
     }
   }
+
+  result = Dev.convertToRegularOptions(result);
   return result;
 };

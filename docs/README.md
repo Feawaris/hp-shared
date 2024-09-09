@@ -2,6 +2,7 @@
 name: hp-shared
 category: 文档
 tag: 1.13.0-rc.1
+title: 首页
 ---
 
 基础库
@@ -10,69 +11,73 @@ tag: 1.13.0-rc.1
 
 ### 1.1. 安装
 
-- **npm**
+#### 命令行方式
 
 ::: code-tabs#install
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i hp-shared
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add hp-shared
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i hp-shared
+```
+
+@tab ohpm
+
+```sh
+ohpm i hp-shared
+```
+
+@tab pip
+
+```sh
+pip install hp-shared
 ```
 
 :::
 
-- **ohpm**
-
-```shell
-ohpm i hp-shared
-```
-
-- **cdn**
+#### cdn 方式
 
 ::: code-tabs#install
 
 @tab unpkg
 
 ```html
-
 <script src="https://unpkg.com/hp-shared"></script>
+<!-- 额外全局挂载选用 -->
+<script src="https://unpkg.com/hp-shared/dist/browser/index-tampermonkey.js"></script>
 ```
 
 @tab jsdelivr
 
 ```html
-
 <script src="https://cdn.jsdelivr.net/npm/hp-shared"></script>
+<!-- 额外全局挂载选用 -->
+<script src="https://cdn.jsdelivr.net/npm/hp-shared/dist/browser/index-tampermonkey.js"></script>
 ```
 
 :::
 
-- **tampermonkey**
+#### tampermonkey 方式
 
 [hp-shared (greasyfork.org)](https://greasyfork.org/zh-CN/scripts/497270-hp-shared)
 
-- **pip**
+### 1.2. 使用
 
-```shell
-pip install hp-shared
-```
+#### 导入路径
 
-### 1.2.使用
-
-- 简洁路径：已在 package.json 的 `exports` 和 `miniprogram` 字段配置，或根据环境配置 [paths](https://www.typescriptlang.org/tsconfig/#paths)、[alias](https://cn.vitejs.dev/config/shared-options.html#resolve-alias)、[Import maps](https://cn.vuejs.org/guide/quick-start.html#enabling-import-maps) 等使用简洁路径，常用于 vue、node、小程序环境。
+- 简洁路径：已在 package.json 的 `exports` 和 `miniprogram` 字段配置，或根据环境配置 [paths](https://www.typescriptlang.org/tsconfig/#paths)、[alias](https://cn.vitejs.dev/config/shared-options.html#resolve-alias)、[Import maps](https://cn.vuejs.org/guide/quick-start.html#enabling-import-maps) 等使用简洁路径。
 - 完整路径：可自行选用 src 或 dist 目录，无法使用简洁路径的环境可使用完整路径，或根据上面配置简洁路径。
 
 ::: code-tabs#path
@@ -80,58 +85,62 @@ pip install hp-shared
 @tab 简洁路径
 
 ```js
-import { _console } from 'hp-shared/base';
+import { _console, clipboard } from 'hp-shared';
+```
+
+@tab 保留模块路径写法
+
+```js
+import { _console } from 'hp-shared';
+import { clipboard } from 'hp-shared';
 ```
 
 @tab 完整路径 dist
 
 ```js
-import { _console } from 'hp-shared/dist/browser/base.js';
+import { _console } from 'hp-shared/dist/browser/index.js';
 ```
 
 @tab 完整路径 src
 
 ```ts
-import { _console } from 'hp-shared/src/base/index.ts';
+import { _console } from 'hp-shared/src/index-browser.ts';
 ```
 
 :::
+
+#### 各端示例
 
 ::: code-tabs#import
 
 @tab browser
 
 ```js
-// import { xx } from 'hp-shared/模块名';
-import { _console } from 'hp-shared/base';
+import { _console } from 'hp-shared';
 ```
 
 @tab hm
 
 ```js
-// xx/xx.ets
-// import { xx } from 'hp-shared';
 import { _console } from 'hp-shared';
 ```
 
 @tab wx
 
 ```js
-// import { xx } from 'hp-shared/模块名';
-import { _console } from 'hp-shared/base';
+import { _console } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-// const { xx } = require('hp-shared/模块名');
-const { _console } = require('hp-shared/base');
+const { _console } = require('hp-shared');
 ```
 
 @tab py
 
-```python
-# from hp_shared.模块名 import xx
+```py
+# py 先用着保留模块写法
 from hp_shared.base import _console
 ```
 
@@ -152,9 +161,9 @@ importScripts('../node_modules/hp-shared/dist/browser/index-tampermonkey.js');
 _console.log('test');
 ```
 
-@tab shell
+@tab sh
 
-```shell
+```sh
 # 已配置同名 cli，按指引操作即可
 hp-shared
 ```
@@ -207,18 +216,18 @@ hp-shared
 @tab browser
 
 ```js
-import { BaseEnv } from 'hp-shared/base';
+import { BaseEnv } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { BaseEnv } = require('hp-shared/base');
+const { BaseEnv } = require('hp-shared');
 ```
 
 @tab py
 
-```python
+```py
 from hp_shared.base import BaseEnv
 ```
 
@@ -237,7 +246,7 @@ from hp_shared.base import BaseEnv
 @tab browser
 
 ```js
-import { _console, _input } from 'hp-shared/base';
+import { _console, _input } from 'hp-shared';
 
 const text = _input('输入内容：');
 _console.log(text);
@@ -246,7 +255,7 @@ _console.log(text);
 @tab node
 
 ```js
-const { _console, _input } = require('hp-shared/base');
+const { _console, _input } = require('hp-shared');
 
 (async function () {
   const text = await _input('输入内容：');
@@ -256,7 +265,7 @@ const { _console, _input } = require('hp-shared/base');
 
 @tab py
 
-```python
+```py
 from hp_shared.base import _console, _input
 
 text = _input('输入内容：')
@@ -303,18 +312,18 @@ _console.log(text)
 @tab browser
 
 ```js
-import { _Object } from 'hp-shared/base';
+import { _Object } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Object } = require('hp-shared/base');
+const { _Object } = require('hp-shared');
 ```
 
 @tab py
 
-```python
+```py
 from hp_shared.base import _Object
 ```
 
@@ -419,13 +428,13 @@ function fn(value, options = {}) {
 @tab browser
 
 ```js
-import { _Function } from 'hp-shared/base';
+import { _Function } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Function } = require('hp-shared/base');
+const { _Function } = require('hp-shared');
 ```
 
 :::
@@ -446,13 +455,13 @@ const { _Function } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _Number } from 'hp-shared/base';
+import { _Number } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Number } = require('hp-shared/base');
+const { _Number } = require('hp-shared');
 ```
 
 :::
@@ -471,7 +480,7 @@ const { _Number } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _Math } from 'hp-shared/base';
+import { _Math } from 'hp-shared';
 
 const { sin, PI: π } = Math;
 console.log(sin(π / 6));
@@ -483,7 +492,7 @@ console.log(C(4, 2));
 @tab node
 
 ```js
-const { _Math } = require('hp-shared/base');
+const { _Math } = require('hp-shared');
 
 const { sin, PI: π } = Math;
 console.log(sin(π / 6));
@@ -527,13 +536,13 @@ console.log(C(4, 2));
 @tab browser
 
 ```js
-import { _Date } from 'hp-shared/base';
+import { _Date } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Date } = require('hp-shared/base');
+const { _Date } = require('hp-shared');
 ```
 
 :::
@@ -587,13 +596,13 @@ const { _Date } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _String } from 'hp-shared/base';
+import { _String } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _String } = require('hp-shared/base');
+const { _String } = require('hp-shared');
 ```
 
 :::
@@ -614,13 +623,13 @@ const { _String } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _Array } from 'hp-shared/base';
+import { _Array } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Array } = require('hp-shared/base');
+const { _Array } = require('hp-shared');
 ```
 
 :::
@@ -659,13 +668,13 @@ const { _Array } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _Set } from 'hp-shared/base';
+import { _Set } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Set } = require('hp-shared/base');
+const { _Set } = require('hp-shared');
 ```
 
 :::
@@ -698,13 +707,13 @@ const { _Set } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _JSON } from 'hp-shared/base';
+import { _JSON } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _JSON } = require('hp-shared/base');
+const { _JSON } = require('hp-shared');
 ```
 
 :::
@@ -730,13 +739,13 @@ const { _JSON } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _Reflect } from 'hp-shared/base';
+import { _Reflect } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Reflect } = require('hp-shared/base');
+const { _Reflect } = require('hp-shared');
 ```
 
 :::
@@ -754,13 +763,13 @@ const { _Reflect } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { _Proxy } from 'hp-shared/base';
+import { _Proxy } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { _Proxy } = require('hp-shared/base');
+const { _Proxy } = require('hp-shared');
 ```
 
 :::
@@ -789,7 +798,7 @@ const { _Proxy } = require('hp-shared/base');
 @tab browser
 
 ```js
-import { clipboard } from 'hp-shared/storage';
+import { clipboard } from 'hp-shared';
 
 (async function () {
   // copy
@@ -803,7 +812,7 @@ import { clipboard } from 'hp-shared/storage';
 @tab node
 
 ```js
-const { clipboard } = require('hp-shared/storage');
+const { clipboard } = require('hp-shared');
 
 (async function () {
   // copy
@@ -817,7 +826,7 @@ const { clipboard } = require('hp-shared/storage');
 @tab wx
 
 ```js
-import { clipboard } from 'hp-shared/storage';
+import { clipboard } from 'hp-shared';
 
 (async function () {
   // copy
@@ -830,7 +839,7 @@ import { clipboard } from 'hp-shared/storage';
 
 @tab py
 
-```python
+```py
 from hp_shared.storage import clipboard
 import asyncio
 
@@ -873,13 +882,13 @@ asyncio.run(test())
 @tab browser
 
 ```js
-import { cookie } from 'hp-shared/storage';
+import { cookie } from 'hp-shared';
 ```
 
 @tab node
 
 ```js
-const { BaseCookie } = require('hp-shared/storage');
+const { BaseCookie } = require('hp-shared');
 
 http.createServer((req, res) => {
   const cookie = new NodeCookie(req, res);
@@ -889,7 +898,7 @@ http.createServer((req, res) => {
 @tab koa
 
 ```js
-const { BaseCookie } = require('hp-shared/storage');
+const { BaseCookie } = require('hp-shared');
 
 router.get('/test', (ctx) => {
   const cookie = new NodeCookie(ctx.req, ctx.res);
@@ -940,7 +949,7 @@ router.get('/test', (ctx) => {
 @tab browser
 
 ```js
-import { _sessionStorage, _localStorage } from 'hp-shared/storage';
+import { _sessionStorage, _localStorage } from 'hp-shared';
 
 // setItem
 _sessionStorage.setItem('a', 1);
@@ -952,7 +961,7 @@ console.log(a);
 @tab node
 
 ```js
-const { _sessionStorage, _localStorage } = require('hp-shared/storage');
+const { _sessionStorage, _localStorage } = require('hp-shared');
 
 // setItem
 _sessionStorage.setItem('a', 1);
@@ -964,7 +973,7 @@ console.log(a);
 @tab wx
 
 ```js
-import { _sessionStorage, _localStorage } from 'hp-shared/storage';
+import { _sessionStorage, _localStorage } from 'hp-shared';
 
 // setItem
 _sessionStorage.setItem('a', 1);
@@ -1001,19 +1010,19 @@ console.log(a);
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D markdownlint-cli2
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D markdownlint-cli2
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D markdownlint-cli2
 ```
 
@@ -1024,7 +1033,7 @@ npm i -D markdownlint-cli2
 @tab 直接使用
 
 ```js
-const { MarkdownLint } = require('hp-shared/dev');
+const { MarkdownLint } = require('hp-shared');
 
 const lint = new MarkdownLint();
 const config = lint.merge(
@@ -1061,19 +1070,19 @@ module.exports = config;
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D stylelint postcss-html
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D stylelint postcss-html
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D stylelint postcss-html
 ```
 
@@ -1084,7 +1093,7 @@ npm i -D stylelint postcss-html
 @tab 直接使用
 
 ```js
-const { StyleLint } = require('hp-shared/dev');
+const { StyleLint } = require('hp-shared');
 
 const lint = new StyleLint();
 const config = lint.merge(
@@ -1124,19 +1133,19 @@ module.exports = config;
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript typescript-eslint
 ```
 
@@ -1147,7 +1156,7 @@ npm i -D eslint @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typ
 @tab 直接使用
 
 ```js
-const { EsLint } = require('hp-shared/dev');
+const { EsLint } = require('hp-shared');
 
 const lint = new EsLint({ eslintVersion: 9 });
 const config = [
@@ -1187,19 +1196,19 @@ module.exports = config;
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
@@ -1210,7 +1219,7 @@ npm i -D eslint@8 @stylistic/eslint-plugin eslint-plugin-vue vue-eslint-parser t
 @tab 直接使用
 
 ```js
-const { EsLint } = require('hp-shared/dev')
+const { EsLint } = require('hp-shared')
 
 const lint = new EsLint({ eslintVersion: 8 });
 const config = lint.merge(
@@ -1246,19 +1255,19 @@ module.exports = config;
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D prettier
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D prettier
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D prettier
 ```
 
@@ -1269,7 +1278,7 @@ npm i -D prettier
 @tab 直接使用
 
 ```js
-const { Prettier } = require('hp-shared/dev');
+const { Prettier } = require('hp-shared');
 
 const lint = new Prettier();
 const config = lint.merge(
@@ -1301,19 +1310,19 @@ module.exports = config;
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D @commitlint/cli husky
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D @commitlint/cli husky
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D @commitlint/cli husky
 ```
 
@@ -1324,7 +1333,7 @@ npm i -D @commitlint/cli husky
 @tab 直接使用
 
 ```js
-const { CommitLint } = require('hp-shared/dev');
+const { CommitLint } = require('hp-shared');
 
 const lint = new CommitLint();
 const config = lint.merge(
@@ -1356,19 +1365,19 @@ module.exports = config;
 
 @tab pnpm
 
-```shell
+```sh
 pnpm i -D vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx
 ```
 
 @tab yarn
 
-```shell
+```sh
 yarn add -D vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx
 ```
 
 @tab npm
 
-```shell
+```sh
 npm i -D vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx
 ```
 
@@ -1386,7 +1395,7 @@ npm i -D vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx
 
 ```js
 // vite.config.js
-import { vite } from 'hp-shared/dev';
+import { vite } from 'hp-shared';
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
 import vue from '@vitejs/plugin-vue';
@@ -1419,8 +1428,7 @@ export default defineConfig((env) => {
 
 ```js
 // main.js
-import { Monitor } from 'hp-shared/performance';
-import { _sessionStorage } from 'hp-shared/storage';
+import { Monitor, _sessionStorage } from 'hp-shared';
 import pkg from '../package.json';
 window.appMonitor = new Monitor({
   reportUrl: ``,
@@ -1444,8 +1452,7 @@ window.appMonitor = new Monitor({
 
 ```js
 // app.js
-import { Monitor } from 'hp-shared/performance';
-import { _localStorage } from 'hp-shared/storage';
+import { Monitor, _localStorage } from 'hp-shared';
 wx.appMonitor = new Monitor({
   reportUrl: ``,
   uid() {
@@ -1468,7 +1475,7 @@ wx.appMonitor = new Monitor({
 
 ### 3.1 开始
 
-```shell
+```sh
 # 刷新状态
 pnpm run refresh
 # 自引用，确保引 dist 的文件也能导航到源代码
@@ -1477,22 +1484,22 @@ pnpm link ./
 
 ### 3.2 开发中
 
-```shell
+```sh
 pnpm run build:watch
 pnpm run docs:dev
 ```
 
 ### 3.3 发布
 
-```shell
+```sh
 # 已配置 prepublishOnly，直接运行 npm publish 或 pnpm run publish:js
 pnpm run publish:js
 ```
 
-```shell
+```sh
 pnpm run publish:hm
 ```
 
-```shell
+```sh
 pnpm run publish:py
 ```

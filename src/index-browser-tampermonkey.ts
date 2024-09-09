@@ -1,7 +1,7 @@
-// 1.UserScript 在 rollup.config 中配置
+// 1.UserScript 注释在 rollup.config 中配置
 // 2.对象全局挂载
 const { hpShared } = globalThis;
-const { base: { _Object, _Math, _Date } } = hpShared;
+const { _Object, _Math, _Date  } = hpShared;
 for (const esm of Object.values(hpShared)) {
   if (typeof esm === 'object' && esm !== null) {
     _Object.assign(globalThis, esm);

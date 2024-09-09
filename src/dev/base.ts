@@ -52,6 +52,27 @@ export class Dev {
       outputFileRelative,
     };
   }
+  // 转换成普通属性。用于 merge 函数 return result 之前处理 getter 属性，开发时保留 getter 的便利，最终合并选项再处理成普通属性
+  static convertToRegularOptions(options) {
+    if (Array.isArray(options)) {
+      let result = [];
+      for (const value of options) {
+        result.push(this.convertToRegularOptions(value));
+      }
+      return result;
+    } else if (typeof options === 'object' && options !== null) {
+      let result = {};
+      for (const [key, value] of Object.entries(options)) {
+        if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
+          result[key] = this.convertToRegularOptions(value);
+        } else {
+          result[key] = value;
+        }
+      }
+      return result;
+    }
+    return options;
+  }
 }
 
 // 几个 lint 工具共用基础类
