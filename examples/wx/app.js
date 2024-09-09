@@ -1,9 +1,9 @@
-import { _console } from 'hp-shared/base';
-import { Monitor } from 'hp-shared/performance';
 import * as hpShared from 'hp-shared';
+import { _console, Monitor } from 'hp-shared';
 import shared from 'shared';
 const { localConfig } = shared;
 
+_console.log(hpShared);
 wx.hpShared = hpShared;
 wx.appMonitor = new Monitor({
   reportUrl: `${localConfig.remoteURL}/performance`,

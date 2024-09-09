@@ -1,5 +1,4 @@
-const { _console } = require('hp-shared/base');
-const { IgnoreLint } = require('hp-shared/dev');
+const { _console, IgnoreLint } = require('hp-shared');
 const md = require('./lint-md.cjs');
 const css = require('./lint-css.cjs');
 const js = require('./lint-js.cjs');

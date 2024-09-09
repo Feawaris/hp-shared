@@ -1,5 +1,4 @@
-const { _Date } = require('hp-shared/base');
-const { clipboard } = require('hp-shared/storage');
+const { _Date, clipboard } = require('hp-shared');
 
 describe('clipboard', () => {
   test('test_copy_paste_copySync_pasteSync', async () => {

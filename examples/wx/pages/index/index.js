@@ -1,7 +1,4 @@
-import * as hpShared from 'hp-shared';
-import { useNodeGlobals } from 'hp-shared/base.node';
-import { BaseEnv, _console, _Date, exit, restart } from 'hp-shared/base';
-import { clipboard } from 'hp-shared/storage';
+import { useNodeGlobals, BaseEnv, _console, _Date, exit, restart, clipboard } from 'hp-shared';
 const { default: { localConfig } } = require('shared');
 let __filename = '', __dirname = '';
 
@@ -12,7 +9,6 @@ Page({
     // this.test();
     ({ __filename, __dirname } = useNodeGlobals());
     _console.log({ __filename, __dirname });
-    _console.log(hpShared);
   },
   // 反馈给 jest 测试用
   async test() {

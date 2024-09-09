@@ -1,5 +1,4 @@
-const { _console } = require('hp-shared/base');
-const { Prettier } = require('hp-shared/dev');
+const { _console, Prettier } = require('hp-shared');
 
 const lint = new Prettier({
   rootDir: '../',

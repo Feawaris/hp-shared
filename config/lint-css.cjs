@@ -1,5 +1,4 @@
-const { _console } = require('hp-shared/base');
-const { StyleLint } = require('hp-shared/dev');
+const { _console, StyleLint } = require('hp-shared');
 
 const lint = new StyleLint({
   rootDir: '../',

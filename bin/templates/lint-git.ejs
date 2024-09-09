@@ -1,4 +1,4 @@
-const { CommitLint, GitHooks } = require('hp-shared/dev');
+const { CommitLint, GitHooks } = require('hp-shared');
 
 const lint = new CommitLint({
   __filename,

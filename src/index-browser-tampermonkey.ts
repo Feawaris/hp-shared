@@ -1,10 +1,14 @@
 // 1.UserScript 注释在 rollup.config 中配置
 // 2.对象全局挂载
 const { hpShared } = globalThis;
-const { _Object, _Math, _Date  } = hpShared;
-for (const esm of Object.values(hpShared)) {
-  if (typeof esm === 'object' && esm !== null) {
-    _Object.assign(globalThis, esm);
+const { _console, _Object, _Math, _Date } = hpShared;
+for (const [key, value] of Object.entries(hpShared)) {
+  if (typeof value === 'function' || (typeof value === 'object' && value !== null)) {
+    try {
+      globalThis[key] = value;
+    } catch (e) {
+      _console.error(key, key in globalThis);
+    }
   }
 }
 // 3.常用全局挂载

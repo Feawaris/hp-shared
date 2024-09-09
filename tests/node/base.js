@@ -1,4 +1,4 @@
-const { BaseEnv, _console, _print, _input, _Date, _Math, _Number, _Object, _BigInt } = require('hp-shared/base');
+const { BaseEnv, _console, _print, _input, _Date, _Math, _Number, _Object, _BigInt } = require('hp-shared');
 
 describe('base', () => {
   test('BaseEnv', () => {

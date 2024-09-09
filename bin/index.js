@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-const { _console } = require('hp-shared/base');
-const { clipboard } = require('hp-shared/storage');
+const { _console, clipboard } = require('hp-shared');
 const pkg = require('../package.json');
 const fs = require('node:fs');
 const path = require('node:path');

@@ -1,5 +1,4 @@
-const { _console } = require('hp-shared/base');
-const { MarkdownLint } = require('hp-shared/dev');
+const { _console, MarkdownLint } = require('hp-shared');
 
 const lint = new MarkdownLint({
   rootDir: '../',

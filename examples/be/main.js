@@ -1,4 +1,4 @@
-const { _console, _Date } = require('hp-shared/base');
+const { _console, _Date } = require('hp-shared');
 const { localConfig } = require('shared');
 const http = require('node:http');
 const EventEmitter = require('node:events');

@@ -1,4 +1,4 @@
-import { _console, _Date } from 'hp-shared/base';
+import { _console, _Date } from 'hp-shared';
 
 Page({
   onLoad(query) {

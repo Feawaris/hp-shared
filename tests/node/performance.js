@@ -1,5 +1,4 @@
-const { BaseEnv, _console } = require('hp-shared/base');
-const { MonitorInfo } = require('hp-shared/performance');
+const { BaseEnv, _console, MonitorInfo } = require('hp-shared');
 
 // const monitorInfo = new MonitorInfo();
 // _console.log(monitorInfo);

@@ -1,5 +1,4 @@
-const { _console } = require('hp-shared/base');
-const { EsLint } = require('hp-shared/dev');
+const { _console, EsLint } = require('hp-shared');
 
 const lint = new EsLint({
   eslintVersion: 9,
