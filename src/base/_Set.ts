@@ -7,7 +7,7 @@ export class _Set<T> extends Set<T> {
    * @param sets
    * @returns {*}
    */
-  static cap(...sets):_Set<any> {
+  static cap(...sets): _Set<any> {
     // 传参数量
     if (sets.length < 2) {
       sets[0] = sets[0] || [];
@@ -62,7 +62,7 @@ export class _Set<T> extends Set<T> {
 
   // 选用数组 length 习惯
   get length(): number {
-    return this.size
+    return this.size;
   }
   constructor(value: any[] | Iterable<T> = []) {
     try {

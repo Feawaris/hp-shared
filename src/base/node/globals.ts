@@ -1,5 +1,5 @@
 import { BaseEnv } from '../base';
-import {_console} from '../_console'
+import { _console } from '../_console';
 
 interface ImportMeta {
   url: string;
@@ -17,7 +17,7 @@ export function useNodeGlobals(importMeta?: ImportMeta): NodeGlobals {
         __filename: importMeta.url,
         __dirname: importMeta.url.slice(0, importMeta.url.lastIndexOf('/')),
       };
-    }catch (e) {}
+    } catch (e) {}
   }
   if (BaseEnv.isWx) {
     const pages = getCurrentPages();

@@ -134,6 +134,8 @@ BaseEnv.isMobile = ((): boolean => {
 // 浏览器
 BaseEnv.browsers = ((): string[] => {
   let result: string[] = [];
+  // 防止 eslint 把  ?. 修掉
+  // eslint-disable-next-line
   const ua = globalThis.navigator?.userAgent;
   if (ua) {
     if (ua.includes('Chrome')) {

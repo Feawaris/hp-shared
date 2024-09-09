@@ -92,12 +92,12 @@ vite.createBaseConfig = function (env) {
       // assetsDir: 'assets',
       assetsInlineLimit: 4 * 2 ** 10,
       // cssCodeSplit: true,
-      /*get cssTarget() {
+      /* get cssTarget() {
         return this.target;
       },
       get cssMinify() {
         return this.minify;
-      },*/
+      }, */
       // sourcemap: false,
       rollupOptions: {
         output: {
@@ -119,9 +119,9 @@ vite.createBaseConfig = function (env) {
       // ssrManifest: false,
       // ssr: false,
       // ssrEmitAssets: false,
-      /*get minify() {
+      /* get minify() {
         return this.ssr ? false : 'esbuild';
-      },*/
+      }, */
       // terserOptions: {},
       // write: true,
       // emptyOutDir: true,
@@ -173,7 +173,7 @@ vite.createBaseConfig = function (env) {
     /**
      * SSR 选项
      */
-    /*ssr: {
+    /* ssr: {
       external: [],
       noExternal: [],
       target: 'node',
@@ -181,16 +181,16 @@ vite.createBaseConfig = function (env) {
         conditions: [],
         externalConditions: [],
       },
-    },*/
+    }, */
 
     /**
      * Worker 选项
      */
-    /*worker: {
+    /* worker: {
       format: 'iife',
       plugins: () => [],
       rollupOptions: {},
-    },*/
+    }, */
   };
   return result;
 };

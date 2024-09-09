@@ -283,7 +283,7 @@ interface ShowOptions {
   style?: string,
   type?: string,
   stackInfo?: StackInfo,
-  values?: Array<any>
+  values?: any[]
 }
 // 同时 show 方法也返回用于需要反馈的场景
 _console.show = function (options: ShowOptions = {}) {

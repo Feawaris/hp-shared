@@ -39,7 +39,7 @@ function getOutputItem(options: Options = {}): OutputOptions {
 // 共用插件
 function useReplace() {
   return replace({
-    '__VERSION__': `'${pkg.version}'`,
+    __VERSION__: `'${pkg.version}'`,
     preventAssignment: true,
   });
 }
