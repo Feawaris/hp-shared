@@ -1,7 +1,7 @@
 ---
 name: hp-shared
 category: 文档
-tag: 1.13.0-rc.1
+tag: 1.13.0
 title: 首页
 ---
 
