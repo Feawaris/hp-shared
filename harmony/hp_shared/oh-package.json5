@@ -1,6 +1,6 @@
 {
   "name": "hp-shared",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "description": "基础库 harmony ohpm 版，对应同名的 npm/pip 包",
   "keywords": ["基础库", "shared"],
   "license": "MIT",
