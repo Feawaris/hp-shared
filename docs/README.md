@@ -1501,7 +1501,6 @@ pnpm run publish:js
 #### 发 ohpm
 
 ```sh
-# ohpm:
 # 1.打包
 pnpm run build:hm
 # 2.在 DevEco Studio 中点击构建模块
@@ -1512,6 +1511,5 @@ pnpm run publish:hm
 #### 发 pip
 
 ```sh
-# pip:
 pnpm run publish:py
 ```

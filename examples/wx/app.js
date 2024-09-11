@@ -9,7 +9,7 @@ wx.appMonitor = new Monitor({
   reportUrl: `${localConfig.remoteURL}/performance`,
   appInfo: {
     name: 'wx',
-    version: '1.13.0',
+    version: hpShared.version,
   },
 })
   .watchResourceError()

@@ -293,7 +293,7 @@ const hmConfig: RollupOptions[] = [
   {
     input: 'harmony/hp_shared/src/index.ts',
     output: [
-      getOutputItem({ file: 'harmony/hp_shared/dist/index.d.ts', }),
+      getOutputItem({ file: 'harmony/hp_shared/dist/index.d.ts' }),
     ],
     plugins: dtsPlugins,
   },
@@ -305,7 +305,7 @@ const config: RollupOptions[] = (() => {
   if (targets.includes('js')) {
     result.push(...jsConfig);
   }
-  if(targets.includes('hm')){
+  if (targets.includes('hm')) {
     result.push(...hmConfig);
   }
   return result;
