@@ -37,8 +37,8 @@ setup(
   # devDependencies
   extras_require={
     'dev': [
-      'watchdog>=4.0.1',
-      'mypy>=1.10.1',
+      'watchdog>=5.0.2',
+      'mypy>=1.11.2',
     ],
   },
 )
