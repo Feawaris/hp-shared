@@ -1,4 +1,4 @@
-import { version, BaseEnv, _console, _Object, _Math, _Date, _String, _Set } from 'hp-shared/dist/index.js'
+import { version, BaseEnv, _console, _Object, _Math, _Date, _String, _Set } from 'hp-shared'
 import { router } from '@kit.ArkUI'
 
 function test_console() {

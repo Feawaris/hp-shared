@@ -1,12 +1,12 @@
-import { hilog } from '@kit.PerformanceAnalysisKit'
+import { _console } from 'hp-shared'
 import { BackupExtensionAbility, BundleVersion } from '@kit.CoreFileKit'
 
 export default class EntryBackupAbility extends BackupExtensionAbility {
   async onBackup() {
-    hilog.info(0x0000, 'testTag', 'onBackup ok')
+    _console.warn('onBackup')
   }
 
   async onRestore(bundleVersion: BundleVersion) {
-    hilog.info(0x0000, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion))
+    _console.warn('onRestore', bundleVersion)
   }
 }

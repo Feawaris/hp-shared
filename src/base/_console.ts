@@ -6,7 +6,7 @@ import { _Date } from './_Date';
 export const _chalk: {
   styleMap: Record<string, [number, number]>,
   [key: string]: any
-} = Object.create(null);
+} = Object.create(console);
 _chalk.styleMap = {
   black: [30, 39],
   red: [31, 39],

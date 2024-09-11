@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "hp-shared": "../hp_shared"
+    "hp-shared": "file:../hp_shared"
   }
 }
 

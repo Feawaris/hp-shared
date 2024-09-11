@@ -101,7 +101,7 @@ BaseEnv.os = ((): string => {
       return 'linux';
     }
   }
-  if (globalThis.Row && globalThis.Column) {
+  if (globalThis.View) {
     return 'harmony';
   }
   return '';
