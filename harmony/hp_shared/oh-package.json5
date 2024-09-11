@@ -2,8 +2,12 @@
   "name": "hp-shared",
   "version": "1.13.0",
   "description": "基础库 harmony ohpm 版，对应同名的 npm/pip 包",
+  "keywords": ["基础库", "shared"],
   "license": "MIT",
   "author": "hp",
+  "homepage": "https://github.com/Feawaris/hp-shared",
+  "repository": "https://github.com/Feawaris/hp-shared",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo 1"
   },
@@ -13,8 +17,5 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "dynamicDependencies": {},
-  "main": "dist/index.js",
-  "repository": "https://github.com/Feawaris/hp-shared",
-  "homepage": "https://github.com/Feawaris/hp-shared"
+  "dynamicDependencies": {}
 }

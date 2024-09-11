@@ -1,6 +1,8 @@
 {
   "name": "hp_shared",
   "scripts": {
+    "build": "npx rimraf dist/* && cd ../../ && cross-env build_target=hm rollup --config --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
+    "build:watch": "pnpm run build --watch",
     "publish:hm": "source ~/.zshrc && ohpm publish build/default/outputs/default/hp_shared.har"
   }
 }

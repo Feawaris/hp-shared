@@ -1491,15 +1491,27 @@ pnpm run docs:dev
 
 ### 3.3 发布
 
+#### 发 npm
+
 ```sh
 # 已配置 prepublishOnly，直接运行 npm publish 或 pnpm run publish:js
 pnpm run publish:js
 ```
 
+#### 发 ohpm
+
 ```sh
+# ohpm:
+# 1.打包
+pnpm run build:hm
+# 2.在 DevEco Studio 中点击构建模块
+# 3.发布
 pnpm run publish:hm
 ```
 
+#### 发 pip
+
 ```sh
+# pip:
 pnpm run publish:py
 ```

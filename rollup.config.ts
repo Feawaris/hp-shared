@@ -65,7 +65,7 @@ const dtsPlugins = [
   dts(),
 ];
 
-const config: RollupOptions[] = [
+const jsConfig: RollupOptions[] = [
   // 在 getOutputItem 中传 plugins 无效，拆分处理：在 Rollup 中，plugins 应该定义在配置对象的顶层，并且对整个构建过程起作用，而不是针对特定的输出。因此，不能直接在 output 对象中指定 plugins。
   {
     input: 'src/base/index.ts',
@@ -281,8 +281,8 @@ const config: RollupOptions[] = [
     ],
     plugins: dtsPlugins,
   },
-
-  // harmony
+];
+const hmConfig: RollupOptions[] = [
   {
     input: 'harmony/hp_shared/src/index.ts',
     output: [
@@ -290,6 +290,24 @@ const config: RollupOptions[] = [
     ],
     plugins: browserPlugins,
   },
-
+  {
+    input: 'harmony/hp_shared/src/index.ts',
+    output: [
+      getOutputItem({ file: 'harmony/hp_shared/dist/index.d.ts', }),
+    ],
+    plugins: dtsPlugins,
+  },
 ];
+// 在 harmony 中新建 rollup.config.ts 导入当前文件会报错，在这里统一处理
+const config: RollupOptions[] = (() => {
+  let result = [];
+  const targets = (process.env.build_target || '').split(',').filter(val => val).map(val => val.trim());
+  if (targets.includes('js')) {
+    result.push(...jsConfig);
+  }
+  if(targets.includes('hm')){
+    result.push(...hmConfig);
+  }
+  return result;
+})();
 export default config;

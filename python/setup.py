@@ -19,6 +19,11 @@ setup(
   long_description_content_type="text/markdown",
   license=pkg['license'],
   author=pkg['author'],
+  # homepage
+  url=pkg['homepage'],
+  # exports
+  packages=[py_name] + [py_name + '.' + pkg for pkg in find_packages(where='src')],
+  package_dir={py_name: 'src'},
   # bin
   entry_points={
     'console_scripts': [
@@ -36,9 +41,4 @@ setup(
       'mypy>=1.10.1',
     ],
   },
-  # exports
-  packages=[py_name] + [py_name + '.' + pkg for pkg in find_packages(where='src')],
-  package_dir={py_name: 'src'},
-  # homepage
-  url=pkg['homepage'],
 )
