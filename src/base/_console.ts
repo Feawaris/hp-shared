@@ -6,8 +6,9 @@ import { _Date } from './_Date';
 export const _chalk: {
   styleMap: Record<string, [number, number]>,
   [key: string]: any
-} = Object.create(console);
+} = Object.create(null);
 _chalk.styleMap = {
+  // 文本颜色
   black: [30, 39],
   red: [31, 39],
   green: [32, 39],
@@ -16,7 +17,6 @@ _chalk.styleMap = {
   magenta: [35, 39],
   cyan: [36, 39],
   white: [37, 39],
-
   blackBright: [90, 39],
   gray: [90, 39],
   grey: [90, 39],
@@ -28,6 +28,7 @@ _chalk.styleMap = {
   cyanBright: [96, 39],
   whiteBright: [97, 39],
 
+  // 背景颜色
   bgBlack: [40, 49],
   bgRed: [41, 49],
   bgGreen: [42, 49],
@@ -36,7 +37,6 @@ _chalk.styleMap = {
   bgMagenta: [45, 49],
   bgCyan: [46, 49],
   bgWhite: [47, 49],
-
   bgBlackBright: [100, 49],
   bgGray: [100, 49],
   bgGrey: [100, 49],
@@ -48,6 +48,7 @@ _chalk.styleMap = {
   bgCyanBright: [106, 49],
   bgWhiteBright: [107, 49],
 
+  // 样式
   reset: [0, 0],
   bold: [1, 22],
   dim: [2, 22],
@@ -59,40 +60,49 @@ _chalk.styleMap = {
   strikethrough: [9, 29],
 };
 for (const [method, [start, end]] of Object.entries(_chalk.styleMap)) {
-  _chalk[method] = function (message: any) {
+  _chalk[method] = function (message: any): string {
     return `\x1b[${start}m${message}\x1b[${end}m`;
   };
 }
 
-export const _console: {
-  getStackInfo: Function;
-  getValues: Function;
-  show: Function;
-  log: Function;
-  warn: Function;
-  error: Function;
-  success: Function;
-  end: Function;
-  dir: Function;
-  table: Function;
-  group: Function;
-  groupCollapsed: Function;
-  groupEnd: Function;
-  groupAction: Function;
-} = Object.create(console);
-// 根据堆栈跟踪格式提取详细信息
-interface StackInfo {
-  fileShow?: string,
-
-  file?: string
-  method?: string
-  line?: number
-  column?: number
+// 定制 console
+class StackInfo {
+  fileShow?: string = '';
+  file?: string = '';
+  method?: string = '';
+  line?: number = 0;
+  column?: number = 0;
+  constructor(options = {}) {
+    _Object.deepAssign(this, options);
+  }
 }
-_console.getStackInfo = function (): StackInfo {
-  try {
-    throw new Error();
-  } catch (e) {
+interface ShowOptions {
+  color: string;
+  name: string;
+  stackInfo: StackInfo;
+  values?: any[];
+}
+interface ShowReturn {
+  input: ShowOptions,
+  output: any[],
+}
+class DirOptions {
+  depth?: number = 0;
+  showHidden?: boolean = true;
+  colors?: boolean = true;
+  constructor(options = {}) {
+    _Object.deepAssign(this, options);
+  }
+}
+interface GroupOptions {
+  name?: string;
+  stackInfo?: StackInfo;
+}
+export class BaseConsole {
+  constructor() {}
+  // 根据堆栈跟踪格式提取详细信息
+  getStackInfo(): StackInfo {
+    const e = new Error();
     const stack = e.stack.split('\n');
 
     // 定义正则表达式以匹配不同的堆栈格式
@@ -135,223 +145,216 @@ _console.getStackInfo = function (): StackInfo {
         return result;
       })();
 
-      return {
+      return new StackInfo({
         fileShow,
-
         file,
         method,
         line,
         column,
-      };
+      });
     }
-    return {};
+    return new StackInfo();
   }
-};
-// 处理成要传入 console.log 显示的值，在 show 显示和 jest 测试用
-_console.getValues = function ({ style = '', type = '', stackInfo = {}, values = [] } = {}) {
-  // 时间
-  const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
-  // stackInfo 需要从具体方法传进来
-  // 前缀内容
-  // @ts-ignore
-  let prefix = `${[`[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
-  // 样式映射
-  const styleMap = {
-    blue: { node: 'blue', browser: 'color:blue;' },
-    yellow: { node: 'yellow', browser: 'color:orange;' },
-    red: { node: 'red', browser: 'color:red;' },
-    green: { node: 'green', browser: 'color:green;' },
-    grey: { node: 'grey', browser: 'color:grey;' },
-    bold: { node: 'bold', browser: 'font-weight:bold;' },
-  };
-  // browser 和 node 显示，注意判断顺序(uniapp 环境 isWx 和 isNode 都为 true)
-  if (BaseEnv.isBrowser || BaseEnv.isWx || BaseEnv.isChromeExtension || BaseEnv.isWebWorker) {
-    // 使用浏览器控制台 API 提供的样式化输出
-    // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
-    if (values.some((val) => val !== null && ['object', 'function'].includes(typeof val))) {
-      return [`%c${prefix}`, `${styleMap[style].browser}`, ...values];
-    }
-
-    // 第一层简单类型配默认颜色
-    const text = [
-      `%c${prefix}`,
-      values
-        .map((value) => {
+  // 处理成要传入 console.log 显示的值，在 show 显示和 jest 测试用
+  getValues(options: ShowOptions): any[] {
+    let { color, name, stackInfo, values = [] } = options;
+    // 时间
+    const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
+    // stackInfo 需要从具体方法传进来
+    // 前缀内容
+    // @ts-ignore
+    let prefix = `${[`[${date}]`, `[${name}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
+    // browser 和 node 显示，注意判断顺序(uniapp 开发环境 isWx 和 isNode 都为 true)
+    if (BaseEnv.isBrowser || BaseEnv.isWx || BaseEnv.isChromeExtension || BaseEnv.isWebWorker) {
+      // 使用浏览器控制台 API 提供的样式化输出
+      const style: string = `color: ${color}`;
+      // values 在浏览器端有对象类型时后面的颜色不生效，此时不定制颜色辅助
+      if (values.some((val) => val !== null && ['object', 'function'].includes(typeof val))) {
+        return [`%c${prefix}`, `${style}`, ...values];
+      }
+      // 第一层简单类型配默认颜色
+      const text = [
+        `%c${prefix}`,
+        values
+          .map((value) => {
+            if (typeof value === 'bigint') {
+              return `%c${value}n`;
+            }
+            if (typeof value === 'symbol') {
+              return `%c${value.toString()}`;
+            }
+            return `%c${value}`;
+          })
+          .join(' '),
+      ].join(' ');
+      const styleArr = [
+        `${style}`,
+        ...values.map((value) => {
+          if ([null, undefined].includes(value)) {
+            return 'color:grey;';
+          }
+          if (typeof value === 'number') {
+            return 'color:blue;';
+          }
+          if (typeof value === 'string') {
+            // 特殊 color 显示：只输出一个字符串，不和其他类型组合时同 color 风格
+            if (values.length === 1 && ['yellow', 'red', 'green', 'grey'].includes(color)) {
+              return style;
+            }
+            return 'color:orange;';
+          }
+          if (typeof value === 'boolean') {
+            return value ? 'color:green;' : 'color:red;';
+          }
           if (typeof value === 'bigint') {
-            return `%c${value}n`;
+            return 'color:#00acc1;';
           }
           if (typeof value === 'symbol') {
-            return `%c${value.toString()}`;
+            return 'color:magenta;';
           }
-          return `%c${value}`;
-        })
-        .join(' '),
-    ].join(' ');
-    const styleArr = [
-      `${styleMap[style].browser}`,
-      ...values.map((value) => {
-        if ([null, undefined].includes(value)) {
-          return 'color:grey;';
-        }
-        if (typeof value === 'number') {
-          return 'color:blue;';
-        }
-        if (typeof value === 'string') {
-          // 特殊 style 显示：只输出一个字符串，不同其他类型组合时同 style 风格
-          if (values.length === 1 && ['yellow', 'red', 'green', 'grey'].includes(style)) {
-            return styleMap[style].browser;
+          return '';
+        }),
+      ];
+      return [text, ...styleArr];
+    }
+    if (BaseEnv.isNode) {
+      return [
+        _chalk[color](prefix),
+        ...values.map(function getValue(value) {
+          // 第一层简单类型配默认颜色
+          if ([null, undefined].includes(value)) {
+            return _chalk.grey(value);
           }
-          return 'color:orange;';
-        }
-        if (typeof value === 'boolean') {
-          return value ? 'color:green;' : 'color:red;';
-        }
-        if (typeof value === 'bigint') {
-          return 'color:#00acc1;';
-        }
-        if (typeof value === 'symbol') {
-          return 'color:magenta;';
-        }
-        return '';
-      }),
-    ];
-    return [text, ...styleArr];
+          if (typeof value === 'number') {
+            return _chalk.blueBright(value);
+          }
+          if (typeof value === 'string') {
+            // 特殊 color 显示：只输出一个字符串，不和其他类型组合时同 color 风格
+            if (values.length === 1 && ['yellow', 'red', 'green', 'grey'].includes(color)) {
+              return _chalk[color](value);
+            }
+            return _chalk.yellowBright(value);
+          }
+          if (typeof value === 'boolean') {
+            return value ? _chalk.greenBright(value) : _chalk.redBright(value);
+          }
+          if (typeof value === 'bigint') {
+            return _chalk.cyanBright(`${value}n`);
+          }
+          if (typeof value === 'symbol') {
+            return _chalk.magentaBright(value.toString());
+          }
+          // 其他原样返回
+          return value;
+        }),
+      ];
+    }
+    if (BaseEnv.isHarmony) {
+      return [
+        prefix,
+        ...values.map(function getValue(value) {
+          // 字符串、bi 增加区分显示
+          if (typeof value === 'string') {
+            return `'${value}'`;
+          }
+          if (typeof value === 'bigint') {
+            return `${value}n`;
+          }
+          if (value instanceof Set) {
+            // 原生 Set
+            if (value.constructor === Set) {
+              return `{${Array.from(value)}}`;
+            }
+            // 定制的 Set 对象已配置 Symbol.toPrimitive 或 toString 转换方法
+            return `${value}`;
+          }
+          // 数组、对象：序列化显示
+          if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
+            return JSON.stringify(value);
+          }
+          // 其他原样输出
+          return value;
+        }),
+      ];
+    }
+    return values;
   }
-  if (BaseEnv.isNode) {
-    return [
-      _chalk[styleMap[style].node](prefix),
-      ...values.map(function getValue(value) {
-        // 第一层简单类型配默认颜色
-        if ([null, undefined].includes(value)) {
-          return _chalk.grey(value);
-        }
-        if (typeof value === 'number') {
-          return _chalk.blueBright(value);
-        }
-        if (typeof value === 'string') {
-          // 特殊 style 显示：只输出一个字符串，不同其他类型组合时同 style 风格
-          if (values.length === 1 && ['yellow', 'red', 'green', 'grey'].includes(style)) {
-            return _chalk[styleMap[style].node](value);
-          }
-          return _chalk.yellowBright(value);
-        }
-        if (typeof value === 'boolean') {
-          return value ? _chalk.greenBright(value) : _chalk.redBright(value);
-        }
-        if (typeof value === 'bigint') {
-          return _chalk.cyanBright(`${value}n`);
-        }
-        if (typeof value === 'symbol') {
-          return _chalk.magentaBright(value.toString());
-        }
-        // 其他原样返回
-        return value;
-      }),
-    ];
+  // 同时 show 方法也返回用于需要反馈的场景
+  show(options: ShowOptions): ShowReturn {
+    const values: any[] = this.getValues(options);
+    let { name } = options;
+    if (BaseEnv.isHarmony && name in console) {
+      console[name](...values);
+    } else {
+      console.log(...values);
+    }
+    return {
+      input: options,
+      output: values,
+    };
   }
-  if (BaseEnv.isHarmony) {
-    return [
-      prefix,
-      ...values.map(function getValue(value) {
-        // 字符串、bi 增加区分显示
-        if (typeof value === 'string') {
-          return `'${value}'`;
-        }
-        if (typeof value === 'bigint') {
-          return `${value}n`;
-        }
-        if (value instanceof Set) {
-          // 原生 Set
-          if (value.constructor === Set) {
-            return `{${Array.from(value)}}`;
-          }
-          // 定制的 Set 对象已配置 Symbol.toPrimitive 或 toString 转换方法
-          return `${value}`;
-        }
-        // 数组、对象：序列化显示
-        if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
-          return JSON.stringify(value);
-        }
-        // 其他原样输出
-        return value;
-      }),
-    ];
+  debug(...args: any[]): ShowReturn {
+    return this.show({ name: 'debug', color: 'grey', stackInfo: this.getStackInfo(), values: args });
   }
-  return values;
-};
-interface ShowOptions {
-  style?: string,
-  type?: string,
-  stackInfo?: StackInfo,
-  values?: any[]
+  log(...args: any[]): ShowReturn {
+    return this.show({ name: 'log', color: 'blue', stackInfo: this.getStackInfo(), values: args });
+  }
+  info(...args: any[]): ShowReturn {
+    return this.show({ name: 'info', color: 'blue', stackInfo: this.getStackInfo(), values: args });
+  }
+  warn(...args: any[]): ShowReturn {
+    return this.show({ name: 'warn', color: 'yellow', stackInfo: this.getStackInfo(), values: args });
+  }
+  error(...args: any[]): ShowReturn {
+    return this.show({ name: 'error', color: 'red', stackInfo: this.getStackInfo(), values: args });
+  }
+  success(...args: any[]): ShowReturn {
+    return this.show({ name: 'success', color: 'green', stackInfo: this.getStackInfo(), values: args });
+  }
+  end(...args: any[]): ShowReturn {
+    return this.show({ name: 'end', color: 'grey', stackInfo: this.getStackInfo(), values: args });
+  }
+  dir(value: any, options: DirOptions = {}): void {
+    this.show({ name: 'dir', color: 'blue', stackInfo: this.getStackInfo() });
+    if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker || BaseEnv.isWx || BaseEnv.isHarmony) {
+      console.dir(value);
+    }
+    if (BaseEnv.isNode) {
+      console.dir(value, new DirOptions(options));
+    }
+  }
+  table(...args: any[]): void {
+    this.show({ name: 'table', color: 'blue', stackInfo: this.getStackInfo() });
+    console.table(...args);
+  }
+  group(label: string = '', options: GroupOptions = {}): void {
+    let { name = 'group', stackInfo = this.getStackInfo() } = options;
+    const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
+    label = `${[`${label}`, `[${date}]`, `[${name}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
+    console.group(label);
+  }
+  groupCollapsed(label: string = '', options: GroupOptions = {}): void {
+    let { name = 'groupCollapsed', stackInfo = this.getStackInfo() } = options;
+    const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
+    label = `${[`${label}`, `[${date}]`, `[${name}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
+    console.groupCollapsed(label);
+  }
+  groupEnd(): void {
+    console.groupEnd();
+  }
+  groupAction(action = (): void => {}, label: string = '', collapse: boolean = false): void {
+    const stackInfo = this.getStackInfo();
+    (collapse ? this.groupCollapsed : this.group)(label, { name: 'groupAction', stackInfo });
+    action();
+    this.groupEnd();
+  }
 }
-// 同时 show 方法也返回用于需要反馈的场景
-_console.show = function (options: ShowOptions = {}) {
-  const values = _console.getValues(options);
-  if (BaseEnv.isHarmony && ['log', 'warn', 'error'].includes(options.type)) {
-    console[options.type](...values);
-  } else {
-    console.log(...values);
-  }
-  return {
-    input: options,
-    output: values,
-  };
-};
-_console.log = function (...args) {
-  return _console.show({ style: 'blue', type: 'log', stackInfo: _console.getStackInfo(), values: args });
-};
-_console.warn = function (...args) {
-  return _console.show({ style: 'yellow', type: 'warn', stackInfo: _console.getStackInfo(), values: args });
-};
-_console.error = function (...args) {
-  return _console.show({ style: 'red', type: 'error', stackInfo: _console.getStackInfo(), values: args });
-};
-_console.success = function (...args) {
-  return _console.show({ style: 'green', type: 'success', stackInfo: _console.getStackInfo(), values: args });
-};
-_console.end = function (...args) {
-  return _console.show({ style: 'grey', type: 'end', stackInfo: _console.getStackInfo(), values: args });
-};
-_console.dir = function (value, options = {}) {
-  _console.show({ style: 'blue', type: 'dir', stackInfo: _console.getStackInfo() });
-  if (BaseEnv.isBrowser || BaseEnv.isChromeExtension || BaseEnv.isWebWorker || BaseEnv.isWx || BaseEnv.isHarmony) {
-    return console.dir(value);
-  }
-  if (BaseEnv.isNode) {
-    options = _Object.deepAssign({ depth: 0, showHidden: true, colors: true }, options);
-    return console.dir(value, options);
-  }
-};
-_console.table = function (...args) {
-  _console.show({ style: 'blue', type: 'table', stackInfo: _console.getStackInfo() });
+Object.setPrototypeOf(BaseConsole.prototype, console);
+export const _console = new BaseConsole();
 
-  console.table(...args);
-};
-_console.group = function (label, { type = 'group', stackInfo = null } = {}) {
-  stackInfo = stackInfo || _console.getStackInfo();
-  const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
-  label = `${[`${label ? `${label} :` : ''}`, `[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
-  console.group(label);
-};
-_console.groupCollapsed = function (label, { type = 'groupCollapsed', stackInfo = null } = {}) {
-  stackInfo = stackInfo || _console.getStackInfo();
-  const date = new _Date().toString('YYYY-MM-DD HH:mm:ss.SSS');
-  label = `${[`${label ? `${label} :` : ''}`, `[${date}]`, `[${type}]`, stackInfo.fileShow, stackInfo.method].filter(val => val).join(' ')} :`;
-  console.groupCollapsed(label);
-};
-_console.groupEnd = function () {
-  console.groupEnd();
-};
-_console.groupAction = function (action = () => {}, label = null, collapse = false) {
-  const stackInfo = _console.getStackInfo();
-  (collapse ? _console.groupCollapsed : _console.group)(label, { type: 'groupAction', stackInfo });
-  action();
-  _console.groupEnd();
-};
-
+// py 风格的输入/输出
 export const _print = _console.log;
-export function _input(title = '', _default = ''): string | Promise<string> {
+export function _input(title: string = '', _default: string = ''): string | Promise<string> {
   if (BaseEnv.isBrowser) {
     return prompt(title, _default) || '';
   }

@@ -300,12 +300,13 @@ const hmConfig: RollupOptions[] = [
 ];
 // 在 harmony 中新建 rollup.config.ts 导入当前文件会报错，在这里统一处理
 const config: RollupOptions[] = (() => {
+  const args = (process.env.build_target || '').split(',').filter(val => val).map(val => val.trim());
+
   let result = [];
-  const targets = (process.env.build_target || '').split(',').filter(val => val).map(val => val.trim());
-  if (targets.includes('js')) {
+  if (args.includes('js')) {
     result.push(...jsConfig);
   }
-  if (targets.includes('hm')) {
+  if (args.includes('hm')) {
     result.push(...hmConfig);
   }
   return result;

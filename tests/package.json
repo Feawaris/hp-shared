@@ -2,7 +2,11 @@
   "name": "tests",
   "private": true,
   "scripts": {
-    "test": "pnpm -C ../examples/shared run build && jest"
+    "build:shared": "pnpm -C ../examples/shared run build",
+    "test:node": "pnpm run build:shared && cross-env test_env=node jest",
+    "test:browser": "pnpm run build:shared && cross-env test_env=browser jest",
+    "test:wx": "pnpm run build:shared && cross-env test_env=wx jest",
+    "test": "pnpm run build:shared && cross-env test_env=node,browser,wx jest"
   },
   "dependencies": {
     "hp-shared": "workspace:^",

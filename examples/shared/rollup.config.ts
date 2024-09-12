@@ -1,6 +1,8 @@
+import type { OutputOptions, RollupOptions } from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
+// 共用插件
 const browserPlugins = [
   nodeResolve({
     browser: true,
@@ -14,7 +16,7 @@ const nodePlugins = [
   commonjs(),
 ];
 
-const config = [
+const config: RollupOptions[] = [
   {
     input: 'src/index.js',
     output: [

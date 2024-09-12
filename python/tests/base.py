@@ -74,7 +74,7 @@ class describe_base(unittest.TestCase):
 class describe__Array(unittest.TestCase):
   pass
 class describe__console(unittest.TestCase):
-  def test_log_warn_error_success_end(self):
+  def test_debug_log_info_warn_error_success_end(self):
     inputValues = [None, 10, '12px', True, False]
     outputValues = [
       '\x1b[90mNone\x1b[39m',
@@ -83,20 +83,22 @@ class describe__console(unittest.TestCase):
       '\x1b[92mTrue\x1b[39m',
       '\x1b[91mFalse\x1b[39m'
     ]
-    def fn(type: str, style: str) -> None:
-      res = _console[type](*inputValues)
+    def fn(name: str, color: str) -> None:
+      res = _console[name](*inputValues)
       # res.input: stackInfo 先不加入测试，先不用整个 res.input
       self.assertEqual(
-        { 'style': res.input.style, 'type': res.input.type, 'values': res.input.values },
-        { 'style': style, 'type': type, 'values': inputValues },
+        { 'name': res.input.name, 'color': res.input.color, 'values': res.input.values },
+        { 'name': name, 'color': color, 'values': inputValues },
       )
       # res.output
       self.assertEqual(res.output[1:], outputValues)
-    fn(type = 'log', style = 'blue')
-    fn(type = 'warn', style = 'yellow')
-    fn(type = 'error', style = 'red')
-    fn(type = 'success', style = 'green')
-    fn(type = 'end', style = 'grey')
+    fn(name = 'debug', color = 'grey')
+    fn(name = 'log', color = 'blue')
+    fn(name = 'info', color = 'blue')
+    fn(name = 'warn', color = 'yellow')
+    fn(name = 'error', color = 'red')
+    fn(name = 'success', color = 'green')
+    fn(name = 'end', color = 'grey')
   def test__print(self):
     self.assertEqual(_print, _console.log)
   def test__input(self):

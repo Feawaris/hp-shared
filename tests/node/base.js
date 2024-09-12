@@ -22,7 +22,7 @@ describe('base', () => {
   });
 });
 describe('_console', () => {
-  test('test_log_warn_error_success_end', () => {
+  test('test_debug_log_info_warn_error_success_end', () => {
     const inputValues = [null, undefined, 10, '12px', true, false, 10n, Symbol('test')];
     const outputValues = [
       '\x1b[90mnull\x1b[39m',
@@ -34,18 +34,20 @@ describe('_console', () => {
       '\x1b[96m10n\x1b[39m',
       '\x1b[95mSymbol(test)\x1b[39m',
     ];
-    function fn({ type, style } = {}) {
-      const res = _console[type](...inputValues);
+    function fn({ color, name } = {}) {
+      const res = _console[name](...inputValues);
       // res.input: stackInfo 先不加入测试，先不用整个 res.input
-      expect(res.input).toMatchObject({ style, type, values: inputValues });
+      expect(res.input).toMatchObject({ color, name, values: inputValues });
       // res.output
       expect(res.output.slice(1)).toEqual(outputValues);
     }
-    fn({ type: 'log', style: 'blue' });
-    fn({ type: 'warn', style: 'yellow' });
-    fn({ type: 'error', style: 'red' });
-    fn({ type: 'success', style: 'green' });
-    fn({ type: 'end', style: 'grey' });
+    fn({ name: 'debug', color: 'grey' });
+    fn({ name: 'log', color: 'blue' });
+    fn({ name: 'info', color: 'blue' });
+    fn({ name: 'warn', color: 'yellow' });
+    fn({ name: 'error', color: 'red' });
+    fn({ name: 'success', color: 'green' });
+    fn({ name: 'end', color: 'grey' });
   });
   test('test__print', () => {
     expect(_print).toEqual(_console.log);

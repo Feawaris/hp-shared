@@ -235,15 +235,16 @@ from hp_shared.base import BaseEnv
 
 #### 2.1.2 _console 控制台
 
-|          | 说明             | **browser**                                                              | **wx**                                                                                  | **node**                                        | **py**                                                                | hm                                                                                              |
-|----------|----------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| _console | 输出             | [Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API)  | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) | [console](https://nodejs.cn/api/console.html)   | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | [Console](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-logs-V5) |
-| _print   | 同 _console.log |                                                                          |                                                                                         |                                                 |                                                                       |                                                                                                 |
-| _input   | 输入             | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt) |                                                                                         | [readline](https://nodejs.cn/api/readline.html) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) |                                                                                                 |
+|                 | 说明                                        | **browser**                                                  | **wx**                                                       | **node**                                        | **py**                                                       | hm                                                           |
+| --------------- | ------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **BaseConsole** | 输出，可加配置定制或直接使用默认的 _console | [Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console_API) | [console](https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/console.html) | [console](https://nodejs.cn/api/console.html)   | [print](https://docs.python.org/zh-cn/3/library/functions.html#print) | [Console](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-logs-V5) |
+| **_console**    | 默认的 BaseConsole 实例                     |                                                              |                                                              |                                                 |                                                              |                                                              |
+| _print          | 同 _console.log                             |                                                              |                                                              |                                                 |                                                              |                                                              |
+| _input          | 输入                                        | [prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt) |                                                              | [readline](https://nodejs.cn/api/readline.html) | [input](https://docs.python.org/zh-cn/3/library/functions.html#input) |                                                              |
 
 ::: code-tabs#import
 
-@tab browser
+@tab js:es
 
 ```js
 import { _console, _input } from 'hp-shared';
@@ -252,7 +253,7 @@ const text = _input('输入内容：');
 _console.log(text);
 ```
 
-@tab node
+@tab js:cjs
 
 ```js
 const { _console, _input } = require('hp-shared');
@@ -274,24 +275,36 @@ _console.log(text)
 
 :::
 
-##### _console
+##### BaseConsole、_console
 
-| 属性                                         | 说明                                        | js | hm | py |
-|--------------------------------------------|-------------------------------------------|----|----|----|
-| getStackInfo                               | 基础方法                                      | ✅  | ✅  | ✅  |
-| getValues                                  | 基础方法                                      | ✅  | ✅  | ✅  |
-| show                                       | 基础方法                                      | ✅  | ✅  | ✅  |
-| **log**                                    | <strong style="color:blue">常规</strong>    | ✅  | ✅  | ✅  |
-| **warn**                                   | <strong style="color:orange;">警告</strong> | ✅  | ✅  | ✅  |
-| **error**                                  | <strong style="color:red">报错</strong>     | ✅  | ✅  | ✅  |
-| **success**                                | <strong style="color:green">成功</strong>   | ✅  | ❌  | ✅  |
-| **end**                                    | <strong style="color:grey">结束</strong>    | ✅  | ❌  | ✅  |
-| dir                                        |                                           | ✅  | ✅  | ✅  |
-| table                                      |                                           | ✅  | ✅  | ❌  |
-| group                                      |                                           | ✅  | ✅  | ❌  |
-| groupCollapsed                             |                                           | ✅  | ✅  | ❌  |
-| groupAction                                |                                           | ✅  | ✅  | ❌  |
-| <span style="color:pink;">...其他同名属性</span> | <span style="color:pink;">继承</span>       | ✅  | ✅  | ❌  |
+| 属性                                               | 说明                                        | js   | hm   | py   |
+| -------------------------------------------------- | ------------------------------------------- | ---- | ---- | ---- |
+| getStackInfo                                       | 基础方法                                    | ✅    | ✅    | ✅    |
+| getValues                                          | 基础方法                                    | ✅    | ✅    | ✅    |
+| show                                               | 基础方法                                    | ✅    | ✅    | ✅    |
+| debug                                              |                                             | ✅    | ✅    | ✅    |
+| **log**                                            | <strong style="color:blue">常规</strong>    | ✅    | ✅    | ✅    |
+| info                                               |                                             | ✅    | ✅    | ✅    |
+| **warn**                                           | <strong style="color:orange;">警告</strong> | ✅    | ✅    | ✅    |
+| **error**                                          | <strong style="color:red">报错</strong>     | ✅    | ✅    | ✅    |
+| **success**                                        | <strong style="color:green">成功</strong>   | ✅    | ⚠️    | ✅    |
+| **end**                                            | <strong style="color:grey">结束</strong>    | ✅    | ⚠️    | ✅    |
+| dir                                                |                                             | ✅    | ✅    | ✅    |
+| table                                              |                                             | ✅    | ✅    | ❌    |
+| group                                              |                                             | ✅    | ✅    | ❌    |
+| groupCollapsed                                     |                                             | ✅    | ✅    | ❌    |
+| groupAction                                        |                                             | ✅    | ✅    | ❌    |
+| <span style="color:pink;">...其他同名属性：</span> | <span style="color:pink;">继承</span>       |      |      |      |
+| assert                                             |                                             | ✅    | ✅    | ❌    |
+| count                                              |                                             | ✅    | ✅    | ❌    |
+| countReset                                         |                                             | ✅    | ✅    | ❌    |
+| dirxml                                             |                                             | ✅    | ✅    | ❌    |
+| time                                               |                                             | ✅    | ✅    | ❌    |
+| timeEnd                                            |                                             | ✅    | ✅    | ❌    |
+| timeLog                                            |                                             | ✅    | ✅    | ❌    |
+| trace                                              |                                             | ✅    | ✅    | ❌    |
+| traceHybridStack                                   |                                             | ❌    | ✅    | ❌    |
+| clear                                              |                                             | ✅    | ❌    | ❌    |
 
 ##### _print
 

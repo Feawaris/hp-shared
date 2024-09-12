@@ -41,7 +41,7 @@ class Object:
   def __getattr__(self, key):
     try:
       return self.__dict__[key]
-    except KeyError:
+    except AttributeError:
       return None
   def __setattr__(self, key, value):
     self.__dict__[key] = value
@@ -49,7 +49,7 @@ class Object:
     # print('__delattr__:', key)
     try:
       del self.__dict__[key]
-    except KeyError:
+    except AttributeError:
       pass
   # []写法
   def __getitem__(self, key):
