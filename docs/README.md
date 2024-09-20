@@ -213,13 +213,13 @@ hp-shared
 
 ::: code-tabs#import
 
-@tab browser
+@tab js:esm
 
 ```js
 import { BaseEnv } from 'hp-shared';
 ```
 
-@tab node
+@tab js:cjs
 
 ```js
 const { BaseEnv } = require('hp-shared');
@@ -244,7 +244,7 @@ from hp_shared.base import BaseEnv
 
 ::: code-tabs#import
 
-@tab js:es
+@tab js:esm
 
 ```js
 import { _console, _input } from 'hp-shared';
