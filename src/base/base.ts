@@ -49,7 +49,7 @@ BaseEnv.envs = ((): string[] => {
     result.push('wx');
   }
   if (typeof globalThis.ability === 'object') {
-    result.push('harmony')
+    result.push('harmony');
   }
   return result;
 })();
@@ -57,8 +57,8 @@ BaseEnv.isBrowser = BaseEnv.envs.includes('browser');
 BaseEnv.isWebWorker = BaseEnv.envs.includes('web-worker');
 BaseEnv.isDedicatedWebWorker = BaseEnv.envs.includes('dedicated-web-worker');
 BaseEnv.isSharedWebWorker = BaseEnv.envs.includes('shared-web-worker');
-BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isServiceWorker = BaseEnv.envs.includes('service-worker');
+BaseEnv.isChromeExtension = BaseEnv.envs.includes('chrome-extension');
 BaseEnv.isNode = BaseEnv.envs.includes('node');
 BaseEnv.isWx = BaseEnv.envs.includes('wx');
 // 操作系统: windows, mac, linux, android, ios, ...
