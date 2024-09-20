@@ -23,7 +23,7 @@ export const BaseEnv: {
   isFirefox: boolean,
   isSafari: boolean,
 } = Object.create(null);
-// 代码运行环境: browser, node, wx, ...
+// 代码运行环境: browser, node, wx, harmony, ...
 BaseEnv.envs = ((): string[] => {
   let result: string[] = [];
   if (typeof window !== 'undefined' && globalThis === window) {
@@ -47,6 +47,9 @@ BaseEnv.envs = ((): string[] => {
   }
   if (typeof wx !== 'undefined') {
     result.push('wx');
+  }
+  if (typeof globalThis.ability === 'object') {
+    result.push('harmony')
   }
   return result;
 })();
@@ -101,7 +104,7 @@ BaseEnv.os = ((): string => {
       return 'linux';
     }
   }
-  if (globalThis.View) {
+  if (typeof globalThis.ability === 'object') {
     return 'harmony';
   }
   return '';
