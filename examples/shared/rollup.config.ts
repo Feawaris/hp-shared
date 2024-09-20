@@ -1,4 +1,5 @@
 import type { OutputOptions, RollupOptions } from 'rollup';
+import { dts } from 'rollup-plugin-dts';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -14,6 +15,9 @@ const nodePlugins = [
     exportConditions: ['node'],
   }),
   commonjs(),
+];
+const dtsPlugins = [
+  dts(),
 ];
 
 const config: RollupOptions[] = [
@@ -32,5 +36,12 @@ const config: RollupOptions[] = [
     ],
     plugins: nodePlugins,
   },
+  /*{
+    input: 'src/index.js',
+    output: [
+      { file: 'dist/index.d.ts' },
+    ],
+    plugins: dtsPlugins,
+  },*/
 ];
 export default config;
