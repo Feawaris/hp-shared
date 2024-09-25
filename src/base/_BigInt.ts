@@ -1,4 +1,4 @@
-export class _BigInt {
+export class BaseBigInt {
   value: bigint;
   constructor(x) {
     if (typeof x !== 'bigint') {
@@ -8,18 +8,16 @@ export class _BigInt {
   }
 
   // 转换系列方法：转换成原始值或其他类型
-  [Symbol.toPrimitive](hint: string) {
+  [Symbol.toPrimitive](hint: string): number | string {
     if (hint === 'number') {
       return this.toNumber();
     }
     if (hint === 'string' || hint === 'default') {
       return this.toString();
     }
-    return null;
   }
-  toNumber() {
-    // @ts-ignore
-    return Number.parseFloat(this.value);
+  toNumber(): number {
+    return Number.parseInt(String(this.value));
   }
   toString() {
     return String(this.value);
@@ -30,7 +28,7 @@ export class _BigInt {
   toJSON() {
     return this.toString();
   }
-  toBigInt() {
-    return this.value;
-  }
+}
+export function _BigInt(x: number | bigint) {
+  return new BaseBigInt(x);
 }
