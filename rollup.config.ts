@@ -1,5 +1,5 @@
-import { _Date } from './src/base/index.ts';
-import pkg from './package.json';
+import { _Date, _Object } from './src/base/index.ts';
+import pkg from './package.json' assert { type: 'json' };
 import type { OutputOptions, RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import { dts } from 'rollup-plugin-dts';
@@ -10,10 +10,15 @@ import replace from '@rollup/plugin-replace';
 
 // 生成输出选项
 interface Options extends OutputOptions {
-  extraBanner?: string | string[];
+  _extraBanner?: string | string[];
 }
 function getOutputItem(options: Options = {}): OutputOptions {
-  const { extraBanner = [], ...restOptions } = options;
+  // 分离选项
+  // 原 options 选项
+  const primeOptions = _Object.filter(options, { omit: Object.keys(options).filter(key => key.startsWith('_')) }); // [!code focus]
+  // 自定义选项
+  const customOptions = _Object.filter(options, { pick: Object.keys(options).filter(key => key.startsWith('_')) });
+  const { _extraBanner = [] } = customOptions;
   return {
     get banner() {
       return [
@@ -29,11 +34,11 @@ function getOutputItem(options: Options = {}): OutputOptions {
         ` * rollup 打包配置：${JSON.stringify(this, ['name', 'format', 'noConflict', 'sourcemap', 'plugins'])}`,
         ` */`,
         // 合并选项
-        ...(Array.isArray(extraBanner) ? extraBanner : [extraBanner]),
+        ...(Array.isArray(_extraBanner) ? _extraBanner : [_extraBanner]),
       ].join('\n');
     },
     sourcemap: 'inline',
-    ...restOptions,
+    ...primeOptions,
   };
 }
 // 共用插件
@@ -215,7 +220,7 @@ const jsConfig: RollupOptions[] = [
       getOutputItem({
         file: 'dist/browser/index-tampermonkey.js',
         format: 'iife',
-        extraBanner: [
+        _extraBanner: [
           `// ==UserScript==`,
           `// @name         ${pkg.name}`,
           `// @version      ${pkg.version}`,

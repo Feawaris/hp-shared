@@ -119,13 +119,37 @@ describe('_Math', () => {
     expect(_Math.PHI).toEqual((Math.sqrt(5) - 1) / 2);
     expect(_Math.PHI_BIG).toEqual((Math.sqrt(5) + 1) / 2);
   });
+  test('ArithmeticSequence', () => {
+    const seq = new _Math.ArithmeticSequence(1, 2, 5);
+    expect(seq.value).toMatchObject([1, 3, 5, 7, 9]);
+    expect(seq.an()).toEqual(9);
+    expect(seq.Sn()).toEqual(25);
+  });
+  test('GeometricSequence', () => {
+    const seq = new _Math.GeometricSequence(1, 2, 5);
+    expect(seq.value).toMatchObject([1, 2, 4, 8, 16]);
+    expect(seq.an()).toEqual(16);
+    expect(seq.Sn()).toEqual(31);
+  });
+  test('FibonacciSequence', () => {
+    const seq = new _Math.FibonacciSequence(5);
+    expect(seq.value).toMatchObject([1, 1, 2, 3, 5]);
+    expect(seq.an()).toEqual(5);
+    expect(seq.Sn()).toEqual(12);
+  });
+  test('PrimeSequence', () => {
+    const seq = new _Math.PrimeSequence({ n: 5 });
+    expect(seq.value).toMatchObject([2, 3, 5, 7, 11]);
+    expect(seq.an()).toEqual(11);
+    expect(seq.Sn()).toEqual(28);
+  });
 });
 describe('BigInt', () => {
   test('转换系列方法', () => {
-    const fac18 = new _BigInt(_Math.factorial(18));
-    const fac19 = new _BigInt(_Math.factorial(19));
-    expect(fac18.toJSON()).toEqual('6402373705728000');
-    expect(fac19.toString()).toEqual('121645100408832000');
+    const fac18 = _BigInt(_Math.factorial(18));
+    const fac19 = _BigInt(_Math.factorial(19));
+    expect(fac18.value).toEqual(BigInt('6402373705728000'));
+    expect(fac19.value).toEqual(BigInt('121645100408832000'));
     expect(fac18 < Number.MAX_SAFE_INTEGER).toEqual(true);
     expect(fac19 > Number.MAX_SAFE_INTEGER).toEqual(true);
   });

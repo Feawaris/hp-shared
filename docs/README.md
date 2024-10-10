@@ -427,9 +427,9 @@ const data = _Object.filter(row, { omit: ['password'] }); // [!code focus]
 function fn(value, options = {}) {
   // 分离选项
   // 原 options 选项
-  const primeOptions = _Object.filter(options, { omit: Object.keys(options).fliter(key => key.startsWith('_')) }); // [!code focus]
+  const primeOptions = _Object.filter(options, { omit: Object.keys(options).filter(key => key.startsWith('_')) }); // [!code focus]
   // 自定义选项
-  const customOptions = _Object.filter(options, { pick: Object.keys(options).fliter(key => key.startsWith('_')) }); // [!code focus]
+  const customOptions = _Object.filter(options, { pick: Object.keys(options).filter(key => key.startsWith('_')) }); // [!code focus]
   // ...
 }
 ```
