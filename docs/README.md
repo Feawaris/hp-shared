@@ -91,8 +91,8 @@ import { _console, clipboard } from 'hp-shared';
 @tab 保留模块路径写法
 
 ```js
-import { _console } from 'hp-shared';
-import { clipboard } from 'hp-shared';
+import { _console } from 'hp-shared/base';
+import { clipboard } from 'hp-shared/storage';
 ```
 
 @tab 完整路径 dist

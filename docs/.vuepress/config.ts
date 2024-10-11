@@ -36,6 +36,9 @@ export default defineUserConfig({
    * 主题配置
    */
   theme: hopeTheme(
+    /**
+     * 主题选项
+     */
     {
       /**
        * 主题基本选项
@@ -175,6 +178,7 @@ export default defineUserConfig({
        * 插件配置
        */
       plugins: {
+        // 插件配置 -> 主题插件
         /**
          * 内置插件
          * 下列插件被内部调用，不可禁用:
@@ -212,7 +216,7 @@ export default defineUserConfig({
          * 下列插件默认启用，你可以禁用它们:
          */
         // @vuepress/plugin-active-header-links
-        activeHeaderLinks: {},
+        // activeHeaderLinks: {},
         // @vuepress/plugin-back-to-top
         backToTop: {
           // threshold: 100,
@@ -231,7 +235,7 @@ export default defineUserConfig({
         // @vuepress/plugin-links-check
         linksCheck: {},
         // @vuepress/plugin-nprogress
-        nprogress: {},
+        // nprogress: {},
         // @vuepress/plugin-photo-swipe
         photoSwipe: {},
         // @vuepress/plugin-reading-time
@@ -352,7 +356,7 @@ export default defineUserConfig({
     },
 
     /**
-     * 主题行为选项
+     * 主题行为选项 (可选)
      */
     {
       // check: true,

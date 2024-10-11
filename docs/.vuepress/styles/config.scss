@@ -1,38 +1,31 @@
-// 用于纯变量配置
+// config.scss 用于纯变量配置
 
-/* Content Class */
-$content-class: ".theme-hope-content";
-
-/* responsive breakpoints */
-
+/* 响应式布局断点 */
 // wide screen
-$pc: 1440px;
-
+$pc: 1440px !default;
 // desktop
-$laptop: 1280px;
-
+$laptop: 1280px !default;
 // narrow desktop / iPad
-$pad: 959px;
-
+$pad: 959px !default;
 // wide mobile
-$tablet: 719px;
-
+$tablet: 719px !default;
 // narrow mobile
-$mobile: 419px;
+$mobile: 419px !default;
 
-/* Color list */
-$colors: #cf1322, #fa541c, #f39c12, #2ecc71, #25a55b, #10a5a5, #096dd9, #aa6fe9, #eb2f96;
-
-/* Code Block */
-// only available with shiki highlighter
-$code-color: (
-  light: #383a42,
-  dark: #abb2bf,
-);
-$code-bg-color: (
-  light: #ecf4fa,
-  dark: #282c34,
-);
-
-// 主题色选择器
+/* 主题色 */
+$theme-color: #25a55b;
 $theme-colors: $colors;
+
+/* 代码块 (仅限 shiki 高亮器) */
+$code-color: (
+    light: #383a42,
+    dark: #abb2bf,
+) !default;
+$code-bg-color: (
+    light: #ecf4fa,
+    dark: #282c34,
+) !default;
+
+/* 颜色列表 */
+$colors: #cf1322, #fa541c, #f39c12, #2ecc71, #25a55b, #10a5a5, #096dd9, #aa6fe9, #eb2f96 !default;
+
