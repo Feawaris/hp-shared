@@ -315,7 +315,6 @@ export default defineUserConfig({
           // sandpack: true,
           // vuePlayground: true,
           playground: {},
-          codetabs: true,
           // demo: true,
 
           /**
@@ -352,6 +351,10 @@ export default defineUserConfig({
         // @vuepress/plugin-redirect
         // @vuepress/plugin-pwa
         // vuepress-plugin-search-pro
+
+        markdownTab: {
+          codeTabs: true,
+        },
       },
     },
 
