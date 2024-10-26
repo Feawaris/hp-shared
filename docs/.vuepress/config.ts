@@ -216,7 +216,7 @@ export default defineUserConfig({
          * 下列插件默认启用，你可以禁用它们:
          */
         // @vuepress/plugin-active-header-links
-        // activeHeaderLinks: {},
+        activeHeaderLinks: {},
         // @vuepress/plugin-back-to-top
         backToTop: {
           // threshold: 100,
@@ -234,8 +234,12 @@ export default defineUserConfig({
         git: {},
         // @vuepress/plugin-links-check
         linksCheck: {},
+        // @vuepress/plugin-markdown-hint
+        markdownHint:{},
+        // @vuepress/plugin-markdown-image
+        markdownImage:{},
         // @vuepress/plugin-nprogress
-        // nprogress: {},
+        nprogress: {},
         // @vuepress/plugin-photo-swipe
         photoSwipe: {},
         // @vuepress/plugin-reading-time
@@ -246,7 +250,7 @@ export default defineUserConfig({
         seo: {},
         // @vuepress/plugin-shiki
         shiki: {
-          langs: ['md','html','css','scss', 'js', 'ts', 'py', 'sh'],
+          langs: ['md', 'html', 'css', 'scss', 'js', 'ts', 'py', 'sh'],
           theme: 'nord',
           themes: {
             light: 'everforest-light',
@@ -268,32 +272,27 @@ export default defineUserConfig({
           /**
            * 语法
            */
-          katex: true,
-          // mathjax: true,
           sub: true,
           sup: true,
           tasklist: true,
+
+          /**
+           * 内容
+           */
+          include: true,
+          component: true,
+          footnote: true,
+
           figure: true,
           imgLazyload: true,
           imgMark: true,
           imgSize: true,
 
           /**
-           * 内容
-           */
-          include: true,
-          revealJs: false,
-          component: true,
-          footnote: true,
-          tabs: true,
-
-          /**
            * 样式化
            */
-          alert: true,
           spoiler: true,
           attrs: true,
-          hint: true,
           mark: true,
           stylize: [],
           align: true,
@@ -331,6 +330,10 @@ export default defineUserConfig({
         // @vuepress/plugin-blog
         // @vuepress/plugin-copyright
         // @vuepress/plugin-comment
+        // @vuepress/plugin-markdown-math
+        markdownMath: {
+          katex: true,
+        },
         // @vuepress/plugin-notice
         // @vuepress/plugin-rtl
         // @vuepress/plugin-watermark
