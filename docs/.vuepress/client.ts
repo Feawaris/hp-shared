@@ -1,5 +1,5 @@
 // import { Monitor } from 'hp-shared';
-// import pkg from 'hp-shared/package.json' assert { type: 'json' };
+// import pkg from 'hp-shared/package.json' with { type: 'json' };
 import { defineClientConfig } from 'vuepress/client';
 
 export default defineClientConfig({

@@ -1,5 +1,5 @@
 import { _Date, _Object } from './src/base/index.ts';
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 import type { OutputOptions, RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import { dts } from 'rollup-plugin-dts';

@@ -3,7 +3,7 @@
  * [VuePress Theme Hope 配置](https://theme-hope.vuejs.press/zh/config/intro.html)
  */
 import { _console } from 'hp-shared';
-import pkg from 'hp-shared/package.json' assert { type: 'json' };
+import pkg from 'hp-shared/package.json' with { type: 'json' };
 import path from 'node:path';
 import { defineUserConfig } from 'vuepress';
 import { hopeTheme } from 'vuepress-theme-hope';
